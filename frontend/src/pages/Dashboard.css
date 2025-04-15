@@ -1,0 +1,120 @@
+/* Global Reset */
+body,
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); /* Hintergrund bleibt wie gewünscht */
+    color: #fff;
+}
+
+.dashboard {
+    display: flex;
+    max-width: 980px; /* Begrenzung der Breite */
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    margin: 40px;
+    padding: 20px;
+    gap: 20px;
+    border: 2px solid #1c14d0;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgb(5, 0, 50), rgb(40, 0, 140)); /* Farbverlauf für den Container */
+}
+
+.dashboard-header {
+    text-align: left; /* Links bündig */
+    margin-bottom: 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 10px;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.logo-image {
+    width: 40px; /* Breite des Logos */
+    height: auto; /* Automatische Höhe basierend auf der Breite */
+    margin-right: 10px; /* Abstand zwischen dem Bild und dem Text */
+  }
+
+.dashboard-header h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    color: #ffffff;
+}
+
+.dashboard-main {
+    display: flex;
+    flex-direction: column; /* Elemente untereinander anordnen */
+    gap: 20px; /* Abstand zwischen den Elementen */
+    width: 100%;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Zwei Spalten */
+    gap: 20px;
+    width: 100%;
+}
+
+.project-room-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Aktuelles Projekt größer als Raum */
+    gap: 20px;
+    width: 100%;
+}
+
+.hackaton-card {
+    background: linear-gradient(135deg, #2a5298, #1e3c72); /* Einheitlicher Farbverlauf für Karten */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hackaton-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+}
+
+.hackaton-card h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.hackaton-card p {
+    font-size: 1.2rem;
+    color: #e0e0e0;
+}
+
+.action-button {
+    background: #6200ea;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.action-button:hover {
+    background: #4a00e0;
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .info-grid,
+    .project-room-grid {
+        grid-template-columns: 1fr; /* Eine Spalte auf kleinen Bildschirmen */
+    }
+}

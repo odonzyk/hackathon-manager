@@ -1,0 +1,47 @@
+{
+  "name": "parking-systems-backend",
+  "description": "a fully featured system for reserved parking",
+  "version": "0.3.5",
+  "main": "index.js",
+  "scripts": {
+    "start-dev": "cross-env NODE_ENV=development node --env-file=.env.dev server.js",
+    "start-stage": "cross-env NODE_ENV=staging node --env-file=.env.stage server.js",
+    "start-prod": "cross-env NODE_ENV=production node --env-file=.env.prod server.js",
+    "format": "prettier --write \"**/*.{js,jsx,ts}\"",
+    "test": "jest --coverage"
+  },
+  "keywords": [
+    "parking-systems",
+    "parking-systems-backend",
+    "parking-systems-frontend",
+    "parking",
+    "parkspace",
+    "car",
+    "booking",
+    "reserve",
+    "reservation"
+  ],
+  "type": "commonjs",
+  "author": "Thalia-DRS",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "sqlite3": "^5.1.7",
+    "swagger-jsdoc": "6.2.8",
+    "swagger-ui-express": "5.0.1",
+    "winston": "^3.17.0",
+    "prometheus-api-metrics": "3.2.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "prettier": "^3.4.2",
+    "prettier-plugin-sql": "^0.18.1",
+    "supertest": "^7.0.0"
+  }
+}
