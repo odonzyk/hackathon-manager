@@ -1,4 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import {
+  IonPage,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+} from '@ionic/react';
 import './HackathonTeams.css';
 
 interface Team {
@@ -29,33 +43,42 @@ const HackathonTeams: React.FC = () => {
   }, []);
 
   return (
-    <div className="hackathon-teams">
-      <h1 className="team-title">Hackathon Teams</h1>
-      <div className="team-grid">
-        {teams.map((team) => {
-          // Finde den Teamnamen aus den Projektdaten basierend auf der project_id
-          const project = projects.find((project) => project.id === team.project_id);
-          const teamName = project ? project.team : 'Noch kein Teamname';
+    <IonPage>
+      <IonContent>
+        <IonGrid className="hackathon-grid">
+          <IonRow>
+            {teams.map((team) => {
+              // Finde den Teamnamen aus den Projektdaten basierend auf der project_id
+              const project = projects.find((project) => project.id === team.project_id);
+              const teamName = project ? project.team : 'Noch kein Teamname';
 
-          return (
-            <div key={team.id} className="team-card">
-              <h2 className="team-name">{teamName}</h2>
-              <p className="team-description">Mitglieder:</p>
-              <ul className="team-details">
-                {team.members.map((member, index) => (
-                  <li key={index}>
-                    <span role="img" aria-label="Person">👤</span> {member}
-                  </li>
-                ))}
-              </ul>
-              <p className="team-description">
-                Mitglieder ({team.members.length}):
-              </p>
-            </div>
-          );
-        })}
-      </div>
-    </div>
+              return (
+                <IonCol size="12" sizeMd="6" key={team.id}>
+                  <IonCard className="hackathon-card">
+                    <IonCardHeader>
+                      <IonCardTitle>{teamName}</IonCardTitle>
+                    </IonCardHeader>
+                    <IonCardContent>
+                      <p className="team-description">Mitglieder:</p>
+                      <ul className="team-details">
+                        {team.members.map((member, index) => (
+                          <li key={index}>
+                            <span role="img" aria-label="Person">👤</span> {member}
+                          </li>
+                        ))}
+                      </ul>
+                      <p className="team-description">
+                        Mitglieder: ({team.members.length})
+                      </p>
+                    </IonCardContent>
+                  </IonCard>
+                </IonCol>
+              );
+            })}
+          </IonRow>
+        </IonGrid>
+        </IonContent>
+            </IonPage>
   );
 };
 

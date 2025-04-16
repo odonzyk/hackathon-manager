@@ -1,4 +1,20 @@
 import React, { useEffect, useState } from 'react';
+import {
+  IonPage,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonInput,
+  IonButton,
+} from '@ionic/react';
 import './HackathonProjects.css';
 
 interface Project {
@@ -36,64 +52,76 @@ const HackathonProjects: React.FC = () => {
   });
 
   return (
-    <div className="project-container">
-      <h1 className="project-title">Hackathon Projekte 2024</h1>
+    <IonPage>
+      <IonContent>
+        <IonGrid className="filter-container">
+          <IonRow>
+            <IonCol size="12" sizeMd="4">
+              <IonInput
+                placeholder="Suche nach Name, Beschreibung oder Ansprechpartner"
+                value={search}
+                onIonInput={(e) => setSearch(e.detail.value!)}
+                className="filter-input"
+              />
+            </IonCol>
+            <IonCol size="12" sizeMd="4">
+              <IonInput
+                placeholder="Filter nach Komponenten"
+                value={componentFilter}
+                onIonInput={(e) => setComponentFilter(e.detail.value!)}
+                className="filter-input"
+              />
+            </IonCol>
+            <IonCol size="12" sizeMd="4">
+              <IonInput
+                placeholder="Filter nach Skills"
+                value={skillFilter}
+                onIonInput={(e) => setSkillFilter(e.detail.value!)}
+                className="filter-input"
+              />
+            </IonCol>
+          </IonRow>
+        </IonGrid>
 
-      <div className="filter-container">
-        <input
-          type="text"
-          placeholder="Suche nach Name, Beschreibung oder Ansprechpartner"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="filter-input"
-        />
-        <input
-          type="text"
-          placeholder="Filter nach Komponenten"
-          value={componentFilter}
-          onChange={(e) => setComponentFilter(e.target.value)}
-          className="filter-input"
-        />
-        <input
-          type="text"
-          placeholder="Filter nach Skills"
-          value={skillFilter}
-          onChange={(e) => setSkillFilter(e.target.value)}
-          className="filter-input"
-        />
-      </div>
-
-      <div className="project-grid">
-        {filteredProjects.map((project) => (
-          <div key={project.id} className="project-card">
-            <h2 className="project-name">{project.name}</h2>
-            <p className="project-description">{project.description}</p>
-            <div className="project-details">
-              <p>
-                <span role="img" aria-label="Team">👥</span> <strong>Team:</strong> {project.team}
-              </p>
-              <p>
-                <span role="img" aria-label="Contact">📞</span> <strong>Kontakt:</strong> {project.contact}
-              </p>
-              <p>
-                <span role="img" aria-label="Goal">🎯</span> <strong>Ziel:</strong> {project.goal}
-              </p>
-              <p>
-                <span role="img" aria-label="Components">🛠️</span> <strong>Komponenten:</strong> {project.components}
-              </p>
-              <p>
-                <span role="img" aria-label="Skills">💡</span> <strong>Skills:</strong> {project.skills}
-              </p>
-            </div>
-            {/* Footer mit Button */}
-            <div className="project-card-footer">
-              <button className="project-action-button">Projekt beitreten</button>
-            </div>
-          </div>
-
-        ))}
-      </div>
-    </div>
+        {/* Projekte */}
+        <IonGrid className="hackathon-grid">
+          <IonRow>
+            {filteredProjects.map((project) => (
+              <IonCol size="12" sizeMd="6" key={project.id}>
+                <IonCard className="hackathon-card">
+                  <IonCardHeader>
+                    <IonCardTitle>{project.name}</IonCardTitle>
+                  </IonCardHeader>
+                  <IonCardContent>
+                  <p className="project-description">{project.description}</p>
+                  <div className="project-details">
+                      <p>
+                        <span role="img" aria-label="Team">👥</span> <strong>Team:</strong> {project.team}
+                      </p>
+                      <p>
+                        <span role="img" aria-label="Contact">📞</span> <strong>Kontakt:</strong> {project.contact}
+                      </p>
+                      <p>
+                        <span role="img" aria-label="Goal">🎯</span> <strong>Ziel:</strong> {project.goal}
+                      </p>
+                      <p>
+                        <span role="img" aria-label="Components">🛠️</span> <strong>Komponenten:</strong> {project.components}
+                      </p>
+                      <p>
+                        <span role="img" aria-label="Skills">💡</span> <strong>Skills:</strong> {project.skills}
+                      </p>
+                    </div>
+                    <IonButton expand="block" color="primary" className="project-action-button">
+                      Projekt beitreten
+                    </IonButton>
+                  </IonCardContent>
+                </IonCard>
+              </IonCol>
+            ))}
+          </IonRow>
+        </IonGrid>
+        </IonContent>
+    </IonPage>
   );
 };
 

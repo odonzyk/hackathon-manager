@@ -1,0 +1,30 @@
+:root {
+    
+    /* Dunkler Hintergrund */
+    --ion-background-color: linear-gradient(135deg, #24243e, #302b63, #0f0c29);
+    --ion-text-color: #222222;
+    --ion-font-family: 'Open Sans', sans-serif;
+
+    --ion-color-primary: #0077B6;
+    --ion-color-secondary: #1a92d3;
+    --ion-color-tertiary: #F0F4F8;
+    --ion-color-warning: #FF6B6B;
+}
+
+ion-menu ion-header {
+    --ion-background-color: #1e3c72; /* Dunkler Blauton */
+    --ion-text-color: #ffffff;
+  }
+  
+  /* Menü Liste */
+  ion-menu ion-list {
+    --ion-background-color: #2a5298; /* Etwas heller als der Header */
+    --ion-text-color: #ffffff;
+  }
+  
+  ion-menu ion-item {
+    font-size: 1.2rem;
+    color: #ffffff;
+    --ion-item-background: transparent;
+    --ion-item-hover-background: rgba(255, 255, 255, 0.1); /* Leichter Hover-Effekt */
+  }

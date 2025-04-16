@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Home.css';
 import { Link } from 'react-router-dom';
 
+console.log('Home');
+
+
 const Home: React.FC = () => {
+
+  useEffect(() => {
+    console.log('Home loaded');
+  }, []);
+  // useEffect(() => {
+
   return (
     <div className="home">
       <header className="home-header">
