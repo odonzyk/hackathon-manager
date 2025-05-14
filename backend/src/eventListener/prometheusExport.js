@@ -1,9 +1,8 @@
-const config = require('../config');
-const logger = require('../logger');
-const bookingEventBus = require("../middlewares/bookingEventBus");;
+const config = require("../config");
+const logger = require("../logger");
+const bookingEventBus = require("../middlewares/projectEventBus");
 const { EventTypes } = require("../constants");
 const promClient = require("prom-client");
-const { checkFreeSlots } = require('../utils/parkingLotUtils');
 
 // Definiere globale Labels
 const globalLabels = {
@@ -39,19 +38,21 @@ async function exportBookingCount(slots) {
 }
 
 // ** Handle Eventbus notification ********************************************
-bookingEventBus.on(EventTypes.BOOKING_CHANGE, async (booking_id) => {
-  logger.debug(`PrometheusExport -> EVENT is recieved: ${EventTypes.BOOKING_CHANGE} with booking_id=${booking_id}`);
-  updateFreeParkingSlots(booking_id);
+bookingEventBus.on(EventTypes.BOOKING_CHANGE, async (event_id) => {
+  logger.debug(
+    `PrometheusExport -> EVENT is recieved: ${EventTypes.BOOKING_CHANGE} with booking_id=${booking_id}`,
+  );
+  updateProjectCounts(event_id);
 });
 
 async function updateFreeParkingSlots(booking_id) {
-  checkFreeSlots(booking_id)
-    .then((slots) => {
-      exportBookingCount(slots);
-    })
-    .catch((err) => {
-      logger.error('Error during PrometheusExport', err);
-    });
+  //   checkFreeSlots(booking_id)
+  //    .then((slots) => {
+  //      exportBookingCount(slots);
+  //    })
+  //    .catch((err) => {
+  //      logger.error('Error during PrometheusExport', err);
+  //    });
 }
 
 module.exports = {};

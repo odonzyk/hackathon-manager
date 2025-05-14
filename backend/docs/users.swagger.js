@@ -1,27 +1,27 @@
 const { ErrorMsg } = require("../src/constants");
 
 const userPaths = {
-  '/user/login': {
+  "/user/login": {
     post: {
-      summary: 'User login',
-      tags: ['User'],
+      summary: "User login",
+      tags: ["User"],
       requestBody: {
         required: true,
         content: {
-          'application/json': {
+          "application/json": {
             schema: {
-              type: 'object',
-              required: ['email', 'password'],
+              type: "object",
+              required: ["email", "password"],
               properties: {
                 email: {
-                  type: 'string',
-                  format: 'email',
-                  example: 'max@example.com',
+                  type: "string",
+                  format: "email",
+                  example: "max@example.com",
                 },
                 password: {
-                  type: 'string',
-                  format: 'password',
-                  example: 'password123',
+                  type: "string",
+                  format: "password",
+                  example: "password123",
                 },
               },
             },
@@ -30,15 +30,15 @@ const userPaths = {
       },
       responses: {
         200: {
-          description: 'Successful login, returns a JWT token',
+          description: "Successful login, returns a JWT token",
           content: {
-            'application/json': {
+            "application/json": {
               schema: {
-                type: 'object',
+                type: "object",
                 properties: {
                   token: {
-                    type: 'string',
-                    example: 'eyJhbGciOiJIUzI1...',
+                    type: "string",
+                    example: "eyJhbGciOiJIUzI1...",
                   },
                 },
               },
@@ -60,10 +60,10 @@ const userPaths = {
       },
     },
   },
-  '/user/list': {
+  "/user/list": {
     get: {
-      summary: 'Returns a list of all users',
-      tags: ['User'],
+      summary: "Returns a list of all users",
+      tags: ["User"],
       security: [
         {
           bearerAuth: [],
@@ -71,13 +71,13 @@ const userPaths = {
       ],
       responses: {
         200: {
-          description: 'Success - Returns a list of users',
+          description: "Success - Returns a list of users",
           content: {
-            'application/json': {
+            "application/json": {
               schema: {
-                type: 'array',
+                type: "array",
                 items: {
-                  $ref: '#/components/schemas/User',
+                  $ref: "#/components/schemas/User",
                 },
               },
             },
@@ -95,35 +95,35 @@ const userPaths = {
       },
     },
   },
-  '/user': {
+  "/user": {
     post: {
-      summary: 'Registers a new user',
-      tags: ['User'],
+      summary: "Registers a new user",
+      tags: ["User"],
       requestBody: {
         required: true,
         content: {
-          'application/json': {
+          "application/json": {
             schema: {
-              type: 'object',
-              required: ['name', 'email', 'telephone', 'licence_plate'],
+              type: "object",
+              required: ["name", "email", "telephone", "licence_plate"],
               properties: {
-                name: { type: 'string', example: 'Max Mustermann' },
+                name: { type: "string", example: "Max Mustermann" },
                 email: {
-                  type: 'string',
-                  format: 'email',
-                  example: 'max@example.com',
+                  type: "string",
+                  format: "email",
+                  example: "max@example.com",
                 },
-                is_private_email: { type: 'boolean', example: true },
-                telephone: { type: 'string', example: '+49123456789' },
-                is_private_telephone: { type: 'boolean', example: true },
+                is_private_email: { type: "boolean", example: true },
+                telephone: { type: "string", example: "+49123456789" },
+                is_private_telephone: { type: "boolean", example: true },
                 password: {
-                  type: 'string',
-                  format: 'password',
-                  example: 'password123',
+                  type: "string",
+                  format: "password",
+                  example: "password123",
                 },
-                role_id: { type: 'integer', example: 1 },
-                licence_plate: { type: 'string', example: 'B-BB 001' },
-                vehicle_type_id: { type: 'integer', example: 1 },
+                role_id: { type: "integer", example: 1 },
+                licence_plate: { type: "string", example: "B-BB 001" },
+                vehicle_type_id: { type: "integer", example: 1 },
               },
             },
           },
@@ -131,10 +131,10 @@ const userPaths = {
       },
       responses: {
         201: {
-          description: 'User successfully created',
+          description: "User successfully created",
           content: {
-            'application/json': {
-              schema: { $ref: '#/components/schemas/User' },
+            "application/json": {
+              schema: { $ref: "#/components/schemas/User" },
             },
           },
         },
@@ -150,10 +150,10 @@ const userPaths = {
       },
     },
   },
-  '/user/{id}': {
+  "/user/{id}": {
     put: {
-      summary: 'Updates user data',
-      tags: ['User'],
+      summary: "Updates user data",
+      tags: ["User"],
       security: [
         {
           bearerAuth: [],
@@ -161,40 +161,40 @@ const userPaths = {
       ],
       parameters: [
         {
-          in: 'path',
-          name: 'id',
+          in: "path",
+          name: "id",
           required: true,
           schema: {
-            type: 'integer',
+            type: "integer",
           },
-          description: 'The ID of the user to be updated',
+          description: "The ID of the user to be updated",
         },
       ],
       requestBody: {
         required: true,
         content: {
-          'application/json': {
+          "application/json": {
             schema: {
-              type: 'object',
-              required: ['name', 'email', 'telephone', 'licence_plate'],
+              type: "object",
+              required: ["name", "email", "telephone", "licence_plate"],
               properties: {
-                name: { type: 'string', example: 'Max Mustermann' },
+                name: { type: "string", example: "Max Mustermann" },
                 email: {
-                  type: 'string',
-                  format: 'email',
-                  example: 'max@example.com',
+                  type: "string",
+                  format: "email",
+                  example: "max@example.com",
                 },
-                is_private_email: { type: 'boolean', example: true },
-                telephone: { type: 'string', example: '+49123456789' },
-                is_private_telephone: { type: 'boolean', example: true },
+                is_private_email: { type: "boolean", example: true },
+                telephone: { type: "string", example: "+49123456789" },
+                is_private_telephone: { type: "boolean", example: true },
                 password: {
-                  type: 'string',
-                  format: 'password',
-                  example: 'password123',
+                  type: "string",
+                  format: "password",
+                  example: "password123",
                 },
-                role_id: { type: 'integer', example: 1 },
-                licence_plate: { type: 'string', example: 'B-BB 001' },
-                vehicle_type_id: { type: 'integer', example: 1 },
+                role_id: { type: "integer", example: 1 },
+                licence_plate: { type: "string", example: "B-BB 001" },
+                vehicle_type_id: { type: "integer", example: 1 },
               },
             },
           },
@@ -202,10 +202,10 @@ const userPaths = {
       },
       responses: {
         200: {
-          description: 'User successfully updated',
+          description: "User successfully updated",
           content: {
-            'application/json': {
-              schema: { $ref: '#/components/schemas/User' },
+            "application/json": {
+              schema: { $ref: "#/components/schemas/User" },
             },
           },
         },
@@ -227,8 +227,8 @@ const userPaths = {
       },
     },
     get: {
-      summary: 'Retrieve a user by ID',
-      tags: ['User'],
+      summary: "Retrieve a user by ID",
+      tags: ["User"],
       security: [
         {
           bearerAuth: [],
@@ -236,21 +236,21 @@ const userPaths = {
       ],
       parameters: [
         {
-          in: 'path',
-          name: 'id',
+          in: "path",
+          name: "id",
           required: true,
           schema: {
-            type: 'integer',
+            type: "integer",
           },
-          description: 'The ID of the user to retrieve',
+          description: "The ID of the user to retrieve",
         },
       ],
       responses: {
         200: {
-          description: 'User successfully retrieved user details',
+          description: "User successfully retrieved user details",
           content: {
-            'application/json': {
-              schema: { $ref: '#/components/schemas/User' },
+            "application/json": {
+              schema: { $ref: "#/components/schemas/User" },
             },
           },
         },
@@ -266,8 +266,8 @@ const userPaths = {
       },
     },
     delete: {
-      summary: 'Deletes a user and removes all associated bookings',
-      tags: ['User'],
+      summary: "Deletes a user and removes all associated bookings",
+      tags: ["User"],
       security: [
         {
           bearerAuth: [],
@@ -275,18 +275,18 @@ const userPaths = {
       ],
       parameters: [
         {
-          in: 'path',
-          name: 'id',
+          in: "path",
+          name: "id",
           required: true,
           schema: {
-            type: 'integer',
+            type: "integer",
           },
-          description: 'The ID of the user to be deleted.',
+          description: "The ID of the user to be deleted.",
         },
       ],
       responses: {
         200: {
-          description: 'User successfully deleted',
+          description: "User successfully deleted",
         },
         403: {
           description: ErrorMsg.AUTH.INVALID_TOKEN,

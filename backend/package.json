@@ -1,8 +1,8 @@
 {
-  "name": "parking-systems-backend",
-  "description": "a fully featured system for reserved parking",
-  "version": "0.3.5",
-  "main": "index.js",
+  "name": "hackathon-manager-backend",
+  "description": "hackaton organisation backend",
+  "version": "0.2.0",
+  "main": "server.js",
   "scripts": {
     "start-dev": "cross-env NODE_ENV=development node --env-file=.env.dev server.js",
     "start-stage": "cross-env NODE_ENV=staging node --env-file=.env.stage server.js",
@@ -11,15 +11,8 @@
     "test": "jest --coverage"
   },
   "keywords": [
-    "parking-systems",
-    "parking-systems-backend",
-    "parking-systems-frontend",
-    "parking",
-    "parkspace",
-    "car",
-    "booking",
-    "reserve",
-    "reservation"
+    "hackathon",
+    "Hackathon-backend"
   ],
   "type": "commonjs",
   "author": "Thalia-DRS",

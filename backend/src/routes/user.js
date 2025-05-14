@@ -1,38 +1,41 @@
-const express = require('express');
-const { db_get, db_run, db_all } = require('../database');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const config = require('../config');
-const logger = require('../logger');
+const express = require("express");
+const { db_get, db_run, db_all } = require("../database");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const config = require("../config");
+const logger = require("../logger");
 
-const authenticateToken = require('../middlewares/authMiddleware');
+const authenticateToken = require("../middlewares/authMiddleware");
 const router = express.Router();
 const { ErrorMsg } = require("../constants");
 
-
 const createUser = (dbRow) => {
   const vehicles = dbRow?.vehicles
-  ? dbRow.vehicles.split(',').map((vehicle) => {
-      const [vehicle_id, vehicle_type_id, licence_plate] = vehicle.split(':');
-      return { id: vehicle_id, vehicle_type_id : parseInt(vehicle_type_id, 10), licence_plate };
-    })
-  : [];
+    ? dbRow.vehicles.split(",").map((vehicle) => {
+        const [vehicle_id, vehicle_type_id, licence_plate] = vehicle.split(":");
+        return {
+          id: vehicle_id,
+          vehicle_type_id: parseInt(vehicle_type_id, 10),
+          licence_plate,
+        };
+      })
+    : [];
 
   return {
     id: dbRow?.id ?? null,
-    name: dbRow?.name ?? '',
-    email: dbRow?.email ?? '',
+    name: dbRow?.name ?? "",
+    email: dbRow?.email ?? "",
     is_private_email: dbRow?.is_private_email ?? false,
-    telephone: dbRow?.telephone ?? '',
+    telephone: dbRow?.telephone ?? "",
     is_private_telephone: dbRow?.is_private_telephone ?? false,
-    role_id: dbRow?.role_id ?? 2, 
-    avatar_url: dbRow?.avatar_url ?? '/assets/avatars/avatar_1.png',
-    vehicles: vehicles
+    role_id: dbRow?.role_id ?? 2,
+    avatar_url: dbRow?.avatar_url ?? "/assets/avatars/avatar_1.png",
+    vehicles: vehicles,
   };
 };
 
 // *** GET /api/user/login ****************************************************
-router.post('/login', async (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   logger.debug(`API User -> Login User: ${email}`);
 
@@ -40,13 +43,15 @@ router.post('/login', async (req, res) => {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
   }
 
-  const result = await db_get('SELECT * FROM User WHERE email = ?', [email.toLowerCase()]);
+  const result = await db_get("SELECT * FROM User WHERE email = ?", [
+    email.toLowerCase(),
+  ]);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (!result.row) return res.status(404).send(ErrorMsg.NOT_FOUND.NO_USER);
 
   const { id, name, password: hash, role_id } = result.row;
   if (!hash) {
-    return res.status(400).send('No password is set');
+    return res.status(400).send("No password is set");
   }
 
   const validPassword = await bcrypt.compare(password, hash);
@@ -59,7 +64,7 @@ router.post('/login', async (req, res) => {
     { id: id, name: name, email: email, role: role_id, parkinglots: [1] },
     config.jwtSecret,
     {
-      expiresIn: '2h',
+      expiresIn: "2h",
     },
   );
 
@@ -67,7 +72,7 @@ router.post('/login', async (req, res) => {
 });
 
 // *** GET /api/user/list *****************************************************
-router.get('/list', authenticateToken, async (req, res) => {
+router.get("/list", authenticateToken, async (req, res) => {
   logger.debug(`API User -> List User`);
   const result = await db_all(
     `SELECT User.*,
@@ -87,7 +92,7 @@ router.get('/list', authenticateToken, async (req, res) => {
 });
 
 // *** POST /api/user *********************************************************
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   let {
     name,
     email,
@@ -103,24 +108,24 @@ router.post('/', async (req, res) => {
   logger.debug(`API User -> Register User: ${name}`);
 
   //TODO: Set Passwort by Frontend
-  if (!password) password = 'welcome!';
+  if (!password) password = "welcome!";
   if (!role_id) role_id = 2;
   if (!vehicle_type_id) vehicle_type_id = 1;
   if (!licence_plate) licence_plate = "X-XX";
 
-  if (!name || !email  ) {
+  if (!name || !email) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
   }
 
-  email=email.toLowerCase();
-  let result = await db_get('SELECT * FROM User WHERE email = ?', [email]);
+  email = email.toLowerCase();
+  let result = await db_get("SELECT * FROM User WHERE email = ?", [email]);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (result.row) return res.status(409).send(ErrorMsg.VALIDATION.CONFLICT);
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
   result = await db_run(
-    'INSERT INTO User (name, email, telephone, password, role_id, is_private_email, is_private_telephone, avatar_url) VALUES (?, ?, ?, ?, ?, ?, ?,?)',
+    "INSERT INTO User (name, email, telephone, password, role_id, is_private_email, is_private_telephone, avatar_url) VALUES (?, ?, ?, ?, ?, ?, ?,?)",
     [
       name,
       email,
@@ -129,7 +134,7 @@ router.post('/', async (req, res) => {
       role_id,
       is_private_email || false,
       is_private_telephone || false,
-      avatar_url || '/assets/avatars/avatar_1.png',
+      avatar_url || "/assets/avatars/avatar_1.png",
     ],
   );
   const user_id = result.lastID;
@@ -137,7 +142,7 @@ router.post('/', async (req, res) => {
     return res.status(500).send(`Server error`);
   }
   result = await db_run(
-    'INSERT INTO Vehicle (user_id, vehicle_type_id, licence_plate) VALUES (?, ?, ?)',
+    "INSERT INTO Vehicle (user_id, vehicle_type_id, licence_plate) VALUES (?, ?, ?)",
     [user_id, vehicle_type_id, licence_plate],
   );
   if (result.err || result.changes === 0) {
@@ -152,7 +157,7 @@ router.post('/', async (req, res) => {
     role_id,
     is_private_email: is_private_email || false,
     is_private_telephone: is_private_telephone || false,
-    avatar_url: avatar_url || '/assets/avatars/avatar_1.png',
+    avatar_url: avatar_url || "/assets/avatars/avatar_1.png",
     vehicles: [
       {
         id: result.lastID,
@@ -164,7 +169,7 @@ router.post('/', async (req, res) => {
 });
 
 // *** PUT /api/user *********************************************************
-router.put('/:id', authenticateToken, async (req, res) => {
+router.put("/:id", authenticateToken, async (req, res) => {
   const { id } = req.params;
   let {
     name,
@@ -173,11 +178,11 @@ router.put('/:id', authenticateToken, async (req, res) => {
     telephone,
     is_private_telephone,
     role_id,
-    avatar_url
+    avatar_url,
   } = req.body;
   logger.debug(`API User -> Update User: ${name}`);
 
-  if (!name || !email || !telephone ) {
+  if (!name || !email || !telephone) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
   }
 
@@ -197,7 +202,10 @@ router.put('/:id', authenticateToken, async (req, res) => {
 
   // Check if email is used by someone already
   if (user.email != email) {
-    let result = await db_get('SELECT * FROM User WHERE email = ? AND id != ?', [email, id]);
+    let result = await db_get(
+      "SELECT * FROM User WHERE email = ? AND id != ?",
+      [email, id],
+    );
     if (result.err) {
       return res.status(500).send(ErrorMsg.SERVER.ERROR);
     }
@@ -213,14 +221,14 @@ router.put('/:id', authenticateToken, async (req, res) => {
   user.role_id = role_id ?? user.role_id;
   user.avatar_url = avatar_url ?? user.avatar_url;
 
-//  if (password) {
-//    logger.debug('Reset passwort');
-//    user.password = await bcrypt.hash(password, 10);
-//  }
+  //  if (password) {
+  //    logger.debug('Reset passwort');
+  //    user.password = await bcrypt.hash(password, 10);
+  //  }
 
   // Update User
   result = await db_run(
-    'Update User SET name=?, email=?, telephone=?, role_id=?, is_private_email=?, is_private_telephone=?, avatar_url=? where id = ?',
+    "Update User SET name=?, email=?, telephone=?, role_id=?, is_private_email=?, is_private_telephone=?, avatar_url=? where id = ?",
     [
       user.name,
       user.email,
@@ -240,7 +248,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
 });
 
 // *** GET /api/user *********************************************************
-router.get('/:id', authenticateToken, async (req, res) => {
+router.get("/:id", authenticateToken, async (req, res) => {
   const { id } = req.params;
   logger.debug(`API User -> Get User (id): ${id}`);
 
@@ -259,41 +267,41 @@ router.get('/:id', authenticateToken, async (req, res) => {
 });
 
 // *** DELETE /api/user *********************************************************
-router.delete('/:id', authenticateToken, async (req, res) => {
+router.delete("/:id", authenticateToken, async (req, res) => {
   const { id } = req.params;
   logger.debug(`API User -> Delete User (id): ${id}`);
 
   // Delete Bookings
-  let result = await db_run('DELETE FROM Booking WHERE user_id = ?', [id]);
+  let result = await db_run("DELETE FROM Booking WHERE user_id = ?", [id]);
   if (result.err) {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }
 
   // Delete vehicle
-  result = await db_run('DELETE FROM vehicle WHERE user_id = ?', [id]);
+  result = await db_run("DELETE FROM vehicle WHERE user_id = ?", [id]);
   if (result.err) {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }
 
   // Delete User
-  result = await db_run('DELETE FROM User WHERE id = ?', [id]);
+  result = await db_run("DELETE FROM User WHERE id = ?", [id]);
   if (result.err) {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }
   if (result.changes === 0) {
     return res.status(404).send(ErrorMsg.NOT_FOUND.NO_USER);
   }
-  res.status(200).send('User deleted successfully');
+  res.status(200).send("User deleted successfully");
 });
 
 // *** GET /user/vehicle/:userId ************************************************
-router.get('/vehicle/:userId', authenticateToken, async (req, res) => {
+router.get("/vehicle/:userId", authenticateToken, async (req, res) => {
   const { userId } = req.params;
   logger.debug(`API User -> Get Vehicles for User (id): ${userId}`);
 
   const result = await db_all(
     `SELECT id, licence_plate, vehicle_type_id FROM Vehicle WHERE user_id = ?`,
-    [userId]
+    [userId],
   );
 
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
@@ -303,7 +311,7 @@ router.get('/vehicle/:userId', authenticateToken, async (req, res) => {
 });
 
 // *** POST /user/vehicle *******************************************************
-router.post('/vehicle', authenticateToken, async (req, res) => {
+router.post("/vehicle", authenticateToken, async (req, res) => {
   const { user_id, licence_plate, vehicle_type_id } = req.body;
   logger.debug(`API User -> Add Vehicle for User (id): ${user_id}`);
 
@@ -313,7 +321,7 @@ router.post('/vehicle', authenticateToken, async (req, res) => {
 
   const result = await db_run(
     `INSERT INTO Vehicle (user_id, licence_plate, vehicle_type_id) VALUES (?, ?, ?)`,
-    [user_id, licence_plate, vehicle_type_id]
+    [user_id, licence_plate, vehicle_type_id],
   );
 
   if (result.err || result.changes === 0) {
@@ -329,7 +337,7 @@ router.post('/vehicle', authenticateToken, async (req, res) => {
 });
 
 // *** PUT /user/vehicle/:id ****************************************************
-router.put('/vehicle/:id', authenticateToken, async (req, res) => {
+router.put("/vehicle/:id", authenticateToken, async (req, res) => {
   const { id } = req.params;
   const { licence_plate, vehicle_type_id } = req.body;
   logger.debug(`API User -> Update Vehicle (id): ${id}`);
@@ -338,19 +346,19 @@ router.put('/vehicle/:id', authenticateToken, async (req, res) => {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
   }
 
-  const vehicleResult = await db_get(
-    `SELECT * FROM Vehicle WHERE id = ?`,
-    [id]
-  );
+  const vehicleResult = await db_get(`SELECT * FROM Vehicle WHERE id = ?`, [
+    id,
+  ]);
   if (vehicleResult.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
-  if (!vehicleResult.row) return res.status(404).send(ErrorMsg.NOT_FOUND.NO_VEHICLE);
+  if (!vehicleResult.row)
+    return res.status(404).send(ErrorMsg.NOT_FOUND.NO_VEHICLE);
   let vehicle = vehicleResult.row;
   vehicle.licence_plate = licence_plate;
   vehicle.vehicle_type_id = vehicle_type_id;
 
   const result = await db_run(
     `UPDATE Vehicle SET licence_plate = ?, vehicle_type_id = ? WHERE id = ?`,
-    [licence_plate, vehicle_type_id, id]
+    [licence_plate, vehicle_type_id, id],
   );
 
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
@@ -362,7 +370,7 @@ router.put('/vehicle/:id', authenticateToken, async (req, res) => {
 });
 
 // *** DELETE /user/vehicle/:id *************************************************
-router.delete('/vehicle/:id', authenticateToken, async (req, res) => {
+router.delete("/vehicle/:id", authenticateToken, async (req, res) => {
   const { id } = req.params;
   logger.debug(`API User -> Delete Vehicle (id): ${id}`);
 
@@ -373,7 +381,7 @@ router.delete('/vehicle/:id', authenticateToken, async (req, res) => {
     return res.status(404).send(ErrorMsg.NOT_FOUND.NO_VEHICLE);
   }
 
-  res.status(200).send('Vehicle deleted successfully');
+  res.status(200).send("Vehicle deleted successfully");
 });
 
 module.exports = router;

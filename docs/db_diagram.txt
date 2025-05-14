@@ -1,6 +1,26 @@
 // Use DBML to define your database structure
 // Docs: https://dbml.dbdiagram.io/docs
 
+Table Role {
+  id integer [primary key]
+  name text
+}
+
+Table User {
+    id integer [primary key]
+    name text
+    email text UNIQUE
+    telephone text
+    password text
+    role_id integer [ref: > Role.id]
+    avatar_url text
+}
+
+Table ProjectStatus {
+  id integer [primary key]
+  name text
+}
+
 Table Event {
     id integer [primary key]
     name text
@@ -26,24 +46,4 @@ Table Participant {
   id INTEGER [primary key]
   user_id integer [ref: > User.id, not null]
   project_id integer [ref: > Project.id, not null]
-}
-
-Table User {
-    id integer [primary key]
-    name text
-    email text UNIQUE
-    telephone text
-    password text
-    role_id integer [ref: > Role.id]
-    avatar_url text
-}
-
-Table Role {
-  id integer [primary key]
-  name text
-}
-
-Table Project_Status {
-  id integer [primary key]
-  name text
 }
