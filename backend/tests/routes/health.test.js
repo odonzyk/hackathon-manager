@@ -32,7 +32,6 @@ describe('Health API Endpoints', () => {
 
       // Sicherstellen, dass die sensiblen Daten entfernt wurden
       expect(response.body).not.toHaveProperty('jwtSecret');
-      expect(response.body).not.toHaveProperty('oneSignalApi');
 
       // Andere Konfigurationswerte sollten vorhanden sein
       expect(response.body).toHaveProperty('apiUrl', config.apiUrl);

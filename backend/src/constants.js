@@ -14,16 +14,13 @@ const ErrorMsg = Object.freeze({
     },
     NOT_FOUND: {
       NO_USER: "No user found",
-      NO_OWNER: "No owner found",
-      NO_PARKINGLOT: "No parking lot found",
-      NO_SLOT: "No slot found",
-      NO_BOOKING: "No booking found",
-      NO_VEHICLE: "No vehicle found",
+      NO_PROJECT: "No project found",
     },
   }); 
 
   const EventTypes = {
-    BOOKING_CHANGE: "Booking Changed"
+    PROJECT_CHANGE: "Project Changed",
+    PARTICIPANT_CHANGE: "Project Changed"
   }
 
 module.exports = { ErrorMsg, EventTypes };
