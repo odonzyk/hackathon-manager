@@ -1,135 +1,135 @@
-# Developing
+# Entwicklung
 
-To start, clone the repo (for more instruction see [here](cloning-the-repo)) and create a new branch! 
+Das Repository liegt auf dem Thalia DRS GitLab Server. Dort kann das Projekt ausgeschekt (für weitere Anweisungen siehe [hier](cloning-the-repo)) und ein branch erstellt werden.
 
-## Setup the project
-To run the project locally, follow these steps:
+## Projekt einrichten
+Um das Projekt lokal auszuführen, folge diesen Schritten:
 
-1. **Clone the Repository**  
-   - Check out the project from the repository.
-2. **Start the Backend**  
-   - Configure the backend  
-   - Install dependencies  
-   - Start the backend  
-3. **Start the Frontend**  
-   - Configure the frontend  
-   - Install dependencies  
-   - Start the frontend  
-   - Access the application  
-4. **Additional Information**  
-   - Perform a health check  
-   - View API documentation  
+1. **Repository klonen**  
+   - Klone das Projekt aus dem Repository.
+2. **Backend starten**  
+   - Konfiguriere das Backend  
+   - Installiere die Abhängigkeiten  
+   - Starte das Backend  
+3. **Frontend starten**  
+   - Konfiguriere das Frontend  
+   - Installiere die Abhängigkeiten  
+   - Starte das Frontend  
+   - Greife auf die Anwendung zu  
+4. **Zusätzliche Informationen**  
+   - Führe einen Health-Check durch  
+   - Sieh dir die API-Dokumentation an  
 
-Consider the [Branching-Conventions](#branching-conventions), [Commit-Conventions](#commit-conventions) and more! 
+Beachte die [Branching-Konventionen](#branching-conventions) & [Commit-Konventionen](#commit-conventions) ! 
 
-### Clone the Repository ###
-If you want use http to clone, you first need to create an access token first.
-Link to create a Access Token -> https://gitlab-ext.drsbln.de/-/user_settings/personal_access_tokens
+### Repository klonen ###
+Wenn du HTTP zum Klonen verwenden möchtest, musst du zuerst ein Zugriffstoken erstellen.
+Link zum Erstellen eines Zugriffstokens -> https://gitlab-ext.drsbln.de/-/user_settings/personal_access_tokens
 
-
-If you have created a personal "Access Token" in you're Gitlab Server User Profile, you can use it like:
+Wenn du ein persönliches "Access Token" in deinem GitLab-Benutzerprofil erstellt hast, kannst du es wie folgt verwenden:
 ```sh
-git clone https://<Youre_Login_Name>:<youre gitlab-token>@gitlab-ext.drsbln.de/developer/parking.git
+git clone https://<Dein_Login_Name>:<dein_gitlab-token>@gitlab-ext.drsbln.de/developer/parking.git
 ```
 
-### Start the Backend ###
-#### Configure the backend ####
+### Backend starten ###
+#### Backend konfigurieren ####
 
-First, a configuration file for the development environment needs to be created.
+Zuerst muss eine Konfigurationsdatei für die Entwicklungsumgebung erstellt werden.
 
 ```sh
 cd backend
 cp env.example env.dev
 ```
-if necessary, you can adjust the values in the configuration file to meet your specific requirements.
+Falls nötig, kannst du die Werte in der Konfigurationsdatei anpassen, um deine spezifischen Anforderungen zu erfüllen.
 
-#### Install dependencies ####
+#### Abhängigkeiten installieren ####
 
-All required dependencies for the project must be installed.
+Alle erforderlichen Abhängigkeiten für das Projekt müssen installiert werden.
 ```sh
 npm install
 ```
 
-#### Start the backend  ####
-Now, you can start the backend.
+#### Backend starten ####
+Jetzt kannst du das Backend starten.
 
-On the first run, the database will be automatically created and initialized.
+Beim ersten Start wird die Datenbank automatisch erstellt und initialisiert.
 
 ```sh
 npm run start-dev 
 ```
 
-#### Verify That the Backend is Running ####
+#### Überprüfen, ob das Backend läuft ####
 
-You can check if the backend is running by accessing the following endpoints:
+Du kannst überprüfen, ob das Backend läuft, indem du die folgenden Endpunkte aufrufst:
 
 * **Health Check**: http://localhost:3000/api/health
-* **API Documentation (Swagger)**: http://localhost:3000/api-docs
+* **API-Dokumentation (Swagger)**: http://localhost:3000/api-docs
 
-### Start the Frontend ####
-First, a configuration file for the development environment needs to be created.
+### Frontend starten ####
+Zuerst muss eine Konfigurationsdatei für die Entwicklungsumgebung erstellt werden.
 
 ```sh
 cd frontend
 cp env.example env.dev
 ```
-if necessary, you can adjust the values in the configuration file to meet your specific requirements.
+Falls nötig, kannst du die Werte in der Konfigurationsdatei anpassen, um deine spezifischen Anforderungen zu erfüllen.
 
-#### Install dependencies ####
+#### Abhängigkeiten installieren ####
 
-All required dependencies for the project must be installed.
+Alle erforderlichen Abhängigkeiten für das Projekt müssen installiert werden.
 ```sh
 npm install
 ```
 
-#### Start the frontend  ####
-Now, you can start the frontend.
+### Frontend starten ###
+Jetzt kannst du das Frontend starten.
 
 ```sh
 npm run start-dev 
 ```
 
-####  Access the application #### 
+#### Auf die Anwendung zugreifen #### 
 
-Open the Parking App in your browser 
+Öffne die Parking-App in deinem Browser 
 
 ==> http://localhost:8100
 
-First login with default credentials
+Melde dich mit den Standardanmeldedaten an:
 
-    User: admin@parking.de
-    Password: 1234
+    Benutzer: admin@parking.de
+    Passwort: 1234
 
-# Architecture
+# Architektur
 ## API 
-The REST API is automatically documented with Swagger. After starting it, it is available at
+Die REST-API wird automatisch mit Swagger dokumentiert. Nach dem Start ist sie verfügbar unter:
 http://localhost:3000/api-docs
 
 ## Monitoring 
-For an simple healthcheck you can check http://localhost:3000/api/health 
+Für einen einfachen Health-Check kannst du http://localhost:3000/api/health aufrufen.
 
-For more detailed analytic you can use prometheus and collect the API measurements under http://localhost:3000/metrics
+Für detailliertere Analysen kannst du Prometheus verwenden und die API-Messungen unter http://localhost:3000/metrics abrufen.
 
-## DB Structure
+## Datenbankstruktur
 
  <img src="./db_structure.png" alt="db structure" width="600" height= "600"/>
 
-See [DB Docs](./db.md) for more infos!
+### Create a Diagramm
 
-## Architecture graphics
+2. copy the code from ´db_diagram.txt´
+3. paste it here: [db](https://dbdiagram.io/d)
+4. edit and reorder things
+5. take picture (MAC: Cmd + Shift + 4)
+6. replace ´db_structure.png´ with the new image and replace the code with new the new code
 
-Link: https://miro.com/app/board/uXjVLwYlFMI=/?share_link_id=640050306327  
-Password is pinned in the privat slack channel "#parking"
+## Testen und Bereitstellen mit Docker
+Bitte lösche diesen Ordner nicht!
+Für die Verwendung von Docker gibt es einen Ordner mit einem Entwurf für die Konfiguration von Docker, Docker-Compose und Traefik mit LetsEncrypt. Dieser Ordner ist notwendig, um eine lokale Umgebung mit LetsEncrypt und einem Reverse Proxy wie Traefik vorzubereiten.
 
-## Test and Deploy with docker
-Please do not delete this Folder!
-For usage of Docker there is a Folder with a draft configuration-set for docker, docker-compose and traffic with LetsEncrypt. These folder is necessary to prepare a local environment with LetsEncrypt and reverse proxy like traffic.
+Der Ordner wird auch verwendet, um einen Produktionsserver und die Umgebung mit der entsprechenden DNS- und LetsEncrypt-Zertifikatskonfiguration einzurichten.
 
-Or the folder is also used to configure a production Server and the environment to run the app with according DNS and LetsEncrypt Certificate.
+# Konventionen
 
-# Conventions
-
-## PreCommit Tasks
+## PreCommit-Aufgaben
 
 ### Backend
 ```sh
@@ -145,25 +145,27 @@ npm eslint
 npm format
 ```
 
+## GIT-Branches
+### Haupt-Branches:
 
-## GIT Branches
-### Main-Branches:
+- **`main`**: Dieser Branch sollte nur **produktionsfertigen Code** enthalten. Er sollte nur **sauberen, vollständigen, stabilen und gut getesteten** Code enthalten. Änderungen sollten nur über saubere Pull Requests (PRs) vom `develop`-Branch kommen. Die Änderungen sollten erst nach gründlicher Prüfung und Tests durch andere gemergt werden.
+- **`develop`**: Der Integrations-Branch, in dem neue Features und Bugfixes vor dem Merge in den `main`-Branch committet werden. Sobald die Änderungen committet sind, beginnt der **Staging**-Prozess mit Tests und Integration. Der Code muss nicht vollständig sein, sollte aber funktionieren!
 
-- **`main`**: This branch should only contain **production-ready code**. It should only include **clean, complete, stable and well tested** code. Changes should only come from clean Pull Requests (PRs) from the `develop` branch. The changes should be merged, when they are thoroughly tested and reviewed by other.
-- **`develop`**: The Integration-Branch, on which new features and bugfixes are committed before they are merged into the `main` Branch. When the changes are committed, the **Staging** process will begin with testing and integration. The Code doesn't need to be complete but should work!
+### Kurzlebige Branches:
 
-### Short-Lived Branches:
+- **`feature/`**: Branches für Features mit spezifischen Kategorien! Sie sollten entsprechend dem Feature benannt werden, z. B. `feature/add-profil-page`. Mehrere Entwickler und Personen sollten am selben Feature arbeiten können.
+- **`bugfix/`**: Branches für Bugfixes, z. B. `bugfix/fix-login-error`.
+- **`experimental/`**: Branches für experimentelle Features oder zum Ausprobieren neuer Technologien, die nicht stabil sind, unvollständige Anforderungen haben oder bei denen unklar ist, ob sie verwendet werden sollen, z. B. `experimental/try-new-dark-theme`.
 
-- **`feature/`**: Branches for features with specific category! They should be named according to the feature e.g. `feature/add-parking-reservation`. Multiple Developers and people should be able to work on the same feature.
-- **`bugfix/`**: Branches for bugfixes. E.g. `bugfix/fix-login-error`.
-- **`experimental/`**: Branches for experimental features or for trying-out new technologies, which are not stable, have unfinished requirements or wether it is unclear if it should be used! E.g. `experimental/try-new-dark-theme`.
+### Commit-Konventionen
 
+Um die Organisation zu verbessern, empfehlen wir die Verwendung der folgenden Präfixe:
 
-### Commit Conventions
+- **`feat:`** für neue Features (z. B. `feat: Add user authentication module`)
+- **`fix:`** für Bugfixes (z. B. `fix: Resolve login error`)
+- **`chore:`** für kleinere Änderungen (z. B. `chore: Update README with new setup instructions`)
 
-To keep things more organized, we recommend using following prefixes:
+## Verwendete Tools & Bibliotheken
 
-- **`feat:`** for new features (e.g. `feat: Add user authentication module`)
-- **`fix:`** for bug fixes (e.g. `fix: Resolve login error`)
-- **`chore:`** for small things(e.g. `chore: Update README with new setup instructions`)s
-
+* **API-Dokumentation (Swagger)**: [Swagger-Dokumentation](https://swagger.io/docs/)
+* **Prometheus-Metriken**: [Prometheus-Dokumentation](https://prometheus.io/docs/)

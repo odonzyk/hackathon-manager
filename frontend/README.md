@@ -1,54 +1,59 @@
-# React + TypeScript + Vite
+# Hackathon Manager
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Der Hackathon Manager ist eine Webanwendung zur Organisation und Durchführung von Hackathons.  
+Er bietet Funktionen zur Verwaltung von Projekten, Teams und Teilnehmern sowie zur Kommunikation und Zusammenarbeit während des Events.
 
-Currently, two official plugins are available:
+## Inhalt
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Motivation](#motivation)
+  - [Funktionen](#funktionen)
+- [Implementierung](#implementierung)
+  - [Frontend](#frontend)
+  - [Backend](#backend)
+- [Entwicklung](#entwicklung)
+- [Autoren](#autoren)
 
-## Expanding the ESLint configuration
+## Motivation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Der Hackathon Manager dient der Organisation und Durchführung eines Hackathons.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### Funktionen
+- **Projektmanagement**: Erstelle und verwalte Projekte
+- **Teamverwaltung**: Organisiere Teilnehmer in Teams für die einzelnene Projekte
+- **Responsive Design**: Optimiert für Desktop, Tablet und mobile Geräte.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Implementierung
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Frontend
+Das Frontend wurde mit **React (Ionic)** entwickelt und verwendet **Vite** als Build-Tool.  
+Es befindet sich im Verzeichnis `/frontend`.
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+#### Wichtige Technologien:
+- **React 18** mit **Ionic 8** für UI-Komponenten
+- **Vite** für schnelle Builds und Hot Module Replacement
+- **Axios** für API-Anfragen
+- **Prettier & ESLint** für Code-Formatierung und Linting
+- **Vitest & Cypress** für Tests
+
+### Backend
+Das Backend ist eine Node.js (Express) API mit einer SQLLite-Datenbank.  
+Es befindet sich im Verzeichnis `/backend`.
+
+#### Wichtige Technologien:
+- **Node.js** (Express) als Web-Framework
+- **SQLLite** als Datenbank
+- **Swagger** für API-Dokumentation
+- **JWT** für Authentifizierung
+- **Dotenv** für die Verwaltung von Umgebungsvariablen
+- **Docker** & **Docker Compose** für containerisierte Bereitstellungen
+
+## Entwicklung
+
+Möchtest du als Entwickler beitragen? Schau dir die [Entwicklerdokumentation](docs/developing.md) an, um loszulegen!
+
+## Autoren
+
+Du kannst uns fragen, wenn es irgendwelche Fragen gibt!
+
+- J.Zech
+- O.Donzyk (Initialentwurf)
