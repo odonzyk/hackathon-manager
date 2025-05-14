@@ -1,30 +1,32 @@
 // Use DBML to define your database structure
 // Docs: https://dbml.dbdiagram.io/docs
 
-Table Slot {
+Table Event {
     id integer [primary key]
     name text
-    type_id integer
-    pos_id integer
-    parkinglot_id integer
+    start_date date
+    end_date date
 }
-Ref: Slot.pos_id > SlotPos.id
-Ref: Slot.type_id > Slot_Type.id
-Ref: Slot.parkinglot_id > ParkingLot.id
 
-Table Booking {
-  id INTEGER [primary key]
-  type_id integer
-  status_id integer
-  slot_id integer
-  user_id integer
-  start_time datetime
-  end_time datetime
+Table Project {
+    event_id integer [ref: > Event.id, not null]
+    id integer [primary key]
+    status_id integer [ref: > Project_Status.id, not null]
+    idea text
+    description text
+    team_name text
+    team_avatar_url text
+    iniator_id integer [ref: > User.id, not null]
+    goal text
+    components text
+    skills text
 }
-Ref: Booking.slot_id > Slot.id
-Ref: Booking.user_id > User.id
-Ref: Booking.status_id > Status.id
-Ref: Booking.type_id > Booking_Type.id
+
+Table Participant {
+  id INTEGER [primary key]
+  user_id integer [ref: > User.id, not null]
+  project_id integer [ref: > Project.id, not null]
+}
 
 Table User {
     id integer [primary key]
@@ -32,53 +34,8 @@ Table User {
     email text UNIQUE
     telephone text
     password text
-    role_id integer
-    avatar_url: text
-}
-Ref: User.role_id > Role.id
-
-Table Vehicle {
-    id integer [primary key]
-    vehicle_type_id integer
-    user_id integer
-    licence_plate text
-}
-Ref: Vehicle.user_id > User.id
-Ref: Vehicle.vehicle_type_id > Vehicle_Type.id
-
-Table ParkingLot {
-    id integer [primary key]
-    name text
-    owner_id integer
-    map_path text
-}
-Ref: ParkingLot.owner_id > Owner.id
-
-Table Owner {
-    id integer [primary key]
-    name text
-}
-
-Table Allowed_user {
-    parkinglot_id integer [primary key]
-    user_id integer [primary key]
-}
-Ref: Allowed_user.user_id > User.id
-Ref: Allowed_user.parkinglot_id > ParkingLot.id
-
-Table Booking_Type {
-  id integer [primary key]
-  type text
-}
-
-Table Vehicle_Type {
-  id integer [primary key]
-  type text
-}
-
-Table Status {
-  id integer [primary key]
-  name text
+    role_id integer [ref: > Role.id]
+    avatar_url text
 }
 
 Table Role {
@@ -86,23 +43,7 @@ Table Role {
   name text
 }
 
-Table Slot_Type {
+Table Project_Status {
   id integer [primary key]
   name text
 }
-
-Table SlotPos {
-  id integer [primary key]
-  x integer
-  y integer
-  width integer
-  height integer
-  rotation integer
-}
-
-
-
-
-
-
-
