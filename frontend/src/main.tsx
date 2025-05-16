@@ -10,5 +10,5 @@ createRoot(document.getElementById('root')!).render(
     <MsalProvider instance={msalInstance}>
       <App />
     </MsalProvider>
-  </StrictMode>,
-)
+  </StrictMode>
+);
