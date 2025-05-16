@@ -17,7 +17,7 @@ RUN npm install
 COPY . .
 
 # Exponiere den Port, auf dem der Node.js-Server läuft (z.B. Port 5000)
-EXPOSE 3000
+EXPOSE 3005
 
 # Starte den Server
-CMD ["npm", "run start-prod"]
+CMD ["npm", "run start-dev"]
