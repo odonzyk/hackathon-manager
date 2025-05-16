@@ -1,61 +1,59 @@
-# My React App
+# Hackathon Manager
 
-This is a simple React application created with TypeScript. 
+Der Hackathon Manager ist eine Webanwendung zur Organisation und Durchführung von Hackathons.  
+Er bietet Funktionen zur Verwaltung von Projekten, Teams und Teilnehmern sowie zur Kommunikation und Zusammenarbeit während des Events.
 
-## Project Structure
+## Inhalt
 
-The project has the following structure:
+- [Motivation](#motivation)
+  - [Funktionen](#funktionen)
+- [Implementierung](#implementierung)
+  - [Frontend](#frontend)
+  - [Backend](#backend)
+- [Entwicklung](#entwicklung)
+- [Autoren](#autoren)
 
-```
-my-react-app
-├── public
-│   ├── index.html        # Main HTML file that serves the application
-│   └── favicon.ico       # Favicon for the application
-├── src
-│   ├── components
-│   │   └── App.tsx       # Main App component
-│   ├── index.tsx         # Entry point of the application
-│   └── styles
-│       └── App.css       # CSS styles for the App component
-├── package.json           # npm configuration file
-├── tsconfig.json          # TypeScript configuration file
-└── README.md              # Documentation for the project
-```
+## Motivation
 
-## Getting Started
+Der Hackathon Manager dient der Organisation und Durchführung eines Hackathons.
 
-To get started with the project, follow these steps:
+### Funktionen
+- **Projektmanagement**: Erstelle und verwalte Projekte
+- **Teamverwaltung**: Organisiere Teilnehmer in Teams für die einzelnene Projekte
+- **Responsive Design**: Optimiert für Desktop, Tablet und mobile Geräte.
 
-1. Clone the repository:
-   ```
-   git clone <repository-url>
-   ```
+## Implementierung
 
-2. Navigate to the project directory:
-   ```
-   cd my-react-app
-   ```
+### Frontend
+Das Frontend wurde mit **React (Ionic)** entwickelt und verwendet **Vite** als Build-Tool.  
+Es befindet sich im Verzeichnis `/frontend`.
 
-3. Install the dependencies:
-   ```
-   npm install
-   ```
+#### Wichtige Technologien:
+- **React 18** mit **Ionic 8** für UI-Komponenten
+- **Vite** für schnelle Builds und Hot Module Replacement
+- **Axios** für API-Anfragen
+- **Prettier & ESLint** für Code-Formatierung und Linting
+- **Vitest & Cypress** für Tests
 
-4. Start the development server:
-   ```
-   npm start
-   ```
+### Backend
+Das Backend ist eine Node.js (Express) API mit einer SQLLite-Datenbank.  
+Es befindet sich im Verzeichnis `/backend`.
 
-## Built With
+#### Wichtige Technologien:
+- **Node.js** (Express) als Web-Framework
+- **SQLLite** als Datenbank
+- **Swagger** für API-Dokumentation
+- **JWT** für Authentifizierung
+- **Dotenv** für die Verwaltung von Umgebungsvariablen
+- **Docker** & **Docker Compose** für containerisierte Bereitstellungen
 
-- React
-- TypeScript
-- CSS
+## Entwicklung
 
-## Contributing
+Möchtest du als Entwickler beitragen? Schau dir die [Entwicklerdokumentation](docs/developing.md) an, um loszulegen!
 
-If you would like to contribute to this project, please fork the repository and submit a pull request. 
+## Autoren
 
-## License
+Du kannst uns fragen, wenn es irgendwelche Fragen gibt!
 
-This project is licensed under the MIT License.
+- J.Zech
+- O.Donzyk (Initialentwurf)
