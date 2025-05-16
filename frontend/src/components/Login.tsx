@@ -1,31 +1,14 @@
 import React, { useState } from 'react';
-import { useMsal } from '@azure/msal-react';
 import './Login.css';
 
 const Login: React.FC = () => {
-  const { instance, accounts } = useMsal();
   const [userData, setUserData] = useState<any>(null);
 
   const handleLogin = () => {
-    instance
-      .loginPopup({
-        scopes: ['user.read'], // Erforderliche Berechtigungen
-      })
-      .then((response) => {
-        console.log('Login erfolgreich:', response);
-        console.log('MSAL-Accounts:', accounts);
-
-        // Benutzerinformationen aus dem Access Token abrufen
-        const account = response.account;
         setUserData({
-          name: account?.name,
-          username: account?.username,
-          tenantId: account?.tenantId,
+          name: "Test User",
+          username: "testuser",
         });
-      })
-      .catch((error) => {
-        console.error('Login fehlgeschlagen:', error);
-      });
   };
 
   return (
