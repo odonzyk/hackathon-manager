@@ -1,0 +1,205 @@
+
+variables:
+  IMAGE_NAME: $CI_REGISTRY_IMAGE
+  IMAGE_FRONTEND_TAG: "frontend"
+  IMAGE_BACKEND_TAG: "backend"
+  STAGE_IMAGE_APP_TAG: "hackathon-$IMAGE_TAG"
+  PROD_IMAGE_APP_TAG: "hackathon-$IMAGE_TAG"
+  PROJECT_PATH: "/opt/data/docker/containers/hackathon-manager"
+  DOCKER_COMPOSE_FILE: "/opt/data/docker/containers/hackathon-manager/docker-compose.yaml"
+  RUNNER_FOLDER: "/opt/data/gitlab-runner/builds/t1_bMHsFQ/0/hackathon/hackathon-manager"
+  RUNNER_FOLDER_PROD: "/opt/data/gitlab-runner/builds/t1_5JD6zW/0/hackathon/hackathon-manager"
+
+.default_trigger:
+  rules:
+    # Automatisch bei Merge-Request auf develop
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop"
+
+    # Zeitgesteuerter oder API-basierter Trigger
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_PIPELINE_SOURCE == "api"
+
+    # Automatisch auf develop
+    - if: $CI_COMMIT_BRANCH == "develop"
+
+    # Main: Nur über Web und nur als "manual" Schritt
+    - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "web"
+      when: manual
+      allow_failure: false
+
+
+default:
+  tags:    
+    - parking
+    - shell
+    - staging
+
+stages:
+  - build-frontend-image
+  - build-backend-image
+  - build
+  - test
+  - deploy
+
+build-frontend-image:
+  tags:    
+    - parking
+    - shell
+    - staging
+
+  stage: build-frontend-image
+  script:
+    - echo "Logging into Docker registry"
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+    - echo "Source $CI_PIPELINE_SOURCE"
+    - echo "Branch $CI_COMMIT_BRANCH"
+    - pwd
+    - ls -lah
+    - cd ./frontend/
+    - docker build -t $IMAGE_NAME:$IMAGE_FRONTEND_TAG -f Dockerfile .
+    - docker push $IMAGE_NAME:$IMAGE_FRONTEND_TAG
+  rules:
+    - changes:
+        - ./frontend/**/*
+
+#  when: manual        
+  #rules:
+  #  !reference [.default_trigger, rules ]
+
+
+build-backend-image:
+  tags:    
+    - parking
+    - shell
+    - staging
+
+  stage: build-backend-image
+  script:
+    - echo "Logging into Docker registry"
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+    - echo "Source $CI_PIPELINE_SOURCE"
+    - echo "Branch $CI_COMMIT_BRANCH"
+    - pwd
+    - ls -lah
+    - cd ./backend
+    - docker build -t $IMAGE_NAME:BACKEND -f Dockerfile .
+    - docker push $IMAGE_NAME:BACKEND
+  rules:
+    - changes:
+        - ./DOCKER-CONFIG/backend/**/*
+#  when: manual    
+#  rules:
+#    !reference [.default_trigger, rules ]
+
+
+build-job:
+  tags:    
+    - parking
+    - docker
+    - staging
+    
+  stage: build
+  script:
+    - echo "Compiling the code..."
+    - cd ./frontend    
+    - npm install
+    - npm install @vitejs/plugin-legacy --save-dev
+    - npx vite build --mode=staging
+    - ls -lah
+    - cd dist
+    - echo "Build compilation complete."
+  artifacts:
+    paths:
+      - frontend/dist/  
+    expire_in: 1 hour  
+#  when: manual        
+  rules:
+    !reference [.default_trigger, rules ]
+
+unit-test-job:
+  tags:    
+    - parking
+    - docker
+    - staging
+  stage: test 
+  script:
+    - echo "Running unit tests... This will take about 60 seconds."
+    - sleep 1
+    - echo "Code coverage to be done"
+  rules:
+    !reference [.default_trigger, rules ]    
+
+
+.lint-test-job:
+  tags:    
+    - parking
+    - docker
+    - staging  
+  stage: test
+  script:
+    - npm ci  
+    - npx eslint . 
+  rules:
+    - changes:
+      - "**/*.js"  
+#  rules:
+#    !reference [.default_trigger, rules ]        
+  
+
+
+deploy-staging:
+  tags:    
+    - parking
+    - shell
+    - staging
+
+  needs:
+    - job: build-job  
+  stage: deploy 
+  environment: production
+  script:
+    - echo "Deploying application..."
+    - cd $PROJECT_PATH
+    - echo "delete Docker-Stack"
+    - docker-compose down 
+
+    - cd $RUNNER_FOLDER
+    - pwd
+    - ls -lah
+    - cp -rf frontend/dist/. /DOCKER/containers/parking-app/nginx/content/
+    - cp -rf backend/. /DOCKER/containers/parking-app/backend
+    - cp ./DOCKER-CONFIG/docker-compose.yaml /opt/data/docker/containers/parking-app/
+    
+    - echo "restart Docker-Stack"
+    - cd $PROJECT_PATH
+    - docker-compose up -d --build
+  rules:
+    !reference [.default_trigger, rules ]
+    
+.deploy-production:
+  tags:    
+    - parking
+    - shell
+    - production
+    
+  stage: deploy
+  environment: production
+
+  script:
+    - echo "Deploying application to production..."
+    - cd $PROJECT_PATH
+    - echo "Delete Docker-Stack"
+    - docker-compose down 
+
+    - cd $RUNNER_FOLDER_PROD
+    - cp -rf frontend/dist/. /DOCKER/containers/parking-app/nginx/content/
+    - cp -rf backend/. /DOCKER/containers/parking-app/backend
+    - cp ./DOCKER-CONFIG/docker-compose.yaml /opt/data/docker/containers/parking-app/
+    
+    - echo "Restart Docker-Stack"
+    - cd $PROJECT_PATH
+    - docker-compose up -d --build
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "web"'
+      when: manual
+      allow_failure: false
