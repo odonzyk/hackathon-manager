@@ -48,9 +48,6 @@ build-frontend-image:
     - staging
 
   stage: build-frontend-image
-  before_script:
-    - sudo chown -R $(whoami):$(whoami) $CI_PROJECT_DIR || true
-    - sudo chmod -R u+w $CI_PROJECT_DIR || true
 
   script:
     - echo "Logging into Docker registry"
