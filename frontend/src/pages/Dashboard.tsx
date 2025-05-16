@@ -1,9 +1,6 @@
 import React from 'react';
 import {
   IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
   IonCard,
   IonCardHeader,
@@ -12,14 +9,9 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonMenu,
-  IonList,
-  IonItem,
-  IonMenuButton,
-  IonButtons,
 } from '@ionic/react';
 import './Dashboard.css';
-import ThaliaLogo from '../assets/thalia_logo.png';
+
 
 const Dashboard: React.FC = () => {
   return (
