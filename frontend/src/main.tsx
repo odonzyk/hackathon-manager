@@ -5,7 +5,10 @@ import App from './App.tsx'
 import { MsalProvider } from '@azure/msal-react';
 import { msalInstance } from './msalConfig';
 
-const rootElement = document.getElementById('root')!;
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  throw new Error("Das Root-Element wurde nicht gefunden. Stelle sicher, dass ein <div id='root'> im HTML vorhanden ist.");
+}
 const root = createRoot(rootElement);
 
 root.render(
