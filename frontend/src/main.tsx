@@ -5,7 +5,10 @@ import App from './App.tsx'
 import { MsalProvider } from '@azure/msal-react';
 import { msalInstance } from './msalConfig';
 
-createRoot(document.getElementById('root')!).render(
+const rootElement = document.getElementById('root')!;
+const root = createRoot(rootElement);
+
+root.render(
   <StrictMode>
     <MsalProvider instance={msalInstance}>
       <App />
