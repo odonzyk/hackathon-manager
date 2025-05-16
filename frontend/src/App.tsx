@@ -1,12 +1,10 @@
 import { IonApp, IonButtons, IonContent, IonHeader, IonItem, IonList, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonTitle, IonToolbar, setupIonicReact } from '@ionic/react';
 import { Redirect, Route } from 'react-router-dom';
-import { IonReactRouter } from '@ionic/react-router';
 
-import Home from './components/Home';
-import HackathonTeams from './components/HackathonTeams';
-import HackathonProjects from './components/HackathonProjects';
-import Login from './components/Login';
-import Dashboard from './pages/Dashboard';
+import HackathonTeams from './pages/Teams/HackathonTeams';
+import HackathonProjects from './pages/Projects/HackathonProjects';
+import Login from './pages/Login/Login';
+import Dashboard from './pages/Dashboard/Dashboard';
 
 import '@ionic/react/css/core.css';
 import '@ionic/react/css/normalize.css';
@@ -60,7 +58,6 @@ function App() {
               <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
               <Route exact path="/dashboard" component={Dashboard} />
               <Route exact path="/login" component={Login} />
-              <Route exact path="/home" component={Home} />
               <Route exact path="/teams" component={HackathonTeams} />
               <Route exact path="/projects" component={HackathonProjects} />
             </IonRouterOutlet>

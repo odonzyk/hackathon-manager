@@ -40,91 +40,91 @@ const schemaObjects = {
     type: "object",
     properties: {
       id: {
-        "type": "integer",
-        "example": 1
+        type: "integer",
+        example: 1,
       },
       name: {
-        "type": "string",
-        "example": "Hackathon 2025"
+        type: "string",
+        example: "Hackathon 2025",
       },
       start_time: {
         type: "string",
         format: "timestamp",
-        example: "1748389600"
+        example: "1748389600",
       },
       end_time: {
         type: "string",
         format: "timestamp",
-        example: "1748504800"
-      }
-    }
+        example: "1748504800",
+      },
+    },
   },
   Project: {
     type: "object",
     properties: {
       id: {
         type: "integer",
-        example: 1
+        example: 1,
       },
       event_id: {
         type: "integer",
-        example: 1
+        example: 1,
       },
       status_id: {
         type: "integer",
-        example: 1
+        example: 1,
       },
       idea: {
         type: "string",
-        example: "Hackathon Idea"
+        example: "Hackathon Idea",
       },
       description: {
         type: "string",
-        example: "A detailed description of the project."
+        example: "A detailed description of the project.",
       },
       team_name: {
         type: "string",
-        example: "Team Alpha"
+        example: "Team Alpha",
       },
       team_avatar_url: {
         type: "string",
         format: "url",
-        example: "https://example.com/avatar.png"
+        example: "https://example.com/avatar.png",
       },
       iniator_id: {
         type: "integer",
-        example: 42
+        example: 42,
       },
       goal: {
         type: "string",
-        example: "To create a prototype."
+        example: "To create a prototype.",
       },
       components: {
         type: "string",
-        example: "Frontend, Backend"
+        example: "Frontend, Backend",
       },
       skills: {
         type: "string",
-        example: "React, Node.js"
-      }
-    }
+        example: "React, Node.js",
+      },
+    },
   },
   Participant: {
     type: "object",
     properties: {
       id: {
         type: "integer",
-        example: 1
+        example: 1,
       },
       project_id: {
         type: "integer",
-        example: 1
+        example: 1,
       },
       user_id: {
         type: "integer",
-        example: 42
-      }
-    }
-  }
+        example: 42,
+      },
+    },
+  },
 };
 module.exports = { schemaObjects };

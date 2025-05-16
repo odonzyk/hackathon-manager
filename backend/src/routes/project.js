@@ -25,9 +25,7 @@ const createProject = (dbRow) => {
 // *** GET /api/project/list *****************************************************
 router.get("/list", authenticateToken, async (req, res) => {
   logger.debug(`API Project -> List Projects`);
-  const result = await db_all(
-    `SELECT Project.* FROM Project`
-  );
+  const result = await db_all(`SELECT Project.* FROM Project`);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (!result.row || (Array.isArray(result.row) && result.row.length === 0)) {
     return res.status(404).send(ErrorMsg.NOT_FOUND.NO_PROJECT);
@@ -46,7 +44,7 @@ router.get("/listByUser/:id", authenticateToken, async (req, res) => {
   }
   const result = await db_all(
     `SELECT Project.* FROM Project JOIN Participant ON Project.id = Participant.project_id WHERE Participant.user_id = ?`,
-    [id]
+    [id],
   );
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (!result.row || (Array.isArray(result.row) && result.row.length === 0)) {
@@ -60,30 +58,42 @@ router.get("/listByUser/:id", authenticateToken, async (req, res) => {
 // *** POST /api/project *********************************************************
 router.post("/", async (req, res) => {
   let {
-    event_id, status_id, idea, description, team_name, team_avatar_url, iniator_id, goal, components, skills
+    event_id,
+    status_id,
+    idea,
+    description,
+    team_name,
+    team_avatar_url,
+    iniator_id,
+    goal,
+    components,
+    skills,
   } = req.body;
   logger.debug(`API Event -> Register Project: ${event_id}`);
   if (!event_id || !idea || !description || !iniator_id) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
   }
 
-  let result = await db_get("SELECT * FROM Project WHERE LOWER(idea) = LOWER(?) AND event_id= ?", [idea, event_id]);
+  let result = await db_get(
+    "SELECT * FROM Project WHERE LOWER(idea) = LOWER(?) AND event_id= ?",
+    [idea, event_id],
+  );
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (result.row) return res.status(409).send(ErrorMsg.VALIDATION.CONFLICT);
 
   result = await db_run(
     "INSERT INTO Project (event_id, status_id, idea, description, team_name, team_avatar_url, iniator_id, goal, components, skills) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [
-      event_id, 
+      event_id,
       status_id,
-      idea, 
-      description, 
-      team_name, 
-      team_avatar_url, 
-      iniator_id, 
-      goal, 
-      components, 
-      skills
+      idea,
+      description,
+      team_name,
+      team_avatar_url,
+      iniator_id,
+      goal,
+      components,
+      skills,
     ],
   );
   const project_id = result.lastID;
@@ -92,17 +102,17 @@ router.post("/", async (req, res) => {
   }
 
   res.status(201).json({
-    event_id, 
+    event_id,
     id: project_id,
     status_id,
-    idea, 
-    description, 
-    team_name, 
-    team_avatar_url, 
-    iniator_id, 
-    goal, 
-    components, 
-    skills
+    idea,
+    description,
+    team_name,
+    team_avatar_url,
+    iniator_id,
+    goal,
+    components,
+    skills,
   });
 });
 
@@ -110,7 +120,16 @@ router.post("/", async (req, res) => {
 router.put("/:id", authenticateToken, async (req, res) => {
   const { id } = req.params;
   let {
-    event_id, status_id, idea, description, team_name, team_avatar_url, iniator_id, goal, components, skills
+    event_id,
+    status_id,
+    idea,
+    description,
+    team_name,
+    team_avatar_url,
+    iniator_id,
+    goal,
+    components,
+    skills,
   } = req.body;
   logger.debug(`API Project -> Update Project: ${idea}`);
 
@@ -119,9 +138,7 @@ router.put("/:id", authenticateToken, async (req, res) => {
   }
 
   //Load existing data
-  result = await db_get(
-    `SELECT * FROM Project WHERE Project.id = ?`, [id]
-  );
+  result = await db_get(`SELECT * FROM Project WHERE Project.id = ?`, [id]);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (!result.row) return res.status(404).send(ErrorMsg.NOT_FOUND.NO_EVENT);
 
@@ -151,7 +168,7 @@ router.put("/:id", authenticateToken, async (req, res) => {
   project.components = components ?? project.components;
   project.skills = skills ?? project.skills;
 
-  // Update Project 
+  // Update Project
   result = await db_run(
     "UPDATE Project SET event_id=?, status_id=?, idea=?, description=?, team_name=?, team_avatar_url=?, iniator_id=?, goal=?, components=?, skills=? WHERE id = ?",
     [
@@ -165,7 +182,7 @@ router.put("/:id", authenticateToken, async (req, res) => {
       project.goal,
       project.components,
       project.skills,
-      id
+      id,
     ],
   );
   if (result.err) {
@@ -180,9 +197,9 @@ router.get("/:id", authenticateToken, async (req, res) => {
   const { id } = req.params;
   logger.debug(`API Project -> Get Project (id): ${id}`);
 
-  const result = await db_get(
-    `SELECT * FROM Project WHERE Project.id = ?`, [id]
-  );
+  const result = await db_get(`SELECT * FROM Project WHERE Project.id = ?`, [
+    id,
+  ]);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (!result.row) return res.status(404).send(ErrorMsg.NOT_FOUND.NO_PROJECT);
   const project = createProject(result.row);

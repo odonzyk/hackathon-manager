@@ -62,9 +62,7 @@ router.post("/login", async (req, res) => {
 // *** GET /api/user/list *****************************************************
 router.get("/list", authenticateToken, async (req, res) => {
   logger.debug(`API User -> List User`);
-  const result = await db_all(
-    `SELECT User.* FROM User`
-  );
+  const result = await db_all(`SELECT User.* FROM User`);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (!result.row || (Array.isArray(result.row) && result.row.length === 0)) {
     return res.status(404).send(ErrorMsg.NOT_FOUND.NO_USER);
@@ -153,9 +151,7 @@ router.put("/:id", authenticateToken, async (req, res) => {
   }
 
   //Load existing data
-  result = await db_get(
-    `SELECT * FROM User WHERE User.id = ?`, [id]
-  );
+  result = await db_get(`SELECT * FROM User WHERE User.id = ?`, [id]);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (!result.row) return res.status(404).send(ErrorMsg.NOT_FOUND.NO_USER);
 
@@ -208,9 +204,7 @@ router.get("/:id", authenticateToken, async (req, res) => {
   const { id } = req.params;
   logger.debug(`API User -> Get User (id): ${id}`);
 
-  const result = await db_get(
-    `SELECT * FROM User WHERE User.id = ?`, [id]
-  );
+  const result = await db_get(`SELECT * FROM User WHERE User.id = ?`, [id]);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (!result.row) return res.status(404).send(ErrorMsg.NOT_FOUND.NO_USER);
   const user = createUser(result.row);

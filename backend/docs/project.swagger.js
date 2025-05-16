@@ -7,8 +7,8 @@ const projectPaths = {
       tags: ["Project"],
       security: [
         {
-          bearerAuth: []
-        }
+          bearerAuth: [],
+        },
       ],
       responses: {
         200: {
@@ -18,20 +18,20 @@ const projectPaths = {
               schema: {
                 type: "array",
                 items: {
-                  $ref: "#/components/schemas/Project"
-                }
-              }
-            }
-          }
+                  $ref: "#/components/schemas/Project",
+                },
+              },
+            },
+          },
         },
         404: {
-          description: ErrorMsg.NOT_FOUND.NO_PROJECT
+          description: ErrorMsg.NOT_FOUND.NO_PROJECT,
         },
         500: {
-          description: ErrorMsg.SERVER.ERROR
-        }
-      }
-    }
+          description: ErrorMsg.SERVER.ERROR,
+        },
+      },
+    },
   },
   "/project/listByUser/{id}": {
     get: {
@@ -39,8 +39,8 @@ const projectPaths = {
       tags: ["Project"],
       security: [
         {
-          bearerAuth: []
-        }
+          bearerAuth: [],
+        },
       ],
       parameters: [
         {
@@ -48,10 +48,10 @@ const projectPaths = {
           name: "id",
           required: true,
           schema: {
-            type: "integer"
+            type: "integer",
           },
-          description: "ID of the user"
-        }
+          description: "ID of the user",
+        },
       ],
       responses: {
         200: {
@@ -61,20 +61,20 @@ const projectPaths = {
               schema: {
                 type: "array",
                 items: {
-                  $ref: "#/components/schemas/Project"
-                }
-              }
-            }
-          }
+                  $ref: "#/components/schemas/Project",
+                },
+              },
+            },
+          },
         },
         404: {
-          description: ErrorMsg.NOT_FOUND.NO_PROJECT
+          description: ErrorMsg.NOT_FOUND.NO_PROJECT,
         },
         500: {
-          description: ErrorMsg.SERVER.ERROR
-        }
-      }
-    }
+          description: ErrorMsg.SERVER.ERROR,
+        },
+      },
+    },
   },
   "/project": {
     post: {
@@ -89,50 +89,50 @@ const projectPaths = {
               required: ["event_id", "idea", "description", "iniator_id"],
               properties: {
                 event_id: {
-                    type: "integer",
-                    example: 1
-                  },
-                  status_id: {
-                    type: "integer",
-                    example: 1
-                  },
-                  idea: {
-                    type: "string",
-                    example: "Innovative Hackathon Idea"
-                  },
-                  description: {
-                    type: "string",
-                    example: "A detailed description of the project idea."
-                  },
-                  team_name: {
-                    type: "string",
-                    example: "Team Alpha"
-                  },
-                  team_avatar_url: {
-                    type: "string",
-                    format: "url",
-                    example: "https://example.com/avatar.png"
-                  },
-                  iniator_id: {
-                    type: "integer",
-                    example: 42
-                  },
-                  goal: {
-                    type: "string",
-                    example: "To create a prototype for the hackathon."
-                  },
-                  components: {
-                    type: "string",
-                    example: "Frontend, Backend, Database"
-                  },
-                  skills: {
-                    type: "string",
-                    example: "React, Node.js, SQL"
-                  }
-              }
-            }
-          }
-        }
+                  type: "integer",
+                  example: 1,
+                },
+                status_id: {
+                  type: "integer",
+                  example: 1,
+                },
+                idea: {
+                  type: "string",
+                  example: "Innovative Hackathon Idea",
+                },
+                description: {
+                  type: "string",
+                  example: "A detailed description of the project idea.",
+                },
+                team_name: {
+                  type: "string",
+                  example: "Team Alpha",
+                },
+                team_avatar_url: {
+                  type: "string",
+                  format: "url",
+                  example: "https://example.com/avatar.png",
+                },
+                iniator_id: {
+                  type: "integer",
+                  example: 42,
+                },
+                goal: {
+                  type: "string",
+                  example: "To create a prototype for the hackathon.",
+                },
+                components: {
+                  type: "string",
+                  example: "Frontend, Backend, Database",
+                },
+                skills: {
+                  type: "string",
+                  example: "React, Node.js, SQL",
+                },
+              },
+            },
+          },
+        },
       },
       responses: {
         201: {
@@ -140,22 +140,22 @@ const projectPaths = {
           content: {
             "application/json": {
               schema: {
-                $ref: "#/components/schemas/Project"
-              }
-            }
-          }
+                $ref: "#/components/schemas/Project",
+              },
+            },
+          },
         },
         400: {
-          description: ErrorMsg.VALIDATION.MISSING_FIELDS
+          description: ErrorMsg.VALIDATION.MISSING_FIELDS,
         },
         409: {
-          description: ErrorMsg.VALIDATION.CONFLICT
+          description: ErrorMsg.VALIDATION.CONFLICT,
         },
         500: {
-          description: ErrorMsg.SERVER.ERROR
-        }
-      }
-    }
+          description: ErrorMsg.SERVER.ERROR,
+        },
+      },
+    },
   },
   "/project/{id}": {
     get: {
@@ -163,8 +163,8 @@ const projectPaths = {
       tags: ["Project"],
       security: [
         {
-          bearerAuth: []
-        }
+          bearerAuth: [],
+        },
       ],
       parameters: [
         {
@@ -172,10 +172,10 @@ const projectPaths = {
           name: "id",
           required: true,
           schema: {
-            type: "integer"
+            type: "integer",
           },
-          description: "ID of the project"
-        }
+          description: "ID of the project",
+        },
       ],
       responses: {
         200: {
@@ -183,26 +183,26 @@ const projectPaths = {
           content: {
             "application/json": {
               schema: {
-                $ref: "#/components/schemas/Project"
-              }
-            }
-          }
+                $ref: "#/components/schemas/Project",
+              },
+            },
+          },
         },
         404: {
-          description: ErrorMsg.NOT_FOUND.NO_PROJECT
+          description: ErrorMsg.NOT_FOUND.NO_PROJECT,
         },
         500: {
-          description: ErrorMsg.SERVER.ERROR
-        }
-      }
+          description: ErrorMsg.SERVER.ERROR,
+        },
+      },
     },
     put: {
       summary: "Update project",
       tags: ["Project"],
       security: [
         {
-          bearerAuth: []
-        }
+          bearerAuth: [],
+        },
       ],
       parameters: [
         {
@@ -210,10 +210,10 @@ const projectPaths = {
           name: "id",
           required: true,
           schema: {
-            type: "integer"
+            type: "integer",
           },
-          description: "ID of the project"
-        }
+          description: "ID of the project",
+        },
       ],
       requestBody: {
         required: true,
@@ -224,50 +224,50 @@ const projectPaths = {
               required: ["event_id", "idea", "description", "iniator_id"],
               properties: {
                 event_id: {
-                    type: "integer",
-                    example: 1
-                  },
-                  status_id: {
-                    type: "integer",
-                    example: 1
-                  },
-                  idea: {
-                    type: "string",
-                    example: "Updated Hackathon Idea"
-                  },
-                  description: {
-                    type: "string",
-                    example: "Updated description for the project."
-                  },
-                  team_name: {
-                    type: "string",
-                    example: "Updated Team Name"
-                  },
-                  team_avatar_url: {
-                    type: "string",
-                    format: "url",
-                    example: "https://example.com/new-avatar.png"
-                  },
-                  iniator_id: {
-                    type: "integer",
-                    example: 42
-                  },
-                  goal: {
-                    type: "string",
-                    example: "Updated project goal."
-                  },
-                  components: {
-                    type: "string",
-                    example: "Updated components"
-                  },
-                  skills: {
-                    type: "string",
-                    example: "Updated skills"
-                  }
-              }
-            }
-          }
-        }
+                  type: "integer",
+                  example: 1,
+                },
+                status_id: {
+                  type: "integer",
+                  example: 1,
+                },
+                idea: {
+                  type: "string",
+                  example: "Updated Hackathon Idea",
+                },
+                description: {
+                  type: "string",
+                  example: "Updated description for the project.",
+                },
+                team_name: {
+                  type: "string",
+                  example: "Updated Team Name",
+                },
+                team_avatar_url: {
+                  type: "string",
+                  format: "url",
+                  example: "https://example.com/new-avatar.png",
+                },
+                iniator_id: {
+                  type: "integer",
+                  example: 42,
+                },
+                goal: {
+                  type: "string",
+                  example: "Updated project goal.",
+                },
+                components: {
+                  type: "string",
+                  example: "Updated components",
+                },
+                skills: {
+                  type: "string",
+                  example: "Updated skills",
+                },
+              },
+            },
+          },
+        },
       },
       responses: {
         200: {
@@ -275,32 +275,32 @@ const projectPaths = {
           content: {
             "application/json": {
               schema: {
-                $ref: "#/components/schemas/Project"
-              }
-            }
-          }
+                $ref: "#/components/schemas/Project",
+              },
+            },
+          },
         },
         400: {
-          description: ErrorMsg.VALIDATION.MISSING_FIELDS
+          description: ErrorMsg.VALIDATION.MISSING_FIELDS,
         },
         404: {
-          description: ErrorMsg.NOT_FOUND.NO_PROJECT
+          description: ErrorMsg.NOT_FOUND.NO_PROJECT,
         },
         409: {
-          description: ErrorMsg.VALIDATION.CONFLICT
+          description: ErrorMsg.VALIDATION.CONFLICT,
         },
         500: {
-          description: ErrorMsg.SERVER.ERROR
-        }
-      }
+          description: ErrorMsg.SERVER.ERROR,
+        },
+      },
     },
     delete: {
       summary: "Delete project",
       tags: ["Project"],
       security: [
         {
-          bearerAuth: []
-        }
+          bearerAuth: [],
+        },
       ],
       parameters: [
         {
@@ -308,24 +308,24 @@ const projectPaths = {
           name: "id",
           required: true,
           schema: {
-            type: "integer"
+            type: "integer",
           },
-          description: "ID of the project"
-        }
+          description: "ID of the project",
+        },
       ],
       responses: {
         200: {
-          description: "Project successfully deleted"
+          description: "Project successfully deleted",
         },
         404: {
-          description: ErrorMsg.NOT_FOUND.NO_PROJECT
+          description: ErrorMsg.NOT_FOUND.NO_PROJECT,
         },
         500: {
-          description: ErrorMsg.SERVER.ERROR
-        }
-      }
-    }
-  }
+          description: ErrorMsg.SERVER.ERROR,
+        },
+      },
+    },
+  },
 };
 
 module.exports = { projectPaths };

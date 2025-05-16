@@ -64,7 +64,7 @@ const apiDocumentation = {
     ...userPaths,
     ...eventPaths,
     ...projectPaths,
-    ...participantPaths
+    ...participantPaths,
   },
   components: {
     securitySchemes: {

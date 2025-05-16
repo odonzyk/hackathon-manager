@@ -6,7 +6,7 @@ const ErrorMsg = Object.freeze({
   VALIDATION: {
     MISSING_FIELDS: "Missing fields",
     CONFLICT: "Already exists",
-    WRONG_USER: "Not the same user"
+    WRONG_USER: "Not the same user",
   },
   SERVER: {
     ERROR: "Server error",
