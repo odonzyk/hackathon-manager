@@ -105,7 +105,7 @@ const userPaths = {
           "application/json": {
             schema: {
               type: "object",
-              required: ["name", "email", "telephone", "licence_plate"],
+              required: ["name", "email", "telephone"],
               properties: {
                 name: { type: "string", example: "Max Mustermann" },
                 email: {
@@ -122,8 +122,6 @@ const userPaths = {
                   example: "password123",
                 },
                 role_id: { type: "integer", example: 1 },
-                licence_plate: { type: "string", example: "B-BB 001" },
-                vehicle_type_id: { type: "integer", example: 1 },
               },
             },
           },
