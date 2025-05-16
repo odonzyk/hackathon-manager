@@ -19,6 +19,9 @@ require("./src/eventListener/prometheusExport");
 const { dbCreate } = require("./src/database");
 const healthRouter = require("./src/routes/health");
 const userRoutes = require("./src/routes/user");
+const eventRoutes = require("./src/routes/event");
+const projectRoutes = require("./src/routes/project");
+const participateRoutes = require("./src/routes/participant");
 
 // CORS-Options for Frontend
 const corsOptions = {
@@ -48,6 +51,9 @@ registerPrometheus();
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(apiDocumentation));
 app.use("/api/health", healthRouter);
 app.use("/api/user", userRoutes);
+app.use("/api/event", eventRoutes);
+app.use("/api/project", projectRoutes);
+app.use("/api/participant", participateRoutes);
 
 // Start Server
 app

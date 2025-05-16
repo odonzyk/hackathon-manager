@@ -28,7 +28,7 @@ Link zum Erstellen eines Zugriffstokens -> https://gitlab-ext.drsbln.de/-/user_s
 
 Wenn du ein persönliches "Access Token" in deinem GitLab-Benutzerprofil erstellt hast, kannst du es wie folgt verwenden:
 ```sh
-git clone https://<Dein_Login_Name>:<dein_gitlab-token>@gitlab-ext.drsbln.de/developer/parking.git
+git clone https://<Dein_Login_Name>:<dein_gitlab-token>@gitlab-ext.drsbln.de/hackerthon/hackathon-manager.git
 ```
 
 ### Backend starten ###
@@ -90,14 +90,14 @@ npm run start-dev
 
 #### Auf die Anwendung zugreifen #### 
 
-Öffne die Parking-App in deinem Browser 
+Öffne die Hackathon-App in deinem Browser 
 
-==> http://localhost:8100
+==> http://localhost:5175
 
 Melde dich mit den Standardanmeldedaten an:
 
-    Benutzer: admin@parking.de
-    Passwort: 1234
+    Benutzer: hackathon@thalia.de
+    Passwort: welcome!
 
 # Architektur
 ## API 

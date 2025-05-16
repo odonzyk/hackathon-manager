@@ -2,6 +2,7 @@ const sqlite3 = require("sqlite3").verbose();
 const config = require("./config");
 const logger = require("./logger");
 const bcrypt = require("bcrypt");
+const { time2ts } = require("./utils/utils");
 
 const DEFAULT_PASSWORD = "welcome!";
 
@@ -174,8 +175,8 @@ function dbCreate() {
     `CREATE TABLE IF NOT EXISTS Event (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
-            start_date timestamp,
-            end_date timestamp
+            start_time timestamp,
+            end_time timestamp
       )`,
   ).then(async function () {
     let result = await db_get("SELECT * FROM Event");
@@ -183,19 +184,19 @@ function dbCreate() {
 
     fillTable(
       "Event",
-      ["id", "name", "start_date", "end_date"],
+      ["id", "name", "start_time", "end_time"],
       [
         [
           1,
           "'Innovation Days 2024'",
-          "'2024-09-20 08:00:00'",
-          "'2024-09-21 18:00:00'",
+          "'" + time2ts("2024-09-20 08:00:00") + "'",
+          "'" + time2ts("2024-09-21 18:00:00") + "'",
         ],
         [
           2,
           "'Innovation Days 2025'",
-          "'2025-06-25 08:00:00'",
-          "'2025-06-02 18:00:00'",
+          "'" + time2ts("2025-06-25 08:00:00") + "'",
+          "'" + time2ts("2025-06-02 18:00:00") + "'",
         ],
       ],
     );
@@ -259,7 +260,7 @@ function dbCreate() {
           "'An app to manage the hackathon 2'",
           "'Team 2'",
           "'/assets/avatars/avatar_2.png'",
-          2,
+          1,
           "'Goal 2'",
           "'Component 2'",
           "'Skill 2'",

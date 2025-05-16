@@ -6,22 +6,23 @@ const ErrorMsg = Object.freeze({
   VALIDATION: {
     MISSING_FIELDS: "Missing fields",
     CONFLICT: "Already exists",
-    WRONG_USER: "Not the same user",
-    INVALID_DATE_FORMAT:
-      "Invalid date format for start_time. Expected ISO 8601 format: YYYY-MM-DDTHH:mm:ss.sssZ",
+    WRONG_USER: "Not the same user"
   },
   SERVER: {
     ERROR: "Server error",
+    NO_PASSWORD: "No password is set",
   },
   NOT_FOUND: {
     NO_USER: "No user found",
     NO_PROJECT: "No project found",
+    NO_EVENT: "No event found",
+    NO_PARTICIPANT: "No participant found",
   },
 });
 
 const EventTypes = {
   PROJECT_CHANGE: "Project Changed",
-  PARTICIPANT_CHANGE: "Project Changed",
+  PARTICIPANT_CHANGE: "Participant Changed",
 };
 
 module.exports = { ErrorMsg, EventTypes };

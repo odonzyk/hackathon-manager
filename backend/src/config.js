@@ -33,10 +33,8 @@ module.exports = {
   hostUrl: check(process.env.HOST_URL, "http://localhost"),
   hostPort: check(process.env.HOST_PORT, "8100"),
   apiPort: check(process.env.API_PORT, "3000"),
-  dbPath: check(process.env.DB_PATH, "./parking.prod.db"),
+  dbPath: check(process.env.DB_PATH, "./hackathon.prod.db"),
   jwtSecret: check(process.env.JWT_SECRET, "your-secret-key"),
-  oneSignalApi: check(process.env.ONE_SIGNAL_API_KEY, "your-signal-api-key"),
-  appID: check(process.env.APP_ID, "your-app-id"),
   check,
 };
 

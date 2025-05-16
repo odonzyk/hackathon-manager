@@ -50,7 +50,7 @@ const healthPaths = {
                   hostPort: { type: "string", example: "8100" },
                   hostUrl: { type: "string", example: "http://localhost" },
                   apiPort: { type: "string", example: "3000" },
-                  dbPath: { type: "string", example: "./parking.dev.db" },
+                  dbPath: { type: "string", example: "./hackathon.dev.db" },
                 },
               },
             },

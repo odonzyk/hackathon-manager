@@ -22,6 +22,10 @@ const apiDocumentation = {
   },
   servers: [
     {
+      url: "https://hackathon.drsbln.de/api",
+      description: "Production Server",
+    },
+    {
       url: "https://hackathon-stg.drsbln.de/api",
       description: "Staging Server",
     },

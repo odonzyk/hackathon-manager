@@ -19,12 +19,12 @@
 # Backend   
 /backend/.env*
 /backend/logs/*
-/backend/parking.*
+/backend/hackathon.*
 /backend/coverage/
 /backend/node_modules
 !/backend/.env.example
 !/backend/.env.prod
-!/backend/parking.prod.db
+!/backend/hackathon.prod.db
 
 # Codeing Environment
 /.vscode/*

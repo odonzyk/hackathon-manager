@@ -24,8 +24,8 @@ Table ProjectStatus {
 Table Event {
     id integer [primary key]
     name text
-    start_date date
-    end_date date
+    start_time date
+    end_time date
 }
 
 Table Project {
