@@ -1,4 +1,18 @@
-import { IonApp, IonButtons, IonContent, IonHeader, IonItem, IonList, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonTitle, IonToolbar, setupIonicReact } from '@ionic/react';
+import {
+  IonApp,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonItem,
+  IonList,
+  IonMenu,
+  IonMenuButton,
+  IonPage,
+  IonRouterOutlet,
+  IonTitle,
+  IonToolbar,
+  setupIonicReact,
+} from '@ionic/react';
 import { Redirect, Route } from 'react-router-dom';
 
 import HackathonTeams from './pages/Teams/HackathonTeams';
@@ -20,7 +34,7 @@ setupIonicReact();
 function App() {
   return (
     <IonApp>
-      <IonMenu className='hackathon-menu' contentId="main-content">
+      <IonMenu className="hackathon-menu" contentId="main-content">
         <IonHeader>
           <IonToolbar>
             <IonTitle>Menü</IonTitle>
@@ -28,10 +42,18 @@ function App() {
         </IonHeader>
         <IonContent>
           <IonList>
-            <IonItem routerLink="/" onClick={() => menuController.close()}>🏠 Startseite</IonItem>
-            <IonItem routerLink="/projects" onClick={() => menuController.close()}>📁 Projekte</IonItem>
-            <IonItem routerLink="/teams" onClick={() => menuController.close()}>👥 Teams</IonItem>
-            <IonItem routerLink="/login" onClick={() => menuController.close()}>🔑 Login</IonItem>
+            <IonItem routerLink="/" onClick={() => menuController.close()}>
+              🏠 Startseite
+            </IonItem>
+            <IonItem routerLink="/projects" onClick={() => menuController.close()}>
+              📁 Projekte
+            </IonItem>
+            <IonItem routerLink="/teams" onClick={() => menuController.close()}>
+              👥 Teams
+            </IonItem>
+            <IonItem routerLink="/login" onClick={() => menuController.close()}>
+              🔑 Login
+            </IonItem>
           </IonList>
         </IonContent>
       </IonMenu>
@@ -53,18 +75,16 @@ function App() {
 
         {/* Content */}
         <IonContent className="hackathon-content">
-
-            <IonRouterOutlet>
-              <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
-              <Route exact path="/dashboard" component={Dashboard} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/teams" component={HackathonTeams} />
-              <Route exact path="/projects" component={HackathonProjects} />
-            </IonRouterOutlet>
+          <IonRouterOutlet>
+            <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
+            <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/teams" component={HackathonTeams} />
+            <Route exact path="/projects" component={HackathonProjects} />
+          </IonRouterOutlet>
         </IonContent>
       </IonPage>
     </IonApp>
-
   );
 }
 

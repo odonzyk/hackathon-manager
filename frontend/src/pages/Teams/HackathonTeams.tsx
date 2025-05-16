@@ -60,13 +60,14 @@ const HackathonTeams: React.FC = () => {
                       <ul className="team-details">
                         {team.members.map((member, index) => (
                           <li key={index}>
-                            <span role="img" aria-label="Person">👤</span> {member}
+                            <span role="img" aria-label="Person">
+                              👤
+                            </span>{' '}
+                            {member}
                           </li>
                         ))}
                       </ul>
-                      <p className="team-description">
-                        Mitglieder: ({team.members.length})
-                      </p>
+                      <p className="team-description">Mitglieder: ({team.members.length})</p>
                     </IonCardContent>
                   </IonCard>
                 </IonCol>
@@ -74,8 +75,8 @@ const HackathonTeams: React.FC = () => {
             })}
           </IonRow>
         </IonGrid>
-        </IonContent>
-            </IonPage>
+      </IonContent>
+    </IonPage>
   );
 };
 

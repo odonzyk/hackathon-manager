@@ -39,10 +39,11 @@ const HackathonProjects: React.FC = () => {
 
   const filteredProjects = projects.filter((project) => {
     const matchesSearch = [project.name, project.description, project.contact].some((field) =>
-      field.toLowerCase().includes(search.toLowerCase())
+      field.toLowerCase().includes(search.toLowerCase()),
     );
     const matchesComponent =
-      componentFilter === '' || project.components.toLowerCase().includes(componentFilter.toLowerCase());
+      componentFilter === '' ||
+      project.components.toLowerCase().includes(componentFilter.toLowerCase());
     const matchesSkill =
       skillFilter === '' || project.skills.toLowerCase().includes(skillFilter.toLowerCase());
     return matchesSearch && matchesComponent && matchesSkill;
@@ -90,22 +91,37 @@ const HackathonProjects: React.FC = () => {
                     <IonCardTitle>{project.name}</IonCardTitle>
                   </IonCardHeader>
                   <IonCardContent>
-                  <p className="project-description">{project.description}</p>
-                  <div className="project-details">
+                    <p className="project-description">{project.description}</p>
+                    <div className="project-details">
                       <p>
-                        <span role="img" aria-label="Team">👥</span> <strong>Team:</strong> {project.team}
+                        <span role="img" aria-label="Team">
+                          👥
+                        </span>{' '}
+                        <strong>Team:</strong> {project.team}
                       </p>
                       <p>
-                        <span role="img" aria-label="Contact">📞</span> <strong>Kontakt:</strong> {project.contact}
+                        <span role="img" aria-label="Contact">
+                          📞
+                        </span>{' '}
+                        <strong>Kontakt:</strong> {project.contact}
                       </p>
                       <p>
-                        <span role="img" aria-label="Goal">🎯</span> <strong>Ziel:</strong> {project.goal}
+                        <span role="img" aria-label="Goal">
+                          🎯
+                        </span>{' '}
+                        <strong>Ziel:</strong> {project.goal}
                       </p>
                       <p>
-                        <span role="img" aria-label="Components">🛠️</span> <strong>Komponenten:</strong> {project.components}
+                        <span role="img" aria-label="Components">
+                          🛠️
+                        </span>{' '}
+                        <strong>Komponenten:</strong> {project.components}
                       </p>
                       <p>
-                        <span role="img" aria-label="Skills">💡</span> <strong>Skills:</strong> {project.skills}
+                        <span role="img" aria-label="Skills">
+                          💡
+                        </span>{' '}
+                        <strong>Skills:</strong> {project.skills}
                       </p>
                     </div>
                     <IonButton expand="block" color="primary" className="project-action-button">
@@ -117,7 +133,7 @@ const HackathonProjects: React.FC = () => {
             ))}
           </IonRow>
         </IonGrid>
-        </IonContent>
+      </IonContent>
     </IonPage>
   );
 };

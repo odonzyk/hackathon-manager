@@ -5,10 +5,10 @@ const Login: React.FC = () => {
   const [userData, setUserData] = useState<any>(null);
 
   const handleLogin = () => {
-        setUserData({
-          name: "Test User",
-          username: "testuser",
-        });
+    setUserData({
+      name: 'Test User',
+      username: 'testuser',
+    });
   };
 
   return (
