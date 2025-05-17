@@ -1,5 +1,6 @@
 
 variables:
+  GIT_STRATEGY: clone
   IMAGE_NAME: $CI_REGISTRY_IMAGE
   IMAGE_FRONTEND_TAG: "frontend"
   IMAGE_BACKEND_TAG: "backend"
