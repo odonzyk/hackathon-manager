@@ -51,8 +51,6 @@ build-frontend-image:
   stage: build-frontend-image
 
   script:
-    - sudo rm -rf $CI_PROJECT_DIR/frontend/dist
-    - sudo rm -rf $CI_PROJECT_DIR/frontend/node_modules/.tmp
     - echo "Logging into Docker registry"
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
     - echo "Source $CI_PIPELINE_SOURCE"
