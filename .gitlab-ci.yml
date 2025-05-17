@@ -57,10 +57,11 @@ build-frontend-image:
     - echo "Branch $CI_COMMIT_BRANCH"
     - pwd
     - whoami
+    - node -v
     - ls -lah
     - cd ./frontend/
     - npm install
-    - sudo npm run build
+    - npm run build
     - docker build -t $IMAGE_NAME:$IMAGE_FRONTEND_TAG -f Dockerfile .
     - docker push $IMAGE_NAME:$IMAGE_FRONTEND_TAG
   rules:
