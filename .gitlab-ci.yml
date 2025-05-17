@@ -1,6 +1,7 @@
 
 variables:
   GIT_STRATEGY: clone
+  GIT_CLEAN_FLAGS: none
   IMAGE_NAME: $CI_REGISTRY_IMAGE
   IMAGE_FRONTEND_TAG: "frontend"
   IMAGE_BACKEND_TAG: "backend"
@@ -50,9 +51,9 @@ build-frontend-image:
 
   stage: build-frontend-image
   before_script:
-    - echo "Verzeichnis bereinigen (falls notwendig)..."
-    - sudo rm -rf frontend/dist || true
-    - sudo rm -rf frontend/node_modules/.tmp || true
+    - echo "Komplettes Projektverzeichnis wird bereinigt..."
+    - rm -rf $CI_PROJECT_DIR || true
+    - mkdir -p $CI_PROJECT_DIR
   
   script:
     - echo "Logging into Docker registry"
