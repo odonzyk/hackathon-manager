@@ -49,7 +49,11 @@ build-frontend-image:
     - staging
 
   stage: build-frontend-image
-
+  before_script:
+    - echo "Verzeichnis bereinigen (falls notwendig)..."
+    - sudo rm -rf frontend/dist || true
+    - sudo rm -rf frontend/node_modules/.tmp || true
+  
   script:
     - echo "Logging into Docker registry"
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
