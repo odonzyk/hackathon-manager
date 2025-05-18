@@ -61,8 +61,8 @@ build-frontend-image:
     - node -v
     - ls -lah
     - cd ./frontend/
-    - sudo npm install
-    - sudo npm run build
+    - npm install
+    - npm run build
     - docker build -t $IMAGE_NAME:$IMAGE_FRONTEND_TAG -f Dockerfile .
     - docker push $IMAGE_NAME:$IMAGE_FRONTEND_TAG
   rules:
