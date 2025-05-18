@@ -14,15 +14,15 @@ variables:
 
 .default_trigger:
   rules:
-    # Automatisch bei Merge-Request auf develop
-    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop"
+    # Automatisch bei Merge-Request auf staging
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "staging"
 
     # Zeitgesteuerter oder API-basierter Trigger
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - if: $CI_PIPELINE_SOURCE == "api"
 
-    # Automatisch auf develop
-    - if: $CI_COMMIT_BRANCH == "develop"
+    # Automatisch auf staging
+    - if: $CI_COMMIT_BRANCH == "staging"
 
     # Main: Nur über Web und nur als "manual" Schritt
     # - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "web"
