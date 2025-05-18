@@ -46,7 +46,7 @@ stages:
 build-frontend-image:
   tags:    
     - parking
-    - shell
+    - docker
     - staging
 
   stage: build-frontend-image
