@@ -3,7 +3,7 @@ version: '3.7'
 services:
   hackathon-api:
     container_name: hackathon
-    image: docker-ext.drsbln.de/hackathon/hackathon-manager:backend
+    image: docker-ext.drsbln.de/hackerton/hackathon-manager:backend
     working_dir: /usr/src/app
     volumes:
       - ./backend:/usr/src/app
@@ -54,8 +54,8 @@ services:
       - web
 
   hackathon-frontend:
-    container_name: docker-ext.drsbln.de/hackathon/hackathon-manager:frontend
-    image: hackathon:frontend
+    container_name: hackathon:frontend
+    image: docker-ext.drsbln.de/hackerton/hackathon-manager:frontend
     volumes:
       - ./frontend/dist:/usr/share/nginx/html
       - ./frontend/nginx/default.conf:/etc/nginx/conf.d/default.conf
