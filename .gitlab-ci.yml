@@ -90,8 +90,8 @@ build-backend-image:
     - pwd
     - ls -lah
     - cd ./backend
-    - docker build -t $IMAGE_NAME:BACKEND -f Dockerfile .
-    - docker push $IMAGE_NAME:BACKEND
+    - docker build -t $IMAGE_NAME:$IMAGE_BACKEND_TAG -f Dockerfile .
+    - docker push $IMAGE_NAME:$IMAGE_BACKEND_TAG
   rules:
     - changes:
         - ./DOCKER-CONFIG/backend/**/*
