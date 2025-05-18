@@ -47,7 +47,7 @@ export const getProfile = async (
     });
     return resultSuccess(response.data);
   } catch (error) {
-    return resultError('Profile konnte nicht geladen werden'););
+    return resultError('Profile konnte nicht geladen werden');
   }
 };
 
@@ -95,7 +95,7 @@ export const deleteProfile = async (
   profile: Profile | null,
   token: string | null,
 ): Promise<{ resultType: ResultType; resultMsg: string | null; data: Profile | null }> => {
-  if (!token || !profile) return resultError('token or profile is missing'););
+  if (!token || !profile) return resultError('token or profile is missing');
 
   try {
     const response = await axios.delete(`/api/user/${profile.id}`, {
