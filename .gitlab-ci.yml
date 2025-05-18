@@ -1,5 +1,7 @@
 
 variables:
+  GIT_STRATEGY: clone
+  GIT_CLEAN_FLAGS: none
   IMAGE_NAME: $CI_REGISTRY_IMAGE
   IMAGE_FRONTEND_TAG: "frontend"
   IMAGE_BACKEND_TAG: "backend"
@@ -8,7 +10,7 @@ variables:
   PROJECT_PATH: "/opt/data/docker/containers/hackathon-manager"
   DOCKER_COMPOSE_FILE: "/opt/data/docker/containers/hackathon-manager/docker-compose.yaml"
   RUNNER_FOLDER: "/opt/data/gitlab-runner/builds/t1_bMHsFQ/0/hackathon/hackathon-manager"
-  RUNNER_FOLDER_PROD: "/opt/data/gitlab-runner/builds/t1_5JD6zW/0/hackathon/hackathon-manager"
+  # RUNNER_FOLDER_PROD: "/opt/data/gitlab-runner/builds/t1_5JD6zW/0/hackerton/hackathon-manager"
 
 .default_trigger:
   rules:
@@ -23,7 +25,8 @@ variables:
     - if: $CI_COMMIT_BRANCH == "develop"
 
     # Main: Nur über Web und nur als "manual" Schritt
-    - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "web"
+    # - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "web"
+    - if: '$CI_PIPELINE_SOURCE == "web" && ($CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "DevopsCICD")'
       when: manual
       allow_failure: false
 
@@ -48,15 +51,19 @@ build-frontend-image:
     - staging
 
   stage: build-frontend-image
+  
   script:
     - echo "Logging into Docker registry"
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
     - echo "Source $CI_PIPELINE_SOURCE"
     - echo "Branch $CI_COMMIT_BRANCH"
     - pwd
+    - whoami
+    - node -v
     - ls -lah
     - cd ./frontend/
-    - sudo npm run build
+    - npm install
+    - npm run build
     - docker build -t $IMAGE_NAME:$IMAGE_FRONTEND_TAG -f Dockerfile .
     - docker push $IMAGE_NAME:$IMAGE_FRONTEND_TAG
   rules:
@@ -83,8 +90,8 @@ build-backend-image:
     - pwd
     - ls -lah
     - cd ./backend
-    - docker build -t $IMAGE_NAME:BACKEND -f Dockerfile .
-    - docker push $IMAGE_NAME:BACKEND
+    - docker build -t $IMAGE_NAME:$IMAGE_BACKEND_TAG -f Dockerfile .
+    - docker push $IMAGE_NAME:$IMAGE_BACKEND_TAG
   rules:
     - changes:
         - ./DOCKER-CONFIG/backend/**/*
@@ -104,8 +111,7 @@ build-job:
     - echo "Compiling the code..."
     - cd ./frontend    
     - npm install
-    - npm install @vitejs/plugin-legacy --save-dev
-    - npx vite build --mode=staging
+    - npm run build
     - ls -lah
     - cd dist
     - echo "Build compilation complete."
@@ -160,18 +166,22 @@ deploy-staging:
   environment: production
   script:
     - echo "Deploying application..."
+    - mkdir -p $PROJECT_PATH
     - cd $PROJECT_PATH
     - echo "delete Docker-Stack"
-    - docker-compose down 
+    # - docker-compose down 
 
     - cd $RUNNER_FOLDER
+    - echo $PROJECT_PATH
     - pwd
     - ls -lah
-    - cp -rf frontend/dist/. /DOCKER/containers/parking-app/nginx/content/
-    - cp -rf backend/. /DOCKER/containers/parking-app/backend
-    - cp ./DOCKER-CONFIG/docker-compose.yaml /opt/data/docker/containers/parking-app/
-    
+    - cp -rf . /DOCKER/containers/hackathon-manager/
+    #- cp -rf frontend/dist/. /DOCKER/containers/hackathon-manager/nginx/content/
+    #- cp -rf backend/. /DOCKER/containers/hackathon-manager/backend
+    #- cp ./docker-compose.yaml /opt/data/docker/containers/hackathon-manager/
+    - docker-compose down 
     - echo "restart Docker-Stack"
+    - mkdir -p $PROJECT_PATH 
     - cd $PROJECT_PATH
     - docker-compose up -d --build
   rules:
@@ -188,10 +198,11 @@ deploy-staging:
 
   script:
     - echo "Deploying application to production..."
+    - mkdir -p $PROJECT_PATH
     - cd $PROJECT_PATH
     - echo "Delete Docker-Stack"
     - docker-compose down 
-
+    - mkdir -p $RUNNER_FOLDER_PROD 
     - cd $RUNNER_FOLDER_PROD
     - cp -rf frontend/dist/. /DOCKER/containers/parking-app/nginx/content/
     - cp -rf backend/. /DOCKER/containers/parking-app/backend
