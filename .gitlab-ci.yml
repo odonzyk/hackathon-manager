@@ -52,8 +52,8 @@ build-frontend-image:
   stage: build-frontend-image
   before_script:
     - echo "Komplettes Projektverzeichnis wird bereinigt..."
-    - sudo rm -rf $CI_PROJECT_DIR || true
-    - sudo mkdir -p $CI_PROJECT_DIR
+    - rm -rf $CI_PROJECT_DIR || true
+    - mkdir -p $CI_PROJECT_DIR
   
   script:
     - echo "Logging into Docker registry"
