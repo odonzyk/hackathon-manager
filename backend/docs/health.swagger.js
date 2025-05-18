@@ -42,7 +42,10 @@ const healthPaths = {
               schema: {
                 type: "object",
                 properties: {
-                  name: { type: "string", example: "hackathon-manager-backend" },
+                  name: {
+                    type: "string",
+                    example: "hackathon-manager-backend",
+                  },
                   version: { type: "string", example: "0.1.0" },
                   config_name: { type: "string", example: "Example Config" },
                   logLevel: { type: "string", example: "debug" },

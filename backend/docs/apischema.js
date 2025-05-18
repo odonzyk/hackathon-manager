@@ -36,18 +36,93 @@ const schemaObjects = {
       },
     },
   },
-
-  Project: {
+  Event: {
     type: "object",
-    required: ["name", "id"],
     properties: {
       id: {
         type: "integer",
-        description: "The unique project ID",
+        example: 1,
       },
       name: {
         type: "string",
-        description: "Project name",
+        example: "Hackathon 2025",
+      },
+      start_time: {
+        type: "string",
+        format: "timestamp",
+        example: "1748389600",
+      },
+      end_time: {
+        type: "string",
+        format: "timestamp",
+        example: "1748504800",
+      },
+    },
+  },
+  Project: {
+    type: "object",
+    properties: {
+      id: {
+        type: "integer",
+        example: 1,
+      },
+      event_id: {
+        type: "integer",
+        example: 1,
+      },
+      status_id: {
+        type: "integer",
+        example: 1,
+      },
+      idea: {
+        type: "string",
+        example: "Hackathon Idea",
+      },
+      description: {
+        type: "string",
+        example: "A detailed description of the project.",
+      },
+      team_name: {
+        type: "string",
+        example: "Team Alpha",
+      },
+      team_avatar_url: {
+        type: "string",
+        format: "url",
+        example: "https://example.com/avatar.png",
+      },
+      iniator_id: {
+        type: "integer",
+        example: 42,
+      },
+      goal: {
+        type: "string",
+        example: "To create a prototype.",
+      },
+      components: {
+        type: "string",
+        example: "Frontend, Backend",
+      },
+      skills: {
+        type: "string",
+        example: "React, Node.js",
+      },
+    },
+  },
+  Participant: {
+    type: "object",
+    properties: {
+      id: {
+        type: "integer",
+        example: 1,
+      },
+      project_id: {
+        type: "integer",
+        example: 1,
+      },
+      user_id: {
+        type: "integer",
+        example: 42,
       },
     },
   },

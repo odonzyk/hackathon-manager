@@ -8,36 +8,36 @@ body {
 }
 
 .hackathon-toolbar {
-    --ion-background-color: linear-gradient(135deg, #2a5298, #173262); /* Farbverlauf */
+  --ion-background-color: linear-gradient(135deg, #2a5298, #173262); /* Farbverlauf */
 }
 
 .hackathon-menu {
-    --ion-background-color: linear-gradient(135deg, #1e3c72, #2a5298); /* Farbverlauf */
+  --ion-background-color: linear-gradient(135deg, #1e3c72, #2a5298); /* Farbverlauf */
 }
 
 .hackathon-content {
-    display: flex;
-    flex-direction: column; /* Elemente untereinander anordnen */
-    gap: 20px; /* Abstand zwischen den Elementen */
-    width: 100%;
-    padding: 20px;
+  display: flex;
+  flex-direction: column; /* Elemente untereinander anordnen */
+  gap: 20px; /* Abstand zwischen den Elementen */
+  width: 100%;
+  padding: 20px;
 }
 .logo {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
 }
 .logo ion-title {
-    font-size: 2.5rem; /* Größerer Titel */
-    font-weight: bold;
-    color: #ffd700;
-    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5); /* Leichter Schatten */
+  font-size: 2.5rem; /* Größerer Titel */
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5); /* Leichter Schatten */
 }
 
 .logo-image {
-    width: 60px; /* Größeres Logo */
-    height: auto;
-    margin-right: 15px;
+  width: 60px; /* Größeres Logo */
+  height: auto;
+  margin-right: 15px;
 }
 
 /* Karten */
@@ -48,7 +48,9 @@ body {
   padding: 20px;
   text-align: center;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); /* Stärkerer Schatten */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .hackathon-card:hover {
@@ -116,4 +118,3 @@ body {
     width: 50px; /* Kleinere Logos */
   }
 }
-

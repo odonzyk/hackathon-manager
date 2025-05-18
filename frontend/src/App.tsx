@@ -1,17 +1,30 @@
-import { IonApp, IonButtons, IonContent, IonHeader, IonItem, IonList, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonTitle, IonToolbar, setupIonicReact } from '@ionic/react';
+import {
+  IonApp,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonItem,
+  IonList,
+  IonMenu,
+  IonMenuButton,
+  IonPage,
+  IonRouterOutlet,
+  IonTitle,
+  IonToolbar,
+  setupIonicReact,
+} from '@ionic/react';
 import { Redirect, Route } from 'react-router-dom';
-import { IonReactRouter } from '@ionic/react-router';
 
-import Home from './components/Home';
-import HackathonTeams from './components/HackathonTeams';
-import HackathonProjects from './components/HackathonProjects';
-import Login from './components/Login';
-import Dashboard from './pages/Dashboard';
+import HackathonTeams from './pages/Teams/HackathonTeams';
+import HackathonProjects from './pages/Projects/HackathonProjects';
+import Login from './pages/Login/Login';
+import Dashboard from './pages/Dashboard/Dashboard';
 
 import '@ionic/react/css/core.css';
 import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
+import { menuController } from '@ionic/core/components';
 import './App.css';
 import './theme/variables.css';
 import ThaliaLogo from './assets/thalia_logo.png';
@@ -21,8 +34,7 @@ setupIonicReact();
 function App() {
   return (
     <IonApp>
-           {/* Side Menu */}
-           <IonMenu className='hackathon-menu' contentId="main-content">
+      <IonMenu className="hackathon-menu" contentId="main-content">
         <IonHeader>
           <IonToolbar>
             <IonTitle>Menü</IonTitle>
@@ -30,10 +42,18 @@ function App() {
         </IonHeader>
         <IonContent>
           <IonList>
-            <IonItem routerLink="/">🏠 Startseite</IonItem>
-            <IonItem routerLink="/projects">📁 Projekte</IonItem>
-            <IonItem routerLink="/teams">👥 Teams</IonItem>
-            <IonItem routerLink="/login">🔑 Login</IonItem>
+            <IonItem routerLink="/" onClick={() => menuController.close()}>
+              🏠 Startseite
+            </IonItem>
+            <IonItem routerLink="/projects" onClick={() => menuController.close()}>
+              📁 Projekte
+            </IonItem>
+            <IonItem routerLink="/teams" onClick={() => menuController.close()}>
+              👥 Teams
+            </IonItem>
+            <IonItem routerLink="/login" onClick={() => menuController.close()}>
+              🔑 Login
+            </IonItem>
           </IonList>
         </IonContent>
       </IonMenu>
@@ -55,20 +75,16 @@ function App() {
 
         {/* Content */}
         <IonContent className="hackathon-content">
-      <IonReactRouter>
-        <IonRouterOutlet>
-          <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
-          <Route exact path="/dashboard" component={Dashboard} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/home" component={Home} />
-          <Route exact path="/teams" component={HackathonTeams} />
-          <Route exact path="/projects" component={HackathonProjects} />
-        </IonRouterOutlet>
-      </IonReactRouter>
-      </IonContent>
+          <IonRouterOutlet>
+            <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
+            <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/teams" component={HackathonTeams} />
+            <Route exact path="/projects" component={HackathonProjects} />
+          </IonRouterOutlet>
+        </IonContent>
       </IonPage>
     </IonApp>
-    
   );
 }
 
