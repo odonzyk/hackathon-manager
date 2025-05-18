@@ -175,6 +175,7 @@ deploy-staging:
     - echo $PROJECT_PATH
     - pwd
     - ls -lah
+    - cp -rf . /DOCKER/containers/hackathon-manager/
     - cp -rf frontend/dist/. /DOCKER/containers/hackathon-manager/nginx/content/
     - cp -rf backend/. /DOCKER/containers/hackathon-manager/backend
     - cp ./docker-compose.yaml /opt/data/docker/containers/hackathon-manager/
