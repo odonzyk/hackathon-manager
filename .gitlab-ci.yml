@@ -166,6 +166,7 @@ deploy-staging:
   environment: production
   script:
     - echo "Deploying application..."
+    - mkdir -p $PROJECT_PATH
     - cd $PROJECT_PATH
     - echo "delete Docker-Stack"
     - docker-compose down 
@@ -179,6 +180,7 @@ deploy-staging:
     - cp ./docker-compose.yaml /opt/data/docker/containers/hackathon-manager/
     
     - echo "restart Docker-Stack"
+    - mkdir -p $PROJECT_PATH 
     - cd $PROJECT_PATH
     - docker-compose up -d --build
   rules:
@@ -195,10 +197,11 @@ deploy-staging:
 
   script:
     - echo "Deploying application to production..."
+    - mkdir -p $PROJECT_PATH
     - cd $PROJECT_PATH
     - echo "Delete Docker-Stack"
     - docker-compose down 
-
+    - mkdir -p $RUNNER_FOLDER_PROD 
     - cd $RUNNER_FOLDER_PROD
     - cp -rf frontend/dist/. /DOCKER/containers/parking-app/nginx/content/
     - cp -rf backend/. /DOCKER/containers/parking-app/backend
