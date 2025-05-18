@@ -26,7 +26,7 @@ variables:
 
     # Main: Nur über Web und nur als "manual" Schritt
     # - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "web"
-    - if: '$CI_PIPELINE_SOURCE == "web" && ($CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop")'
+    - if: '$CI_PIPELINE_SOURCE == "web" && ($CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "DevopsCICD")'
       when: manual
       allow_failure: false
 
