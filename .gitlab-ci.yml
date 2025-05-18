@@ -25,7 +25,8 @@ variables:
     - if: $CI_COMMIT_BRANCH == "develop"
 
     # Main: Nur über Web und nur als "manual" Schritt
-    - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "web"
+    # - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "web"
+    - if: '$CI_PIPELINE_SOURCE == "web" && ($CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop")'
       when: manual
       allow_failure: false
 
@@ -109,9 +110,11 @@ build-job:
   script:
     - echo "Compiling the code..."
     - cd ./frontend    
+    - # npm install
+    - # npm install @vitejs/plugin-legacy --save-dev
+    - # npx vite build --mode=staging
     - npm install
-    - npm install @vitejs/plugin-legacy --save-dev
-    - npx vite build --mode=staging
+    - npm run build
     - ls -lah
     - cd dist
     - echo "Build compilation complete."
@@ -171,11 +174,12 @@ deploy-staging:
     - docker-compose down 
 
     - cd $RUNNER_FOLDER
+    - echo $PROJECT_PATH
     - pwd
     - ls -lah
-    - cp -rf frontend/dist/. /DOCKER/containers/parking-app/nginx/content/
-    - cp -rf backend/. /DOCKER/containers/parking-app/backend
-    - cp ./DOCKER-CONFIG/docker-compose.yaml /opt/data/docker/containers/parking-app/
+    - cp -rf frontend/dist/. /DOCKER/containers/hackathon-manager/nginx/content/
+    - cp -rf backend/. /DOCKER/containers/hackathon-manager/backend
+    - cp ./docker-compose.yaml /opt/data/docker/containers/hackathon-manager/
     
     - echo "restart Docker-Stack"
     - cd $PROJECT_PATH
