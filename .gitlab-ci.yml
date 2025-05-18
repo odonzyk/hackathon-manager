@@ -110,9 +110,6 @@ build-job:
   script:
     - echo "Compiling the code..."
     - cd ./frontend    
-    - # npm install
-    - # npm install @vitejs/plugin-legacy --save-dev
-    - # npx vite build --mode=staging
     - npm install
     - npm run build
     - ls -lah
