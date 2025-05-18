@@ -9,7 +9,7 @@ variables:
   PROD_IMAGE_APP_TAG: "hackathon-$IMAGE_TAG"
   PROJECT_PATH: "/opt/data/docker/containers/hackathon-manager"
   DOCKER_COMPOSE_FILE: "/opt/data/docker/containers/hackathon-manager/docker-compose.yaml"
-  RUNNER_FOLDER: "/opt/data/gitlab-runner/builds/t1_bMHsFQ/0/hackerton/hackathon-manager"
+  RUNNER_FOLDER: "/opt/data/gitlab-runner/builds/t1_bMHsFQ/0/hackathon/hackathon-manager"
   # RUNNER_FOLDER_PROD: "/opt/data/gitlab-runner/builds/t1_5JD6zW/0/hackerton/hackathon-manager"
 
 .default_trigger:
