@@ -169,7 +169,7 @@ deploy-staging:
     - mkdir -p $PROJECT_PATH
     - cd $PROJECT_PATH
     - echo "delete Docker-Stack"
-    - docker-compose down 
+    # - docker-compose down 
 
     - cd $RUNNER_FOLDER
     - echo $PROJECT_PATH
@@ -179,7 +179,7 @@ deploy-staging:
     - cp -rf frontend/dist/. /DOCKER/containers/hackathon-manager/nginx/content/
     - cp -rf backend/. /DOCKER/containers/hackathon-manager/backend
     - cp ./docker-compose.yaml /opt/data/docker/containers/hackathon-manager/
-    
+    - docker-compose down 
     - echo "restart Docker-Stack"
     - mkdir -p $PROJECT_PATH 
     - cd $PROJECT_PATH
