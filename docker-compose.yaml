@@ -58,8 +58,8 @@ services:
     image: hackathon:frontend
     volumes:
       - ./frontend/dist:/usr/share/nginx/html
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./frontend/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./frontend/nginx/nginx.conf:/etc/nginx/nginx.conf
     labels:
       - 'traefik.http.routers.hackathon.priority=1'
       - 'traefik.enable=true'
