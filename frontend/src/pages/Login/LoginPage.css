@@ -1,0 +1,90 @@
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3vh;
+}
+
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.login-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.login-logo {
+  width: 80px;
+  height: 80px;
+  margin-right: 16px;
+}
+
+.login-title h1 {
+  margin: 0;
+  font-size: 28px;
+  color: #0077b6;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.login-heading {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #0077b6;
+}
+
+.login-input {
+  margin-bottom: 20px;
+}
+
+.login-button {
+  margin-top: 8px;
+  min-height: 40px;
+  --border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.login-links {
+  text-align: center;
+  margin-top: 16px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.login-link-spacing {
+  margin-top: 8px;
+}
+
+/* On screens that are 992px or less (tablet) */
+@media screen and (max-width: 992px) {
+  .custom-input {
+    margin: 0 auto;
+    width: 65%;
+  }
+}
+
+/* On screens that are 600px or less (smartphones) */
+@media screen and (max-width: 600px) {
+  .profile-header {
+    margin-left: 10px;
+  }
+
+  .custom-input {
+    margin: 0 auto;
+    width: 95%;
+  }
+}

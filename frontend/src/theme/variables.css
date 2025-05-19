@@ -21,6 +21,27 @@ ion-menu ion-list {
   --ion-text-color: #ffffff;
 }
 
+.custom-toast {
+  --background: var(--ion-color-primary);
+  --color: white; /* Textfarbe */
+  --border-radius: 12px; /* Abgerundete Ecken */
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Schatten */
+  font-size: 1rem; /* Schriftgröße */
+  padding: 16px; /* Innenabstand */
+  margin-bottom: 40px;
+}
+
+/* Toast Messages */
+
+.custom-toast-error {
+  --background: #ff6b6b; /* Fehlerfarbe */
+  --color: white;
+  --border-radius: 12px;
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 1rem;
+  padding: 16px;
+}
+
 ion-menu ion-item {
   font-size: 1.2rem;
   color: #ffffff;

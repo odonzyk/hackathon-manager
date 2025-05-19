@@ -3,7 +3,9 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonItem,
+  IonLabel,
   IonList,
   IonMenu,
   IonMenuButton,
@@ -13,25 +15,42 @@ import {
   IonToolbar,
   setupIonicReact,
 } from '@ionic/react';
-import { Redirect, Route } from 'react-router-dom';
-
-import HackathonTeams from './pages/Teams/HackathonTeams';
-import HackathonProjects from './pages/Projects/HackathonProjects';
-import Login from './pages/Login/Login';
-import Dashboard from './pages/Dashboard/Dashboard';
-
+import { Redirect, Route, useHistory } from 'react-router-dom';
+import { menuController } from '@ionic/core/components';
 import '@ionic/react/css/core.css';
 import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
-import { menuController } from '@ionic/core/components';
 import './App.css';
 import './theme/variables.css';
 import ThaliaLogo from './assets/thalia_logo.png';
 
+import HackathonTeams from './pages/Teams/HackathonTeams';
+import HackathonProjects from './pages/Projects/HackathonProjects';
+import LoginPage from './pages/Login/LoginPage';
+import Dashboard from './pages/Dashboard/Dashboard';
+import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
+import { homeOutline, folderOutline, peopleOutline, logInOutline, logOutOutline } from 'ionicons/icons';
+import { cleanUpStorage } from './utils/authUtils';
+import useSignOut from 'react-auth-kit/hooks/useSignOut';
+
 setupIonicReact();
 
-function App() {
+const App = () => {
+  const isAuthenticated = useIsAuthenticated();
+  const history = useHistory();
+  const signOut = useSignOut();
+
+  const handleLogout = () => {
+    if (!isAuthenticated) return;
+
+    cleanUpStorage();
+    signOut();
+    setTimeout(() => {
+      document.location.href = '/login';
+    }, 0);
+  };
+
   return (
     <IonApp>
       <IonMenu className="hackathon-menu" contentId="main-content">
@@ -42,17 +61,32 @@ function App() {
         </IonHeader>
         <IonContent>
           <IonList>
-            <IonItem routerLink="/" onClick={() => menuController.close()}>
-              🏠 Startseite
+            <IonItem button routerLink="/" disabled={!isAuthenticated} onClick={() => menuController.close()}>
+              <IonIcon slot="start" icon={homeOutline} />
+              Startseite
             </IonItem>
-            <IonItem routerLink="/projects" onClick={() => menuController.close()}>
-              📁 Projekte
+            <IonItem routerLink="/projects" disabled={!isAuthenticated} onClick={() => menuController.close()}>
+              <IonIcon slot="start" icon={folderOutline} />
+              Projekte
             </IonItem>
-            <IonItem routerLink="/teams" onClick={() => menuController.close()}>
-              👥 Teams
+            <IonItem routerLink="/teams" disabled={!isAuthenticated} onClick={() => menuController.close()}>
+              <IonIcon slot="start" icon={peopleOutline} />
+              Teams
             </IonItem>
-            <IonItem routerLink="/login" onClick={() => menuController.close()}>
-              🔑 Login
+            <IonItem
+              button
+              onClick={() => {
+                if (isAuthenticated) {
+                  handleLogout();
+                  menuController.close();
+                } else {
+                  history.push('/login');
+                  menuController.close();
+                }
+              }}
+              >
+              <IonIcon icon={isAuthenticated ? logOutOutline : logInOutline} slot="start" />
+              <IonLabel>{isAuthenticated ? "Logout" : "Login"}</IonLabel>
             </IonItem>
           </IonList>
         </IonContent>
@@ -78,7 +112,7 @@ function App() {
           <IonRouterOutlet>
             <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
             <Route exact path="/dashboard" component={Dashboard} />
-            <Route exact path="/login" component={Login} />
+            <Route exact path="/login" component={LoginPage} />
             <Route exact path="/teams" component={HackathonTeams} />
             <Route exact path="/projects" component={HackathonProjects} />
           </IonRouterOutlet>
