@@ -29,68 +29,14 @@ import HackathonTeams from './pages/Teams/HackathonTeams';
 import HackathonProjects from './pages/Projects/HackathonProjects';
 import LoginPage from './pages/Login/LoginPage';
 import Dashboard from './pages/Dashboard/Dashboard';
-import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
-import { homeOutline, folderOutline, peopleOutline, logInOutline, logOutOutline } from 'ionicons/icons';
-import { cleanUpStorage } from './utils/authUtils';
-import useSignOut from 'react-auth-kit/hooks/useSignOut';
+import Menu from './components/Menu/Menu';
 
 setupIonicReact();
 
 const App = () => {
-  const isAuthenticated = useIsAuthenticated();
-  const history = useHistory();
-  const signOut = useSignOut();
-
-  const handleLogout = () => {
-    if (!isAuthenticated) return;
-
-    cleanUpStorage();
-    signOut();
-    setTimeout(() => {
-      document.location.href = '/login';
-    }, 0);
-  };
-
   return (
     <IonApp>
-      <IonMenu className="hackathon-menu" contentId="main-content">
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>Menü</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent>
-          <IonList>
-            <IonItem button routerLink="/" disabled={!isAuthenticated} onClick={() => menuController.close()}>
-              <IonIcon slot="start" icon={homeOutline} />
-              Startseite
-            </IonItem>
-            <IonItem routerLink="/projects" disabled={!isAuthenticated} onClick={() => menuController.close()}>
-              <IonIcon slot="start" icon={folderOutline} />
-              Projekte
-            </IonItem>
-            <IonItem routerLink="/teams" disabled={!isAuthenticated} onClick={() => menuController.close()}>
-              <IonIcon slot="start" icon={peopleOutline} />
-              Teams
-            </IonItem>
-            <IonItem
-              button
-              onClick={() => {
-                if (isAuthenticated) {
-                  handleLogout();
-                  menuController.close();
-                } else {
-                  history.push('/login');
-                  menuController.close();
-                }
-              }}
-              >
-              <IonIcon icon={isAuthenticated ? logOutOutline : logInOutline} slot="start" />
-              <IonLabel>{isAuthenticated ? "Logout" : "Login"}</IonLabel>
-            </IonItem>
-          </IonList>
-        </IonContent>
-      </IonMenu>
+      <Menu />
 
       {/* Main Content */}
       <IonPage id="main-content">

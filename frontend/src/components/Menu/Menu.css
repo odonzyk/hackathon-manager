@@ -1,0 +1,46 @@
+/* AppMenu.css */
+
+.menu-content {
+  padding: 0;
+  height: 100%;
+}
+
+.menu-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.menu-group {
+  margin-bottom: 24px;
+}
+
+.menu-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  padding: 8px 16px;
+  color: white;
+}
+
+.menu-version {
+  font-size: 0.75rem;
+  color: var(--ion-color-light);
+  padding: 0 16px 0px;
+  display: block;
+}
+
+.menu-settings ion-item ion-icon {
+  margin-right: 8px;
+}
+
+.menu-settings {
+  padding: 16px;
+  border-top: 1px solid var(--ion-color-light-shade);
+  background: var(--ion-background-color);
+}
+
+.menu-notification {
+  margin-top: 20px;
+  text-align: center;
+}
