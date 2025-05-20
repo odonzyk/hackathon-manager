@@ -1,5 +1,5 @@
 const express = require("express");
-const { db_get, db_run, db_all } = require("../database");
+const { db_get, db_run, db_all } = require("../utils/db/dbUtils");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const config = require("../config");
