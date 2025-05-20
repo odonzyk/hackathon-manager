@@ -12,7 +12,7 @@ import { STORAGE_PROFILE, STORAGE_TOKEN, User } from '../../types/types';
 import { APP_VERSION } from '../../../config';
 import { useToast } from '../../components/ToastProvider';
 import './LoginPage.css';
-import { IonButton, IonContent, IonImg, IonInput, IonPage, IonText } from '@ionic/react';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonImg, IonInput, IonPage, IonText } from '@ionic/react';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -124,19 +124,22 @@ const LoginPage = () => {
 
    return (
       <IonPage>
-        <IonContent className="ion-padding login-page">
-          <div className="login-container">
-            <div className="login-header">
-              <IonImg src="/assets/icons/icon.png" className="login-logo" />
-              <div className="login-title">
+        <IonContent>
+          <div className="hackathon-container">
+            <div className="appTitle-header">
+              <IonImg src="/assets/icons/icon.png" className="appTitle-logo" />
+              <div className="appTitle-title">
                 <h1>Hackathon Manager</h1>
                 <IonText color="primary">v {APP_VERSION}</IonText>
               </div>
             </div>
   
-            <div className="login-card">
-              <h2 className="login-heading">Login</h2>
+            <IonCard className="hackathon-card login-card">
+              <IonCardHeader>
+                <IonCardTitle>Login</IonCardTitle>
+              </IonCardHeader>
   
+              <IonCardContent>
               <IonInput
                 className="login-input"
                 value={email}
@@ -157,8 +160,8 @@ const LoginPage = () => {
                 onIonChange={(e) => setPassword(e.detail.value!)}
               />
   
-              <IonButton onClick={onSubmit} expand="block" className="login-button">
-                "Login"
+              <IonButton onClick={onSubmit} expand="block">
+                Login
               </IonButton>
   
               <div className="login-links">
@@ -169,8 +172,9 @@ const LoginPage = () => {
                   <a href="/register">Neu registrieren</a>
                 </IonText>
               </div>
+              </IonCardContent>
+              </IonCard>
             </div>
-          </div>
         </IonContent>
       </IonPage>
     );

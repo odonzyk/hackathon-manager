@@ -1,13 +1,22 @@
 :root {
-  /* Dunkler Hintergrund */
-  --ion-background-color: linear-gradient(135deg, #24243e, #302b63, #0f0c29);
-  --ion-text-color: #222222;
-  --ion-font-family: 'Open Sans', sans-serif;
-
-  --ion-color-primary: #0077b6;
-  --ion-color-secondary: #1a92d3;
-  --ion-color-tertiary: #f0f4f8;
+  --ion-background-color: #1E1E2F;
+  --ion-text-color: #FFFFFF;
+  --ion-card-background: #2E2E3E;
+  --ion-color-primary: #00FFFF; /* Neon Cyan */
+  --ion-color-secondary: #FF00FF; /* Neon Magenta */
+  --ion-color-tertiary: #00FF00; /* Neon Grün */
+  --ion-font-family: 'Source Code Pro', monospace;
   --ion-color-warning: #ff6b6b;
+}
+
+body {
+  background: radial-gradient(circle, #1E1E2F, #121212);
+  font-family: 'Source Code Pro', monospace;
+  overflow: hidden; /* Verhindert Scrollen durch Animation */
+  background-image: 
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px; /* Größe des Grid-Musters */
 }
 
 ion-menu ion-header {
@@ -20,6 +29,32 @@ ion-menu ion-list {
   --ion-background-color: #2a5298; /* Etwas heller als der Header */
   --ion-text-color: #ffffff;
 }
+
+ion-menu ion-item {
+  font-size: 1.2rem;
+  color: #ffffff;
+  --ion-item-background: transparent;
+  --ion-item-hover-background: rgba(255, 255, 255, 0.1); /* Leichter Hover-Effekt */
+}
+
+ion-button {
+  background-color: var(--ion-color-primary);
+  color: #000;
+  border-radius: 8px;
+  margin-top: 10px;
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+ion-button:hover {
+  box-shadow: 0 0 10px var(--ion-color-primary);
+  transform: scale(1.05);
+}
+
+ion-select {
+  font-size: 1.5rem;
+  color: var(--ion-color-primary);
+}
+
 
 .custom-toast {
   --background: var(--ion-color-primary);
@@ -42,9 +77,72 @@ ion-menu ion-list {
   padding: 16px;
 }
 
-ion-menu ion-item {
-  font-size: 1.2rem;
-  color: #ffffff;
-  --ion-item-background: transparent;
-  --ion-item-hover-background: rgba(255, 255, 255, 0.1); /* Leichter Hover-Effekt */
+.logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
 }
+.logo ion-title {
+  font-size: 2.5rem; /* Größerer Titel */
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5); /* Leichter Schatten */
+}
+
+.logo-image {
+  width: 60px; /* Größeres Logo */
+  height: auto;
+  margin-right: 15px;
+}
+
+.logo-image {
+  height: 40px;
+}
+
+.hackathon-toolbar {
+  background-color: #2E2E3E;
+  color: var(--ion-color-primary);
+}
+
+.hackathon-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 3vh;
+}
+
+.hackathon-card {
+  background-color: var(--ion-card-background);
+  color: var(--ion-text-color);
+  border-radius: 12px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.hackathon-card ion-card-title {
+  font-size: 1.8rem;
+  margin-bottom: 10px; /* Mehr Abstand unter dem Titel */
+  color: #ffffff; /* Weiße Schrift */
+  border-bottom: 2px solid #e9e2bc; /* Gelbe Unterstreichung */
+  padding-bottom: 5px;
+}
+
+.hackathon-card ion-card-content {
+  font-size: 1.5rem;
+  color: #e0e0e0;
+}
+
+.hackathon-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 255, 255, 0.4);
+}
+
+.hackathon-content {
+  padding: 16px;
+}
+
+.hackathon-grid {
+  margin-top: 16px;
+}
+
+

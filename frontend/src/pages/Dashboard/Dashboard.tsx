@@ -9,41 +9,15 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonSelect,
-  IonSelectOption,
 } from '@ionic/react';
 import './Dashboard.css';
 
 const Dashboard: React.FC = () => {
-  const [selectedEvent, setSelectedEvent] = useState<string>('Hackathon 2025');
-
-  const events = ['Hackathon 2024', 'Hackathon 2025', 'Hackathon 2026'];
-
   return (
     <IonPage>
       <IonContent>
-        {/* Event-Auswahl */}
-        <IonCard className="hackathon-card">
-          <IonCardHeader>
-            <IonCardTitle>Aktuelles Event auswählen</IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent>
-            <IonSelect
-              value={selectedEvent}
-              placeholder="Event auswählen"
-              onIonChange={(e) => setSelectedEvent(e.detail.value)}
-            >
-              {events.map((event, index) => (
-                <IonSelectOption key={index} value={event}>
-                  {event}
-                </IonSelectOption>
-              ))}
-            </IonSelect>
-          </IonCardContent>
-        </IonCard>
-
         {/* Countdown Box */}
-        <IonCard className="hackathon-card countdown-card">
+        <IonCard className="hackathon-card">
           <IonCardHeader>
             <IonCardTitle>Hackathon Countdown</IonCardTitle>
           </IonCardHeader>

@@ -1,25 +1,15 @@
 .custom-tab-bar {
-  --background: var(--ion-color-primary);
-  --color: #f0f4f8;
-  --color-selected: #f0f4f8;
+  background-color: #2E2E3E;
+  color: var(--ion-color-primary);
   padding: 4px 12px;
   margin: 8px;
   border-radius: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  justify-content: center;
 }
 
 .custom-tab-bar ion-tab-button {
-  --ripple-color: transparent;
-  flex-grow: 1;
-  flex-basis: 0;
   color: #f0f4f8;
-  font-size: 14px;
-  text-transform: none;
+  background-color: #2E2E3E;
+  font-size: 1.0rem;
 }
 
-.custom-tab-bar ion-icon {
-  font-size: 20px;
-  margin-bottom: 4px;
-  color: #f0f4f8;
-}

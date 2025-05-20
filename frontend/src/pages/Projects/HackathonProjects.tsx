@@ -120,7 +120,7 @@ const ProjectListPage: React.FC = () => {
                     <IonCardTitle>{project.idea}</IonCardTitle>
                   </IonCardHeader>
                   <IonCardContent>
-                    <p className="project-description">{project.description}</p>
+                    <p>{project.description}</p>
                     <div className="project-details">
                       <p>
                         <span role="img" aria-label="Team">
@@ -153,7 +153,7 @@ const ProjectListPage: React.FC = () => {
                         <strong>Skills:</strong> {project.skills}
                       </p>
                     </div>
-                    <IonButton expand="block" color="primary" className="project-action-button">
+                    <IonButton expand="block">
                       Projekt beitreten
                     </IonButton>
                   </IonCardContent>

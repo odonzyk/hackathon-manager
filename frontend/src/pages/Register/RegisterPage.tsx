@@ -10,6 +10,9 @@ import {
   IonText,
   IonToggle,
   IonInputPasswordToggle,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
 } from '@ionic/react';
 import axios from 'axios';
 import './RegisterPage.css';
@@ -152,125 +155,139 @@ const RegisterPage: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent className="ion-padding edit-form">
-        <div className="login-container">
-          <div className="login-header">
-            <IonImg src="/assets/icons/icon.png" className="login-logo" />
-            <div className="login-title">
+      <IonContent>
+        <div className="hackathon-container">
+          <div className="appTitle-header">
+            <IonImg src="/assets/icons/icon.png" className="appTitle-logo" />
+            <div className="appTitle-title">
               <h1>Hackathon Manager</h1>
               <IonText color="primary">v {APP_VERSION}</IonText>
             </div>
           </div>
         </div>
 
-        <IonCard className="info-card">
-          <IonLabel className="register-label" position="stacked">
-            Name
-            <IonText color="danger"> (Benötigt)</IonText>
-          </IonLabel>
-          <IonInput
-            className="register-input"
-            value={newProfile.name}
-            onIonChange={(e) => handleInputChange('name', e.detail.value!)}
-            placeholder="Name eingeben"
-            fill="outline"
-          />
-          <IonLabel className="register-label" position="stacked">
-            Email 
-            <IonText color="danger"> (Benötigt)</IonText>
-          </IonLabel>
-          <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <IonInput
-                className="register-input"
-                value={newProfile.email}
-                onIonChange={(e) => handleInputChange('email', e.detail.value!)}
-                placeholder="Email eingeben"
-                fill="outline"
-                type="email"
-                style={{ flex: 10 }}
-              />
-              <IonToggle
-                checked={newProfile.is_private_email}
-                onIonChange={(e) => handleInputChange('is_private_email', e.detail.checked)}
-                style={{ marginLeft: '16px' }}
-              />
-            </div>
-          </div>
-          <IonLabel className="register-label" position="stacked">
-            Telefonnummer
-          </IonLabel>
-          <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <IonInput
-                value={newProfile.telephone}
-                onIonChange={(e) => handleInputChange('telephone', e.detail.value!)}
-                placeholder="Telefonnummer eingeben"
-                fill="outline"
-                type="tel"
-                style={{ flex: 10 }}
-              />
-              <IonToggle
-                checked={newProfile.is_private_telephone}
-                onIonChange={(e) => handleInputChange('is_private_telephone', e.detail.checked)}
-                style={{ marginLeft: '16px' }}
+        <IonCard className="hackathon-card register-card">
+          <IonCardHeader>
+            <IonCardTitle>Persönliche Daten</IonCardTitle>
+          </IonCardHeader>
 
-              />
+          <IonCardContent>
+
+            <IonInput
+              className="register-input"
+              value={newProfile.name}
+              labelPlacement="floating"
+              label='Name (Benötigt)'
+              placeholder="Name eingeben"
+              fill="outline"
+              required={true}
+              onIonChange={(e) => handleInputChange('name', e.detail.value!)}
+              
+            />
+            <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <IonInput
+                  className="register-input"
+                  value={newProfile.email}
+                  labelPlacement='floating'
+                  label='Email (Benötigt)'
+                  placeholder="Email eingeben"
+                  fill="outline"
+                  required={true}
+                  type="email"
+                  onIonChange={(e) => handleInputChange('email', e.detail.value!)}
+                  style={{ flex: 10 }}
+                />
+                <IonToggle
+                  checked={newProfile.is_private_email}
+                  onIonChange={(e) => handleInputChange('is_private_email', e.detail.checked)}
+                  style={{ marginLeft: '16px' }}
+                />
+              </div>
             </div>
-          </div>
+            <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <IonInput
+                  className="register-input"
+                  value={newProfile.telephone}
+                  labelPlacement='floating'
+                  label='Telefonnummer'
+                  placeholder="Telefonnummer eingeben"
+                  fill="outline"
+                  type="tel"
+                  onIonChange={(e) => handleInputChange('telephone', e.detail.value!)}
+                  style={{ flex: 10 }}
+                />
+                <IonToggle
+                  checked={newProfile.is_private_telephone}
+                  onIonChange={(e) => handleInputChange('is_private_telephone', e.detail.checked)}
+                  style={{ marginLeft: '16px' }}
+
+                />
+              </div>
+            </div>
+          </IonCardContent>
         </IonCard>
 
-        <IonCard className="info-card">
-          <IonLabel className="register-label" position="stacked">
-            Passwort
-            <IonText color="danger"> (Benötigt)</IonText>
-          </IonLabel>
-          <IonInput
-            className="register-input"
-            value={password}
-            onIonInput={(e) => {
-              setPassword(e.detail.value!);
-              validateForm(e.detail.value!, confirmPassword);
-            }}
-            placeholder="Passwort eingeben"
-            fill="outline"
-            type="password"
-          >
-            <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
-          </IonInput>
-          <IonLabel className="register-label" position="stacked">
-            Passwort wiederholen
-            <IonText color="danger"> (Benötigt)</IonText>
-          </IonLabel>
-          <IonInput
-            className="register-input"
-            value={confirmPassword}
-            onIonInput={(e) => {
-              setConfirmPassword(e.detail.value!);
-              validateForm(password, e.detail.value!);
-            }}
-            placeholder="Passwort wiederholen"
-            fill="outline"
-            type="password"
-          >
-            <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
-          </IonInput>
-          {/* Bedingtes Rendering des Fehlertexts */}
-          {passwordError && (
-            <IonText color="danger" className="password-error">
-              Die Passwörter stimmen nicht überein.
-            </IonText>
-          )}
+
+
+        <IonCard className="hackathon-card register-card">
+          <IonCardHeader>
+            <IonCardTitle>Login</IonCardTitle>
+          </IonCardHeader>
+
+          <IonCardContent>
+            <IonInput
+              className="register-input"
+              value={password}
+              labelPlacement='floating'
+              label="Passwort"
+              placeholder="Passwort eingeben"
+              fill="outline"
+              type="password"
+              required={true}
+              onIonInput={(e) => {
+                setPassword(e.detail.value!);
+                validateForm(e.detail.value!, confirmPassword);
+              }}
+            >
+              <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
+            </IonInput>
+            <IonInput
+              className="register-input"
+              value={confirmPassword}
+              labelPlacement='floating'
+              label="Passwort wiederholen"
+              placeholder="Passwort wiederholen"
+              fill="outline"
+              type="password"
+              required={true}
+              onIonInput={(e) => {
+                setConfirmPassword(e.detail.value!);
+                validateForm(password, e.detail.value!);
+              }}
+            >
+              <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
+            </IonInput>
+            {/* Bedingtes Rendering des Fehlertexts */}
+            {passwordError && (
+              <IonText color="danger" className="password-error">
+                Die Passwörter stimmen nicht überein.
+              </IonText>
+            )}
+
+
+            <IonButton
+              onClick={onSubmit}
+              expand="block"
+              className="register-button"
+              disabled={isButtonDisabled}
+            >
+              Registrieren
+            </IonButton>
+          </IonCardContent>
         </IonCard>
 
-        <IonButton
-          onClick={onSubmit}
-          expand="block"
-          className="register-button"
-          disabled={isButtonDisabled}
-        >
-          Registrieren
-        </IonButton>
       </IonContent>
     </IonPage>
   );

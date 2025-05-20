@@ -1,21 +1,16 @@
-.info-card {
-  max-width: 600px;
-  width: calc(100% - 32px);
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-
-  margin: 24px auto;
-  padding: 16px 24px 10px 24px;
+.register-card:hover {
+  transform: none;
+  box-shadow: none;
+}
+.register-card {
+  width: 100%; 
+  max-width: 400px;
+  margin: 0 auto 20px auto;
 }
 
-.register-button {
-  margin: 24px auto;
-  height: 48px;
-  max-width: 600px;
-  width: calc(100% - 32px);
-  --border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.register-input {
+  font-size: 1.0rem;
+  margin-bottom: 20px;
 }
 
 .password-error {
@@ -23,24 +18,4 @@
   margin-top: 4px;
   margin-left: 16px;
   color: var(--ion-color-danger); /* Standard-Ionic-Farbe für Fehler */
-}
-
-/* On screens that are 992px or less (tablet) */
-@media screen and (max-width: 992px) {
-  .custom-input {
-    margin: 0 auto;
-    width: 65%;
-  }
-}
-
-/* On screens that are 600px or less (smartphones) */
-@media screen and (max-width: 600px) {
-  .profile-header {
-    margin-left: 10px;
-  }
-
-  .custom-input {
-    margin: 0 auto;
-    width: 95%;
-  }
 }

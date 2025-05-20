@@ -1,21 +1,3 @@
-/* Projekt-Beschreibung */
-.project-description {
-  font-size: 1.2rem;
-  color: #e0e0e0;
-  margin-bottom: 10px;
-}
-
-/* Projekt-Details */
-.project-details p {
-  font-size: 1rem;
-  color: #ffffff;
-  margin-bottom: 5px;
-}
-
-/* Projekt-Button */
-.project-action-button {
-  margin-top: 10px;
-}
 
 .filter-input {
   --background: rgba(255, 255, 255, 0.1); /* Halbtransparenter Hintergrund */
@@ -32,10 +14,13 @@
 }
 
 .project-details {
-  text-align: left; /* Linksbündige Ausrichtung */
   margin-top: 10px; /* Optional: Abstand nach oben */
 }
 
-.project-description {
-  text-align: left; /* Linksbündige Ausrichtung */
+/* Projekt-Details */
+.project-details p {
+  font-size: 1rem;
+  margin-bottom: 5px;
 }
+
+

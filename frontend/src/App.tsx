@@ -50,9 +50,7 @@ const App = () => {
     { path: '/dashboard', component: Dashboard, exact: true },
     { path: '/teams', component: HackathonTeams, exact: true },
     { path: '/projects', component: HackathonProjects, exact: true },
-    //    { path: '/admin', component: UserManagementPage, exact: true },
-    //    { path: '/profile', component: ProfilePage },
-  ]; 
+  ];
 
   return (
     <IonApp>
@@ -68,21 +66,21 @@ const App = () => {
             </IonButtons>
             <div className="logo">
               <img src={ThaliaLogo} alt="Thalia Logo" className="logo-image" />
-              <IonTitle>Thalia Hackathon</IonTitle>
+              <IonTitle>Innovation Days</IonTitle>
             </div>
             <IonSelect
-            value={selectedEvent}
-            placeholder="Event auswählen"
-            onIonChange={(e) => setSelectedEvent(e.detail.value)}
-            interface="popover" // Optional: Popover-Ansicht für bessere UX
-            slot="end" // Positioniert die Auswahl rechts im Header
-          >
-            {events.map((event, index) => (
-              <IonSelectOption key={index} value={event}>
-                {event}
-              </IonSelectOption>
-            ))}
-          </IonSelect>
+              value={selectedEvent}
+              placeholder="Event auswählen"
+              onIonChange={(e) => setSelectedEvent(e.detail.value)}
+              interface="popover"
+              slot="end"
+            >
+              {events.map((event, index) => (
+                <IonSelectOption key={index} value={event}>
+                  {event}
+                </IonSelectOption>
+              ))}
+            </IonSelect>
           </IonToolbar>
         </IonHeader>
 
@@ -94,7 +92,6 @@ const App = () => {
               {publicRoutes.map((props) => (
                 <Route key={props.path} {...props} />
               ))}
-
               {privateRoutes.map((props) => (
                 <PrivateRoute key={props.path} isLoggedIn={isAuthenticated} {...props} />
               ))}
@@ -106,6 +103,6 @@ const App = () => {
       </IonPage>
     </IonApp>
   );
-}
+};
 
 export default App;
