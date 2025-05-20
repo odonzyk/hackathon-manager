@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useHistory } from 'react-router';
 import { menuController } from '@ionic/core/components';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
@@ -14,23 +13,12 @@ import {
   IonItem,
   IonIcon,
   IonLabel,
-  IonToggle,
-  IonSelect,
-  IonSelectOption,
   IonText,
 } from '@ionic/react';
 
 import {
-  globeOutline,
-  bulbOutline,
-  personCircleOutline,
-  carOutline,
-  timeOutline,
   logOutOutline,
   logInOutline,
-  statsChartOutline,
-  peopleCircleOutline,
-  home,
   peopleOutline,
   folderOutline,
   homeOutline,
@@ -58,7 +46,7 @@ const Menu = () => {
   const menuItems = [
     { link: '/dashboard', icon: homeOutline, labelKey: 'Startseite' },
     { link: '/projects', icon: folderOutline, labelKey: 'Projekte' },
-    { link: '/teams', icon: peopleOutline , labelKey: 'Teams' },
+    { link: '/teams', icon: peopleOutline, labelKey: 'Teams' },
   ];
 
 

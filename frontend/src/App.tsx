@@ -3,11 +3,6 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonMenu,
   IonMenuButton,
   IonPage,
   IonRouterOutlet,
@@ -15,8 +10,7 @@ import {
   IonToolbar,
   setupIonicReact,
 } from '@ionic/react';
-import { Redirect, Route, useHistory } from 'react-router-dom';
-import { menuController } from '@ionic/core/components';
+import { Redirect, Route } from 'react-router-dom';
 import '@ionic/react/css/core.css';
 import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
@@ -30,10 +24,28 @@ import HackathonProjects from './pages/Projects/HackathonProjects';
 import LoginPage from './pages/Login/LoginPage';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Menu from './components/Menu/Menu';
+import PrivateRoute from './components/PrivateRoute';
+import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
+import RegisterPage from './pages/Register/RegisterPage';
 
 setupIonicReact();
 
 const App = () => {
+  const isAuthenticated = useIsAuthenticated();
+
+  const publicRoutes = [
+    { path: '/login', component: LoginPage, exact: true },
+    { path: '/register', component: RegisterPage, exact: true },
+  ];
+
+  const privateRoutes = [
+    { path: '/dashboard', component: Dashboard, exact: true },
+    { path: '/teams', component: HackathonTeams, exact: true },
+    { path: '/projects', component: HackathonProjects, exact: true },
+    //    { path: '/admin', component: UserManagementPage, exact: true },
+    //    { path: '/profile', component: ProfilePage },
+  ];
+
   return (
     <IonApp>
       <Menu />
@@ -57,10 +69,13 @@ const App = () => {
         <IonContent className="hackathon-content">
           <IonRouterOutlet>
             <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
-            <Route exact path="/dashboard" component={Dashboard} />
-            <Route exact path="/login" component={LoginPage} />
-            <Route exact path="/teams" component={HackathonTeams} />
-            <Route exact path="/projects" component={HackathonProjects} />
+            {publicRoutes.map((props) => (
+              <Route key={props.path} {...props} />
+            ))}
+
+            {privateRoutes.map((props) => (
+              <PrivateRoute key={props.path} isLoggedIn={isAuthenticated} {...props} />
+            ))}
           </IonRouterOutlet>
         </IonContent>
       </IonPage>
