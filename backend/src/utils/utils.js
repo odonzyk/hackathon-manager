@@ -1,6 +1,6 @@
 const isValidISODate = (dateString) => {
   return (
-    typeof dateString === "string" &&
+    typeof dateString === 'string' &&
     /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(dateString) &&
     !isNaN(Date.parse(dateString))
   );
@@ -15,7 +15,7 @@ const time2ts = (time) => {
 
   const parsedTime = new Date(time);
   if (isNaN(parsedTime.getTime())) {
-    logger.error("Invalid date format:", time);
+    logger.error('Invalid date format:', time);
     return null;
   }
   return Math.floor(parsedTime.getTime() / 1000);

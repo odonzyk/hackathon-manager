@@ -1,22 +1,22 @@
-const express = require("express");
-const { db_get, db_run, db_all } = require("../utils/db/dbUtils");
-const logger = require("../logger");
+const express = require('express');
+const { db_get, db_run, db_all } = require('../utils/db/dbUtils');
+const logger = require('../logger');
 
-const authenticateToken = require("../middlewares/authMiddleware");
+const authenticateToken = require('../middlewares/authMiddleware');
 const router = express.Router();
-const { ErrorMsg } = require("../constants");
+const { ErrorMsg } = require('../constants');
 
 const createEvent = (dbRow) => {
   return {
     id: dbRow?.id ?? null,
-    name: dbRow?.name ?? "",
+    name: dbRow?.name ?? '',
     start_time: dbRow?.start_time ?? null,
     end_time: dbRow?.end_time ?? null,
   };
 };
 
 // *** GET /api/event/list *****************************************************
-router.get("/list", authenticateToken, async (req, res) => {
+router.get('/list', authenticateToken, async (req, res) => {
   logger.debug(`API Event -> List Events`);
   const result = await db_all(`SELECT Event.* FROM Event`);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
@@ -29,24 +29,22 @@ router.get("/list", authenticateToken, async (req, res) => {
 });
 
 // *** POST /api/event *********************************************************
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
   let { name, start_time, end_time } = req.body;
   logger.debug(`API Event -> Register Event: ${name}`);
   if (!name || !start_time || !end_time) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
   }
 
-  let result = await db_get(
-    "SELECT * FROM Event WHERE LOWER(name) = LOWER(?)",
-    [name],
-  );
+  let result = await db_get('SELECT * FROM Event WHERE LOWER(name) = LOWER(?)', [name]);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (result.row) return res.status(409).send(ErrorMsg.VALIDATION.CONFLICT);
 
-  result = await db_run(
-    "INSERT INTO Event (name, start_time, end_time) VALUES (?, ?, ?)",
-    [name, start_time, end_time],
-  );
+  result = await db_run('INSERT INTO Event (name, start_time, end_time) VALUES (?, ?, ?)', [
+    name,
+    start_time,
+    end_time,
+  ]);
   const event_id = result.lastID;
   if (result.err || result.changes === 0) {
     return res.status(500).send(`Server error`);
@@ -61,7 +59,7 @@ router.post("/", async (req, res) => {
 });
 
 // *** PUT /api/event *********************************************************
-router.put("/:id", authenticateToken, async (req, res) => {
+router.put('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
   let { name, start_time, end_time } = req.body;
   logger.debug(`API Event -> Update Event: ${name}`);
@@ -79,10 +77,10 @@ router.put("/:id", authenticateToken, async (req, res) => {
 
   // Check if event name is used by someone already
   if (event.name != name) {
-    let result = await db_get(
-      "SELECT * FROM Event WHERE LOWER(name) = LOWER(?) AND id != ?",
-      [name, id],
-    );
+    let result = await db_get('SELECT * FROM Event WHERE LOWER(name) = LOWER(?) AND id != ?', [
+      name,
+      id,
+    ]);
     if (result.err) {
       return res.status(500).send(ErrorMsg.SERVER.ERROR);
     }
@@ -95,10 +93,11 @@ router.put("/:id", authenticateToken, async (req, res) => {
   event.end_time = end_time ?? event.end_time;
 
   // Update Event
-  result = await db_run(
-    "Update Event SET name=?, start_time=?, end_time=? where id = ?",
-    [event.name, event.start_time, event.end_time],
-  );
+  result = await db_run('Update Event SET name=?, start_time=?, end_time=? where id = ?', [
+    event.name,
+    event.start_time,
+    event.end_time,
+  ]);
   if (result.err) {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }
@@ -107,7 +106,7 @@ router.put("/:id", authenticateToken, async (req, res) => {
 });
 
 // *** GET /api/event *********************************************************
-router.get("/:id", authenticateToken, async (req, res) => {
+router.get('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
   logger.debug(`API Event -> Get Event (id): ${id}`);
 
@@ -119,18 +118,18 @@ router.get("/:id", authenticateToken, async (req, res) => {
 });
 
 // *** DELETE /api/event *********************************************************
-router.delete("/:id", authenticateToken, async (req, res) => {
+router.delete('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
   logger.debug(`API Event -> Delete Event (id): ${id}`);
 
-  result = await db_run("DELETE FROM Event WHERE id = ?", [id]);
+  result = await db_run('DELETE FROM Event WHERE id = ?', [id]);
   if (result.err) {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }
   if (result.changes === 0) {
     return res.status(404).send(ErrorMsg.NOT_FOUND.NO_EVENT);
   }
-  res.status(200).send("Event deleted successfully");
+  res.status(200).send('Event deleted successfully');
 });
 
 module.exports = router;

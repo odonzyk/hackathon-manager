@@ -1,29 +1,29 @@
-const express = require("express");
-const { db_get, db_run, db_all } = require("../utils/db/dbUtils");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const config = require("../config");
-const logger = require("../logger");
+const express = require('express');
+const { db_get, db_run, db_all } = require('../utils/db/dbUtils');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const config = require('../config');
+const logger = require('../logger');
 
-const authenticateToken = require("../middlewares/authMiddleware");
+const authenticateToken = require('../middlewares/authMiddleware');
 const router = express.Router();
-const { ErrorMsg } = require("../constants");
+const { ErrorMsg } = require('../constants');
 
 const createUser = (dbRow) => {
   return {
     id: dbRow?.id ?? null,
-    name: dbRow?.name ?? "",
-    email: dbRow?.email ?? "",
+    name: dbRow?.name ?? '',
+    email: dbRow?.email ?? '',
     is_private_email: dbRow?.is_private_email ?? false,
-    telephone: dbRow?.telephone ?? "",
+    telephone: dbRow?.telephone ?? '',
     is_private_telephone: dbRow?.is_private_telephone ?? false,
     role_id: dbRow?.role_id ?? 2,
-    avatar_url: dbRow?.avatar_url ?? "/assets/avatars/avatar_1.png",
+    avatar_url: dbRow?.avatar_url ?? '/assets/avatars/avatar_1.png',
   };
 };
 
 // *** GET /api/user/login ****************************************************
-router.post("/login", async (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   logger.debug(`API User -> Login User: ${email}`);
 
@@ -31,9 +31,7 @@ router.post("/login", async (req, res) => {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
   }
 
-  const result = await db_get("SELECT * FROM User WHERE email = ?", [
-    email.toLowerCase(),
-  ]);
+  const result = await db_get('SELECT * FROM User WHERE email = ?', [email.toLowerCase()]);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (!result.row) return res.status(404).send(ErrorMsg.NOT_FOUND.NO_USER);
 
@@ -48,19 +46,15 @@ router.post("/login", async (req, res) => {
     return res.status(401).send(ErrorMsg.AUTH.INVALID_CREDENTIALS);
   }
 
-  const token = jwt.sign(
-    { id: id, name: name, email: email, role: role_id },
-    config.jwtSecret,
-    {
-      expiresIn: "2h",
-    },
-  );
+  const token = jwt.sign({ id: id, name: name, email: email, role: role_id }, config.jwtSecret, {
+    expiresIn: '2h',
+  });
 
   res.json({ token });
 });
 
 // *** GET /api/user/list *****************************************************
-router.get("/list", authenticateToken, async (req, res) => {
+router.get('/list', authenticateToken, async (req, res) => {
   logger.debug(`API User -> List User`);
   const result = await db_all(`SELECT User.* FROM User`);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
@@ -74,7 +68,7 @@ router.get("/list", authenticateToken, async (req, res) => {
 });
 
 // *** POST /api/user *********************************************************
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
   let {
     name,
     email,
@@ -88,7 +82,7 @@ router.post("/", async (req, res) => {
   logger.debug(`API User -> Register User: ${name}`);
 
   //TODO: Set Passwort by Frontend
-  if (!password) password = "welcome!";
+  if (!password) password = 'welcome!';
   if (!role_id) role_id = 2;
 
   if (!name || !email) {
@@ -96,14 +90,14 @@ router.post("/", async (req, res) => {
   }
 
   email = email.toLowerCase();
-  let result = await db_get("SELECT * FROM User WHERE email = ?", [email]);
+  let result = await db_get('SELECT * FROM User WHERE email = ?', [email]);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (result.row) return res.status(409).send(ErrorMsg.VALIDATION.CONFLICT);
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
   result = await db_run(
-    "INSERT INTO User (name, email, telephone, password, role_id, is_private_email, is_private_telephone, avatar_url) VALUES (?, ?, ?, ?, ?, ?, ?,?)",
+    'INSERT INTO User (name, email, telephone, password, role_id, is_private_email, is_private_telephone, avatar_url) VALUES (?, ?, ?, ?, ?, ?, ?,?)',
     [
       name,
       email,
@@ -112,7 +106,7 @@ router.post("/", async (req, res) => {
       role_id,
       is_private_email || false,
       is_private_telephone || false,
-      avatar_url || "/assets/avatars/avatar_1.png",
+      avatar_url || '/assets/avatars/avatar_1.png',
     ],
   );
   const user_id = result.lastID;
@@ -128,22 +122,15 @@ router.post("/", async (req, res) => {
     role_id,
     is_private_email: is_private_email || false,
     is_private_telephone: is_private_telephone || false,
-    avatar_url: avatar_url || "/assets/avatars/avatar_1.png",
+    avatar_url: avatar_url || '/assets/avatars/avatar_1.png',
   });
 });
 
 // *** PUT /api/user *********************************************************
-router.put("/:id", authenticateToken, async (req, res) => {
+router.put('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
-  let {
-    name,
-    email,
-    is_private_email,
-    telephone,
-    is_private_telephone,
-    role_id,
-    avatar_url,
-  } = req.body;
+  let { name, email, is_private_email, telephone, is_private_telephone, role_id, avatar_url } =
+    req.body;
   logger.debug(`API User -> Update User: ${name}`);
 
   if (!name || !email || !telephone) {
@@ -159,10 +146,7 @@ router.put("/:id", authenticateToken, async (req, res) => {
 
   // Check if email is used by someone already
   if (user.email != email) {
-    let result = await db_get(
-      "SELECT * FROM User WHERE email = ? AND id != ?",
-      [email, id],
-    );
+    let result = await db_get('SELECT * FROM User WHERE email = ? AND id != ?', [email, id]);
     if (result.err) {
       return res.status(500).send(ErrorMsg.SERVER.ERROR);
     }
@@ -180,7 +164,7 @@ router.put("/:id", authenticateToken, async (req, res) => {
 
   // Update User
   result = await db_run(
-    "Update User SET name=?, email=?, telephone=?, role_id=?, is_private_email=?, is_private_telephone=?, avatar_url=? where id = ?",
+    'Update User SET name=?, email=?, telephone=?, role_id=?, is_private_email=?, is_private_telephone=?, avatar_url=? where id = ?',
     [
       user.name,
       user.email,
@@ -200,7 +184,7 @@ router.put("/:id", authenticateToken, async (req, res) => {
 });
 
 // *** GET /api/user *********************************************************
-router.get("/:id", authenticateToken, async (req, res) => {
+router.get('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
   logger.debug(`API User -> Get User (id): ${id}`);
 
@@ -212,7 +196,7 @@ router.get("/:id", authenticateToken, async (req, res) => {
 });
 
 // *** DELETE /api/user *********************************************************
-router.delete("/:id", authenticateToken, async (req, res) => {
+router.delete('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
   logger.debug(`API User -> Delete User (id): ${id}`);
 
@@ -223,14 +207,14 @@ router.delete("/:id", authenticateToken, async (req, res) => {
   //}
 
   // Delete User
-  result = await db_run("DELETE FROM User WHERE id = ?", [id]);
+  result = await db_run('DELETE FROM User WHERE id = ?', [id]);
   if (result.err) {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }
   if (result.changes === 0) {
     return res.status(404).send(ErrorMsg.NOT_FOUND.NO_USER);
   }
-  res.status(200).send("User deleted successfully");
+  res.status(200).send('User deleted successfully');
 });
 
 module.exports = router;

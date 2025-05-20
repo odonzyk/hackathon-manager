@@ -1,10 +1,10 @@
-const { ErrorMsg } = require("../src/constants");
+const { ErrorMsg } = require('../src/constants');
 
 const eventPaths = {
-  "/event/list": {
+  '/event/list': {
     get: {
-      summary: "List of all events",
-      tags: ["Event"],
+      summary: 'List of all events',
+      tags: ['Event'],
       security: [
         {
           bearerAuth: [],
@@ -12,13 +12,13 @@ const eventPaths = {
       ],
       responses: {
         200: {
-          description: "Success - Returns a list of events",
+          description: 'Success - Returns a list of events',
           content: {
-            "application/json": {
+            'application/json': {
               schema: {
-                type: "array",
+                type: 'array',
                 items: {
-                  $ref: "#/components/schemas/Event",
+                  $ref: '#/components/schemas/Event',
                 },
               },
             },
@@ -33,31 +33,31 @@ const eventPaths = {
       },
     },
   },
-  "/event": {
+  '/event': {
     post: {
-      summary: "Create a new event",
-      tags: ["Event"],
+      summary: 'Create a new event',
+      tags: ['Event'],
       requestBody: {
         required: true,
         content: {
-          "application/json": {
+          'application/json': {
             schema: {
-              type: "object",
-              required: ["name", "start_time", "end_time"],
+              type: 'object',
+              required: ['name', 'start_time', 'end_time'],
               properties: {
                 name: {
-                  type: "string",
-                  example: "Hackathon 2025",
+                  type: 'string',
+                  example: 'Hackathon 2025',
                 },
                 start_time: {
-                  type: "string",
-                  format: "timestamp",
-                  example: "1748389600",
+                  type: 'string',
+                  format: 'timestamp',
+                  example: '1748389600',
                 },
                 end_time: {
-                  type: "string",
-                  format: "timestamp",
-                  example: "1748504800",
+                  type: 'string',
+                  format: 'timestamp',
+                  example: '1748504800',
                 },
               },
             },
@@ -66,18 +66,16 @@ const eventPaths = {
       },
       responses: {
         201: {
-          description: "Event succensfull created",
+          description: 'Event succensfull created',
           content: {
-            "application/json": {
+            'application/json': {
               schema: {
-                $ref: "#/components/schemas/Event",
+                $ref: '#/components/schemas/Event',
               },
             },
           },
         },
-        400: {
-          description: ErrorMsg.VALIDATION.MISSING_FIELDS,
-        },
+        400: { description: ErrorMsg.VALIDATION.MISSING_FIELDS },
         403: {
           description: ErrorMsg.AUTH.INVALID_TOKEN,
         },
@@ -90,10 +88,10 @@ const eventPaths = {
       },
     },
   },
-  "/event/{id}": {
+  '/event/{id}': {
     get: {
-      summary: "Get event by ID",
-      tags: ["Event"],
+      summary: 'Get event by ID',
+      tags: ['Event'],
       security: [
         {
           bearerAuth: [],
@@ -101,22 +99,22 @@ const eventPaths = {
       ],
       parameters: [
         {
-          in: "path",
-          name: "id",
+          in: 'path',
+          name: 'id',
           required: true,
           schema: {
-            type: "integer",
+            type: 'integer',
           },
-          description: "ID of the events",
+          description: 'ID of the events',
         },
       ],
       responses: {
         200: {
-          description: "Successful return of the event",
+          description: 'Successful return of the event',
           content: {
-            "application/json": {
+            'application/json': {
               schema: {
-                $ref: "#/components/schemas/Event",
+                $ref: '#/components/schemas/Event',
               },
             },
           },
@@ -133,8 +131,8 @@ const eventPaths = {
       },
     },
     put: {
-      summary: "event update",
-      tags: ["Event"],
+      summary: 'event update',
+      tags: ['Event'],
       security: [
         {
           bearerAuth: [],
@@ -142,36 +140,36 @@ const eventPaths = {
       ],
       parameters: [
         {
-          in: "path",
-          name: "id",
+          in: 'path',
+          name: 'id',
           required: true,
           schema: {
-            type: "integer",
+            type: 'integer',
           },
-          description: "ID des Events",
+          description: 'ID des Events',
         },
       ],
       requestBody: {
         required: true,
         content: {
-          "application/json": {
+          'application/json': {
             schema: {
-              type: "object",
-              required: ["name", "start_time", "end_time"],
+              type: 'object',
+              required: ['name', 'start_time', 'end_time'],
               properties: {
                 name: {
-                  type: "string",
-                  example: "Hackathon 2025",
+                  type: 'string',
+                  example: 'Hackathon 2025',
                 },
                 start_time: {
-                  type: "string",
-                  format: "timestamp",
-                  example: "1748389600",
+                  type: 'string',
+                  format: 'timestamp',
+                  example: '1748389600',
                 },
                 end_time: {
-                  type: "string",
-                  format: "timestamp",
-                  example: "1748504800",
+                  type: 'string',
+                  format: 'timestamp',
+                  example: '1748504800',
                 },
               },
             },
@@ -180,11 +178,11 @@ const eventPaths = {
       },
       responses: {
         200: {
-          description: "Event erfolgreich aktualisiert",
+          description: 'Event erfolgreich aktualisiert',
           content: {
-            "application/json": {
+            'application/json': {
               schema: {
-                $ref: "#/components/schemas/Event",
+                $ref: '#/components/schemas/Event',
               },
             },
           },
@@ -204,8 +202,8 @@ const eventPaths = {
       },
     },
     delete: {
-      summary: "delete event",
-      tags: ["Event"],
+      summary: 'delete event',
+      tags: ['Event'],
       security: [
         {
           bearerAuth: [],
@@ -213,18 +211,18 @@ const eventPaths = {
       ],
       parameters: [
         {
-          in: "path",
-          name: "id",
+          in: 'path',
+          name: 'id',
           required: true,
           schema: {
-            type: "integer",
+            type: 'integer',
           },
-          description: "id of the event",
+          description: 'id of the event',
         },
       ],
       responses: {
         200: {
-          description: "Event successfully deleted",
+          description: 'Event successfully deleted',
         },
         404: {
           description: ErrorMsg.NOT_FOUND.NO_EVENT,

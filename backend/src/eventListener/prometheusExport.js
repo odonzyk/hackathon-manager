@@ -1,8 +1,8 @@
-const config = require("../config");
-const logger = require("../logger");
-const bookingEventBus = require("../middlewares/projectEventBus");
-const { EventTypes } = require("../constants");
-const promClient = require("prom-client");
+const config = require('../config');
+const logger = require('../logger');
+const bookingEventBus = require('../middlewares/projectEventBus');
+const { EventTypes } = require('../constants');
+const promClient = require('prom-client');
 
 // Definiere globale Labels
 const globalLabels = {
@@ -11,21 +11,21 @@ const globalLabels = {
 
 // Define Prometheus metrics
 const kpi_totalParkingGauge = new promClient.Gauge({
-  name: "kpi_parking_slots_total",
-  help: "Total number of parking slots",
-  labelNames: ["environment"],
+  name: 'kpi_parking_slots_total',
+  help: 'Total number of parking slots',
+  labelNames: ['environment'],
 });
 
 const kpi_bookedParkingGauge = new promClient.Gauge({
-  name: "kpi_parking_slots_booked",
-  help: "Number of occupied parking slots",
-  labelNames: ["environment"],
+  name: 'kpi_parking_slots_booked',
+  help: 'Number of occupied parking slots',
+  labelNames: ['environment'],
 });
 
 const kpi_freeParkingGauge = new promClient.Gauge({
-  name: "kpi_parking_slots_free",
-  help: "Number of available parking slots",
-  labelNames: ["environment"],
+  name: 'kpi_parking_slots_free',
+  help: 'Number of available parking slots',
+  labelNames: ['environment'],
 });
 
 // ** For Sending OneSignal-Notifications *************************************

@@ -1,17 +1,7 @@
-const logger = require("../../logger");
-const bcrypt = require("bcrypt");
-const {
-  createTable,
-  fillTable,
-  db_get,
-  db_run,
-  db_exec,
-} = require("./dbUtils");
-const {
-  insertUserAdmin,
-  insertEvents,
-  insertProjects,
-} = require("./dbInsertData");
+const logger = require('../../logger');
+const bcrypt = require('bcrypt');
+const { createTable, fillTable, db_get, db_run, db_exec } = require('./dbUtils');
+const { insertUserAdmin, insertEvents, insertProjects } = require('./dbInsertData');
 
 // *** DB Creation ************************************************************
 
@@ -25,12 +15,12 @@ async function dbCreate() {
     name TEXT
   )`,
   ).then(async function () {
-    let result = await db_get("SELECT * FROM ProjectStatus");
+    let result = await db_get('SELECT * FROM ProjectStatus');
     if (result.err || !!result.row) return;
 
     fillTable(
-      "ProjectStatus",
-      ["id", "name"],
+      'ProjectStatus',
+      ['id', 'name'],
       [
         [1, "'pitching'"],
         [2, "'active'"],
@@ -50,12 +40,12 @@ async function dbCreate() {
     name TEXT
   )`,
   ).then(async function () {
-    let result = await db_get("SELECT * FROM Role");
+    let result = await db_get('SELECT * FROM Role');
     if (result.err || !!result.row) return;
 
     fillTable(
-      "Role",
-      ["id", "name"],
+      'Role',
+      ['id', 'name'],
       [
         [1, "'admin'"],
         [2, "'user'"],
@@ -123,12 +113,12 @@ async function dbCreate() {
         )`,
   );
 
-  db_exec("PRAGMA foreign_keys=1;");
+  db_exec('PRAGMA foreign_keys=1;');
 
   await insertUserAdmin();
   await insertEvents();
   await insertProjects();
-  logger.info("DB Init: DB created");
+  logger.info('DB Init: DB created');
 }
 
 module.exports = { dbCreate };

@@ -1,38 +1,35 @@
-const express = require("express");
-const { db_get, db_run, db_all } = require("../utils/db/dbUtils");
-const logger = require("../logger");
+const express = require('express');
+const { db_get, db_run, db_all } = require('../utils/db/dbUtils');
+const logger = require('../logger');
 
-const authenticateToken = require("../middlewares/authMiddleware");
+const authenticateToken = require('../middlewares/authMiddleware');
 const router = express.Router();
-const { ErrorMsg } = require("../constants");
+const { ErrorMsg } = require('../constants');
 
 const createProject = (dbRow) => {
   return {
     event_id: dbRow?.event_id ?? null,
     id: dbRow?.id ?? null,
     status_id: dbRow?.status_id ?? 1,
-    idea: dbRow?.idea ?? "",
-    description: dbRow?.description ?? "",
-    team_name: dbRow?.team_name ?? "",
-    team_avatar_url: dbRow?.team_avatar_url ?? "",
+    idea: dbRow?.idea ?? '',
+    description: dbRow?.description ?? '',
+    team_name: dbRow?.team_name ?? '',
+    team_avatar_url: dbRow?.team_avatar_url ?? '',
     initiator_id: dbRow?.initiator_id ?? null,
-    goal: dbRow?.goal ?? "",
-    components: dbRow?.components ?? "",
-    skills: dbRow?.skills ?? "",
+    goal: dbRow?.goal ?? '',
+    components: dbRow?.components ?? '',
+    skills: dbRow?.skills ?? '',
   };
 };
 
 // *** GET /api/project/list/:id *****************************************************
-router.get("/list/:event_id", authenticateToken, async (req, res) => {
+router.get('/list/:event_id', authenticateToken, async (req, res) => {
   const { event_id } = req.params;
   logger.debug(`API Project -> List Projects by ID: ${event_id}`);
   if (!event_id) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
   }
-  const result = await db_all(
-    `SELECT Project.* FROM Project where event_id = ?`,
-    [event_id],
-  );
+  const result = await db_all(`SELECT Project.* FROM Project where event_id = ?`, [event_id]);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (!result.row || (Array.isArray(result.row) && result.row.length === 0)) {
     return res.status(404).send(ErrorMsg.NOT_FOUND.NO_PROJECT);
@@ -43,7 +40,7 @@ router.get("/list/:event_id", authenticateToken, async (req, res) => {
 });
 
 // *** GET /api/project/list *****************************************************
-router.get("/list", authenticateToken, async (req, res) => {
+router.get('/list', authenticateToken, async (req, res) => {
   logger.debug(`API Project -> List Projects`);
   const result = await db_all(`SELECT Project.* FROM Project`);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
@@ -56,7 +53,7 @@ router.get("/list", authenticateToken, async (req, res) => {
 });
 
 // *** GET /api/project/listByUser/:id **********************************************
-router.get("/listByUser/:id", authenticateToken, async (req, res) => {
+router.get('/listByUser/:id', authenticateToken, async (req, res) => {
   logger.debug(`API Project -> List my participate projects`);
   const { id } = req.params;
   if (!id) {
@@ -76,7 +73,7 @@ router.get("/listByUser/:id", authenticateToken, async (req, res) => {
 });
 
 // *** POST /api/project *********************************************************
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
   let {
     event_id,
     status_id,
@@ -94,15 +91,15 @@ router.post("/", async (req, res) => {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
   }
 
-  let result = await db_get(
-    "SELECT * FROM Project WHERE LOWER(idea) = LOWER(?) AND event_id= ?",
-    [idea, event_id],
-  );
+  let result = await db_get('SELECT * FROM Project WHERE LOWER(idea) = LOWER(?) AND event_id= ?', [
+    idea,
+    event_id,
+  ]);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (result.row) return res.status(409).send(ErrorMsg.VALIDATION.CONFLICT);
 
   result = await db_run(
-    "INSERT INTO Project (event_id, status_id, idea, description, team_name, team_avatar_url, initiator_id, goal, components, skills) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    'INSERT INTO Project (event_id, status_id, idea, description, team_name, team_avatar_url, initiator_id, goal, components, skills) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
     [
       event_id,
       status_id,
@@ -137,7 +134,7 @@ router.post("/", async (req, res) => {
 });
 
 // *** PUT /api/event *********************************************************
-router.put("/:id", authenticateToken, async (req, res) => {
+router.put('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
   let {
     event_id,
@@ -167,7 +164,7 @@ router.put("/:id", authenticateToken, async (req, res) => {
   // Check if event name is used by someone already
   if (project.idea != idea) {
     let result = await db_get(
-      "SELECT * FROM Project WHERE LOWER(idea) = LOWER(?) AND id != ? AND event_id = ?",
+      'SELECT * FROM Project WHERE LOWER(idea) = LOWER(?) AND id != ? AND event_id = ?',
       [idea, id, event_id],
     );
     if (result.err) {
@@ -190,7 +187,7 @@ router.put("/:id", authenticateToken, async (req, res) => {
 
   // Update Project
   result = await db_run(
-    "UPDATE Project SET event_id=?, status_id=?, idea=?, description=?, team_name=?, team_avatar_url=?, initiator_id=?, goal=?, components=?, skills=? WHERE id = ?",
+    'UPDATE Project SET event_id=?, status_id=?, idea=?, description=?, team_name=?, team_avatar_url=?, initiator_id=?, goal=?, components=?, skills=? WHERE id = ?',
     [
       project.event_id,
       project.status_id,
@@ -213,13 +210,11 @@ router.put("/:id", authenticateToken, async (req, res) => {
 });
 
 // *** GET /api/project *********************************************************
-router.get("/:id", authenticateToken, async (req, res) => {
+router.get('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
   logger.debug(`API Project -> Get Project (id): ${id}`);
 
-  const result = await db_get(`SELECT * FROM Project WHERE Project.id = ?`, [
-    id,
-  ]);
+  const result = await db_get(`SELECT * FROM Project WHERE Project.id = ?`, [id]);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (!result.row) return res.status(404).send(ErrorMsg.NOT_FOUND.NO_PROJECT);
   const project = createProject(result.row);
@@ -227,18 +222,18 @@ router.get("/:id", authenticateToken, async (req, res) => {
 });
 
 // *** DELETE /api/project *********************************************************
-router.delete("/:id", authenticateToken, async (req, res) => {
+router.delete('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
   logger.debug(`API Project -> Delete Project (id): ${id}`);
 
-  result = await db_run("DELETE FROM Project WHERE id = ?", [id]);
+  result = await db_run('DELETE FROM Project WHERE id = ?', [id]);
   if (result.err) {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }
   if (result.changes === 0) {
     return res.status(404).send(ErrorMsg.NOT_FOUND.NO_PROJECT);
   }
-  res.status(200).send("Project deleted successfully");
+  res.status(200).send('Project deleted successfully');
 });
 
 module.exports = router;

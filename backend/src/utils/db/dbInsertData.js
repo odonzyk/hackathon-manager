@@ -1,53 +1,37 @@
-const logger = require("../../logger");
-const bcrypt = require("bcrypt");
-const { db_get, db_run } = require("./dbUtils");
-const { time2ts } = require("../utils");
-const fs = require("fs");
-const path = require("path");
+const logger = require('../../logger');
+const bcrypt = require('bcrypt');
+const { db_get, db_run } = require('./dbUtils');
+const { time2ts } = require('../utils');
+const fs = require('fs');
+const path = require('path');
 
-const defaultProjectsPath = path.resolve(__dirname, "./data/projects.json");
-const DEFAULT_PASSWORD = "welcome!";
+const defaultProjectsPath = path.resolve(__dirname, './data/projects.json');
+const DEFAULT_PASSWORD = 'welcome!';
 
 async function insertUserAdmin() {
-  let result = await db_get("SELECT * FROM User WHERE role_id = 1");
+  let result = await db_get('SELECT * FROM User WHERE role_id = 1');
   if (result.err || !!result.row) return;
 
-  logger.info("DB Insert: Create Admin User");
-  await createUser(
-    "Admin",
-    "hackathon@thalia.de",
-    "+49 30 12345678",
-    DEFAULT_PASSWORD,
-    1,
-  );
+  logger.info('DB Insert: Create Admin User');
+  await createUser('Admin', 'hackathon@thalia.de', '+49 30 12345678', DEFAULT_PASSWORD, 1);
 }
 
 async function insertEvents() {
-  let result = await db_get("SELECT * FROM Event");
+  let result = await db_get('SELECT * FROM Event');
   if (result.err || !!result.row) return;
 
-  logger.info("DB Insert: Create Events");
-  await createEvent(
-    1,
-    "Innovation Days 2024",
-    "2024-10-01 09:00:00",
-    "2024-10-02 18:00:00",
-  );
-  await createEvent(
-    2,
-    "Innovation Days 2025",
-    "2025-06-25 09:00:00",
-    "2025-06-26 18:00:00",
-  );
+  logger.info('DB Insert: Create Events');
+  await createEvent(1, 'Innovation Days 2024', '2024-10-01 09:00:00', '2024-10-02 18:00:00');
+  await createEvent(2, 'Innovation Days 2025', '2025-06-25 09:00:00', '2025-06-26 18:00:00');
 }
 
 async function insertProjects() {
-  let result = await db_get("SELECT * FROM Project");
+  let result = await db_get('SELECT * FROM Project');
   if (result.err || !!result.row) return;
 
-  logger.info("DB Insert: Create Projects");
+  logger.info('DB Insert: Create Projects');
 
-  const projects = JSON.parse(fs.readFileSync(defaultProjectsPath, "utf-8"));
+  const projects = JSON.parse(fs.readFileSync(defaultProjectsPath, 'utf-8'));
   for (const project of projects) {
     await createProject(
       project.event_id,
@@ -73,8 +57,7 @@ async function createUser(name, email, telephone, password, role_id) {
             VALUES (?, ?, ?, ?, ?)`,
     [name, email, telephone, hash, role_id],
   );
-  if (result.err || result.changes === 0)
-    throw new Error("Could not create User: " + name);
+  if (result.err || result.changes === 0) throw new Error('Could not create User: ' + name);
 }
 
 async function createEvent(id, name, start_time, end_time) {
@@ -84,8 +67,7 @@ async function createEvent(id, name, start_time, end_time) {
             VALUES (?, ?, ?, ?)`,
     [id, name, time2ts(start_time), time2ts(end_time)],
   );
-  if (result.err || result.changes === 0)
-    throw new Error("Could not create Event : " + name);
+  if (result.err || result.changes === 0) throw new Error('Could not create Event : ' + name);
 }
 
 async function createProject(
@@ -118,7 +100,7 @@ async function createProject(
     ],
   );
   if (result.err || result.changes === 0)
-    throw new Error("Could not create Project : " + event_id + " - " + idea);
+    throw new Error('Could not create Project : ' + event_id + ' - ' + idea);
 }
 
 module.exports = { insertUserAdmin, insertEvents, insertProjects };

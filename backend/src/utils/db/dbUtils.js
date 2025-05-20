@@ -1,6 +1,6 @@
-const sqlite3 = require("sqlite3").verbose();
-const config = require("../../config");
-const logger = require("../../logger");
+const sqlite3 = require('sqlite3').verbose();
+const config = require('../../config');
+const logger = require('../../logger');
 
 logger.debug(`Open DB ${config.dbPath}`);
 
@@ -8,30 +8,29 @@ const db = new sqlite3.Database(config.dbPath, (err) => {
   if (err) {
     logger.error("Can't initialize the database: " + err.message);
   } else {
-    logger.info("Initialized Database");
+    logger.info('Initialized Database');
   }
 });
 
 // promisified Db functions for minizing callbacks
 // Even though callbacks are currently support for backwards compatibility!
 function db_run(statement, params = [], callback) {
-  return execute_on_db("run", statement, params, callback);
+  return execute_on_db('run', statement, params, callback);
 }
 
 function db_get(statement, params = [], callback) {
-  return execute_on_db("get", statement, params, callback);
+  return execute_on_db('get', statement, params, callback);
 }
 
 function db_all(statement, params = [], callback) {
-  return execute_on_db("all", statement, params, callback);
+  return execute_on_db('all', statement, params, callback);
 }
 
 function execute_on_db(method, statement, params, callback) {
   return new Promise((resolve) => {
     try {
       db[method](statement, params, function (err, rows) {
-        if (typeof callback === "function")
-          return callback.call(this, err, rows);
+        if (typeof callback === 'function') return callback.call(this, err, rows);
         if (err) {
           logger.error(err);
           return resolve({ err: err });
@@ -77,19 +76,15 @@ async function createTable(query) {
 }
 
 async function fillTable(table, structure, values) {
-  if (
-    typeof table !== "string" ||
-    !Array.isArray(structure) ||
-    !Array.isArray(values)
-  ) {
+  if (typeof table !== 'string' || !Array.isArray(structure) || !Array.isArray(values)) {
     throw new Error(`Could not fill Table: ${table}`);
   }
   const result = await db_get(`SELECT * FROM ${table}`);
   if (result.err || !!result.row) return;
 
-  structure = structure.join(", ");
+  structure = structure.join(', ');
   for (const elem of values) {
-    db_run(`INSERT INTO ${table} (${structure}) VALUES (${elem.join(", ")})`);
+    db_run(`INSERT INTO ${table} (${structure}) VALUES (${elem.join(', ')})`);
   }
 }
 

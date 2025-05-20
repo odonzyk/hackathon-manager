@@ -1,24 +1,24 @@
-const { ErrorMsg } = require("../src/constants");
+const { ErrorMsg } = require('../src/constants');
 
 const participantPaths = {
-  "/participant": {
+  '/participant': {
     post: {
-      summary: "Register a new participant",
-      tags: ["Participant"],
+      summary: 'Register a new participant',
+      tags: ['Participant'],
       requestBody: {
         required: true,
         content: {
-          "application/json": {
+          'application/json': {
             schema: {
-              type: "object",
-              required: ["project_id", "user_id"],
+              type: 'object',
+              required: ['project_id', 'user_id'],
               properties: {
                 project_id: {
-                  type: "integer",
+                  type: 'integer',
                   example: 1,
                 },
                 user_id: {
-                  type: "integer",
+                  type: 'integer',
                   example: 42,
                 },
               },
@@ -28,11 +28,11 @@ const participantPaths = {
       },
       responses: {
         201: {
-          description: "Participant successfully registered",
+          description: 'Participant successfully registered',
           content: {
-            "application/json": {
+            'application/json': {
               schema: {
-                $ref: "#/components/schemas/Participant",
+                $ref: '#/components/schemas/Participant',
               },
             },
           },
@@ -49,10 +49,10 @@ const participantPaths = {
       },
     },
   },
-  "/participant/{id}": {
+  '/participant/{id}': {
     get: {
-      summary: "Get participant by ID",
-      tags: ["Participant"],
+      summary: 'Get participant by ID',
+      tags: ['Participant'],
       security: [
         {
           bearerAuth: [],
@@ -60,22 +60,22 @@ const participantPaths = {
       ],
       parameters: [
         {
-          in: "path",
-          name: "id",
+          in: 'path',
+          name: 'id',
           required: true,
           schema: {
-            type: "integer",
+            type: 'integer',
           },
-          description: "ID of the participant",
+          description: 'ID of the participant',
         },
       ],
       responses: {
         200: {
-          description: "Successful return of the participant",
+          description: 'Successful return of the participant',
           content: {
-            "application/json": {
+            'application/json': {
               schema: {
-                $ref: "#/components/schemas/Participant",
+                $ref: '#/components/schemas/Participant',
               },
             },
           },
@@ -89,8 +89,8 @@ const participantPaths = {
       },
     },
     put: {
-      summary: "Update participant details",
-      tags: ["Participant"],
+      summary: 'Update participant details',
+      tags: ['Participant'],
       security: [
         {
           bearerAuth: [],
@@ -98,29 +98,29 @@ const participantPaths = {
       ],
       parameters: [
         {
-          in: "path",
-          name: "id",
+          in: 'path',
+          name: 'id',
           required: true,
           schema: {
-            type: "integer",
+            type: 'integer',
           },
-          description: "ID of the participant",
+          description: 'ID of the participant',
         },
       ],
       requestBody: {
         required: true,
         content: {
-          "application/json": {
+          'application/json': {
             schema: {
-              type: "object",
-              required: ["project_id", "user_id"],
+              type: 'object',
+              required: ['project_id', 'user_id'],
               properties: {
                 project_id: {
-                  type: "integer",
+                  type: 'integer',
                   example: 1,
                 },
                 user_id: {
-                  type: "integer",
+                  type: 'integer',
                   example: 42,
                 },
               },
@@ -130,11 +130,11 @@ const participantPaths = {
       },
       responses: {
         200: {
-          description: "Participant successfully updated",
+          description: 'Participant successfully updated',
           content: {
-            "application/json": {
+            'application/json': {
               schema: {
-                $ref: "#/components/schemas/Participant",
+                $ref: '#/components/schemas/Participant',
               },
             },
           },
@@ -151,8 +151,8 @@ const participantPaths = {
       },
     },
     delete: {
-      summary: "Delete participant",
-      tags: ["Participant"],
+      summary: 'Delete participant',
+      tags: ['Participant'],
       security: [
         {
           bearerAuth: [],
@@ -160,18 +160,18 @@ const participantPaths = {
       ],
       parameters: [
         {
-          in: "path",
-          name: "id",
+          in: 'path',
+          name: 'id',
           required: true,
           schema: {
-            type: "integer",
+            type: 'integer',
           },
-          description: "ID of the participant",
+          description: 'ID of the participant',
         },
       ],
       responses: {
         200: {
-          description: "Participant successfully deleted",
+          description: 'Participant successfully deleted',
         },
         404: {
           description: ErrorMsg.NOT_FOUND.NO_PARTICIPANT,
