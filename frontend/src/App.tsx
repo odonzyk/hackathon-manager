@@ -6,6 +6,9 @@ import {
   IonMenuButton,
   IonPage,
   IonRouterOutlet,
+  IonSelect,
+  IonSelectOption,
+  IonTabs,
   IonTitle,
   IonToolbar,
   setupIonicReact,
@@ -27,11 +30,16 @@ import Menu from './components/Menu/Menu';
 import PrivateRoute from './components/PrivateRoute';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import RegisterPage from './pages/Register/RegisterPage';
+import TabBar from './components/TabBar/TabBar';
+import { useState } from 'react';
 
 setupIonicReact();
 
 const App = () => {
   const isAuthenticated = useIsAuthenticated();
+  const [selectedEvent, setSelectedEvent] = useState<string>('Hackathon 2025');
+
+  const events = ['Hackathon 2024', 'Hackathon 2025', 'Hackathon 2026'];
 
   const publicRoutes = [
     { path: '/login', component: LoginPage, exact: true },
@@ -44,7 +52,7 @@ const App = () => {
     { path: '/projects', component: HackathonProjects, exact: true },
     //    { path: '/admin', component: UserManagementPage, exact: true },
     //    { path: '/profile', component: ProfilePage },
-  ];
+  ]; 
 
   return (
     <IonApp>
@@ -62,21 +70,38 @@ const App = () => {
               <img src={ThaliaLogo} alt="Thalia Logo" className="logo-image" />
               <IonTitle>Thalia Hackathon</IonTitle>
             </div>
+            <IonSelect
+            value={selectedEvent}
+            placeholder="Event auswählen"
+            onIonChange={(e) => setSelectedEvent(e.detail.value)}
+            interface="popover" // Optional: Popover-Ansicht für bessere UX
+            slot="end" // Positioniert die Auswahl rechts im Header
+          >
+            {events.map((event, index) => (
+              <IonSelectOption key={index} value={event}>
+                {event}
+              </IonSelectOption>
+            ))}
+          </IonSelect>
           </IonToolbar>
         </IonHeader>
 
         {/* Content */}
         <IonContent className="hackathon-content">
-          <IonRouterOutlet>
-            <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
-            {publicRoutes.map((props) => (
-              <Route key={props.path} {...props} />
-            ))}
+          <IonTabs>
+            <IonRouterOutlet>
+              <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
+              {publicRoutes.map((props) => (
+                <Route key={props.path} {...props} />
+              ))}
 
-            {privateRoutes.map((props) => (
-              <PrivateRoute key={props.path} isLoggedIn={isAuthenticated} {...props} />
-            ))}
-          </IonRouterOutlet>
+              {privateRoutes.map((props) => (
+                <PrivateRoute key={props.path} isLoggedIn={isAuthenticated} {...props} />
+              ))}
+            </IonRouterOutlet>
+
+            <TabBar />
+          </IonTabs>
         </IonContent>
       </IonPage>
     </IonApp>

@@ -33,7 +33,7 @@ async function insertProjects() {
 
     const projects = JSON.parse(fs.readFileSync(defaultProjectsPath, "utf-8"));
     for (const project of projects) {
-        createProject(
+        await createProject(
             project.event_id,
             project.status_id,
             project.idea,

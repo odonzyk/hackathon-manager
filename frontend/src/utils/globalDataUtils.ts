@@ -1,4 +1,4 @@
-import { Profile,  STORAGE_PROFILE } from '../types/types';
+import { Profile,  Project,  STORAGE_PROFILE } from '../types/types';
 import axios from 'axios';
 
 export enum ResultType {
@@ -123,5 +123,25 @@ export const getAllUsers = async (
     return resultSuccess(response.data);
   } catch (error) {
     return resultError('User konnten nicht geladen werden');
+  }
+};
+
+/* *************************************************** */
+/* Projects API                                         */
+/* *************************************************** */
+export const getProjects = async (
+  eventId: number | null,
+  token: string | null,
+): Promise<{ resultType: ResultType; resultMsg: string | null; data: Project[] | null }> => {
+  if (!token || !eventId) return resultError("token or userId is missing");
+
+  try {
+    const response = await axios.get<Project[]>(`/api/project/list/${eventId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return resultSuccess(response.data);
+  } catch (error: any) {
+    if (error?.response?.status === 404) return resultSuccess([]);
+    return resultError("Projects konnten nicht geladen werden");
   }
 };

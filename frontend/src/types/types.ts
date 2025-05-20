@@ -20,7 +20,18 @@ export type Profile = {
   avatar_url: string;
 };
 
-
+export type Project = {
+  event_id: number;
+  id: number;
+  status_id: number;
+  idea: string;
+  description: string;
+  team_name: string;
+  initiator_id: number;
+  goal: string;
+  components: string;
+  skills: string;
+}
 
 export const UserRoleMap: Record<number, { name: string; color: string; emoji: string }> = {
   1: { name: 'Admin', color: '#FF5733', emoji: '👑' }, // Rot für Admin
