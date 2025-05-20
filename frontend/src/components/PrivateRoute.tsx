@@ -2,20 +2,30 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
 interface PrivateRouteProps {
-  component: React.FC<any>;
   isLoggedIn: boolean;
-  [key: string]: any;
+  component: React.ComponentType<any>;
+  path: string;
+  exact?: boolean;
+  [key: string]: any; // Ermöglicht zusätzliche Props
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({
-  component: Component,
   isLoggedIn,
+  component: Component,
   ...rest
-}) => (
-  <Route
-    {...rest}
-    render={(props) => (isLoggedIn ? <Component {...props} /> : <Redirect to="/login" />)}
-  />
-);
+}) => {
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        isLoggedIn ? (
+          <Component {...props} {...rest} /> // Zusätzliche Props weitergeben
+        ) : (
+          <Redirect to="/login" />
+        )
+      }
+    />
+  );
+};
 
 export default PrivateRoute;

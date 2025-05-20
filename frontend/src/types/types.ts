@@ -33,6 +33,13 @@ export type Project = {
   skills: string;
 };
 
+export type Event = {
+  id: number;
+  name: string;
+  start_time: number;
+  end_time: number;
+};
+
 export const UserRoleMap: Record<number, { name: string; color: string; emoji: string }> = {
   1: { name: 'Admin', color: '#FF5733', emoji: '👑' }, // Rot für Admin
   2: { name: 'User', color: '#3498DB', emoji: '👤' }, // Blau für User

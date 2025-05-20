@@ -22,7 +22,7 @@ import '@ionic/react/css/typography.css';
 import './App.css';
 import './theme/variables.css';
 import ThaliaLogo from './assets/thalia_logo.png';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Menu from './components/Menu/Menu';
 import PrivateRoute from './components/PrivateRoute';
@@ -32,17 +32,61 @@ import TabBar from './components/TabBar/TabBar';
 import LoginPage from './pages/Login/LoginPage';
 import RegisterPage from './pages/Register/RegisterPage';
 import DashboardPage from './pages/Dashboard/Dashboard';
-import ProjectListPage from './pages/Projects/HackathonProjects';
+import ProjectListPage from './pages/Projects/ProjectListPage';
 import HackathonTeams from './pages/Teams/HackathonTeams';
+import EventListPage from './pages/Events/EventListPage';
+import { getEvents, loadStoredProfile, ResultType } from './utils/globalDataUtils';
+import { Event, Profile } from './types/types';
+import { useToast } from './components/ToastProvider';
+import { getExistingToken } from './utils/authUtils';
 
 setupIonicReact();
 ReactGA.initialize('G-3LWGMR7G0P');
 
 const App = () => {
   const isAuthenticated = useIsAuthenticated();
-  const [selectedEvent, setSelectedEvent] = useState<string>('Hackathon 2025');
+  const [selectedEvent, setSelectedEvent] = useState<Event|null>(null);
+  const { showToastError } = useToast();
+  const [events, setEvents] = useState<Event[]>([]);
+  const [profile, setProfile] = useState<Profile | null>(null);
 
-  const events = ['Hackathon 2024', 'Hackathon 2025', 'Hackathon 2026'];
+  // Funktion zum Abrufen der Aktivitäten
+  const fetchEvents = async (token: string | null) => {
+    console.log('EventListPage: Fetching Events');
+    const result = await getEvents(token);
+    if (result.resultType !== ResultType.SUCCESS || result.data === null) {
+      showToastError(result.resultMsg ?? 'Error');
+      return;
+    }
+    console.log('EventListPage: Events fetched: ', result.data);
+    setEvents(result.data);
+    //setSelectedEvent(result.data[result.data.length - 1]);
+    setSelectedEvent(result.data[0]);
+  };
+
+    useEffect(() => {
+      console.log('EventListPage: useEffect: ', isAuthenticated, profile);
+      if (!isAuthenticated) return;
+  
+      if (!profile) {
+        const userProfile = loadStoredProfile();
+        if (!userProfile || !userProfile.id) {
+          showToastError('Profil nicht gefunden. Bitte anmelden.');
+          return;
+        }
+        setProfile(userProfile);
+      }
+  
+      if (profile) {
+        const token = getExistingToken();
+        if (!token) {
+          showToastError('Token nicht gefunden. Bitte anmelden.');
+          return;
+        }
+        fetchEvents(token);
+      }
+    }, [profile]);
+
 
   const publicRoutes = [
     { path: '/login', component: LoginPage, exact: true },
@@ -50,9 +94,10 @@ const App = () => {
   ];
 
   const privateRoutes = [
-    { path: '/dashboard', component: DashboardPage, exact: true },
+    { path: '/dashboard', component: DashboardPage, exact: true, selectedEvent: selectedEvent },
+    { path: '/events', component: EventListPage, exact: true },
     { path: '/teams', component: HackathonTeams, exact: true },
-    { path: '/projects', component: ProjectListPage, exact: true },
+    { path: '/projects', component: ProjectListPage, exact: true, selectedEvent: selectedEvent },
   ];
 
   return (
@@ -72,15 +117,19 @@ const App = () => {
               <IonTitle>Innovation Days</IonTitle>
             </div>
             <IonSelect
-              value={selectedEvent}
+              value={selectedEvent?.id}
               placeholder="Event auswählen"
-              onIonChange={(e) => setSelectedEvent(e.detail.value)}
+              onIonChange={(e) => {
+                const selectedId = e.detail.value;
+                const event = events.find((ev) => ev.id === selectedId);
+                setSelectedEvent(event || null);
+              }}
               interface="popover"
               slot="end"
             >
-              {events.map((event, index) => (
-                <IonSelectOption key={index} value={event}>
-                  {event}
+              {events.map((event) => (
+                <IonSelectOption key={event.id} value={event.id}>
+                  {event.name}
                 </IonSelectOption>
               ))}
             </IonSelect>

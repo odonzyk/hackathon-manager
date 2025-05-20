@@ -1,4 +1,4 @@
-import { Profile, Project, STORAGE_PROFILE } from '../types/types';
+import { Event, Profile, Project, STORAGE_PROFILE } from '../types/types';
 import axios from 'axios';
 
 export enum ResultType {
@@ -143,5 +143,41 @@ export const getProjects = async (
   } catch (error: any) {
     if (error?.response?.status === 404) return resultSuccess([]);
     return resultError('Projects konnten nicht geladen werden');
+  }
+};
+
+/* *************************************************** */
+/* Event API                                         */
+/* *************************************************** */
+export const getEvents = async (
+  token: string | null,
+): Promise<{ resultType: ResultType; resultMsg: string | null; data: Event[] | null }> => {
+  if (!token) return resultError('token  is missing');
+
+  try {
+    const response = await axios.get<Event[]>(`/api/event/list`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return resultSuccess(response.data);
+  } catch (error: any) {
+    if (error?.response?.status === 404) return resultSuccess([]);
+    return resultError('Events konnten nicht geladen werden');
+  }
+};
+
+export const getEvent = async (
+  id: number | null,
+  token: string | null,
+): Promise<{ resultType: ResultType; resultMsg: string | null; data: Event | null }> => {
+  if (!token || !id) return resultError('token or id is missing');
+
+  try {
+    const response = await axios.get<Event>(`/api/event/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return resultSuccess(response.data);
+  } catch (error: any) {
+    if (error?.response?.status === 404) return resultSuccess(null);
+    return resultError('Event konnten nicht geladen werden');
   }
 };

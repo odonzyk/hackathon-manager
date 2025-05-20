@@ -1,9 +1,6 @@
 const express = require('express');
-const os = require('os');
-const config = require('../config'); // Import der Konfiguration
 const router = express.Router();
 const logger = require('../logger');
-const packageJson = require('../../package.json');
 const { db_run } = require('../utils/db/dbUtils');
 const { dbCreate } = require('../utils/db/dbInit');
 const authenticateToken = require('../middlewares/authMiddleware');

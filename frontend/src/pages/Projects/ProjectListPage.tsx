@@ -12,14 +12,18 @@ import {
   IonInput,
   IonButton,
 } from '@ionic/react';
-import './HackathonProjects.css';
-import { Profile, Project } from '../../types/types';
+import './ProjectListPage.css';
+import { Event, Profile, Project } from '../../types/types';
 import { useToast } from '../../components/ToastProvider';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import { getProjects, loadStoredProfile, ResultType } from '../../utils/globalDataUtils';
 import { getExistingToken } from '../../utils/authUtils';
 
-const ProjectListPage: React.FC = () => {
+interface ProjectListPageProps {
+  selectedEvent: Event | null;
+}
+
+const ProjectListPage: React.FC<ProjectListPageProps> = ({ selectedEvent }) => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const isAuthenticated = useIsAuthenticated();
   const { showToastError } = useToast();
@@ -28,7 +32,6 @@ const ProjectListPage: React.FC = () => {
   const [componentFilter, setComponentFilter] = useState('');
   const [skillFilter, setSkillFilter] = useState('');
 
-  // Funktion zum Abrufen der Aktivitäten
   const fetchProjects = async (eventId: number | null, token: string | null) => {
     console.log('ProjectListPage: Fetching Projects');
     const result = await getProjects(eventId, token);
@@ -41,7 +44,7 @@ const ProjectListPage: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log('ProjectListPage: useEffect: ', isAuthenticated, profile);
+    console.log('ProjectListPage: useEffect: ', isAuthenticated, selectedEvent, profile?.id );
     if (!isAuthenticated) return;
 
     if (!profile) {
@@ -59,9 +62,12 @@ const ProjectListPage: React.FC = () => {
         showToastError('Token nicht gefunden. Bitte anmelden.');
         return;
       }
-      fetchProjects(1, token);
+      if (selectedEvent) {
+        fetchProjects(selectedEvent.id, token); 
+      }
     }
-  }, [profile]);
+    
+  }, [profile, selectedEvent]);
 
   const filteredProjects = projects.filter((project) => {
     const matchesSearch = [project.idea, project.description].some((field) =>
