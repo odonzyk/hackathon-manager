@@ -12,7 +12,18 @@ import { STORAGE_PROFILE, STORAGE_TOKEN, User } from '../../types/types';
 import { APP_VERSION } from '../../../config';
 import { useToast } from '../../components/ToastProvider';
 import './LoginPage.css';
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonImg, IonInput, IonPage, IonText } from '@ionic/react';
+import {
+  IonButton,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonContent,
+  IonImg,
+  IonInput,
+  IonPage,
+  IonText,
+} from '@ionic/react';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -26,7 +37,7 @@ const LoginPage = () => {
 
   console.log('LoginPage: Rendered');
 
-// -- Login Function --------------------------------------
+  // -- Login Function --------------------------------------
   /**
    * Handles the login process.
    * Sends the email and password to the backend, receives the token,
@@ -36,7 +47,7 @@ const LoginPage = () => {
     console.log('LoginPage: handleLogin is triggered');
 
     if (!email || !password) {
-      showToastMessage("Fehlerhaftes Login oder Passwort");
+      showToastMessage('Fehlerhaftes Login oder Passwort');
       return;
     }
 
@@ -49,7 +60,7 @@ const LoginPage = () => {
         auth: { token: data.token, type: 'Bearer' },
       });
       if (!success) {
-        showToastMessage("Login fehlgeschlagen");
+        showToastMessage('Login fehlgeschlagen');
         return;
       }
 
@@ -67,7 +78,7 @@ const LoginPage = () => {
         document.location.href = '/dashboard';
       }, 0);
     } catch (error) {
-      showToastMessage("Login fehlgeschlagen");
+      showToastMessage('Login fehlgeschlagen');
     }
   };
 
@@ -95,7 +106,7 @@ const LoginPage = () => {
       const userData: User = jwtDecode(token);
       const userProfile = await getProfile(userData.id, token);
       if (userProfile.resultType !== ResultType.SUCCESS || userProfile.data === null) {
-        showToastError("Login fehlgeschlagen");
+        showToastError('Login fehlgeschlagen');
         cleanUpStorage();
         signOut();
 
@@ -122,24 +133,24 @@ const LoginPage = () => {
     setIsFirstLoad(false);
   }, [isFirstLoad]);
 
-   return (
-      <IonPage>
-        <IonContent>
-          <div className="hackathon-container">
-            <div className="appTitle-header">
-              <IonImg src="/assets/icons/icon.png" className="appTitle-logo" />
-              <div className="appTitle-title">
-                <h1>Hackathon Manager</h1>
-                <IonText color="primary">v {APP_VERSION}</IonText>
-              </div>
+  return (
+    <IonPage>
+      <IonContent>
+        <div className="hackathon-container">
+          <div className="appTitle-header">
+            <IonImg src="/assets/icons/icon.png" className="appTitle-logo" />
+            <div className="appTitle-title">
+              <h1>Hackathon Manager</h1>
+              <IonText color="primary">v {APP_VERSION}</IonText>
             </div>
-  
-            <IonCard className="hackathon-card login-card">
-              <IonCardHeader>
-                <IonCardTitle>Login</IonCardTitle>
-              </IonCardHeader>
-  
-              <IonCardContent>
+          </div>
+
+          <IonCard className="hackathon-card login-card">
+            <IonCardHeader>
+              <IonCardTitle>Login</IonCardTitle>
+            </IonCardHeader>
+
+            <IonCardContent>
               <IonInput
                 className="login-input"
                 value={email}
@@ -149,7 +160,7 @@ const LoginPage = () => {
                 type="email"
                 onIonChange={(e) => setEmail(e.detail.value!)}
               />
-  
+
               <IonInput
                 className="login-input"
                 value={password}
@@ -159,11 +170,11 @@ const LoginPage = () => {
                 type="password"
                 onIonChange={(e) => setPassword(e.detail.value!)}
               />
-  
+
               <IonButton onClick={onSubmit} expand="block">
                 Login
               </IonButton>
-  
+
               <div className="login-links">
                 <IonText color="primary">
                   <a href="#">Passwort vergessen</a>
@@ -172,12 +183,12 @@ const LoginPage = () => {
                   <a href="/register">Neu registrieren</a>
                 </IonText>
               </div>
-              </IonCardContent>
-              </IonCard>
-            </div>
-        </IonContent>
-      </IonPage>
-    );
-  };
+            </IonCardContent>
+          </IonCard>
+        </div>
+      </IonContent>
+    </IonPage>
+  );
+};
 
 export default LoginPage;

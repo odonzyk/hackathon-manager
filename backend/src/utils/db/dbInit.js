@@ -1,8 +1,17 @@
 const logger = require("../../logger");
 const bcrypt = require("bcrypt");
-const { createTable, fillTable, db_get, db_run, db_exec } = require("./dbUtils");
-const { insertUserAdmin, insertEvents, insertProjects } = require("./dbInsertData");
-
+const {
+  createTable,
+  fillTable,
+  db_get,
+  db_run,
+  db_exec,
+} = require("./dbUtils");
+const {
+  insertUserAdmin,
+  insertEvents,
+  insertProjects,
+} = require("./dbInsertData");
 
 // *** DB Creation ************************************************************
 

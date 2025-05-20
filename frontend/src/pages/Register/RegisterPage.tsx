@@ -4,7 +4,6 @@ import {
   IonContent,
   IonInput,
   IonButton,
-  IonLabel,
   IonCard,
   IonImg,
   IonText,
@@ -52,17 +51,19 @@ const RegisterPage: React.FC = () => {
     setIsButtonDisabled(true);
 
     if (!newProfile.email || !password) {
-      showToastMessage("Bitte geben Sie eine gültige E-Mail und ein Passwort ein.");
+      showToastMessage('Bitte geben Sie eine gültige E-Mail und ein Passwort ein.');
       setIsButtonDisabled(false);
       return;
     }
     if (password !== confirmPassword) {
-      showToastMessage("Das Passwort muss mit dem Passwort übereinstimmen.");
+      showToastMessage('Das Passwort muss mit dem Passwort übereinstimmen.');
       setIsButtonDisabled(false);
       return;
     }
     if (password.length < 8) {
-      showToastMessage("Das Passwort muss mindestens 8 Zeichen lang sein und mindestens einen Großbuchstaben, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen enthalten.");
+      showToastMessage(
+        'Das Passwort muss mindestens 8 Zeichen lang sein und mindestens einen Großbuchstaben, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen enthalten.',
+      );
       setIsButtonDisabled(false);
       return;
     }
@@ -80,7 +81,7 @@ const RegisterPage: React.FC = () => {
       });
 
       if (response.status === 201) {
-        showToastMessage("Benutzer erfolgreich erstellt");
+        showToastMessage('Benutzer erfolgreich erstellt');
         console.log('RegisterPage: User created successfully', response.data);
 
         // Weiterleitung zur Login-Seite oder Dashboard
@@ -88,10 +89,10 @@ const RegisterPage: React.FC = () => {
           document.location.href = '/login';
         }, 2000);
       } else {
-        showToastError("Fehler bei der Registrierung. Bitte versuchen Sie es erneut.");
+        showToastError('Fehler bei der Registrierung. Bitte versuchen Sie es erneut.');
       }
     } catch (error) {
-      showToastError("Fehler bei der Registrierung. Bitte versuchen Sie es erneut.");
+      showToastError('Fehler bei der Registrierung. Bitte versuchen Sie es erneut.');
     } finally {
       setIsButtonDisabled(false);
     }
@@ -142,10 +143,7 @@ const RegisterPage: React.FC = () => {
     if (password !== confirmPassword || password === '' || confirmPassword === '') {
       setPasswordError(true);
       setIsButtonDisabled(true);
-    } else if (
-      newProfile.name === '' ||
-      newProfile.email === ''
-    ) {
+    } else if (newProfile.name === '' || newProfile.email === '') {
       setIsButtonDisabled(true);
     } else {
       setPasswordError(false);
@@ -172,25 +170,25 @@ const RegisterPage: React.FC = () => {
           </IonCardHeader>
 
           <IonCardContent>
-
             <IonInput
               className="register-input"
               value={newProfile.name}
               labelPlacement="floating"
-              label='Name (Benötigt)'
+              label="Name (Benötigt)"
               placeholder="Name eingeben"
               fill="outline"
               required={true}
               onIonChange={(e) => handleInputChange('name', e.detail.value!)}
-              
             />
             <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+              >
                 <IonInput
                   className="register-input"
                   value={newProfile.email}
-                  labelPlacement='floating'
-                  label='Email (Benötigt)'
+                  labelPlacement="floating"
+                  label="Email (Benötigt)"
                   placeholder="Email eingeben"
                   fill="outline"
                   required={true}
@@ -206,12 +204,14 @@ const RegisterPage: React.FC = () => {
               </div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+              >
                 <IonInput
                   className="register-input"
                   value={newProfile.telephone}
-                  labelPlacement='floating'
-                  label='Telefonnummer'
+                  labelPlacement="floating"
+                  label="Telefonnummer"
                   placeholder="Telefonnummer eingeben"
                   fill="outline"
                   type="tel"
@@ -222,14 +222,11 @@ const RegisterPage: React.FC = () => {
                   checked={newProfile.is_private_telephone}
                   onIonChange={(e) => handleInputChange('is_private_telephone', e.detail.checked)}
                   style={{ marginLeft: '16px' }}
-
                 />
               </div>
             </div>
           </IonCardContent>
         </IonCard>
-
-
 
         <IonCard className="hackathon-card register-card">
           <IonCardHeader>
@@ -240,7 +237,7 @@ const RegisterPage: React.FC = () => {
             <IonInput
               className="register-input"
               value={password}
-              labelPlacement='floating'
+              labelPlacement="floating"
               label="Passwort"
               placeholder="Passwort eingeben"
               fill="outline"
@@ -256,7 +253,7 @@ const RegisterPage: React.FC = () => {
             <IonInput
               className="register-input"
               value={confirmPassword}
-              labelPlacement='floating'
+              labelPlacement="floating"
               label="Passwort wiederholen"
               placeholder="Passwort wiederholen"
               fill="outline"
@@ -276,7 +273,6 @@ const RegisterPage: React.FC = () => {
               </IonText>
             )}
 
-
             <IonButton
               onClick={onSubmit}
               expand="block"
@@ -287,7 +283,6 @@ const RegisterPage: React.FC = () => {
             </IonButton>
           </IonCardContent>
         </IonCard>
-
       </IonContent>
     </IonPage>
   );

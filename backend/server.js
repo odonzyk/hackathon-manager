@@ -23,7 +23,6 @@ const eventRoutes = require("./src/routes/event");
 const projectRoutes = require("./src/routes/project");
 const participateRoutes = require("./src/routes/participant");
 
-
 // CORS-Options for Frontend
 const corsOptions = {
   origin: [

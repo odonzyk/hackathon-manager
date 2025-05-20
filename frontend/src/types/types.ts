@@ -1,6 +1,6 @@
 export const STORAGE_TOKEN = 'hackathonToken';
 export const STORAGE_PROFILE = 'hackathonProfile';
-import { archiveOutline, checkmark, closeOutline,  playOutline, stopOutline } from 'ionicons/icons';
+import { archiveOutline, checkmark, closeOutline, playOutline, stopOutline } from 'ionicons/icons';
 
 export type User = {
   id: number;
@@ -31,7 +31,7 @@ export type Project = {
   goal: string;
   components: string;
   skills: string;
-}
+};
 
 export const UserRoleMap: Record<number, { name: string; color: string; emoji: string }> = {
   1: { name: 'Admin', color: '#FF5733', emoji: '👑' }, // Rot für Admin
@@ -39,9 +39,9 @@ export const UserRoleMap: Record<number, { name: string; color: string; emoji: s
 };
 
 export const ActivityStatusMap: Record<number, { name: string; icon: any }> = {
-  1: { name: 'pitching', icon: playOutline }, 
+  1: { name: 'pitching', icon: playOutline },
   2: { name: 'active', icon: checkmark }, //
-  3: { name: 'ended', icon: stopOutline }, 
-  4: { name: 'cancelled', icon: closeOutline }, 
-  5: { name: 'archived', icon: archiveOutline }, 
+  3: { name: 'ended', icon: stopOutline },
+  4: { name: 'cancelled', icon: closeOutline },
+  5: { name: 'archived', icon: archiveOutline },
 };

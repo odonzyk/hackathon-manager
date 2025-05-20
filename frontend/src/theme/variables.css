@@ -1,19 +1,19 @@
 :root {
-  --ion-background-color: #1E1E2F;
-  --ion-text-color: #FFFFFF;
-  --ion-card-background: #2E2E3E;
-  --ion-color-primary: #00FFFF; /* Neon Cyan */
-  --ion-color-secondary: #FF00FF; /* Neon Magenta */
-  --ion-color-tertiary: #00FF00; /* Neon Grün */
+  --ion-background-color: #1e1e2f;
+  --ion-text-color: #ffffff;
+  --ion-card-background: #2e2e3e;
+  --ion-color-primary: #00ffff; /* Neon Cyan */
+  --ion-color-secondary: #ff00ff; /* Neon Magenta */
+  --ion-color-tertiary: #00ff00; /* Neon Grün */
   --ion-font-family: 'Source Code Pro', monospace;
   --ion-color-warning: #ff6b6b;
 }
 
 body {
-  background: radial-gradient(circle, #1E1E2F, #121212);
+  background: radial-gradient(circle, #1e1e2f, #121212);
   font-family: 'Source Code Pro', monospace;
   overflow: hidden; /* Verhindert Scrollen durch Animation */
-  background-image: 
+  background-image:
     linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
     linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
   background-size: 20px 20px; /* Größe des Grid-Musters */
@@ -42,7 +42,9 @@ ion-button {
   color: #000;
   border-radius: 8px;
   margin-top: 10px;
-  transition: box-shadow 0.3s, transform 0.3s;
+  transition:
+    box-shadow 0.3s,
+    transform 0.3s;
 }
 
 ion-button:hover {
@@ -54,7 +56,6 @@ ion-select {
   font-size: 1.5rem;
   color: var(--ion-color-primary);
 }
-
 
 .custom-toast {
   --background: var(--ion-color-primary);
@@ -100,15 +101,15 @@ ion-select {
 }
 
 .hackathon-toolbar {
-  background-color: #2E2E3E;
+  background-color: #2e2e3e;
   color: var(--ion-color-primary);
 }
 
-.hackathon-container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 3vh;
+.hackathon-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3vh;
 }
 
 .hackathon-card {
@@ -116,7 +117,9 @@ ion-select {
   color: var(--ion-text-color);
   border-radius: 12px;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
 }
 
 .hackathon-card ion-card-title {
@@ -144,5 +147,3 @@ ion-select {
 .hackathon-grid {
   margin-top: 16px;
 }
-
-

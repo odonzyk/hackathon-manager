@@ -29,7 +29,10 @@ router.get("/list/:event_id", authenticateToken, async (req, res) => {
   if (!event_id) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
   }
-  const result = await db_all(`SELECT Project.* FROM Project where event_id = ?`, [event_id]);
+  const result = await db_all(
+    `SELECT Project.* FROM Project where event_id = ?`,
+    [event_id],
+  );
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (!result.row || (Array.isArray(result.row) && result.row.length === 0)) {
     return res.status(404).send(ErrorMsg.NOT_FOUND.NO_PROJECT);

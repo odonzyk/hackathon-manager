@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   IonPage,
   IonContent,
@@ -12,7 +11,7 @@ import {
 } from '@ionic/react';
 import './Dashboard.css';
 
-const Dashboard: React.FC = () => {
+const Dashboard = () => {
   return (
     <IonPage>
       <IonContent>
@@ -68,7 +67,6 @@ const Dashboard: React.FC = () => {
           </IonRow>
         </IonGrid>
       </IonContent>
-
     </IonPage>
   );
 };

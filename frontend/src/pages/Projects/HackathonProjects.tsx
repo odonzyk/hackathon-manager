@@ -19,8 +19,6 @@ import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import { getProjects, loadStoredProfile, ResultType } from '../../utils/globalDataUtils';
 import { getExistingToken } from '../../utils/authUtils';
 
-
-
 const ProjectListPage: React.FC = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const isAuthenticated = useIsAuthenticated();
@@ -30,17 +28,17 @@ const ProjectListPage: React.FC = () => {
   const [componentFilter, setComponentFilter] = useState('');
   const [skillFilter, setSkillFilter] = useState('');
 
-    // Funktion zum Abrufen der Aktivitäten
-    const fetchProjects = async (eventId: number | null, token: string | null) => {
-      console.log('ProjectListPage: Fetching Projects');
-      const result = await getProjects(eventId, token);
-      if (result.resultType !== ResultType.SUCCESS || result.data === null) {
-        showToastError(result.resultMsg ?? 'Error');
-        return;
-      }
-      console.log('ProjectListPage: Projects fetched: ', result.data);
-      setProjects(result.data);
-    };
+  // Funktion zum Abrufen der Aktivitäten
+  const fetchProjects = async (eventId: number | null, token: string | null) => {
+    console.log('ProjectListPage: Fetching Projects');
+    const result = await getProjects(eventId, token);
+    if (result.resultType !== ResultType.SUCCESS || result.data === null) {
+      showToastError(result.resultMsg ?? 'Error');
+      return;
+    }
+    console.log('ProjectListPage: Projects fetched: ', result.data);
+    setProjects(result.data);
+  };
 
   useEffect(() => {
     console.log('ProjectListPage: useEffect: ', isAuthenticated, profile);
@@ -49,7 +47,7 @@ const ProjectListPage: React.FC = () => {
     if (!profile) {
       const userProfile = loadStoredProfile();
       if (!userProfile || !userProfile.id) {
-        showToastError("Profil nicht gefunden. Bitte anmelden.");
+        showToastError('Profil nicht gefunden. Bitte anmelden.');
         return;
       }
       setProfile(userProfile);
@@ -58,13 +56,12 @@ const ProjectListPage: React.FC = () => {
     if (profile) {
       const token = getExistingToken();
       if (!token) {
-        showToastError("Token nicht gefunden. Bitte anmelden.");
+        showToastError('Token nicht gefunden. Bitte anmelden.');
         return;
       }
       fetchProjects(1, token);
     }
   }, [profile]);
-
 
   const filteredProjects = projects.filter((project) => {
     const matchesSearch = [project.idea, project.description].some((field) =>
@@ -153,9 +150,7 @@ const ProjectListPage: React.FC = () => {
                         <strong>Skills:</strong> {project.skills}
                       </p>
                     </div>
-                    <IonButton expand="block">
-                      Projekt beitreten
-                    </IonButton>
+                    <IonButton expand="block">Projekt beitreten</IonButton>
                   </IonCardContent>
                 </IonCard>
               </IonCol>

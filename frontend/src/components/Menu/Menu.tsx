@@ -49,7 +49,6 @@ const Menu = () => {
     { link: '/teams', icon: peopleOutline, labelKey: 'Teams' },
   ];
 
-
   return (
     <IonMenu menuId="main-menu" contentId="main-content">
       <IonHeader>
@@ -90,7 +89,7 @@ const Menu = () => {
               }}
             >
               <IonIcon icon={isAuthenticated ? logOutOutline : logInOutline} slot="start" />
-              <IonLabel>{isAuthenticated ? "Logout" : "Login"}</IonLabel>
+              <IonLabel>{isAuthenticated ? 'Logout' : 'Login'}</IonLabel>
             </IonItem>
           </IonList>
         </div>

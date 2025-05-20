@@ -1,5 +1,5 @@
 .custom-tab-bar {
-  background-color: #2E2E3E;
+  background-color: #2e2e3e;
   color: var(--ion-color-primary);
   padding: 4px 12px;
   margin: 8px;
@@ -9,7 +9,6 @@
 
 .custom-tab-bar ion-tab-button {
   color: #f0f4f8;
-  background-color: #2E2E3E;
-  font-size: 1.0rem;
+  background-color: #2e2e3e;
+  font-size: 1rem;
 }
-

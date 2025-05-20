@@ -3,13 +3,13 @@
   box-shadow: none;
 }
 .register-card {
-  width: 100%; 
+  width: 100%;
   max-width: 400px;
   margin: 0 auto 20px auto;
 }
 
 .register-input {
-  font-size: 1.0rem;
+  font-size: 1rem;
   margin-bottom: 20px;
 }
 

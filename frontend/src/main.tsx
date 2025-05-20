@@ -7,7 +7,6 @@ import AuthProvider from 'react-auth-kit';
 import createStore from 'react-auth-kit/createStore';
 import { ToastProvider } from './components/ToastProvider';
 
-
 const store = createStore({
   authName: '_authParkApp',
   authType: 'cookie',
@@ -26,5 +25,5 @@ root.render(
         </IonReactRouter>
       </ToastProvider>
     </AuthProvider>
-  </StrictMode>
+  </StrictMode>,
 );

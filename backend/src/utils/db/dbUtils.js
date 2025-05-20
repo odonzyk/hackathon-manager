@@ -2,7 +2,6 @@ const sqlite3 = require("sqlite3").verbose();
 const config = require("../../config");
 const logger = require("../../logger");
 
-
 logger.debug(`Open DB ${config.dbPath}`);
 
 const db = new sqlite3.Database(config.dbPath, (err) => {
@@ -94,4 +93,12 @@ async function fillTable(table, structure, values) {
   }
 }
 
-module.exports = { db, db_run, db_get, db_all, db_exec, createTable, fillTable };
+module.exports = {
+  db,
+  db_run,
+  db_get,
+  db_all,
+  db_exec,
+  createTable,
+  fillTable,
+};
