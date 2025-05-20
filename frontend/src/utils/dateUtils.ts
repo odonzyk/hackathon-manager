@@ -22,7 +22,7 @@ export const formatCountdown = (timeLeft: number) => {
   const days = Math.floor(timeLeft / (3600 * 24));
   const hours = Math.floor((timeLeft % (3600 * 24)) / 3600);
   const minutes = Math.floor((timeLeft % 3600) / 60);
-  const seconds = Math.floor(timeLeft % 60);
+//  const seconds = Math.floor(timeLeft % 60);
   return `${days} Tage ${hours} Stunden ${minutes} Minuten`};
 
 

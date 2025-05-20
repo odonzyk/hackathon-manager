@@ -15,11 +15,9 @@ import ReactGA from 'react-ga4';
 import { Event, Profile, Project } from '../../types/types';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import { useToast } from '../../components/ToastProvider';
-import { getEvent, getEvents, getProjects, loadStoredProfile, ResultType } from '../../utils/globalDataUtils';
+import { getEvent, getProjects, loadStoredProfile, ResultType } from '../../utils/globalDataUtils';
 import { getExistingToken } from '../../utils/authUtils';
 import { formatCountdown } from '../../utils/dateUtils';
-import CountdownFlip from '../../components/flipNumbers';
-import FlipNumbers from 'react-flip-numbers';
 
 interface DashboardPageProps {
   selectedEvent: Event | null;
