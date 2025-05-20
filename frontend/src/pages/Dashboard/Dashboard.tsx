@@ -10,8 +10,14 @@ import {
   IonCol,
 } from '@ionic/react';
 import './Dashboard.css';
+import { useEffect } from 'react';
+import ReactGA from 'react-ga4';
 
-const Dashboard = () => {
+const DashboardPage = () => {
+  useEffect(() => {
+    ReactGA.send({ hitType: 'pageview', page: window.location.pathname });
+  }, []);
+
   return (
     <IonPage>
       <IonContent>
@@ -71,4 +77,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardPage;

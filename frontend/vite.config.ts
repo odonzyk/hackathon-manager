@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
 
   console.log(`${packageJson.name} v${packageJson.version}`);
   console.log(`Mode: ${mode}`);
-  console.log(`API Port: ${env.VITE_API_PORT || 3000}`);
+  console.log(`API Port: ${env.VITE_API_PORT || 3005}`);
   console.log(`HOST Port: ${env.VITE_HOST_PORT}`);
 
   return {
@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => {
       host: "0.0.0.0", // Falls du möchtest, dass Vite von anderen Geräten im Netzwerk erreichbar ist
       proxy: {
         "/api": {
-          target: `${env.VITE_API_HOST || "http://localhost"}:${env.VITE_API_PORT || 3000}`, // Hier den Port aus der .env verwenden
+          target: `${env.VITE_API_HOST || "http://localhost"}:${env.VITE_API_PORT || 3005}`, // Hier den Port aus der .env verwenden
           changeOrigin: true, // Wichtig, um CORS zu umgehen
           secure: false // Wenn die API nicht HTTPS verwendet
         }

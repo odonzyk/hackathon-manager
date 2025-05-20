@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import ReactGA from 'react-ga4';
 
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
 import useSignOut from 'react-auth-kit/hooks/useSignOut';
@@ -118,6 +119,10 @@ const LoginPage = () => {
   };
 
   // -- Page Logig ---------------------------------------.
+  useEffect(() => {
+    ReactGA.send({ hitType: 'pageview', page: window.location.pathname });
+  }, []);
+
   useEffect(() => {
     console.log('LoginPage: useEffect is triggered', isFirstLoad, isAuthenticated);
     if (isFirstLoad) {

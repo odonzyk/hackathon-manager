@@ -14,6 +14,7 @@ import {
   setupIonicReact,
 } from '@ionic/react';
 import { Redirect, Route } from 'react-router-dom';
+import ReactGA from 'react-ga4';
 import '@ionic/react/css/core.css';
 import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
@@ -21,19 +22,21 @@ import '@ionic/react/css/typography.css';
 import './App.css';
 import './theme/variables.css';
 import ThaliaLogo from './assets/thalia_logo.png';
+import { useState } from 'react';
 
-import HackathonTeams from './pages/Teams/HackathonTeams';
-import HackathonProjects from './pages/Projects/HackathonProjects';
-import LoginPage from './pages/Login/LoginPage';
-import Dashboard from './pages/Dashboard/Dashboard';
 import Menu from './components/Menu/Menu';
 import PrivateRoute from './components/PrivateRoute';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
-import RegisterPage from './pages/Register/RegisterPage';
 import TabBar from './components/TabBar/TabBar';
-import { useState } from 'react';
+
+import LoginPage from './pages/Login/LoginPage';
+import RegisterPage from './pages/Register/RegisterPage';
+import DashboardPage from './pages/Dashboard/Dashboard';
+import ProjectListPage from './pages/Projects/HackathonProjects';
+import HackathonTeams from './pages/Teams/HackathonTeams';
 
 setupIonicReact();
+ReactGA.initialize('G-3LWGMR7G0P');
 
 const App = () => {
   const isAuthenticated = useIsAuthenticated();
@@ -47,9 +50,9 @@ const App = () => {
   ];
 
   const privateRoutes = [
-    { path: '/dashboard', component: Dashboard, exact: true },
+    { path: '/dashboard', component: DashboardPage, exact: true },
     { path: '/teams', component: HackathonTeams, exact: true },
-    { path: '/projects', component: HackathonProjects, exact: true },
+    { path: '/projects', component: ProjectListPage, exact: true },
   ];
 
   return (

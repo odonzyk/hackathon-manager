@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   IonPage,
   IonContent,
@@ -20,6 +20,7 @@ import { APP_VERSION } from '../../../config';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import { getExistingToken } from '../../utils/authUtils';
 import { useToast } from '../../components/ToastProvider';
+import ReactGA from 'react-ga4';
 
 const emptyProfile: Profile = {
   id: 0,
@@ -34,7 +35,7 @@ const emptyProfile: Profile = {
 
 const ROLE_USER = 2;
 
-const RegisterPage: React.FC = () => {
+const RegisterPage = () => {
   const [isFirstLoad, setIsFirstLoad] = useState(true);
   const [newProfile, setNewProfile] = useState<Profile>(emptyProfile);
   const [password, setPassword] = useState('');
@@ -113,6 +114,10 @@ const RegisterPage: React.FC = () => {
   };
 
   // -- Page Logig ---------------------------------------.
+  useEffect(() => {
+    ReactGA.send({ hitType: 'pageview', page: window.location.pathname });
+  }, []);
+
   useEffect(() => {
     console.log('RegisterPage: useEffect is triggered', isFirstLoad, isAuthenticated);
     if (isFirstLoad) {
