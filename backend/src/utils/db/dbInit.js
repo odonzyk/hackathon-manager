@@ -94,13 +94,13 @@ async function dbCreate() {
             description TEXT,
             team_name TEXT,
             team_avatar_url TEXT,
-            iniator_id INTEGER NOT NULL,
+            initiator_id INTEGER NOT NULL,
             goal TEXT,
             components TEXT,
             skills TEXT,
             FOREIGN KEY (event_id) REFERENCES Event(id),
             FOREIGN KEY (status_id) REFERENCES ProjectStatus(id),
-            FOREIGN KEY (iniator_id) REFERENCES User(id)
+            FOREIGN KEY (initiator_id) REFERENCES User(id)
         )`,
   );
 

@@ -1,8 +1,11 @@
 const logger = require("../../logger");
 const bcrypt = require("bcrypt");
-const { createTable, fillTable, db_get, db_run, db_exec } = require("./dbUtils");
+const { db_get, db_run } = require("./dbUtils");
 const { time2ts } = require("../utils");
+const fs = require("fs");
+const path = require("path");
 
+const defaultProjectsPath = path.resolve(__dirname, "./data/projects.json");
 const DEFAULT_PASSWORD = "welcome!";
 
 async function insertUserAdmin() {
@@ -27,14 +30,22 @@ async function insertProjects() {
     if (result.err || !!result.row) return;
 
     logger.info("DB Insert: Create Projects");
-    createProject(1, 3, 'Hackathon App', 'An app to manage the hackathon',
-        'Team 1', '/assets/avatars/avatar_1.png', 1, 
-        'Goal 1', 'Component 1', 'Skill 1'
-    );
-    createProject(2, 1, 'Hackathon App 2', 'An app to manage the hackathon 2',
-        'Team 2', '/assets/avatars/avatar_2.png', 1, 
-        'Goal 2', 'Component 2', 'Skill 2'
-    );
+
+    const projects = JSON.parse(fs.readFileSync(defaultProjectsPath, "utf-8"));
+    for (const project of projects) {
+        createProject(
+            project.event_id,
+            project.status_id,
+            project.idea,
+            project.description,
+            project.team_name,
+            project.team_avatar_url,
+            project.initiator_id,
+            project.goal,
+            project.components,
+            project.skills
+        );
+    }
 }
 
 // ** Helper function to create the table *******************************
@@ -64,7 +75,7 @@ async function createEvent(id, name, start_time, end_time) {
 async function createProject(event_id, status_id, idea, description, team_name, team_avatar_url, iniator_id, goal, components, skills) {
     const result = await db_run(
         `INSERT 
-            INTO Project (event_id, status_id, idea, description, team_name, team_avatar_url, iniator_id, goal, components, skills)
+            INTO Project (event_id, status_id, idea, description, team_name, team_avatar_url, initiator_id, goal, components, skills)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [event_id, status_id, idea, description, team_name, team_avatar_url, iniator_id, goal, components, skills],
     );
