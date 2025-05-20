@@ -9,17 +9,12 @@ import {
   IonImg,
   IonText,
   IonToggle,
-  IonSelect,
-  IonSelectOption,
   IonInputPasswordToggle,
 } from '@ionic/react';
-import { useHistory } from 'react-router-dom';
-import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 import './RegisterPage.css';
 import { Profile } from '../../types/types';
 import { APP_VERSION } from '../../../config';
-import useSignIn from 'react-auth-kit/hooks/useSignIn';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import { getExistingToken } from '../../utils/authUtils';
 import { useToast } from '../../components/ToastProvider';
@@ -35,11 +30,7 @@ const emptyProfile: Profile = {
   avatar_url: '',
 };
 
-const emptyVehicle = {
-  id: 0,
-  vehicle_type_id: 1,
-  licence_plate: '',
-};
+const ROLE_USER = 2;
 
 const RegisterPage: React.FC = () => {
   const [isFirstLoad, setIsFirstLoad] = useState(true);
@@ -82,7 +73,7 @@ const RegisterPage: React.FC = () => {
         is_private_email: newProfile.is_private_email,
         is_private_telephone: newProfile.is_private_telephone,
         password: password,
-        role_id: 2,
+        role_id: ROLE_USER,
       });
 
       if (response.status === 201) {
