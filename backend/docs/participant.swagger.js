@@ -15,16 +15,16 @@ const participantPaths = {
               properties: {
                 project_id: {
                   type: 'integer',
-                  example: 1,
+                  example: 1
                 },
                 user_id: {
                   type: 'integer',
-                  example: 42,
-                },
-              },
-            },
-          },
-        },
+                  example: 42
+                }
+              }
+            }
+          }
+        }
       },
       responses: {
         201: {
@@ -32,22 +32,22 @@ const participantPaths = {
           content: {
             'application/json': {
               schema: {
-                $ref: '#/components/schemas/Participant',
-              },
-            },
-          },
+                $ref: '#/components/schemas/Participant'
+              }
+            }
+          }
         },
         400: {
-          description: ErrorMsg.VALIDATION.MISSING_FIELDS,
+          description: ErrorMsg.VALIDATION.MISSING_FIELDS
         },
         409: {
-          description: ErrorMsg.VALIDATION.CONFLICT,
+          description: ErrorMsg.VALIDATION.CONFLICT
         },
         500: {
-          description: ErrorMsg.SERVER.ERROR,
-        },
-      },
-    },
+          description: ErrorMsg.SERVER.ERROR
+        }
+      }
+    }
   },
   '/participant/{id}': {
     get: {
@@ -55,8 +55,8 @@ const participantPaths = {
       tags: ['Participant'],
       security: [
         {
-          bearerAuth: [],
-        },
+          bearerAuth: []
+        }
       ],
       parameters: [
         {
@@ -64,10 +64,10 @@ const participantPaths = {
           name: 'id',
           required: true,
           schema: {
-            type: 'integer',
+            type: 'integer'
           },
-          description: 'ID of the participant',
-        },
+          description: 'ID of the participant'
+        }
       ],
       responses: {
         200: {
@@ -75,26 +75,26 @@ const participantPaths = {
           content: {
             'application/json': {
               schema: {
-                $ref: '#/components/schemas/Participant',
-              },
-            },
-          },
+                $ref: '#/components/schemas/Participant'
+              }
+            }
+          }
         },
         404: {
-          description: ErrorMsg.NOT_FOUND.NO_PARTICIPANT,
+          description: ErrorMsg.NOT_FOUND.NO_PARTICIPANT
         },
         500: {
-          description: ErrorMsg.SERVER.ERROR,
-        },
-      },
+          description: ErrorMsg.SERVER.ERROR
+        }
+      }
     },
     put: {
       summary: 'Update participant details',
       tags: ['Participant'],
       security: [
         {
-          bearerAuth: [],
-        },
+          bearerAuth: []
+        }
       ],
       parameters: [
         {
@@ -102,10 +102,10 @@ const participantPaths = {
           name: 'id',
           required: true,
           schema: {
-            type: 'integer',
+            type: 'integer'
           },
-          description: 'ID of the participant',
-        },
+          description: 'ID of the participant'
+        }
       ],
       requestBody: {
         required: true,
@@ -117,16 +117,16 @@ const participantPaths = {
               properties: {
                 project_id: {
                   type: 'integer',
-                  example: 1,
+                  example: 1
                 },
                 user_id: {
                   type: 'integer',
-                  example: 42,
-                },
-              },
-            },
-          },
-        },
+                  example: 42
+                }
+              }
+            }
+          }
+        }
       },
       responses: {
         200: {
@@ -134,29 +134,29 @@ const participantPaths = {
           content: {
             'application/json': {
               schema: {
-                $ref: '#/components/schemas/Participant',
-              },
-            },
-          },
+                $ref: '#/components/schemas/Participant'
+              }
+            }
+          }
         },
         400: {
-          description: ErrorMsg.VALIDATION.MISSING_FIELDS,
+          description: ErrorMsg.VALIDATION.MISSING_FIELDS
         },
         404: {
-          description: ErrorMsg.NOT_FOUND.NO_PARTICIPANT,
+          description: ErrorMsg.NOT_FOUND.NO_PARTICIPANT
         },
         500: {
-          description: ErrorMsg.SERVER.ERROR,
-        },
-      },
+          description: ErrorMsg.SERVER.ERROR
+        }
+      }
     },
     delete: {
       summary: 'Delete participant',
       tags: ['Participant'],
       security: [
         {
-          bearerAuth: [],
-        },
+          bearerAuth: []
+        }
       ],
       parameters: [
         {
@@ -164,24 +164,24 @@ const participantPaths = {
           name: 'id',
           required: true,
           schema: {
-            type: 'integer',
+            type: 'integer'
           },
-          description: 'ID of the participant',
-        },
+          description: 'ID of the participant'
+        }
       ],
       responses: {
         200: {
-          description: 'Participant successfully deleted',
+          description: 'Participant successfully deleted'
         },
         404: {
-          description: ErrorMsg.NOT_FOUND.NO_PARTICIPANT,
+          description: ErrorMsg.NOT_FOUND.NO_PARTICIPANT
         },
         500: {
-          description: ErrorMsg.SERVER.ERROR,
-        },
-      },
-    },
-  },
+          description: ErrorMsg.SERVER.ERROR
+        }
+      }
+    }
+  }
 };
 
 module.exports = { participantPaths };

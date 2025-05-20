@@ -28,11 +28,11 @@ const corsOptions = {
   origin: [`${config.hostUrl}:${config.hostPort}`, `${config.apiUrl}:${config.apiPort}`],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
+  credentials: true
 };
 // Definiere globale Labels
 const globalLabels = {
-  environment: config.node_env,
+  environment: config.node_env
 };
 
 const app = express();
@@ -68,7 +68,7 @@ function registerPrometheus() {
   const http_request_counter = new client.Counter({
     name: 'http_request_count',
     help: 'Count of HTTP requests',
-    labelNames: ['method', 'route', 'statusCode', 'environment'],
+    labelNames: ['method', 'route', 'statusCode', 'environment']
   });
 
   register.registerMetric(http_request_counter);
@@ -77,8 +77,8 @@ function registerPrometheus() {
     prometheus({
       additionalLabels: Object.keys(globalLabels),
       extractAdditionalLabelValuesFn: () => globalLabels,
-      defaultMetrics: true,
-    }),
+      defaultMetrics: true
+    })
   );
   app.use('/*', function (req, res, next) {
     let route = req.originalUrl;
@@ -89,7 +89,7 @@ function registerPrometheus() {
         method: req.method,
         route: route,
         statusCode: res.statusCode,
-        environment: config.node_env,
+        environment: config.node_env
       })
       .inc();
     next();

@@ -17,67 +17,67 @@ const apiDocumentation = {
     contact: {
       name: 'Thalia DRS',
       email: 'j.zech@thalia.de',
-      url: 'https://www.thalia-drs.de',
+      url: 'https://www.thalia-drs.de'
     },
     license: {
       name: 'Apache 2.0',
-      url: 'https://www.apache.org/licenses/LICENSE-2.0.html',
-    },
+      url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+    }
   },
   servers: [
     {
       url: 'https://hackathon.drsbln.de/api',
-      description: 'Production Server',
+      description: 'Production Server'
     },
     {
       url: 'https://hackathon-stg.drsbln.de/api',
-      description: 'Staging Server',
+      description: 'Staging Server'
     },
     {
       url: `${config.apiUrl}:${config.apiPort}/api`,
-      description: 'Local Server',
-    },
+      description: 'Local Server'
+    }
   ],
   tags: [
     {
-      name: 'Health',
+      name: 'Health'
     },
     {
       name: 'User',
-      description: 'API endpoints for managing users',
+      description: 'API endpoints for managing users'
     },
     {
       name: 'Event',
-      description: 'API endpoints for managing events',
+      description: 'API endpoints for managing events'
     },
     {
       name: 'Project',
-      description: 'API endpoints for managing projects',
+      description: 'API endpoints for managing projects'
     },
     {
       name: 'Participant',
-      description: 'API endpoints for managing participants',
-    },
+      description: 'API endpoints for managing participants'
+    }
   ],
   paths: {
     ...healthPaths,
     ...userPaths,
     ...eventPaths,
     ...projectPaths,
-    ...participantPaths,
+    ...participantPaths
   },
   components: {
     securitySchemes: {
       bearerAuth: {
         type: 'http',
         scheme: 'bearer',
-        bearerFormat: 'JWT',
-      },
+        bearerFormat: 'JWT'
+      }
     },
     schemas: {
-      ...schemaObjects,
-    },
-  },
+      ...schemaObjects
+    }
+  }
 };
 
 module.exports = apiDocumentation;

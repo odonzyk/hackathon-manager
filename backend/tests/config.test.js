@@ -1,7 +1,7 @@
 const path = require('path');
 
 jest.mock('dotenv', () => ({
-  config: jest.fn(),
+  config: jest.fn()
 }));
 
 describe('Environment Config', () => {
@@ -17,7 +17,7 @@ describe('Environment Config', () => {
     process.env.NODE_ENV = 'production';
     const config = require('../src/config'); // Modul neu laden
     expect(dotenv.config).toHaveBeenCalledWith({
-      path: path.resolve(__dirname, '../backend/.env.prod'),
+      path: path.resolve(__dirname, '../backend/.env.prod')
     });
   });
 
@@ -25,7 +25,7 @@ describe('Environment Config', () => {
     process.env.NODE_ENV = 'dev';
     const config = require('../src/config'); // Modul neu laden
     expect(dotenv.config).toHaveBeenCalledWith({
-      path: path.resolve(__dirname, '../backend/.env.dev'),
+      path: path.resolve(__dirname, '../backend/.env.dev')
     });
   });
 
@@ -33,7 +33,7 @@ describe('Environment Config', () => {
     delete process.env.NODE_ENV; // NODE_ENV entfernen
     const config = require('../src/config'); // Modul neu laden
     expect(dotenv.config).toHaveBeenCalledWith({
-      path: path.resolve(__dirname, '../backend/.env.stage'),
+      path: path.resolve(__dirname, '../backend/.env.stage')
     });
   });
 });

@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
     uptime: process.uptime(),
     memoryUsage: process.memoryUsage(),
     cpuLoad: os.loadavg(),
-    timestamp: new Date().toISOString(),
+    timestamp: new Date().toISOString()
   });
 });
 

@@ -11,7 +11,7 @@ const createEvent = (dbRow) => {
     id: dbRow?.id ?? null,
     name: dbRow?.name ?? '',
     start_time: dbRow?.start_time ?? null,
-    end_time: dbRow?.end_time ?? null,
+    end_time: dbRow?.end_time ?? null
   };
 };
 
@@ -40,11 +40,7 @@ router.post('/', async (req, res) => {
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (result.row) return res.status(409).send(ErrorMsg.VALIDATION.CONFLICT);
 
-  result = await db_run('INSERT INTO Event (name, start_time, end_time) VALUES (?, ?, ?)', [
-    name,
-    start_time,
-    end_time,
-  ]);
+  result = await db_run('INSERT INTO Event (name, start_time, end_time) VALUES (?, ?, ?)', [name, start_time, end_time]);
   const event_id = result.lastID;
   if (result.err || result.changes === 0) {
     return res.status(500).send(`Server error`);
@@ -54,7 +50,7 @@ router.post('/', async (req, res) => {
     id: event_id,
     name,
     start_time,
-    end_time,
+    end_time
   });
 });
 
@@ -77,10 +73,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
 
   // Check if event name is used by someone already
   if (event.name != name) {
-    let result = await db_get('SELECT * FROM Event WHERE LOWER(name) = LOWER(?) AND id != ?', [
-      name,
-      id,
-    ]);
+    let result = await db_get('SELECT * FROM Event WHERE LOWER(name) = LOWER(?) AND id != ?', [name, id]);
     if (result.err) {
       return res.status(500).send(ErrorMsg.SERVER.ERROR);
     }
@@ -93,11 +86,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
   event.end_time = end_time ?? event.end_time;
 
   // Update Event
-  result = await db_run('Update Event SET name=?, start_time=?, end_time=? where id = ?', [
-    event.name,
-    event.start_time,
-    event.end_time,
-  ]);
+  result = await db_run('Update Event SET name=?, start_time=?, end_time=? where id = ?', [event.name, event.start_time, event.end_time]);
   if (result.err) {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }

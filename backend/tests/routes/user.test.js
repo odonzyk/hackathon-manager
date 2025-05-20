@@ -21,7 +21,7 @@ describe('User API Endpoints', () => {
 
     beforeEach(() => {
       token = jwt.sign({ id: 1, name: 'Test User', email: 'test@example.com' }, config.jwtSecret, {
-        expiresIn: '2h',
+        expiresIn: '2h'
       });
     });
 
@@ -32,13 +32,11 @@ describe('User API Endpoints', () => {
           id: 1,
           name: 'Test User',
           email: 'test@example.com',
-          password: '$2b$10$kDNS6MAF8YrrZx106PGYn.rcQp9nfhPl2vWfo116RCOggiuPD/k8m',
-        },
+          password: '$2b$10$kDNS6MAF8YrrZx106PGYn.rcQp9nfhPl2vWfo116RCOggiuPD/k8m'
+        }
       });
 
-      const response = await request(app)
-        .post('/api/user/login')
-        .send({ email: 'test@example.com', password: 'password123' });
+      const response = await request(app).post('/api/user/login').send({ email: 'test@example.com', password: 'password123' });
 
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('token');
@@ -50,13 +48,11 @@ describe('User API Endpoints', () => {
           id: 1,
           name: 'Test User',
           email: 'test@example.com',
-          password: '$2b$10$wrongpassword',
-        },
+          password: '$2b$10$wrongpassword'
+        }
       });
 
-      const response = await request(app)
-        .post('/api/user/login')
-        .send({ email: 'test@example.com', password: 'wrongpassword' });
+      const response = await request(app).post('/api/user/login').send({ email: 'test@example.com', password: 'wrongpassword' });
 
       expect(response.status).toBe(401);
       expect(response.text).toBe(ErrorMsg.AUTH.INVALID_CREDENTIALS);
@@ -68,19 +64,15 @@ describe('User API Endpoints', () => {
           id: 1,
           name: 'Test User',
           email: 'test@example.com',
-          password: '$2b$10$wrongpassword',
-        },
+          password: '$2b$10$wrongpassword'
+        }
       });
 
-      const response = await request(app)
-        .post('/api/user/login')
-        .send({ email: 'test@example.com' });
+      const response = await request(app).post('/api/user/login').send({ email: 'test@example.com' });
       expect(response.status).toBe(400);
       expect(response.text).toBe(ErrorMsg.VALIDATION.MISSING_FIELDS);
 
-      const response2 = await request(app)
-        .post('/api/user/login')
-        .send({ password: 'wrongpassword' });
+      const response2 = await request(app).post('/api/user/login').send({ password: 'wrongpassword' });
       expect(response2.status).toBe(400);
       expect(response.text).toBe(ErrorMsg.VALIDATION.MISSING_FIELDS);
     });
@@ -88,9 +80,7 @@ describe('User API Endpoints', () => {
     it('should return 404 user not found', async () => {
       db_get.mockResolvedValue({ row: null });
 
-      const response = await request(app)
-        .post('/api/user/login')
-        .send({ email: 'test@example.com', password: 'password123' });
+      const response = await request(app).post('/api/user/login').send({ email: 'test@example.com', password: 'password123' });
 
       expect(response.status).toBe(404);
       expect(response.text).toBe(ErrorMsg.NOT_FOUND.NO_USER);
@@ -102,7 +92,7 @@ describe('User API Endpoints', () => {
     let token;
     beforeEach(() => {
       token = jwt.sign({ id: 1, name: 'Test User', email: 'test@example.com' }, config.jwtSecret, {
-        expiresIn: '2h',
+        expiresIn: '2h'
       });
     });
 
@@ -116,7 +106,7 @@ describe('User API Endpoints', () => {
             telephone: '12345',
             role_id: 2,
             licence_plate: 'ABC123',
-            vehicle_type_id: 1,
+            vehicle_type_id: 1
           },
           {
             id: 2,
@@ -125,14 +115,12 @@ describe('User API Endpoints', () => {
             telephone: '67890',
             role_id: 2,
             licence_plate: 'XYZ789',
-            vehicle_type_id: 1,
-          },
-        ],
+            vehicle_type_id: 1
+          }
+        ]
       });
 
-      const response = await request(app)
-        .get('/api/user/list')
-        .set('Authorization', `Bearer ${token}`);
+      const response = await request(app).get('/api/user/list').set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
       expect(response.body).toHaveLength(2);
@@ -142,9 +130,7 @@ describe('User API Endpoints', () => {
     it('should return 404 if no user exist', async () => {
       db_all.mockResolvedValue({ row: [] });
 
-      const response = await request(app)
-        .get('/api/user/list')
-        .set('Authorization', `Bearer ${token}`);
+      const response = await request(app).get('/api/user/list').set('Authorization', `Bearer ${token}`);
       expect(response.status).toBe(404);
       expect(response.text).toBe(ErrorMsg.NOT_FOUND.NO_USER);
     });
@@ -152,9 +138,7 @@ describe('User API Endpoints', () => {
     it('should return 500 on database error', async () => {
       db_all.mockResolvedValue({ err: 'DB error' });
 
-      const response = await request(app)
-        .get('/api/user/list')
-        .set('Authorization', `Bearer ${token}`);
+      const response = await request(app).get('/api/user/list').set('Authorization', `Bearer ${token}`);
       expect(response.status).toBe(500);
       expect(response.text).toBe(ErrorMsg.SERVER.ERROR);
     });
@@ -171,7 +155,7 @@ describe('User API Endpoints', () => {
     let token;
     beforeEach(() => {
       token = jwt.sign({ id: 1, name: 'Test User', email: 'test@example.com' }, config.jwtSecret, {
-        expiresIn: '2h',
+        expiresIn: '2h'
       });
     });
 
@@ -185,7 +169,7 @@ describe('User API Endpoints', () => {
         telephone: '12345',
         password: 'securepassword',
         licence_plate: 'B-XY 123',
-        vehicle_type_id: 1,
+        vehicle_type_id: 1
       });
 
       expect(response.status).toBe(201);
@@ -200,7 +184,7 @@ describe('User API Endpoints', () => {
 
     it('should return 409 if user already exists', async () => {
       db_get.mockResolvedValue({
-        row: { id: 1, email: 'existing@example.com' },
+        row: { id: 1, email: 'existing@example.com' }
       });
 
       const response = await request(app).post('/api/user').send({
@@ -209,7 +193,7 @@ describe('User API Endpoints', () => {
         telephone: '12345',
         password: 'securepassword',
         licence_plate: 'B-XY 123',
-        vehicle_type_id: 1,
+        vehicle_type_id: 1
       });
 
       expect(response.status).toBe(409);
@@ -223,14 +207,14 @@ describe('User API Endpoints', () => {
       let response = await request(app).post('/api/user').send({
         email: 'newuser@example.com',
         telephone: '12345',
-        licence_plate: 'B-XY 123',
+        licence_plate: 'B-XY 123'
       });
       expect(response.status).toBe(400);
       expect(response.text).toBe(ErrorMsg.VALIDATION.MISSING_FIELDS);
       response = await request(app).post('/api/user').send({
         name: 'New User',
         telephone: '12345',
-        licence_plate: 'B-XY 123',
+        licence_plate: 'B-XY 123'
       });
       expect(response.status).toBe(400);
       expect(response.text).toBe(ErrorMsg.VALIDATION.MISSING_FIELDS);
@@ -238,7 +222,7 @@ describe('User API Endpoints', () => {
       response = await request(app).post('/api/user').send({
         name: 'New User',
         email: 'newuser@example.com',
-        licence_plate: 'B-XY 123',
+        licence_plate: 'B-XY 123'
       });
       expect(response.status).toBe(400);
       expect(response.text).toBe(ErrorMsg.VALIDATION.MISSING_FIELDS);
@@ -246,7 +230,7 @@ describe('User API Endpoints', () => {
       response = await request(app).post('/api/user').send({
         name: 'New User',
         email: 'newuser@example.com',
-        telephone: '12345',
+        telephone: '12345'
       });
       expect(response.status).toBe(400);
       expect(response.text).toBe(ErrorMsg.VALIDATION.MISSING_FIELDS);
@@ -261,7 +245,7 @@ describe('User API Endpoints', () => {
         telephone: '12345',
         password: 'securepassword',
         licence_plate: 'B-XY 123',
-        vehicle_type_id: 1,
+        vehicle_type_id: 1
       });
       expect(response.status).toBe(500);
       expect(response.text).toBe(ErrorMsg.SERVER.ERROR);
@@ -273,7 +257,7 @@ describe('User API Endpoints', () => {
     let token;
     beforeEach(() => {
       token = jwt.sign({ id: 1, name: 'Test User', email: 'test@example.com' }, config.jwtSecret, {
-        expiresIn: '2h',
+        expiresIn: '2h'
       });
     });
 
@@ -287,27 +271,24 @@ describe('User API Endpoints', () => {
           role_id: 2,
           licence_plate: 'OLD-123',
           is_private_email: false,
-          is_private_telephone: false,
-        },
+          is_private_telephone: false
+        }
       });
       db_get.mockResolvedValueOnce({
-        row: null,
+        row: null
       });
 
       db_run.mockResolvedValue({ changes: 1 });
 
-      const response = await request(app)
-        .put('/api/user/1')
-        .set('Authorization', `Bearer ${token}`)
-        .send({
-          name: 'New Name',
-          email: 'new@example.com',
-          telephone: '67890',
-          role_id: 2,
-          licence_plate: 'NEW-456',
-          is_private_email: true,
-          is_private_telephone: true,
-        });
+      const response = await request(app).put('/api/user/1').set('Authorization', `Bearer ${token}`).send({
+        name: 'New Name',
+        email: 'new@example.com',
+        telephone: '67890',
+        role_id: 2,
+        licence_plate: 'NEW-456',
+        is_private_email: true,
+        is_private_telephone: true
+      });
 
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('name', 'New Name');
@@ -321,16 +302,13 @@ describe('User API Endpoints', () => {
     it('should return 404 if user does not exist', async () => {
       db_get.mockResolvedValue({ row: null });
 
-      const response = await request(app)
-        .put('/api/user/99')
-        .set('Authorization', `Bearer ${token}`)
-        .send({
-          name: 'New Name',
-          email: 'new@example.com',
-          telephone: '67890',
-          role_id: 2,
-          licence_plate: 'NEW-456',
-        });
+      const response = await request(app).put('/api/user/99').set('Authorization', `Bearer ${token}`).send({
+        name: 'New Name',
+        email: 'new@example.com',
+        telephone: '67890',
+        role_id: 2,
+        licence_plate: 'NEW-456'
+      });
 
       expect(response.status).toBe(404);
       expect(response.text).toBe(ErrorMsg.NOT_FOUND.NO_USER);
@@ -340,44 +318,32 @@ describe('User API Endpoints', () => {
       db_get.mockResolvedValue({ row: null });
       db_run.mockResolvedValue({ lastID: 1 });
 
-      let response = await request(app)
-        .put('/api/user/99')
-        .set('Authorization', `Bearer ${token}`)
-        .send({
-          email: 'newuser@example.com',
-          telephone: '12345',
-          licence_plate: 'B-XY 123',
-        });
+      let response = await request(app).put('/api/user/99').set('Authorization', `Bearer ${token}`).send({
+        email: 'newuser@example.com',
+        telephone: '12345',
+        licence_plate: 'B-XY 123'
+      });
       expect(response.status).toBe(400);
       expect(response.text).toBe(ErrorMsg.VALIDATION.MISSING_FIELDS);
-      response = await request(app)
-        .put('/api/user/99')
-        .set('Authorization', `Bearer ${token}`)
-        .send({
-          name: 'New User',
-          telephone: '12345',
-          licence_plate: 'B-XY 123',
-        });
+      response = await request(app).put('/api/user/99').set('Authorization', `Bearer ${token}`).send({
+        name: 'New User',
+        telephone: '12345',
+        licence_plate: 'B-XY 123'
+      });
       expect(response.status).toBe(400);
       expect(response.text).toBe(ErrorMsg.VALIDATION.MISSING_FIELDS);
-      response = await request(app)
-        .put('/api/user/99')
-        .set('Authorization', `Bearer ${token}`)
-        .send({
-          name: 'New User',
-          email: 'newuser@example.com',
-          licence_plate: 'B-XY 123',
-        });
+      response = await request(app).put('/api/user/99').set('Authorization', `Bearer ${token}`).send({
+        name: 'New User',
+        email: 'newuser@example.com',
+        licence_plate: 'B-XY 123'
+      });
       expect(response.status).toBe(400);
       expect(response.text).toBe(ErrorMsg.VALIDATION.MISSING_FIELDS);
-      response = await request(app)
-        .put('/api/user/99')
-        .set('Authorization', `Bearer ${token}`)
-        .send({
-          name: 'New User',
-          email: 'newuser@example.com',
-          telephone: '12345',
-        });
+      response = await request(app).put('/api/user/99').set('Authorization', `Bearer ${token}`).send({
+        name: 'New User',
+        email: 'newuser@example.com',
+        telephone: '12345'
+      });
       expect(response.status).toBe(400);
       expect(response.text).toBe(ErrorMsg.VALIDATION.MISSING_FIELDS);
     });
@@ -391,23 +357,20 @@ describe('User API Endpoints', () => {
             email: 'existing@example.com',
             telephone: '12345',
             role_id: 2,
-            licence_plate: 'OLD-123',
-          },
+            licence_plate: 'OLD-123'
+          }
         })
         .mockResolvedValueOnce({
-          row: { id: 2, email: 'new@example.com' }, // Simuliert bereits existierende E-Mail
+          row: { id: 2, email: 'new@example.com' } // Simuliert bereits existierende E-Mail
         });
 
-      const response = await request(app)
-        .put('/api/user/1')
-        .set('Authorization', `Bearer ${token}`)
-        .send({
-          name: 'New Name',
-          email: 'new@example.com', // Diese E-Mail gehört einem anderen User
-          telephone: '67890',
-          role_id: 2,
-          licence_plate: 'NEW-456',
-        });
+      const response = await request(app).put('/api/user/1').set('Authorization', `Bearer ${token}`).send({
+        name: 'New Name',
+        email: 'new@example.com', // Diese E-Mail gehört einem anderen User
+        telephone: '67890',
+        role_id: 2,
+        licence_plate: 'NEW-456'
+      });
 
       expect(response.status).toBe(409);
       expect(response.text).toBe(ErrorMsg.VALIDATION.CONFLICT);
@@ -423,25 +386,22 @@ describe('User API Endpoints', () => {
           role_id: 2,
           licence_plate: 'OLD-123',
           is_private_email: false,
-          is_private_telephone: false,
-        },
+          is_private_telephone: false
+        }
       });
       db_get.mockResolvedValueOnce({
-        row: null,
+        row: null
       });
 
       db_run.mockResolvedValue({ err: true });
 
-      const response = await request(app)
-        .put('/api/user/1')
-        .set('Authorization', `Bearer ${token}`)
-        .send({
-          name: 'Updated Name',
-          email: 'updated@example.com',
-          telephone: '67890',
-          role_id: 2,
-          licence_plate: 'NEW-456',
-        });
+      const response = await request(app).put('/api/user/1').set('Authorization', `Bearer ${token}`).send({
+        name: 'Updated Name',
+        email: 'updated@example.com',
+        telephone: '67890',
+        role_id: 2,
+        licence_plate: 'NEW-456'
+      });
 
       expect(response.status).toBe(500);
       expect(response.text).toBe(ErrorMsg.SERVER.ERROR);
@@ -460,7 +420,7 @@ describe('User API Endpoints', () => {
     beforeEach(() => {
       jest.clearAllMocks();
       token = jwt.sign({ id: 1, name: 'Test User', email: 'test@example.com' }, config.jwtSecret, {
-        expiresIn: '2h',
+        expiresIn: '2h'
       });
     });
 
@@ -472,13 +432,11 @@ describe('User API Endpoints', () => {
           email: 'user1@example.com',
           telephone: '12345',
           role_id: 2,
-          licence_plate: 'ABC123',
-        },
+          licence_plate: 'ABC123'
+        }
       });
 
-      const response = await request(app)
-        .get('/api/user/1')
-        .set('Authorization', `Bearer ${token}`);
+      const response = await request(app).get('/api/user/1').set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('name', 'User One');
@@ -493,9 +451,7 @@ describe('User API Endpoints', () => {
     it('should return 404 if user not found', async () => {
       db_get.mockResolvedValueOnce({ row: null });
 
-      const response = await request(app)
-        .get('/api/user/99')
-        .set('Authorization', `Bearer ${token}`);
+      const response = await request(app).get('/api/user/99').set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(404);
       expect(response.text).toBe(ErrorMsg.NOT_FOUND.NO_USER);
@@ -504,9 +460,7 @@ describe('User API Endpoints', () => {
     it('should return 500 on database error', async () => {
       db_get.mockResolvedValue({ err: 'DB error' });
 
-      const response = await request(app)
-        .get('/api/user/99')
-        .set('Authorization', `Bearer ${token}`);
+      const response = await request(app).get('/api/user/99').set('Authorization', `Bearer ${token}`);
       expect(response.status).toBe(500);
       expect(response.text).toBe(ErrorMsg.SERVER.ERROR);
     });
@@ -523,16 +477,14 @@ describe('User API Endpoints', () => {
     let token;
     beforeEach(() => {
       token = jwt.sign({ id: 1, name: 'Test User', email: 'test@example.com' }, config.jwtSecret, {
-        expiresIn: '2h',
+        expiresIn: '2h'
       });
     });
 
     it('should return 200 if user is successfully deleted', async () => {
       db_run.mockResolvedValue({ changes: 1 });
 
-      const response = await request(app)
-        .delete('/api/user/1')
-        .set('Authorization', `Bearer ${token}`);
+      const response = await request(app).delete('/api/user/1').set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
       expect(response.text).toBe('User deleted successfully');
@@ -541,9 +493,7 @@ describe('User API Endpoints', () => {
     it('should return 404 if user does not exist', async () => {
       db_run.mockResolvedValue({ changes: 0 });
 
-      const response = await request(app)
-        .delete('/api/user/99')
-        .set('Authorization', `Bearer ${token}`);
+      const response = await request(app).delete('/api/user/99').set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(404);
       expect(response.text).toBe(ErrorMsg.NOT_FOUND.NO_USER);
@@ -552,9 +502,7 @@ describe('User API Endpoints', () => {
     it('should return 500 on database error', async () => {
       db_run.mockResolvedValue({ err: 'DB error' });
 
-      const response = await request(app)
-        .delete('/api/user/1')
-        .set('Authorization', `Bearer ${token}`);
+      const response = await request(app).delete('/api/user/1').set('Authorization', `Bearer ${token}`);
       expect(response.status).toBe(500);
       expect(response.text).toBe(ErrorMsg.SERVER.ERROR);
     });

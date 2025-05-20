@@ -16,17 +16,17 @@ const userPaths = {
                 email: {
                   type: 'string',
                   format: 'email',
-                  example: 'max@example.com',
+                  example: 'max@example.com'
                 },
                 password: {
                   type: 'string',
                   format: 'password',
-                  example: 'password123',
-                },
-              },
-            },
-          },
-        },
+                  example: 'password123'
+                }
+              }
+            }
+          }
+        }
       },
       responses: {
         200: {
@@ -38,27 +38,27 @@ const userPaths = {
                 properties: {
                   token: {
                     type: 'string',
-                    example: 'eyJhbGciOiJIUzI1...',
-                  },
-                },
-              },
-            },
-          },
+                    example: 'eyJhbGciOiJIUzI1...'
+                  }
+                }
+              }
+            }
+          }
         },
         400: {
-          description: ErrorMsg.VALIDATION.MISSING_FIELDS,
+          description: ErrorMsg.VALIDATION.MISSING_FIELDS
         },
         401: {
-          description: ErrorMsg.AUTH.INVALID_CREDENTIALS,
+          description: ErrorMsg.AUTH.INVALID_CREDENTIALS
         },
         404: {
-          description: ErrorMsg.NOT_FOUND.NO_USER,
+          description: ErrorMsg.NOT_FOUND.NO_USER
         },
         500: {
-          description: ErrorMsg.SERVER.ERROR,
-        },
-      },
-    },
+          description: ErrorMsg.SERVER.ERROR
+        }
+      }
+    }
   },
   '/user/list': {
     get: {
@@ -66,8 +66,8 @@ const userPaths = {
       tags: ['User'],
       security: [
         {
-          bearerAuth: [],
-        },
+          bearerAuth: []
+        }
       ],
       responses: {
         200: {
@@ -77,23 +77,23 @@ const userPaths = {
               schema: {
                 type: 'array',
                 items: {
-                  $ref: '#/components/schemas/User',
-                },
-              },
-            },
-          },
+                  $ref: '#/components/schemas/User'
+                }
+              }
+            }
+          }
         },
         403: {
-          description: ErrorMsg.AUTH.INVALID_TOKEN,
+          description: ErrorMsg.AUTH.INVALID_TOKEN
         },
         404: {
-          description: ErrorMsg.NOT_FOUND.NO_USER,
+          description: ErrorMsg.NOT_FOUND.NO_USER
         },
         500: {
-          description: ErrorMsg.SERVER.ERROR,
-        },
-      },
-    },
+          description: ErrorMsg.SERVER.ERROR
+        }
+      }
+    }
   },
   '/user': {
     post: {
@@ -111,7 +111,7 @@ const userPaths = {
                 email: {
                   type: 'string',
                   format: 'email',
-                  example: 'max@example.com',
+                  example: 'max@example.com'
                 },
                 is_private_email: { type: 'boolean', example: true },
                 telephone: { type: 'string', example: '+49123456789' },
@@ -119,34 +119,34 @@ const userPaths = {
                 password: {
                   type: 'string',
                   format: 'password',
-                  example: 'password123',
+                  example: 'password123'
                 },
-                role_id: { type: 'integer', example: 1 },
-              },
-            },
-          },
-        },
+                role_id: { type: 'integer', example: 1 }
+              }
+            }
+          }
+        }
       },
       responses: {
         201: {
           description: 'User successfully created',
           content: {
             'application/json': {
-              schema: { $ref: '#/components/schemas/User' },
-            },
-          },
+              schema: { $ref: '#/components/schemas/User' }
+            }
+          }
         },
         400: {
-          description: ErrorMsg.VALIDATION.MISSING_FIELDS,
+          description: ErrorMsg.VALIDATION.MISSING_FIELDS
         },
         409: {
-          description: ErrorMsg.VALIDATION.CONFLICT,
+          description: ErrorMsg.VALIDATION.CONFLICT
         },
         500: {
-          description: ErrorMsg.SERVER.ERROR,
-        },
-      },
-    },
+          description: ErrorMsg.SERVER.ERROR
+        }
+      }
+    }
   },
   '/user/{id}': {
     put: {
@@ -154,8 +154,8 @@ const userPaths = {
       tags: ['User'],
       security: [
         {
-          bearerAuth: [],
-        },
+          bearerAuth: []
+        }
       ],
       parameters: [
         {
@@ -163,10 +163,10 @@ const userPaths = {
           name: 'id',
           required: true,
           schema: {
-            type: 'integer',
+            type: 'integer'
           },
-          description: 'The ID of the user to be updated',
-        },
+          description: 'The ID of the user to be updated'
+        }
       ],
       requestBody: {
         required: true,
@@ -180,7 +180,7 @@ const userPaths = {
                 email: {
                   type: 'string',
                   format: 'email',
-                  example: 'max@example.com',
+                  example: 'max@example.com'
                 },
                 is_private_email: { type: 'boolean', example: true },
                 telephone: { type: 'string', example: '+49123456789' },
@@ -188,49 +188,49 @@ const userPaths = {
                 password: {
                   type: 'string',
                   format: 'password',
-                  example: 'password123',
+                  example: 'password123'
                 },
                 role_id: { type: 'integer', example: 1 },
                 licence_plate: { type: 'string', example: 'B-BB 001' },
-                vehicle_type_id: { type: 'integer', example: 1 },
-              },
-            },
-          },
-        },
+                vehicle_type_id: { type: 'integer', example: 1 }
+              }
+            }
+          }
+        }
       },
       responses: {
         200: {
           description: 'User successfully updated',
           content: {
             'application/json': {
-              schema: { $ref: '#/components/schemas/User' },
-            },
-          },
+              schema: { $ref: '#/components/schemas/User' }
+            }
+          }
         },
         400: {
-          description: ErrorMsg.VALIDATION.MISSING_FIELDS,
+          description: ErrorMsg.VALIDATION.MISSING_FIELDS
         },
         403: {
-          description: ErrorMsg.AUTH.INVALID_TOKEN,
+          description: ErrorMsg.AUTH.INVALID_TOKEN
         },
         404: {
-          description: ErrorMsg.NOT_FOUND.NO_USER,
+          description: ErrorMsg.NOT_FOUND.NO_USER
         },
         409: {
-          description: ErrorMsg.VALIDATION.CONFLICT,
+          description: ErrorMsg.VALIDATION.CONFLICT
         },
         500: {
-          description: ErrorMsg.SERVER.ERROR,
-        },
-      },
+          description: ErrorMsg.SERVER.ERROR
+        }
+      }
     },
     get: {
       summary: 'Retrieve a user by ID',
       tags: ['User'],
       security: [
         {
-          bearerAuth: [],
-        },
+          bearerAuth: []
+        }
       ],
       parameters: [
         {
@@ -238,38 +238,38 @@ const userPaths = {
           name: 'id',
           required: true,
           schema: {
-            type: 'integer',
+            type: 'integer'
           },
-          description: 'The ID of the user to retrieve',
-        },
+          description: 'The ID of the user to retrieve'
+        }
       ],
       responses: {
         200: {
           description: 'User successfully retrieved user details',
           content: {
             'application/json': {
-              schema: { $ref: '#/components/schemas/User' },
-            },
-          },
+              schema: { $ref: '#/components/schemas/User' }
+            }
+          }
         },
         403: {
-          description: ErrorMsg.AUTH.INVALID_TOKEN,
+          description: ErrorMsg.AUTH.INVALID_TOKEN
         },
         404: {
-          description: ErrorMsg.NOT_FOUND.NO_USER,
+          description: ErrorMsg.NOT_FOUND.NO_USER
         },
         500: {
-          description: ErrorMsg.SERVER.ERROR,
-        },
-      },
+          description: ErrorMsg.SERVER.ERROR
+        }
+      }
     },
     delete: {
       summary: 'Deletes a user and removes all associated bookings',
       tags: ['User'],
       security: [
         {
-          bearerAuth: [],
-        },
+          bearerAuth: []
+        }
       ],
       parameters: [
         {
@@ -277,27 +277,27 @@ const userPaths = {
           name: 'id',
           required: true,
           schema: {
-            type: 'integer',
+            type: 'integer'
           },
-          description: 'The ID of the user to be deleted.',
-        },
+          description: 'The ID of the user to be deleted.'
+        }
       ],
       responses: {
         200: {
-          description: 'User successfully deleted',
+          description: 'User successfully deleted'
         },
         403: {
-          description: ErrorMsg.AUTH.INVALID_TOKEN,
+          description: ErrorMsg.AUTH.INVALID_TOKEN
         },
         404: {
-          description: ErrorMsg.NOT_FOUND.NO_USER,
+          description: ErrorMsg.NOT_FOUND.NO_USER
         },
         500: {
-          description: ErrorMsg.SERVER.ERROR,
-        },
-      },
-    },
-  },
+          description: ErrorMsg.SERVER.ERROR
+        }
+      }
+    }
+  }
 };
 
 module.exports = { userPaths };

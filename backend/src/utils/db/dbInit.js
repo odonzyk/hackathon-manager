@@ -13,7 +13,7 @@ async function dbCreate() {
     `CREATE TABLE IF NOT EXISTS ProjectStatus (
     id integer PRIMARY KEY AUTOINCREMENT,
     name TEXT
-  )`,
+  )`
   ).then(async function () {
     let result = await db_get('SELECT * FROM ProjectStatus');
     if (result.err || !!result.row) return;
@@ -26,8 +26,8 @@ async function dbCreate() {
         [2, "'active'"],
         [3, "'ended'"],
         [4, "'canceled'"],
-        [5, "'archived'"],
-      ],
+        [5, "'archived'"]
+      ]
     );
   });
 
@@ -38,7 +38,7 @@ async function dbCreate() {
     `CREATE TABLE IF NOT EXISTS Role (
     id integer PRIMARY KEY AUTOINCREMENT,
     name TEXT
-  )`,
+  )`
   ).then(async function () {
     let result = await db_get('SELECT * FROM Role');
     if (result.err || !!result.row) return;
@@ -48,8 +48,8 @@ async function dbCreate() {
       ['id', 'name'],
       [
         [1, "'admin'"],
-        [2, "'user'"],
-      ],
+        [2, "'user'"]
+      ]
     );
   });
 
@@ -72,7 +72,7 @@ async function dbCreate() {
         role_id integer NOT NULL DEFAULT 1,
         avatar_url TEXT DEFAULT '/assets/avatars/avatar_1.png',
     FOREIGN KEY (role_id) REFERENCES Role(id)
-  )`,
+  )`
   );
 
   await createTable(
@@ -81,7 +81,7 @@ async function dbCreate() {
             name TEXT,
             start_time timestamp,
             end_time timestamp
-      )`,
+      )`
   );
 
   await createTable(
@@ -100,7 +100,7 @@ async function dbCreate() {
             FOREIGN KEY (event_id) REFERENCES Event(id),
             FOREIGN KEY (status_id) REFERENCES ProjectStatus(id),
             FOREIGN KEY (initiator_id) REFERENCES User(id)
-        )`,
+        )`
   );
 
   await createTable(
@@ -110,7 +110,7 @@ async function dbCreate() {
             project_id INTEGER NOT NULL,
             FOREIGN KEY (user_id) REFERENCES User(id),
             FOREIGN KEY (project_id) REFERENCES Project(id) 
-        )`,
+        )`
   );
 
   db_exec('PRAGMA foreign_keys=1;');

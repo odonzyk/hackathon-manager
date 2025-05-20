@@ -39,7 +39,7 @@ function execute_on_db(method, statement, params, callback) {
           row: rows,
           stmt: this.stmt,
           lastID: this.lastID,
-          changes: this.changes,
+          changes: this.changes
         });
       });
     } catch (err) {
@@ -95,5 +95,5 @@ module.exports = {
   db_all,
   db_exec,
   createTable,
-  fillTable,
+  fillTable
 };

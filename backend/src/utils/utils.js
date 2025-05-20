@@ -1,9 +1,5 @@
 const isValidISODate = (dateString) => {
-  return (
-    typeof dateString === 'string' &&
-    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(dateString) &&
-    !isNaN(Date.parse(dateString))
-  );
+  return typeof dateString === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(dateString) && !isNaN(Date.parse(dateString));
 };
 
 const time2ts = (time) => {

@@ -12,7 +12,7 @@ const envMap = {
   development: '.env.dev',
   dev: '.env.dev',
   staging: '.env.stage',
-  stage: '.env.stage',
+  stage: '.env.stage'
 };
 
 // Wähle das richtige .env-File basierend auf NODE_ENV
@@ -35,7 +35,7 @@ module.exports = {
   apiPort: check(process.env.API_PORT, '3000'),
   dbPath: check(process.env.DB_PATH, './hackathon.prod.db'),
   jwtSecret: check(process.env.JWT_SECRET, 'your-secret-key'),
-  check,
+  check
 };
 
 function check(value, defaultValue) {

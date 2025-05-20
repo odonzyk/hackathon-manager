@@ -43,7 +43,7 @@ async function insertProjects() {
       project.initiator_id,
       project.goal,
       project.components,
-      project.skills,
+      project.skills
     );
   }
 }
@@ -55,7 +55,7 @@ async function createUser(name, email, telephone, password, role_id) {
     `INSERT 
             INTO User (name, email, telephone, password, role_id) 
             VALUES (?, ?, ?, ?, ?)`,
-    [name, email, telephone, hash, role_id],
+    [name, email, telephone, hash, role_id]
   );
   if (result.err || result.changes === 0) throw new Error('Could not create User: ' + name);
 }
@@ -65,42 +65,19 @@ async function createEvent(id, name, start_time, end_time) {
     `INSERT 
             INTO Event (id, name, start_time, end_time) 
             VALUES (?, ?, ?, ?)`,
-    [id, name, time2ts(start_time), time2ts(end_time)],
+    [id, name, time2ts(start_time), time2ts(end_time)]
   );
   if (result.err || result.changes === 0) throw new Error('Could not create Event : ' + name);
 }
 
-async function createProject(
-  event_id,
-  status_id,
-  idea,
-  description,
-  team_name,
-  team_avatar_url,
-  iniator_id,
-  goal,
-  components,
-  skills,
-) {
+async function createProject(event_id, status_id, idea, description, team_name, team_avatar_url, iniator_id, goal, components, skills) {
   const result = await db_run(
     `INSERT 
             INTO Project (event_id, status_id, idea, description, team_name, team_avatar_url, initiator_id, goal, components, skills)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [
-      event_id,
-      status_id,
-      idea,
-      description,
-      team_name,
-      team_avatar_url,
-      iniator_id,
-      goal,
-      components,
-      skills,
-    ],
+    [event_id, status_id, idea, description, team_name, team_avatar_url, iniator_id, goal, components, skills]
   );
-  if (result.err || result.changes === 0)
-    throw new Error('Could not create Project : ' + event_id + ' - ' + idea);
+  if (result.err || result.changes === 0) throw new Error('Could not create Project : ' + event_id + ' - ' + idea);
 }
 
 module.exports = { insertUserAdmin, insertEvents, insertProjects };

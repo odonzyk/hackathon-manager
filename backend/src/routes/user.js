@@ -18,7 +18,7 @@ const createUser = (dbRow) => {
     telephone: dbRow?.telephone ?? '',
     is_private_telephone: dbRow?.is_private_telephone ?? false,
     role_id: dbRow?.role_id ?? 2,
-    avatar_url: dbRow?.avatar_url ?? '/assets/avatars/avatar_1.png',
+    avatar_url: dbRow?.avatar_url ?? '/assets/avatars/avatar_1.png'
   };
 };
 
@@ -47,7 +47,7 @@ router.post('/login', async (req, res) => {
   }
 
   const token = jwt.sign({ id: id, name: name, email: email, role: role_id }, config.jwtSecret, {
-    expiresIn: '2h',
+    expiresIn: '2h'
   });
 
   res.json({ token });
@@ -69,16 +69,7 @@ router.get('/list', authenticateToken, async (req, res) => {
 
 // *** POST /api/user *********************************************************
 router.post('/', async (req, res) => {
-  let {
-    name,
-    email,
-    is_private_email,
-    telephone,
-    is_private_telephone,
-    password,
-    role_id,
-    avatar_url,
-  } = req.body;
+  let { name, email, is_private_email, telephone, is_private_telephone, password, role_id, avatar_url } = req.body;
   logger.debug(`API User -> Register User: ${name}`);
 
   //TODO: Set Passwort by Frontend
@@ -96,19 +87,16 @@ router.post('/', async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  result = await db_run(
-    'INSERT INTO User (name, email, telephone, password, role_id, is_private_email, is_private_telephone, avatar_url) VALUES (?, ?, ?, ?, ?, ?, ?,?)',
-    [
-      name,
-      email,
-      telephone,
-      hashedPassword,
-      role_id,
-      is_private_email || false,
-      is_private_telephone || false,
-      avatar_url || '/assets/avatars/avatar_1.png',
-    ],
-  );
+  result = await db_run('INSERT INTO User (name, email, telephone, password, role_id, is_private_email, is_private_telephone, avatar_url) VALUES (?, ?, ?, ?, ?, ?, ?,?)', [
+    name,
+    email,
+    telephone,
+    hashedPassword,
+    role_id,
+    is_private_email || false,
+    is_private_telephone || false,
+    avatar_url || '/assets/avatars/avatar_1.png'
+  ]);
   const user_id = result.lastID;
   if (result.err || result.changes === 0) {
     return res.status(500).send(`Server error`);
@@ -122,15 +110,14 @@ router.post('/', async (req, res) => {
     role_id,
     is_private_email: is_private_email || false,
     is_private_telephone: is_private_telephone || false,
-    avatar_url: avatar_url || '/assets/avatars/avatar_1.png',
+    avatar_url: avatar_url || '/assets/avatars/avatar_1.png'
   });
 });
 
 // *** PUT /api/user *********************************************************
 router.put('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
-  let { name, email, is_private_email, telephone, is_private_telephone, role_id, avatar_url } =
-    req.body;
+  let { name, email, is_private_email, telephone, is_private_telephone, role_id, avatar_url } = req.body;
   logger.debug(`API User -> Update User: ${name}`);
 
   if (!name || !email || !telephone) {
@@ -163,19 +150,16 @@ router.put('/:id', authenticateToken, async (req, res) => {
   user.avatar_url = avatar_url ?? user.avatar_url;
 
   // Update User
-  result = await db_run(
-    'Update User SET name=?, email=?, telephone=?, role_id=?, is_private_email=?, is_private_telephone=?, avatar_url=? where id = ?',
-    [
-      user.name,
-      user.email,
-      user.telephone,
-      user.role_id,
-      user.is_private_email,
-      user.is_private_telephone,
-      user.avatar_url,
-      id,
-    ],
-  );
+  result = await db_run('Update User SET name=?, email=?, telephone=?, role_id=?, is_private_email=?, is_private_telephone=?, avatar_url=? where id = ?', [
+    user.name,
+    user.email,
+    user.telephone,
+    user.role_id,
+    user.is_private_email,
+    user.is_private_telephone,
+    user.avatar_url,
+    id
+  ]);
   if (result.err) {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }

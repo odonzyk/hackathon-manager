@@ -16,19 +16,19 @@ const healthPaths = {
                   memoryUsage: { type: 'object' },
                   cpuLoad: {
                     type: 'array',
-                    items: { type: 'number' },
+                    items: { type: 'number' }
                   },
                   timestamp: {
                     type: 'datetime',
-                    example: '2025-01-01T01:01:01.000Z',
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    },
+                    example: '2025-01-01T01:01:01.000Z'
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   },
   '/health/config': {
     get: {
@@ -44,7 +44,7 @@ const healthPaths = {
                 properties: {
                   name: {
                     type: 'string',
-                    example: 'hackathon-manager-backend',
+                    example: 'hackathon-manager-backend'
                   },
                   version: { type: 'string', example: '0.1.0' },
                   config_name: { type: 'string', example: 'Example Config' },
@@ -53,15 +53,15 @@ const healthPaths = {
                   hostPort: { type: 'string', example: '8100' },
                   hostUrl: { type: 'string', example: 'http://localhost' },
                   apiPort: { type: 'string', example: '3000' },
-                  dbPath: { type: 'string', example: './hackathon.dev.db' },
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  },
+                  dbPath: { type: 'string', example: './hackathon.dev.db' }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 };
 
 module.exports = { healthPaths };
