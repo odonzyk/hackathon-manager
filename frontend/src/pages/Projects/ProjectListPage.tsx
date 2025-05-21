@@ -44,7 +44,7 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ selectedEvent }) => {
   };
 
   useEffect(() => {
-    console.log('ProjectListPage: useEffect: ', isAuthenticated, selectedEvent, profile?.id );
+    console.log('ProjectListPage: useEffect: ', isAuthenticated, selectedEvent, profile?.id);
     if (!isAuthenticated) return;
 
     if (!profile) {
@@ -63,10 +63,9 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ selectedEvent }) => {
         return;
       }
       if (selectedEvent) {
-        fetchProjects(selectedEvent.id, token); 
+        fetchProjects(selectedEvent.id, token);
       }
     }
-    
   }, [profile, selectedEvent]);
 
   const filteredProjects = projects.filter((project) => {

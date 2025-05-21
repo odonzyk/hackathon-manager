@@ -31,7 +31,6 @@ async function insertProjects() {
 
   logger.info('DB Insert: Create Projects');
 
-  
   for (const project of defaultProjects) {
     await createProject(
       project.event_id,

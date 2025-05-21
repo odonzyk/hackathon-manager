@@ -16,7 +16,7 @@ import { useToast } from '../../components/ToastProvider';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import { getEvents, loadStoredProfile, ResultType } from '../../utils/globalDataUtils';
 import { getExistingToken } from '../../utils/authUtils';
-import { formatDate,  } from '../../utils/dateUtils';
+import { formatDate } from '../../utils/dateUtils';
 
 const EventListPage: React.FC = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -62,7 +62,6 @@ const EventListPage: React.FC = () => {
   return (
     <IonPage>
       <IonContent>
-
         <IonGrid className="hackathon-grid">
           <IonRow>
             {events.map((event) => (
@@ -74,11 +73,15 @@ const EventListPage: React.FC = () => {
                   <IonCardContent>
                     <div className="project-details">
                       <p>
-                        <span role="img" aria-label="Start Time">🕒</span>{' '}
+                        <span role="img" aria-label="Start Time">
+                          🕒
+                        </span>{' '}
                         <strong>Start Time:</strong> {formatDate(event.start_time)}
                       </p>
                       <p>
-                        <span role="img" aria-label="End Time">🕒</span>{' '}
+                        <span role="img" aria-label="End Time">
+                          🕒
+                        </span>{' '}
                         <strong>End Time:</strong> {formatDate(event.end_time)}
                       </p>
                     </div>

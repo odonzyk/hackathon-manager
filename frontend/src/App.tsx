@@ -45,7 +45,7 @@ ReactGA.initialize('G-3LWGMR7G0P');
 
 const App = () => {
   const isAuthenticated = useIsAuthenticated();
-  const [selectedEvent, setSelectedEvent] = useState<Event|null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const { showToastError } = useToast();
   const [events, setEvents] = useState<Event[]>([]);
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -64,29 +64,28 @@ const App = () => {
     setSelectedEvent(result.data[0]);
   };
 
-    useEffect(() => {
-      console.log('EventListPage: useEffect: ', isAuthenticated, profile);
-      if (!isAuthenticated) return;
-  
-      if (!profile) {
-        const userProfile = loadStoredProfile();
-        if (!userProfile || !userProfile.id) {
-          showToastError('Profil nicht gefunden. Bitte anmelden.');
-          return;
-        }
-        setProfile(userProfile);
-      }
-  
-      if (profile) {
-        const token = getExistingToken();
-        if (!token) {
-          showToastError('Token nicht gefunden. Bitte anmelden.');
-          return;
-        }
-        fetchEvents(token);
-      }
-    }, [profile]);
+  useEffect(() => {
+    console.log('EventListPage: useEffect: ', isAuthenticated, profile);
+    if (!isAuthenticated) return;
 
+    if (!profile) {
+      const userProfile = loadStoredProfile();
+      if (!userProfile || !userProfile.id) {
+        showToastError('Profil nicht gefunden. Bitte anmelden.');
+        return;
+      }
+      setProfile(userProfile);
+    }
+
+    if (profile) {
+      const token = getExistingToken();
+      if (!token) {
+        showToastError('Token nicht gefunden. Bitte anmelden.');
+        return;
+      }
+      fetchEvents(token);
+    }
+  }, [profile]);
 
   const publicRoutes = [
     { path: '/login', component: LoginPage, exact: true },

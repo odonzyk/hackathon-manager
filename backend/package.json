@@ -1,7 +1,7 @@
 {
   "name": "hackathon-manager-backend",
   "description": "hackaton organisation backend",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "main": "server.js",
   "scripts": {
     "start-dev": "cross-env NODE_ENV=development node --env-file=.env.dev server.js",

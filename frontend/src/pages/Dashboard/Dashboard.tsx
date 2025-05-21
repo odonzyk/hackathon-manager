@@ -23,14 +23,14 @@ interface DashboardPageProps {
   selectedEvent: Event | null;
 }
 
-const DashboardPage: React.FC<DashboardPageProps> = ({ selectedEvent } ) => {
+const DashboardPage: React.FC<DashboardPageProps> = ({ selectedEvent }) => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const isAuthenticated = useIsAuthenticated();
   const { showToastError } = useToast();
-  const [event, setEvent] = useState<Event|null>(null);
+  const [event, setEvent] = useState<Event | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
 
-// Funktion zum Abrufen der Aktivitäten
+  // Funktion zum Abrufen der Aktivitäten
   const fetchEvent = async (id: number, token: string | null) => {
     console.log('DashboardPage: Fetching Event');
     const result = await getEvent(id, token);
@@ -42,16 +42,16 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ selectedEvent } ) => {
     setEvent(result.data);
   };
 
-    const fetchProjects = async (eventId: number | null, token: string | null) => {
-      console.log('ProjectListPage: Fetching Projects');
-      const result = await getProjects(eventId, token);
-      if (result.resultType !== ResultType.SUCCESS || result.data === null) {
-        showToastError(result.resultMsg ?? 'Error');
-        return;
-      }
-      console.log('ProjectListPage: Projects fetched: ', result.data);
-      setProjects(result.data);
-    };
+  const fetchProjects = async (eventId: number | null, token: string | null) => {
+    console.log('ProjectListPage: Fetching Projects');
+    const result = await getProjects(eventId, token);
+    if (result.resultType !== ResultType.SUCCESS || result.data === null) {
+      showToastError(result.resultMsg ?? 'Error');
+      return;
+    }
+    console.log('ProjectListPage: Projects fetched: ', result.data);
+    setProjects(result.data);
+  };
 
   useEffect(() => {
     console.log('DashboardPage: useEffect: ', isAuthenticated, selectedEvent, profile?.id);
@@ -73,8 +73,8 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ selectedEvent } ) => {
         return;
       }
       if (selectedEvent) {
-        fetchEvent(selectedEvent.id, token); 
-        fetchProjects(selectedEvent.id, token); 
+        fetchEvent(selectedEvent.id, token);
+        fetchProjects(selectedEvent.id, token);
       }
     }
   }, [profile, selectedEvent]);
@@ -88,32 +88,29 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ selectedEvent } ) => {
       <IonContent>
         {/* Countdown Box */}
         {event?.start_time && event?.end_time ? (
-        <IonCard className="hackathon-card">
-          {event.end_time  < Math.floor((new Date()).getTime() / 1000) ? (
-            <>
-              <IonCardHeader>
-                <IonCardTitle>
-                  Hackerton bereits vorbei
-                </IonCardTitle>
-              </IonCardHeader>
-              <IonCardContent>
-                seit {formatCountdown(-(event.start_time - Math.floor((new Date()).getTime() / 1000)))}
-              </IonCardContent>
-            </>
-          ) : (
-            <>
-              <IonCardHeader>
-                <IonCardTitle>
-                  Hackerton Countdown
-                </IonCardTitle>
-              </IonCardHeader>
-              <IonCardContent>
-                {formatCountdown(event.start_time - Math.floor((new Date()).getTime() / 1000))}                
-              </IonCardContent>
-            </>
-          )}
-        </IonCard>
-        ) : null }
+          <IonCard className="hackathon-card">
+            {event.end_time < Math.floor(new Date().getTime() / 1000) ? (
+              <>
+                <IonCardHeader>
+                  <IonCardTitle>Hackerton bereits vorbei</IonCardTitle>
+                </IonCardHeader>
+                <IonCardContent>
+                  seit{' '}
+                  {formatCountdown(-(event.start_time - Math.floor(new Date().getTime() / 1000)))}
+                </IonCardContent>
+              </>
+            ) : (
+              <>
+                <IonCardHeader>
+                  <IonCardTitle>Hackerton Countdown</IonCardTitle>
+                </IonCardHeader>
+                <IonCardContent>
+                  {formatCountdown(event.start_time - Math.floor(new Date().getTime() / 1000))}
+                </IonCardContent>
+              </>
+            )}
+          </IonCard>
+        ) : null}
 
         {/* Event Box */}
 
