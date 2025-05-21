@@ -65,11 +65,25 @@ const App = () => {
     setSelectedEvent(result.data[0]);
   };
 
+  const getPageTitle = (pathname: string): string => {
+    const pageTitles: { [key: string]: string } = {
+      '/dashboard': 'Dashboard',
+      '/events': 'Events',
+      '/teams': 'Teams',
+      '/projects': 'Projects',
+      '/login': 'Login',
+      '/register': 'Register',
+    };
+    return pageTitles[pathname] || pathname;
+  }
+
+
   useEffect(() => {
     const domain = window.location.hostname;
-    console.log('Tracking pageview:', domain, location.pathname);
+    const pageTitle = getPageTitle(location.pathname);
+    console.log('Tracking pageview:', domain, location.pathname, pageTitle);
     if (domain === 'localhost') {
-      ReactGA.send({ hitType: 'pageview', page: location.pathname, hostname: domain });
+      ReactGA.send({ hitType: 'pageview', page: location.pathname, hostname: domain, title: pageTitle });
     }
   }, [location]);
 
