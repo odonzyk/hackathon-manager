@@ -33,7 +33,7 @@ variables:
 
 default:
   tags:    
-    - parking
+    - hackathon-manager
     - shell
     - staging
 
@@ -46,7 +46,7 @@ stages:
 
 build-frontend-image:
   tags:    
-    - parking
+    - hackathon-manager
     - shell
     - staging
 
@@ -77,7 +77,7 @@ build-frontend-image:
 
 build-backend-image:
   tags:    
-    - parking
+    - hackathon-manager
     - shell
     - staging
 
@@ -102,7 +102,7 @@ build-backend-image:
 
 build-job:
   tags:    
-    - parking
+    - hackathon-manager
     - docker
     - staging
     
@@ -125,7 +125,7 @@ build-job:
 
 unit-test-job:
   tags:    
-    - parking
+    - hackathon-manager
     - docker
     - staging
   stage: test 
@@ -139,7 +139,7 @@ unit-test-job:
 
 .lint-test-job:
   tags:    
-    - parking
+    - hackathon-manager
     - docker
     - staging  
   stage: test
@@ -156,7 +156,7 @@ unit-test-job:
 
 deploy-staging:
   tags:    
-    - parking
+    - hackathon-manager
     - shell
     - staging
 
@@ -189,7 +189,7 @@ deploy-staging:
     
 .deploy-production:
   tags:    
-    - parking
+    - hackathon-manager
     - shell
     - production
     
@@ -204,9 +204,9 @@ deploy-staging:
     - docker-compose down 
     - mkdir -p $RUNNER_FOLDER_PROD 
     - cd $RUNNER_FOLDER_PROD
-    - cp -rf frontend/dist/. /DOCKER/containers/parking-app/nginx/content/
-    - cp -rf backend/. /DOCKER/containers/parking-app/backend
-    - cp ./DOCKER-CONFIG/docker-compose.yaml /opt/data/docker/containers/parking-app/
+    - cp -rf frontend/dist/. /DOCKER/containers/hackathon-manager/nginx/content/
+    - cp -rf backend/. /DOCKER/containers/hackathon-manager/backend
+    - cp ./DOCKER-CONFIG/docker-compose.yaml /opt/data/docker/containers/hackathon-manager/
     
     - echo "Restart Docker-Stack"
     - cd $PROJECT_PATH
