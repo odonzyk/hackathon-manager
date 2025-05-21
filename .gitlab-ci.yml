@@ -33,7 +33,6 @@ variables:
 
 default:
   tags:    
-    - hackathon-manager
     - shell
     - staging
 
@@ -46,7 +45,6 @@ stages:
 
 build-frontend-image:
   tags:    
-    - hackathon-manager
     - shell
     - staging
 
@@ -77,7 +75,6 @@ build-frontend-image:
 
 build-backend-image:
   tags:    
-    - hackathon-manager
     - shell
     - staging
 
@@ -102,7 +99,6 @@ build-backend-image:
 
 build-job:
   tags:    
-    - hackathon-manager
     - docker
     - staging
     
@@ -125,7 +121,6 @@ build-job:
 
 unit-test-job:
   tags:    
-    - hackathon-manager
     - docker
     - staging
   stage: test 
@@ -139,7 +134,6 @@ unit-test-job:
 
 .lint-test-job:
   tags:    
-    - hackathon-manager
     - docker
     - staging  
   stage: test
@@ -156,7 +150,6 @@ unit-test-job:
 
 deploy-staging:
   tags:    
-    - hackathon-manager
     - shell
     - staging
 
@@ -176,9 +169,6 @@ deploy-staging:
     - pwd
     - ls -lah
     - cp -rf . /DOCKER/containers/hackathon-manager/
-    #- cp -rf frontend/dist/. /DOCKER/containers/hackathon-manager/nginx/content/
-    #- cp -rf backend/. /DOCKER/containers/hackathon-manager/backend
-    #- cp ./docker-compose.yaml /opt/data/docker/containers/hackathon-manager/
     - docker-compose down 
     - echo "restart Docker-Stack"
     - mkdir -p $PROJECT_PATH 
@@ -189,7 +179,6 @@ deploy-staging:
     
 .deploy-production:
   tags:    
-    - hackathon-manager
     - shell
     - production
     
