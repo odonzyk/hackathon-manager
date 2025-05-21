@@ -4,8 +4,8 @@ const { db_get, db_run } = require('./dbUtils');
 const { time2ts } = require('../utils');
 const fs = require('fs');
 const path = require('path');
+const { defaultProjects } = require('./data/Projects');
 
-const defaultProjectsPath = path.resolve(__dirname, './data/projects.json');
 const DEFAULT_PASSWORD = 'welcome!';
 
 async function insertUserAdmin() {
@@ -31,8 +31,8 @@ async function insertProjects() {
 
   logger.info('DB Insert: Create Projects');
 
-  const projects = JSON.parse(fs.readFileSync(defaultProjectsPath, 'utf-8'));
-  for (const project of projects) {
+  
+  for (const project of defaultProjects) {
     await createProject(
       project.event_id,
       project.status_id,
