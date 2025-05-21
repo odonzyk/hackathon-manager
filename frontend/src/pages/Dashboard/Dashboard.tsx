@@ -11,7 +11,6 @@ import {
 } from '@ionic/react';
 import './Dashboard.css';
 import { useEffect, useState } from 'react';
-import ReactGA from 'react-ga4';
 import { Event, Profile, Project } from '../../types/types';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import { useToast } from '../../components/ToastProvider';
@@ -78,10 +77,6 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ selectedEvent }) => {
       }
     }
   }, [profile, selectedEvent]);
-
-  useEffect(() => {
-    ReactGA.send({ hitType: 'pageview', page: window.location.pathname });
-  }, []);
 
   return (
     <IonPage>

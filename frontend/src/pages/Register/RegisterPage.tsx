@@ -20,7 +20,6 @@ import { APP_VERSION } from '../../../config';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import { getExistingToken } from '../../utils/authUtils';
 import { useToast } from '../../components/ToastProvider';
-import ReactGA from 'react-ga4';
 
 const emptyProfile: Profile = {
   id: 0,
@@ -114,9 +113,6 @@ const RegisterPage = () => {
   };
 
   // -- Page Logig ---------------------------------------.
-  useEffect(() => {
-    ReactGA.send({ hitType: 'pageview', page: window.location.pathname });
-  }, []);
 
   useEffect(() => {
     console.log('RegisterPage: useEffect is triggered', isFirstLoad, isAuthenticated);

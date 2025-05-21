@@ -13,7 +13,7 @@ import {
   IonToolbar,
   setupIonicReact,
 } from '@ionic/react';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route, useLocation } from 'react-router-dom';
 import ReactGA from 'react-ga4';
 import '@ionic/react/css/core.css';
 import '@ionic/react/css/normalize.css';
@@ -49,6 +49,7 @@ const App = () => {
   const { showToastError } = useToast();
   const [events, setEvents] = useState<Event[]>([]);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const location = useLocation();
 
   // Funktion zum Abrufen der Aktivitäten
   const fetchEvents = async (token: string | null) => {
@@ -63,6 +64,14 @@ const App = () => {
     //setSelectedEvent(result.data[result.data.length - 1]);
     setSelectedEvent(result.data[0]);
   };
+
+  useEffect(() => {
+    const domain = window.location.hostname;
+    console.log('Tracking pageview:', domain, location.pathname);
+    if (domain === 'localhost') {
+      ReactGA.send({ hitType: 'pageview', page: location.pathname, hostname: domain });
+    }
+  }, [location]);
 
   useEffect(() => {
     console.log('EventListPage: useEffect: ', isAuthenticated, profile);
