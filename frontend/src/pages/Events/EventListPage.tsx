@@ -14,12 +14,15 @@ import './EventListPage.css';
 import { Event, Profile } from '../../types/types';
 import { useToast } from '../../components/ToastProvider';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
-import { getEvents, loadStoredProfile, ResultType } from '../../utils/globalDataUtils';
+import { getEvents, ResultType } from '../../utils/globalDataUtils';
 import { getExistingToken } from '../../utils/authUtils';
 import { formatDate } from '../../utils/dateUtils';
 
-const EventListPage: React.FC = () => {
-  const [profile, setProfile] = useState<Profile | null>(null);
+interface EventListPageProps {
+  profile: Profile | null;
+}
+
+const EventListPage: React.FC<EventListPageProps> = ({ profile }) => {
   const isAuthenticated = useIsAuthenticated();
   const { showToastError } = useToast();
   const [events, setEvents] = useState<Event[]>([]);
@@ -38,17 +41,6 @@ const EventListPage: React.FC = () => {
 
   useEffect(() => {
     console.log('EventListPage: useEffect: ', isAuthenticated, profile);
-    if (!isAuthenticated) return;
-
-    if (!profile) {
-      const userProfile = loadStoredProfile();
-      if (!userProfile || !userProfile.id) {
-        showToastError('Profil nicht gefunden. Bitte anmelden.');
-        return;
-      }
-      setProfile(userProfile);
-    }
-
     if (profile) {
       const token = getExistingToken();
       if (!token) {

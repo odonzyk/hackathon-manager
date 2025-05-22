@@ -13,6 +13,23 @@
   margin-bottom: 20px;
 }
 
+.register-toggle-line{
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between;
+}
+
+.register-icon {
+  margin-left: 16px;
+  font-size: 2rem;
+}
+
+.register-toggle {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  min-width: 80px;
+}
+
 .password-error {
   font-size: 0.9rem;
   margin-top: 4px;

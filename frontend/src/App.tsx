@@ -35,10 +35,11 @@ import DashboardPage from './pages/Dashboard/Dashboard';
 import ProjectListPage from './pages/Projects/ProjectListPage';
 import HackathonTeams from './pages/Teams/HackathonTeams';
 import EventListPage from './pages/Events/EventListPage';
-import { getEvents, loadStoredProfile, ResultType } from './utils/globalDataUtils';
-import { Event, Profile } from './types/types';
+import { getEvents, getProjects, loadStoredProfile, ResultType } from './utils/globalDataUtils';
+import { Event, Profile, Project } from './types/types';
 import { useToast } from './components/ToastProvider';
 import { getExistingToken } from './utils/authUtils';
+import ProjectDetailPage from './pages/ProjectDetail/ProjectDetailPage';
 
 setupIonicReact();
 ReactGA.initialize('G-3LWGMR7G0P');
@@ -47,23 +48,35 @@ const App = () => {
   const isAuthenticated = useIsAuthenticated();
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const { showToastError } = useToast();
-  const [events, setEvents] = useState<Event[]>([]);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const location = useLocation();
 
   // Funktion zum Abrufen der Aktivitäten
   const fetchEvents = async (token: string | null) => {
-    console.log('EventListPage: Fetching Events');
+    console.log('App: Fetching Events');
     const result = await getEvents(token);
     if (result.resultType !== ResultType.SUCCESS || result.data === null) {
       showToastError(result.resultMsg ?? 'Error');
       return;
     }
-    console.log('EventListPage: Events fetched: ', result.data);
+    console.log(`App: ${result.data.length} Events fetched ! `);
     setEvents(result.data);
     //setSelectedEvent(result.data[result.data.length - 1]);
     setSelectedEvent(result.data[0]);
   };
+
+    const fetchProjects = async (eventId: number | null, token: string | null) => {
+      console.log('App: Fetching Projects');
+      const result = await getProjects(eventId, token);
+      if (result.resultType !== ResultType.SUCCESS || result.data === null) {
+        showToastError(result.resultMsg ?? 'Error');
+        return;
+      }
+      console.log(`App: ${result.data.length} Projects fetched ! `);
+      setProjects(result.data);
+    };
 
   const getPageTitle = (pathname: string): string => {
     const pageTitles: { [key: string]: string } = {
@@ -71,12 +84,12 @@ const App = () => {
       '/events': 'Events',
       '/teams': 'Teams',
       '/projects': 'Projects',
+      '/projectdetail': 'ProjectDetail',
       '/login': 'Login',
       '/register': 'Register',
     };
     return pageTitles[pathname] || pathname;
   }
-
 
   useEffect(() => {
     const domain = window.location.hostname;
@@ -88,7 +101,7 @@ const App = () => {
   }, [location]);
 
   useEffect(() => {
-    console.log('EventListPage: useEffect: ', isAuthenticated, profile);
+    console.log('App: useEffect: ', isAuthenticated, profile);
     if (!isAuthenticated) return;
 
     if (!profile) {
@@ -99,6 +112,10 @@ const App = () => {
       }
       setProfile(userProfile);
     }
+  }, []);
+
+  useEffect(() => {
+    console.log('App: useEffect: ', isAuthenticated, profile);
 
     if (profile) {
       const token = getExistingToken();
@@ -110,16 +127,36 @@ const App = () => {
     }
   }, [profile]);
 
+  useEffect(() => {
+    console.log('App: useEffect: ', isAuthenticated, selectedEvent, profile?.id);
+
+    if (profile) {
+      const token = getExistingToken();
+      if (!token) {
+        showToastError('Token nicht gefunden. Bitte anmelden.');
+        return;
+      }
+      if (selectedEvent) {
+        fetchProjects(selectedEvent.id, token);
+      }
+    }
+  }, [selectedEvent]);
+
   const publicRoutes = [
     { path: '/login', component: LoginPage, exact: true },
     { path: '/register', component: RegisterPage, exact: true },
   ];
 
   const privateRoutes = [
-    { path: '/dashboard', component: DashboardPage, exact: true, selectedEvent: selectedEvent },
-    { path: '/events', component: EventListPage, exact: true },
+    { path: '/dashboard', component: DashboardPage, exact: true, 
+      profile: profile, event: selectedEvent, projects: projects },
+    { path: '/events', component: EventListPage, exact: true, 
+      profile: profile },
     { path: '/teams', component: HackathonTeams, exact: true },
-    { path: '/projects', component: ProjectListPage, exact: true, selectedEvent: selectedEvent },
+    { path: '/projects', component: ProjectListPage, exact: true, 
+      profile: profile, event: selectedEvent, projects: projects },
+    { path: '/projectdetail/:id', component: ProjectDetailPage, exact: true,
+      profile: profile, event: selectedEvent, projects: projects },
   ];
 
   return (

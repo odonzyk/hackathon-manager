@@ -11,62 +11,36 @@ import {
   IonCol,
   IonInput,
   IonButton,
+  IonText,
+  IonList,
+  IonItem,
+  IonIcon,
+  IonLabel,
 } from '@ionic/react';
 import './ProjectListPage.css';
 import { Event, Profile, Project } from '../../types/types';
-import { useToast } from '../../components/ToastProvider';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
-import { getProjects, loadStoredProfile, ResultType } from '../../utils/globalDataUtils';
-import { getExistingToken } from '../../utils/authUtils';
+import { useHistory } from 'react-router-dom';
+import { callOutline, flagOutline, peopleOutline } from 'ionicons/icons';
 
 interface ProjectListPageProps {
-  selectedEvent: Event | null;
+  profile: Profile | null;
+  projects: Project[];
+  event: Event | null;
 }
 
-const ProjectListPage: React.FC<ProjectListPageProps> = ({ selectedEvent }) => {
-  const [profile, setProfile] = useState<Profile | null>(null);
+const ProjectListPage: React.FC<ProjectListPageProps> = ({ profile, event, projects }) => {
   const isAuthenticated = useIsAuthenticated();
-  const { showToastError } = useToast();
-  const [projects, setProjects] = useState<Project[]>([]);
   const [search, setSearch] = useState('');
   const [componentFilter, setComponentFilter] = useState('');
   const [skillFilter, setSkillFilter] = useState('');
+  const history = useHistory();
 
-  const fetchProjects = async (eventId: number | null, token: string | null) => {
-    console.log('ProjectListPage: Fetching Projects');
-    const result = await getProjects(eventId, token);
-    if (result.resultType !== ResultType.SUCCESS || result.data === null) {
-      showToastError(result.resultMsg ?? 'Error');
-      return;
-    }
-    console.log('ProjectListPage: Projects fetched: ', result.data);
-    setProjects(result.data);
-  };
+
 
   useEffect(() => {
-    console.log('ProjectListPage: useEffect: ', isAuthenticated, selectedEvent, profile?.id);
-    if (!isAuthenticated) return;
-
-    if (!profile) {
-      const userProfile = loadStoredProfile();
-      if (!userProfile || !userProfile.id) {
-        showToastError('Profil nicht gefunden. Bitte anmelden.');
-        return;
-      }
-      setProfile(userProfile);
-    }
-
-    if (profile) {
-      const token = getExistingToken();
-      if (!token) {
-        showToastError('Token nicht gefunden. Bitte anmelden.');
-        return;
-      }
-      if (selectedEvent) {
-        fetchProjects(selectedEvent.id, token);
-      }
-    }
-  }, [profile, selectedEvent]);
+    console.log('ProjectListPage: useEffect: ', isAuthenticated, profile?.id, event?.id);
+  }, []);
 
   const filteredProjects = projects.filter((project) => {
     const matchesSearch = [project.idea, project.description].some((field) =>
@@ -79,6 +53,10 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ selectedEvent }) => {
       skillFilter === '' || project.skills.toLowerCase().includes(skillFilter.toLowerCase());
     return matchesSearch && matchesComponent && matchesSkill;
   });
+
+  const handleProjectClick = (id: number) => {
+    history.push(`/projectdetail/${id}`);
+  };
 
   return (
     <IonPage>
@@ -117,45 +95,42 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ selectedEvent }) => {
           <IonRow>
             {filteredProjects.map((project) => (
               <IonCol size="12" sizeMd="6" key={project.id}>
-                <IonCard className="hackathon-card">
+                <IonCard
+                  className="hackathon-card"
+                  button
+                  onClick={() => handleProjectClick(project.id)} // Navigation bei Klick
+                >
                   <IonCardHeader>
                     <IonCardTitle>{project.idea}</IonCardTitle>
                   </IonCardHeader>
                   <IonCardContent>
-                    <p>{project.description}</p>
-                    <div className="project-details">
-                      <p>
-                        <span role="img" aria-label="Team">
-                          👥
-                        </span>{' '}
-                        <strong>Team:</strong> {project.team_name}
-                      </p>
-                      <p>
-                        <span role="img" aria-label="Contact">
-                          📞
-                        </span>{' '}
-                        <strong>Kontakt:</strong> {project.initiator_id}
-                      </p>
-                      <p>
-                        <span role="img" aria-label="Goal">
-                          🎯
-                        </span>{' '}
-                        <strong>Ziel:</strong> {project.goal}
-                      </p>
-                      <p>
-                        <span role="img" aria-label="Components">
-                          🛠️
-                        </span>{' '}
-                        <strong>Komponenten:</strong> {project.components}
-                      </p>
-                      <p>
-                        <span role="img" aria-label="Skills">
-                          💡
-                        </span>{' '}
-                        <strong>Skills:</strong> {project.skills}
-                      </p>
-                    </div>
-                    <IonButton expand="block">Projekt beitreten</IonButton>
+                    <IonText className='project-detail'>{project.description}</IonText>
+                    
+                                        <IonList>
+                                          <IonItem>
+                                            <IonIcon icon={callOutline} slot="start" style={{ color: '#28a745' }} />
+                                            <IonLabel>
+                                              <h2>Kontakt</h2>
+                                              <IonText>{project.initiator_id}</IonText>
+                                            </IonLabel>
+                                          </IonItem>
+                                          <IonItem>
+                                            <IonIcon icon={flagOutline} slot="start" style={{ color: '#ffc107' }} />
+                                            <IonLabel>
+                                              <h2>Ziel</h2>
+                                              <IonText>{project.goal}</IonText>
+                                            </IonLabel>
+                                          </IonItem>
+                                        </IonList>
+                    {project.status_id < 3 ? (
+                      <IonButton expand="block">Projekt beitreten</IonButton>
+                    ) : null}
+                    {project.status_id === 3 ? (
+                      <IonButton expand="block" disabled={true} color="secondary">Projekt abgeschlossen</IonButton>
+                    ) : null}
+                    {project.status_id === 4 ? (
+                      <IonButton expand="block" disabled={true} color="danger">Projekt abgebrochen</IonButton>
+                    ) : null}
                   </IonCardContent>
                 </IonCard>
               </IonCol>

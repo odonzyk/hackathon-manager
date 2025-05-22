@@ -135,6 +135,24 @@ ion-select {
   color: #e0e0e0;
 }
 
+/* Menü Liste */
+.hackathon-card ion-list {
+  background-color: var(--ion-card-background);
+  --ion-text-color: #ffffff;
+}
+
+.hackathon-card ion-item {
+  font-size: 1.2rem;
+  color: #ffffff;
+  --ion-item-background: transparent;
+  --ion-item-hover-background: rgba(255, 255, 255, 0.1); /* Leichter Hover-Effekt */
+}
+
+.hackathon-card ion-item ion-label ion-text { 
+  font-size: 0.9rem;
+  color: #a0a0a0;
+}
+
 .hackathon-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 255, 255, 0.4);

@@ -181,50 +181,48 @@ const RegisterPage = () => {
               required={true}
               onIonChange={(e) => handleInputChange('name', e.detail.value!)}
             />
-            <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-              <div
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+
+            <div className='register-toggle-line'>
+              <IonInput
+                className="register-input"
+                value={newProfile.email}
+                labelPlacement="floating"
+                label="Email (Benötigt)"
+                placeholder="Email eingeben"
+                fill="outline"
+                required={true}
+                type="email"
+                onIonChange={(e) => handleInputChange('email', e.detail.value!)}
+              />
+              <IonToggle
+                className="register-toggle"
+                labelPlacement="stacked"
+                checked={newProfile.is_private_email}
+                onIonChange={(e) => handleInputChange('is_private_email', e.detail.checked)}
               >
-                <IonInput
-                  className="register-input"
-                  value={newProfile.email}
-                  labelPlacement="floating"
-                  label="Email (Benötigt)"
-                  placeholder="Email eingeben"
-                  fill="outline"
-                  required={true}
-                  type="email"
-                  onIonChange={(e) => handleInputChange('email', e.detail.value!)}
-                  style={{ flex: 10 }}
-                />
-                <IonToggle
-                  checked={newProfile.is_private_email}
-                  onIonChange={(e) => handleInputChange('is_private_email', e.detail.checked)}
-                  style={{ marginLeft: '16px' }}
-                />
-              </div>
+                {newProfile.is_private_email ? " Privat " : "Sichtbar"}
+              </IonToggle>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-              <div
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <IonInput
+                className="register-input"
+                value={newProfile.telephone}
+                labelPlacement="floating"
+                label="Telefonnummer"
+                placeholder="Telefonnummer eingeben"
+                fill="outline"
+                type="tel"
+                onIonChange={(e) => handleInputChange('telephone', e.detail.value!)}
+              />
+              <IonToggle
+                className='register-toggle'
+                labelPlacement='stacked'
+                checked={newProfile.is_private_telephone}
+                onIonChange={(e) => handleInputChange('is_private_telephone', e.detail.checked)}
               >
-                <IonInput
-                  className="register-input"
-                  value={newProfile.telephone}
-                  labelPlacement="floating"
-                  label="Telefonnummer"
-                  placeholder="Telefonnummer eingeben"
-                  fill="outline"
-                  type="tel"
-                  onIonChange={(e) => handleInputChange('telephone', e.detail.value!)}
-                  style={{ flex: 10 }}
-                />
-                <IonToggle
-                  checked={newProfile.is_private_telephone}
-                  onIonChange={(e) => handleInputChange('is_private_telephone', e.detail.checked)}
-                  style={{ marginLeft: '16px' }}
-                />
-              </div>
+                {newProfile.is_private_telephone ? " Privat " : "Sichtbar"}
+              </IonToggle>
             </div>
           </IonCardContent>
         </IonCard>
