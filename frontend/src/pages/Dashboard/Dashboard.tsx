@@ -87,7 +87,7 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ selectedEvent }) => {
             {event.end_time < Math.floor(new Date().getTime() / 1000) ? (
               <>
                 <IonCardHeader>
-                  <IonCardTitle>Hackerton bereits vorbei</IonCardTitle>
+                  <IonCardTitle>Hackathon bereits vorbei</IonCardTitle>
                 </IonCardHeader>
                 <IonCardContent>
                   seit{' '}
@@ -97,7 +97,7 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ selectedEvent }) => {
             ) : (
               <>
                 <IonCardHeader>
-                  <IonCardTitle>Hackerton Countdown</IonCardTitle>
+                  <IonCardTitle>Hackathon Countdown</IonCardTitle>
                 </IonCardHeader>
                 <IonCardContent>
                   {formatCountdown(event.start_time - Math.floor(new Date().getTime() / 1000))}

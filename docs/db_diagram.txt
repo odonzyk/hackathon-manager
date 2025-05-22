@@ -31,18 +31,23 @@ Table Event {
 Table Project {
     event_id integer [ref: > Event.id, not null]
     id integer [primary key]
-    status_id integer [ref: > Project_Status.id, not null]
     idea text
     description text
     team_name text
     team_avatar_url text
-    iniator_id integer [ref: > User.id, not null]
     goal text
     components text
     skills text
+    status_id integer [ref: > ProjectStatus.id, not null]
 }
 
 Table Participant {
+  id INTEGER [primary key]
+  user_id integer [ref: > User.id, not null]
+  project_id integer [ref: > Project.id, not null]
+}
+
+Table Initiator {
   id INTEGER [primary key]
   user_id integer [ref: > User.id, not null]
   project_id integer [ref: > Project.id, not null]
