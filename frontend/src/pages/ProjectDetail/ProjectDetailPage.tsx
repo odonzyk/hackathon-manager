@@ -7,7 +7,6 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
-  IonButton,
   IonIcon,
   IonList,
   IonItem,
@@ -113,9 +112,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ profile, event, p
             </IonList>
 
             <JoinProjectButton
-        statusId={project.status_id}
-        onJoinProject={() => onJoinProject(project.id)}
-      />
+              statusId={project.status_id}
+              onJoinProject={() => handleJoinProject(project.id)}
+            />
           </IonCardContent>
         </IonCard>
       </IonContent>

@@ -40,6 +40,7 @@ import { Event, Profile, Project } from './types/types';
 import { useToast } from './components/ToastProvider';
 import { getExistingToken } from './utils/authUtils';
 import ProjectDetailPage from './pages/ProjectDetail/ProjectDetailPage';
+import AddProjectPage from './pages/AddProject/AddProjectPage';
 
 setupIonicReact();
 ReactGA.initialize('G-3LWGMR7G0P');
@@ -172,12 +173,26 @@ const App = () => {
       projects: projects,
     },
     {
+      path: '/projects/add',
+      component: AddProjectPage,
+      exact: true,
+      profile: profile,
+      event: selectedEvent,
+      projects: projects,
+    },
+    {
       path: '/projectdetail/:id',
       component: ProjectDetailPage,
       exact: true,
       profile: profile,
       event: selectedEvent,
       projects: projects,
+      onProjectAdded: () => {
+        const token = getExistingToken();
+        if (selectedEvent && token) {
+          fetchProjects(selectedEvent.id, token); // Projekte nach dem Hinzufügen aktualisieren
+        }
+      },
     },
   ];
 

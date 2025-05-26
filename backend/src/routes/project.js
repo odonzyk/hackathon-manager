@@ -15,7 +15,6 @@ const createProject = (dbRow) => {
     description: dbRow?.description ?? '',
     team_name: dbRow?.team_name ?? '',
     team_avatar_url: dbRow?.team_avatar_url ?? '',
-    initiator_id: dbRow?.initiator_id ?? null,
     goal: dbRow?.goal ?? '',
     components: dbRow?.components ?? '',
     skills: dbRow?.skills ?? '',
@@ -98,9 +97,9 @@ router.get('/listByUser/:id', authenticateToken, async (req, res) => {
 
 // *** POST /api/project *********************************************************
 router.post('/', async (req, res) => {
-  let { event_id, status_id, idea, description, team_name, team_avatar_url, initiator_id, goal, components, skills } = req.body;
+  let { event_id, status_id, idea, description, team_name, team_avatar_url, initiators, goal, components, skills } = req.body;
   logger.debug(`API Event -> Register Project: ${event_id}`);
-  if (!event_id || !idea || !description || !initiator_id) {
+  if (!event_id || !idea || !description || !initiators[0]?.id) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
   }
 
@@ -108,14 +107,13 @@ router.post('/', async (req, res) => {
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (result.row) return res.status(409).send(ErrorMsg.VALIDATION.CONFLICT);
 
-  result = await db_run('INSERT INTO Project (event_id, status_id, idea, description, team_name, team_avatar_url, initiator_id, goal, components, skills) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+  result = await db_run('INSERT INTO Project (event_id, status_id, idea, description, team_name, team_avatar_url, goal, components, skills) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [
     event_id,
     status_id,
     idea,
     description,
     team_name,
     team_avatar_url,
-    initiator_id,
     goal,
     components,
     skills
@@ -124,8 +122,17 @@ router.post('/', async (req, res) => {
   if (result.err || result.changes === 0) {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }
+  for (const initiator of initiators) {
+    if (!initiator.id) {
+      return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
+    }
+    result = await db_run('INSERT INTO Initiator (project_id, user_id) VALUES (?, ?)', [project_id, initiator.id]);
+    if (result.err || result.changes === 0) {
+      return res.status(500).send(ErrorMsg.SERVER.ERROR);
+    }
+  }
 
-  const initiators = await getInitiators(initiator_id);
+  const initiatorslist = await getInitiators(project_id);
   res.status(201).json({
     event_id,
     id: project_id,
@@ -134,21 +141,20 @@ router.post('/', async (req, res) => {
     description,
     team_name,
     team_avatar_url,
-    initiator_id,
     goal,
     components,
     skills,
-    initiators: initiators || []
+    initiators: initiatorslist || []
   });
 });
 
 // *** PUT /api/event *********************************************************
 router.put('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
-  let { event_id, status_id, idea, description, team_name, team_avatar_url, initiator_id, goal, components, skills } = req.body;
+  let { event_id, status_id, idea, description, team_name, team_avatar_url, goal, components, skills } = req.body;
   logger.debug(`API Project -> Update Project: ${idea}`);
 
-  if (!event_id || !idea || !description || !initiator_id) {
+  if (!event_id || !idea || !description) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
   }
 
@@ -175,20 +181,18 @@ router.put('/:id', authenticateToken, async (req, res) => {
   project.description = description ?? project.description;
   project.team_name = team_name ?? project.team_name;
   project.team_avatar_url = team_avatar_url ?? project.team_avatar_url;
-  project.initiator_id = initiator_id ?? project.initiator_id;
   project.goal = goal ?? project.goal;
   project.components = components ?? project.components;
   project.skills = skills ?? project.skills;
 
   // Update Project
-  result = await db_run('UPDATE Project SET event_id=?, status_id=?, idea=?, description=?, team_name=?, team_avatar_url=?, initiator_id=?, goal=?, components=?, skills=? WHERE id = ?', [
+  result = await db_run('UPDATE Project SET event_id=?, status_id=?, idea=?, description=?, team_name=?, team_avatar_url=?, goal=?, components=?, skills=? WHERE id = ?', [
     project.event_id,
     project.status_id,
     project.idea,
     project.description,
     project.team_name,
     project.team_avatar_url,
-    project.initiator_id,
     project.goal,
     project.components,
     project.skills,

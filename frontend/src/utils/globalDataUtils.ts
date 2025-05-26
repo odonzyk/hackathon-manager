@@ -146,6 +146,46 @@ export const getProjects = async (
   }
 };
 
+export const putProject = async (
+  project: Project | null,
+  token: string | null,
+): Promise<{ resultType: ResultType; resultMsg: string | null; data: Project | null }> => {
+  if (!token || !project) return resultError('Projekt oder Token fehlen');
+
+  try {
+    const response = await axios.put<Project>(`/api/project/${project.id}`, project, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (response.status === 200) {
+      return resultSuccess(response.data);
+    } else {
+      return resultError('Projekt konnte nicht aktualisiert werden');
+    }
+  } catch (error) {
+    return resultError('Projekt konnte nicht aktualisiert werden');
+  }
+};
+
+export const postProject = async (
+  project: Project | null,
+  token: string | null,
+): Promise<{ resultType: ResultType; resultMsg: string | null; data: Project | null }> => {
+  if (!token || !project) return resultError('token or project is missing');
+
+  try {
+    const response = await axios.post<Project>(`/api/project/`, project, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (response.status === 201) {
+      return resultSuccess(response.data);
+    } else {
+      return resultError('Projekt konnte nicht erstellt werden');
+    }
+  } catch (error) {
+    return resultError('Projekt konnte nicht erstellt werden');
+  }
+};
+
 /* *************************************************** */
 /* Event API                                         */
 /* *************************************************** */

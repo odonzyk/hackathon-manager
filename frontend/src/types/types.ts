@@ -33,7 +33,6 @@ export type Project = {
   idea: string;
   description: string;
   team_name: string;
-  initiator_id: number;
   goal: string;
   components: string;
   skills: string;

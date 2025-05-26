@@ -100,12 +100,12 @@ async function createEvent(id, name, start_time, end_time) {
   if (result.err || result.changes === 0) throw new Error('Could not create Event : ' + name);
 }
 
-async function createProject(event_id, status_id, idea, description, team_name, team_avatar_url, iniator_id, goal, components, skills) {
+async function createProject(event_id, status_id, idea, description, team_name, team_avatar_url, goal, components, skills) {
   const result = await db_run(
     `INSERT 
-            INTO Project (event_id, status_id, idea, description, team_name, team_avatar_url, initiator_id, goal, components, skills)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [event_id, status_id, idea, description, team_name, team_avatar_url, iniator_id, goal, components, skills]
+            INTO Project (event_id, status_id, idea, description, team_name, team_avatar_url, goal, components, skills)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [event_id, status_id, idea, description, team_name, team_avatar_url, goal, components, skills]
   );
   if (result.err || result.changes === 0) throw new Error('Could not create Project : ' + event_id + ' - ' + idea);
 }

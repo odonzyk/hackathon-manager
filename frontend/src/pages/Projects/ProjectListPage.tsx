@@ -5,18 +5,15 @@ import {
   IonCard,
   IonCardHeader,
   IonCardTitle,
-  IonCardContent,
   IonGrid,
   IonRow,
   IonCol,
   IonInput,
-  IonButton,
-  IonText,
-  IonList,
-  IonItem,
+  IonFab,
+  IonFabButton,
   IonIcon,
-  IonLabel,
 } from '@ionic/react';
+import { addOutline } from 'ionicons/icons';
 import './ProjectListPage.css';
 import { Event, Profile, Project } from '../../types/types';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
@@ -112,6 +109,14 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ profile, event, proje
             ))}
           </IonRow>
         </IonGrid>
+
+        {/* IonFab Button */}
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+          <IonFabButton color="primary" onClick={() => history.push('/projects/add')}>
+            <IonIcon icon={addOutline} />
+          </IonFabButton>
+        </IonFab>
+
       </IonContent>
     </IonPage>
   );
