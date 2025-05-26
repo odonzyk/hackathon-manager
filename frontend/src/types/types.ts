@@ -20,6 +20,12 @@ export type Profile = {
   avatar_url: string;
 };
 
+export type Initiator = {
+  id: number;
+  name: string;
+  avatar_url: string;
+};
+
 export type Project = {
   event_id: number;
   id: number;
@@ -31,6 +37,7 @@ export type Project = {
   goal: string;
   components: string;
   skills: string;
+  initiators: Initiator[];
 };
 
 export type Event = {

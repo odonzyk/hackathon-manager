@@ -3,6 +3,7 @@ const { userPaths } = require('./users.swagger');
 const { eventPaths } = require('./event.swagger');
 const { projectPaths } = require('./project.swagger');
 const { participantPaths } = require('./participant.swagger');
+const { initiatorPaths } = require('./initiator.swagger');
 
 const { schemaObjects } = require('./apischema');
 const config = require('../src/config'); // Inport the config
@@ -57,6 +58,10 @@ const apiDocumentation = {
     {
       name: 'Participant',
       description: 'API endpoints for managing participants'
+    },
+    {
+      name: 'Initiator',
+      description: 'API endpoints for managing initiators'
     }
   ],
   paths: {
@@ -64,7 +69,8 @@ const apiDocumentation = {
     ...userPaths,
     ...eventPaths,
     ...projectPaths,
-    ...participantPaths
+    ...participantPaths,
+    ...initiatorPaths
   },
   components: {
     securitySchemes: {

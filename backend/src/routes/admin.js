@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const logger = require('../logger');
 const { db_run } = require('../utils/db/dbUtils');
-const { dbCreate } = require('../utils/db/dbInit');
 const authenticateToken = require('../middlewares/authMiddleware');
+const { dbInitialisation } = require('../utils/db/db');
 
-const tables = ['Participant', 'Project', 'Event', 'User', 'Role', 'ProjectStatus'];
+const tables = ['Participant', 'Initiator', 'Project', 'Event', 'User', 'Role', 'ProjectStatus'];
 
 // *** GET /api/health/config *************************************************
 router.get('/dbReset', authenticateToken, async (req, res) => {
@@ -22,7 +22,7 @@ router.get('/dbReset', authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Fehler beim Zurücksetzen der Datenbank.' });
   }
 
-  dbCreate();
+  dbInitialisation();
   res.status(200).json({ message: 'Database has been reset successfully.' });
 });
 

@@ -142,13 +142,14 @@ ion-select {
 }
 
 .hackathon-card ion-item {
+  align-items: flex-start;
   font-size: 1.2rem;
   color: #ffffff;
   --ion-item-background: transparent;
   --ion-item-hover-background: rgba(255, 255, 255, 0.1); /* Leichter Hover-Effekt */
 }
 
-.hackathon-card ion-item ion-label ion-text { 
+.hackathon-card ion-item ion-label ion-text {
   font-size: 0.9rem;
   color: #a0a0a0;
 }

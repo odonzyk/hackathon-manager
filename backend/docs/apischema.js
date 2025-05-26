@@ -123,6 +123,24 @@ const schemaObjects = {
         example: 42
       }
     }
+  },
+  Initiator: {
+    type: 'object',
+    properties: {
+      id: {
+        type: 'integer',
+        example: 1
+      },
+      project_id: {
+        type: 'integer',
+        example: 1
+      },
+      user_id: {
+        type: 'integer',
+        example: 42
+      }
+    }
   }
 };
+
 module.exports = { schemaObjects };

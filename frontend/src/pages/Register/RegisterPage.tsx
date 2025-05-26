@@ -182,7 +182,7 @@ const RegisterPage = () => {
               onIonChange={(e) => handleInputChange('name', e.detail.value!)}
             />
 
-            <div className='register-toggle-line'>
+            <div className="register-toggle-line">
               <IonInput
                 className="register-input"
                 value={newProfile.email}
@@ -200,7 +200,7 @@ const RegisterPage = () => {
                 checked={newProfile.is_private_email}
                 onIonChange={(e) => handleInputChange('is_private_email', e.detail.checked)}
               >
-                {newProfile.is_private_email ? " Privat " : "Sichtbar"}
+                {newProfile.is_private_email ? ' Privat ' : 'Sichtbar'}
               </IonToggle>
             </div>
 
@@ -216,12 +216,12 @@ const RegisterPage = () => {
                 onIonChange={(e) => handleInputChange('telephone', e.detail.value!)}
               />
               <IonToggle
-                className='register-toggle'
-                labelPlacement='stacked'
+                className="register-toggle"
+                labelPlacement="stacked"
                 checked={newProfile.is_private_telephone}
                 onIonChange={(e) => handleInputChange('is_private_telephone', e.detail.checked)}
               >
-                {newProfile.is_private_telephone ? " Privat " : "Sichtbar"}
+                {newProfile.is_private_telephone ? ' Privat ' : 'Sichtbar'}
               </IonToggle>
             </div>
           </IonCardContent>

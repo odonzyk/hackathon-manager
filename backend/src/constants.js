@@ -16,7 +16,8 @@ const ErrorMsg = Object.freeze({
     NO_USER: 'No user found',
     NO_PROJECT: 'No project found',
     NO_EVENT: 'No event found',
-    NO_PARTICIPANT: 'No participant found'
+    NO_PARTICIPANT: 'No participant found',
+    NO_INITIATOR: 'No initiator found'
   }
 });
 

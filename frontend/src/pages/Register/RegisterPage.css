@@ -13,9 +13,9 @@
   margin-bottom: 20px;
 }
 
-.register-toggle-line{
-  display: flex; 
-  align-items: center; 
+.register-toggle-line {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 

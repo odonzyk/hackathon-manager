@@ -88,6 +88,25 @@ async function fillTable(table, structure, values) {
   }
 }
 
+
+async function isTableEmpty(tablename) {
+  const result = await db_get(`SELECT COUNT(*) as count FROM ${tablename}`);
+  if (result.err) {
+    logger.error(`isTableEmpty: Error checking table ${tablename}: ${result.err.message}`);
+    return false;
+  }
+  return result.row.count === 0;
+}
+
+async function existTableEntry(tablename, checkColumn, checkValue) {  
+  const result = await db_get(`SELECT COUNT(*) as count FROM ${tablename} WHERE ${checkColumn} = ?`, [checkValue]);
+  if (result.err) {
+    logger.error(`existTableEntry: Error checking table ${tablename}: ${result.err.message}`);
+    return false;
+  }
+  return result.row.count > 0;
+}
+
 module.exports = {
   db,
   db_run,
@@ -95,5 +114,7 @@ module.exports = {
   db_all,
   db_exec,
   createTable,
-  fillTable
+  fillTable,
+  isTableEmpty,
+  existTableEntry
 };

@@ -67,16 +67,16 @@ const App = () => {
     setSelectedEvent(result.data[0]);
   };
 
-    const fetchProjects = async (eventId: number | null, token: string | null) => {
-      console.log('App: Fetching Projects');
-      const result = await getProjects(eventId, token);
-      if (result.resultType !== ResultType.SUCCESS || result.data === null) {
-        showToastError(result.resultMsg ?? 'Error');
-        return;
-      }
-      console.log(`App: ${result.data.length} Projects fetched ! `);
-      setProjects(result.data);
-    };
+  const fetchProjects = async (eventId: number | null, token: string | null) => {
+    console.log('App: Fetching Projects');
+    const result = await getProjects(eventId, token);
+    if (result.resultType !== ResultType.SUCCESS || result.data === null) {
+      showToastError(result.resultMsg ?? 'Error');
+      return;
+    }
+    console.log(`App: ${result.data.length} Projects fetched ! `);
+    setProjects(result.data);
+  };
 
   const getPageTitle = (pathname: string): string => {
     const pageTitles: { [key: string]: string } = {
@@ -89,14 +89,19 @@ const App = () => {
       '/register': 'Register',
     };
     return pageTitles[pathname] || pathname;
-  }
+  };
 
   useEffect(() => {
     const domain = window.location.hostname;
     const pageTitle = getPageTitle(location.pathname);
     console.log('Tracking pageview:', domain, location.pathname, pageTitle);
     if (domain === 'localhost') {
-      ReactGA.send({ hitType: 'pageview', page: location.pathname, hostname: domain, title: pageTitle });
+      ReactGA.send({
+        hitType: 'pageview',
+        page: location.pathname,
+        hostname: domain,
+        title: pageTitle,
+      });
     }
   }, [location]);
 
@@ -148,15 +153,32 @@ const App = () => {
   ];
 
   const privateRoutes = [
-    { path: '/dashboard', component: DashboardPage, exact: true, 
-      profile: profile, event: selectedEvent, projects: projects },
-    { path: '/events', component: EventListPage, exact: true, 
-      profile: profile },
+    {
+      path: '/dashboard',
+      component: DashboardPage,
+      exact: true,
+      profile: profile,
+      event: selectedEvent,
+      projects: projects,
+    },
+    { path: '/events', component: EventListPage, exact: true, profile: profile },
     { path: '/teams', component: HackathonTeams, exact: true },
-    { path: '/projects', component: ProjectListPage, exact: true, 
-      profile: profile, event: selectedEvent, projects: projects },
-    { path: '/projectdetail/:id', component: ProjectDetailPage, exact: true,
-      profile: profile, event: selectedEvent, projects: projects },
+    {
+      path: '/projects',
+      component: ProjectListPage,
+      exact: true,
+      profile: profile,
+      event: selectedEvent,
+      projects: projects,
+    },
+    {
+      path: '/projectdetail/:id',
+      component: ProjectDetailPage,
+      exact: true,
+      profile: profile,
+      event: selectedEvent,
+      projects: projects,
+    },
   ];
 
   return (

@@ -18,7 +18,16 @@ const createProject = (dbRow) => {
     initiator_id: dbRow?.initiator_id ?? null,
     goal: dbRow?.goal ?? '',
     components: dbRow?.components ?? '',
-    skills: dbRow?.skills ?? ''
+    skills: dbRow?.skills ?? '',
+    initiators: null
+  };
+};
+
+const createInitiator = (dbRow) => {
+  return {
+    id: dbRow?.id ?? null,
+    name: dbRow?.name ?? '',
+    avatar_url: dbRow?.avatar_url ?? ''
   };
 };
 
@@ -36,6 +45,12 @@ router.get('/list/:event_id', authenticateToken, async (req, res) => {
   }
   // Wandle jedes DB-Row-Objekt in ein Project-Objekt mit createProject()
   const projects = result.row.map(createProject);
+
+  // Füge die Initiatoren zu jedem Projekt hinzu
+  for (const project of projects) {
+    project.initiators = await getInitiators(project.id);
+  }
+
   res.json(projects);
 });
 
@@ -49,6 +64,12 @@ router.get('/list', authenticateToken, async (req, res) => {
   }
   // Wandle jedes DB-Row-Objekt in ein Project-Objekt mit createProject()
   const projects = result.row.map(createProject);
+
+  // Füge die Initiatoren zu jedem Projekt hinzu
+  for (const project of projects) {
+    project.initiators = await getInitiators(project.id);
+  }
+
   res.json(projects);
 });
 
@@ -66,6 +87,12 @@ router.get('/listByUser/:id', authenticateToken, async (req, res) => {
   }
   // Wandle jedes DB-Row-Objekt in ein Project-Objekt mit createProject()
   const projects = result.row.map(createProject);
+
+  // Füge die Initiatoren zu jedem Projekt hinzu
+  for (const project of projects) {
+    project.initiators = await getInitiators(project.id);
+  }
+
   res.json(projects);
 });
 
@@ -98,6 +125,7 @@ router.post('/', async (req, res) => {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }
 
+  const initiators = await getInitiators(initiator_id);
   res.status(201).json({
     event_id,
     id: project_id,
@@ -109,7 +137,8 @@ router.post('/', async (req, res) => {
     initiator_id,
     goal,
     components,
-    skills
+    skills,
+    initiators: initiators || []
   });
 });
 
@@ -181,6 +210,10 @@ router.get('/:id', authenticateToken, async (req, res) => {
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (!result.row) return res.status(404).send(ErrorMsg.NOT_FOUND.NO_PROJECT);
   const project = createProject(result.row);
+
+  // Füge die Initiatoren zu dem Projekt hinzu
+  project.initiators = await getInitiators(project.id);
+
   res.json(project);
 });
 
@@ -198,5 +231,21 @@ router.delete('/:id', authenticateToken, async (req, res) => {
   }
   res.status(200).send('Project deleted successfully');
 });
+
+// ** Helper Functions *****************************************************
+const getInitiators = async (projectId) => {
+  const result = await db_all(
+    `SELECT User.id, User.name, User.avatar_url 
+    FROM User JOIN Initiator ON User.id = Initiator.user_id WHERE Initiator.project_id = ?`,
+    [projectId]
+  );
+  if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
+  if (!result.row || (Array.isArray(result.row) && result.row.length === 0)) {
+    return [];
+  }
+  // Wandle jedes DB-Row-Objekt in ein Project-Objekt mit createProject()
+  const initiators = result.row.map(createInitiator);
+  return initiators;
+};
 
 module.exports = router;

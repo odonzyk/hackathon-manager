@@ -1,11 +1,11 @@
 .project-detail-card:hover {
-    transform: none;
-    box-shadow: none;
-  }  
+  transform: none;
+  box-shadow: none;
+}
 
 .project-detail {
-    font-size: 1.0rem;
-    margin-bottom: 1rem; 
-    font-style: italic;
-    color: #a0a0a0;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  font-style: italic;
+  color: #a0a0a0;
 }

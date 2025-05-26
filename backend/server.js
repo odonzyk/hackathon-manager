@@ -16,13 +16,14 @@ const apiDocumentation = require('./docs/apidoc');
 require('./src/middlewares/projectEventBus');
 require('./src/eventListener/prometheusExport');
 
-const { dbCreate } = require('./src/utils/db/dbInit');
+
 const healthRouter = require('./src/routes/health');
 const userRoutes = require('./src/routes/user');
 const eventRoutes = require('./src/routes/event');
 const projectRoutes = require('./src/routes/project');
 const participateRoutes = require('./src/routes/participant');
 const adminRoutes = require('./src/routes/admin');
+const { dbInitialisation } = require('./src/utils/db/db');
 
 // CORS-Options for Frontend
 const corsOptions = {
@@ -38,7 +39,7 @@ const globalLabels = {
 
 const app = express();
 logger.debug('Initialise database');
-dbCreate();
+dbInitialisation();
 
 logger.debug('Initialise routes');
 

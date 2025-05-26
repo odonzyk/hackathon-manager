@@ -18,7 +18,7 @@ import { formatCountdown } from '../../utils/dateUtils';
 interface DashboardPageProps {
   profile: Profile | null;
   event: Event | null;
-  projects: Project[];  
+  projects: Project[];
 }
 
 const DashboardPage: React.FC<DashboardPageProps> = ({ profile, event, projects }) => {

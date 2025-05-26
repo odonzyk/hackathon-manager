@@ -10,7 +10,7 @@ import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import { cleanUpStorage, getExistingToken } from '../../utils/authUtils';
 import { getProfile, ResultType } from '../../utils/globalDataUtils';
 import { STORAGE_PROFILE, STORAGE_TOKEN, User } from '../../types/types';
-import { APP_VERSION } from '../../../config';
+import { APP_VERSION, SUPPORT_EMAIL } from '../../../config';
 import { useToast } from '../../components/ToastProvider';
 import './LoginPage.css';
 import {
@@ -182,7 +182,11 @@ const LoginPage = () => {
 
               <div className="login-links">
                 <IonText color="primary">
-                  <a href="#">Passwort vergessen</a>
+                  <a
+                    href={`mailto:${SUPPORT_EMAIL}?subject=Hackathon Manager - Passwort vergessen&body=Bitte helfen Sie mir, mein Passwort zurückzusetzen.`}
+                  >
+                    Passwort vergessen
+                  </a>
                 </IonText>
                 <IonText color="primary" className="login-link-spacing">
                   <a href="/register">Neu registrieren</a>
