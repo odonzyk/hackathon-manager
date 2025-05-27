@@ -80,6 +80,8 @@ services:
       - 'traefik.http.routers.hackathon.tls=true'
       - 'traefik.http.routers.hackathon.tls.domains[0].main=drsbln.de'
       - 'traefik.http.routers.hackathon.tls.domains[0].sans=*.drsbln.de'
+    depends_on:
+      - hackathon-api
     networks:
       - web
 
