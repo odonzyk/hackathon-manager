@@ -119,7 +119,7 @@ build-job:
   rules:
     !reference [.default_trigger, rules ]
 
-unit-test-job:
+.unit-test-job:
   tags:    
     - docker
     - staging
