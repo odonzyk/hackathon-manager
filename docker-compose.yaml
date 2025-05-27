@@ -11,9 +11,15 @@ services:
       - "3005:3005"
     environment:
       - NODE_ENV=developer
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=hackathon
+      - DB_USER=hackathonuser
+      - DB_PASSWORD=secretpassword
     env_file:
       - ./backend/.env.dev
-
+    depends_on:
+      - mysql
     command: /bin/sh -c "npm install && npm run start-prod"
 
     labels:
@@ -52,6 +58,7 @@ services:
 
     networks:
       - web
+      - internal
 
   hackathon-frontend:
     container_name: hackathon-frontend
@@ -73,10 +80,32 @@ services:
       - 'traefik.http.routers.hackathon.tls=true'
       - 'traefik.http.routers.hackathon.tls.domains[0].main=drsbln.de'
       - 'traefik.http.routers.hackathon.tls.domains[0].sans=*.drsbln.de'
-
     networks:
       - web
+
+
+  mysql:
+    image: mysql:8.0
+    container_name: hackathon-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: hackathon
+      MYSQL_USER: hackathonuser
+      MYSQL_PASSWORD: secretpassword
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - internal
+      - web
+      
+volumes:
+  mysql-data:
 
 networks:
   web:
     external: true
+  internal:
+    driver: bridge
