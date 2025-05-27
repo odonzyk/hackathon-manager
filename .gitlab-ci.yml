@@ -160,19 +160,21 @@ deploy-staging:
   script:
     - echo "Deploying application..."
     - mkdir -p $PROJECT_PATH
+    - echo $PROJECT_PATH
     - cd $PROJECT_PATH
     - echo "delete Docker-Stack"
-    # - docker-compose down 
-
+    - docker-compose down 
     - cd $RUNNER_FOLDER
-    - echo $PROJECT_PATH
     - pwd
     - ls -lah
     - cp -rf . /DOCKER/containers/hackathon-manager/
     - cd $PROJECT_PATH    
-    - docker-compose down 
+    - docker-compose down --remove-orphans --timeout 30
+    - while [ "$(docker ps -q)" ]; do
+        echo "Waiting for containers to fully stop...";
+        sleep 6;
+      done    
     - echo "restart Docker-Stack"
-    - mkdir -p $PROJECT_PATH 
     - cd $PROJECT_PATH
     - docker-compose up -d --build
   rules:
