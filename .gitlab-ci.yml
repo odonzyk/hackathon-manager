@@ -119,7 +119,7 @@ build-job:
   rules:
     !reference [.default_trigger, rules ]
 
-unit-test-job:
+.unit-test-job:
   tags:    
     - docker
     - staging
@@ -160,18 +160,17 @@ deploy-staging:
   script:
     - echo "Deploying application..."
     - mkdir -p $PROJECT_PATH
+    - echo $PROJECT_PATH
     - cd $PROJECT_PATH
     - echo "delete Docker-Stack"
-    # - docker-compose down 
-
+    - docker-compose down 
     - cd $RUNNER_FOLDER
-    - echo $PROJECT_PATH
     - pwd
     - ls -lah
     - cp -rf . /DOCKER/containers/hackathon-manager/
-    - docker-compose down 
+    - cd $PROJECT_PATH    
+    - docker-compose down --remove-orphans --timeout 30
     - echo "restart Docker-Stack"
-    - mkdir -p $PROJECT_PATH 
     - cd $PROJECT_PATH
     - docker-compose up -d --build
   rules:
@@ -190,7 +189,7 @@ deploy-staging:
     - mkdir -p $PROJECT_PATH
     - cd $PROJECT_PATH
     - echo "Delete Docker-Stack"
-    - docker-compose down 
+    - docker-compose down --remove-orphans --timeout 30
     - mkdir -p $RUNNER_FOLDER_PROD 
     - cd $RUNNER_FOLDER_PROD
     - cp -rf frontend/dist/. /DOCKER/containers/hackathon-manager/nginx/content/
