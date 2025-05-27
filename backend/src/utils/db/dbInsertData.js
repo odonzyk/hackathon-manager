@@ -33,9 +33,23 @@ async function insertEvents() {
 async function insertProjects() {
   let count = 0;
   let result = await db_get('SELECT * FROM Project');
-  
+
   if (!result.row) {
     for (const project of defaultProjects) {
+      await createProject(project.event_id, project.status_id, project.idea, project.description, project.team_name, project.team_avatar_url, project.goal, project.components, project.skills);
+      count++;
+    }
+  }
+  logger.info(`... DB Insert: ${count} projects inserted.`);
+}
+
+async function insertProjects() {
+  let result = null;
+  let count = 0;
+
+  for (const project of defaultProjects) {
+    result = await db_get('SELECT * FROM Project WHERE LOWER(idea) = LOWER(?) AND event_id = ?', [project.idea, project.event_id]);
+    if (!result.err && !result.row) {
       await createProject(project.event_id, project.status_id, project.idea, project.description, project.team_name, project.team_avatar_url, project.goal, project.components, project.skills);
       count++;
     }
@@ -57,21 +71,27 @@ async function insertUser() {
   logger.info(`... DB Insert: ${count} users inserted.`);
 }
 
+function getProjectById(id) {
+  return defaultProjects.find((project) => project.id === id) || null;
+}
 async function insertInitiator() {
   let result = null;
   let count = 0;
 
   for (const team of defaultTeams) {
+    const project = getProjectById(team.project_id);
+    if (!project) continue
+    result = await db_get('SELECT * FROM Project WHERE LOWER(project.idea) = LOWER(?)', [project.idea]);
+    const project_id = result.row.id;
     for (const initiator of team.initiator) {
       result = await db_get('SELECT * FROM User WHERE LOWER(name) = LOWER(?)', [initiator]);
       if (result.err || !!result.row) {
+        const user_id = result.row.id;
+        result = await db_get('SELECT * FROM Initiator WHERE user_id = ? AND project_id = ?', [user_id, project_id]);
+        if (!result.err && !!result.row) continue;
 
-      const user_id = result.row.id;
-      result = await db_get('SELECT * FROM Initiator WHERE user_id = ? AND project_id = ?', [user_id, team.project_id]);
-      if (!result.err && !!result.row) continue;
-
-      await createInitiator(team.project_id, user_id);
-      count++;
+        await createInitiator(project_id, user_id);
+        count++;
       }
     }
   }

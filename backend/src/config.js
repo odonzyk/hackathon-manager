@@ -3,8 +3,6 @@
 
 const dotenv = require('dotenv');
 const path = require('path');
-const fs = require('fs');
-const { logger } = require('./logger.js');
 
 const envMap = {
   production: '.env.prod',
@@ -33,7 +31,14 @@ module.exports = {
   hostUrl: check(process.env.HOST_URL, 'http://localhost'),
   hostPort: check(process.env.HOST_PORT, '8100'),
   apiPort: check(process.env.API_PORT, '3000'),
-  dbPath: check(process.env.DB_PATH, './hackathon.prod.db'),
+  dbPath: check(process.env.DB_PATH, './hackathon.db'),
+  mysqlHost: check(process.env.MYSQL_HOST, 'localhost'),
+  mysqlPort: check(process.env.MYSQL_PORT, 3306),
+  mysqlUser: check(process.env.MYSQL_USER, 'root'),
+  mysqlPassword: check(process.env.MYSQL_PASSWORD, 'password'),
+  mysqlDb: check(process.env.MYSQL_DB, 'hackathon'),
+  mysqlConnectionLimit: check(process.env.MYSQL_CONNECTION_LIMIT, 10),
+  mysqlQueueLimit: check(process.env.MYSQL_QUEUE_LIMIT, 0),
   jwtSecret: check(process.env.JWT_SECRET, 'your-secret-key'),
   check
 };
@@ -55,28 +60,16 @@ function logEnvironmentVariables() {
 
   // Use console.log, because logger is not available at start time
   console.log('### Config Printout #########################################');
-  console.log('📂 Aktuelles Arbeitsverzeichnis:', process.cwd());
-  console.log('📂 Verzeichnis der Datei:', __dirname);
-
-  console.log('🌍 Aktuelle Umgebungsvariablen:');
-  console.log('Geladene Umgebungsvariablen:', process.env);
+  console.log('Aktuelles Arbeitsverzeichnis:', process.cwd());
+  console.log('Verzeichnis der Datei:', __dirname);
 
   console.log('CONFIG_NAME:', process.env.CONFIG_NAME);
   console.log('LOG_LEVEL:', process.env.LOG_LEVEL);
   console.log('API_URL:', process.env.API_URL);
-  console.log('APP_ID:', process.env.APP_ID);
+  console.log('API_PORT:', process.env.API_PORT);
   console.log('HOST_URL:', process.env.HOST_URL);
   console.log('HOST_PORT:', process.env.HOST_PORT);
-  console.log('API_PORT:', process.env.API_PORT);
-  console.log('DBPATH:', process.env.DB_PATH);
-  console.log('JWTSECRET:', process.env.JWT_SECRET);
-  console.log('ONESIGNALAPI:', process.env.ONE_SIGNAL_API_KEY);
-  console.log('🔍 Aktueller Modus (NODE_ENV):', process.env.NODE_ENV || 'nicht gesetzt');
-  console.log('📄 Geladene .env-Datei:', envFile);
-
-  // Loggt den Inhalt des aktuellen Verzeichnisses
-  const dirPath = process.cwd();
-  const files = fs.readdirSync(dirPath);
-  console.log('📂 Inhalt des Verzeichnisses:', files);
+  console.log('Aktueller Modus (NODE_ENV):', process.env.NODE_ENV || 'nicht gesetzt');
+  console.log('Geladene .env-Datei:', envFile);
   console.log('#############################################################');
 }

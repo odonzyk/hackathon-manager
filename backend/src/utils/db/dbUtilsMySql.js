@@ -1,19 +1,21 @@
-const sqlite3 = require('sqlite3').verbose();
+const mysql = require('mysql2/promise');
 const config = require('../../config');
 const logger = require('../../logger');
 
-logger.debug(`Open DB ${config.dbPath}`);
+logger.debug(`Connecting to MySQL database at ${config.mysqlHost}:${config.mysqlPort}`);
 
-const db = new sqlite3.Database(config.dbPath, (err) => {
-  if (err) {
-    logger.error("Can't initialize the database: " + err.message);
-  } else {
-    logger.info('Initialized Database');
-  }
+// MySQL-Datenbankverbindung erstellen
+const db = mysql.createPool({
+  host: config.mysqlHost,
+  port: config.mysqlPort,
+  user: config.mysqlUser,
+  password: config.mysqlPassword,
+  database: config.mysqlDb,
+  waitForConnections: true,
+  connectionLimit: config.mysqlConnectionLimit,
+  queueLimit: config.mysqlQueueLimit,
 });
-
-// promisified Db functions for minizing callbacks
-// Even though callbacks are currently support for backwards compatibility!
+/*
 function db_run(statement, params = [], callback) {
   return execute_on_db('run', statement, params, callback);
 }
@@ -25,6 +27,42 @@ function db_get(statement, params = [], callback) {
 function db_all(statement, params = [], callback) {
   return execute_on_db('all', statement, params, callback);  
 }
+*/
+
+
+async function db_run(statement, params = []) {
+  try {
+    const [result, fields] = await db.query(statement, params);
+    return {
+      changes: result.affectedRows,
+      lastID: result.insertId,
+    };
+  } catch (err) {
+    logger.error(`db_run: ${err.message}`);
+    return { err };
+  }
+}
+
+async function db_get(statement, params = []) {
+  try {
+    const [rows, fields] = await db.query(statement, params);
+    return { row: rows[0] || null };
+  } catch (err) {
+    logger.error(`db_get: ${err.message}`);
+    return { err };
+  }
+}
+
+async function db_all(statement, params = []) {
+  try {
+    const [rows, fields] = await db.query(statement, params);
+    return { rows };
+  } catch (err) {
+    logger.error(`db_all: ${err.message}`);
+    return { err };
+  }
+}
+
 
 function execute_on_db(method, statement, params, callback) {
   return new Promise((resolve) => {
@@ -48,7 +86,7 @@ function execute_on_db(method, statement, params, callback) {
     }
   });
 }
-
+/*
 function db_exec(command) {
   return new Promise((resolve, reject) => {
     db.exec(command, (err) => {
@@ -59,6 +97,17 @@ function db_exec(command) {
       resolve();
     });
   });
+}*/
+
+
+async function db_exec(command) {
+  try {
+    await db.query(command);
+    return { success: true };
+  } catch (err) {
+    logger.error(`db_exec: ${err.message}`);
+    return { err };
+  }
 }
 
 // *** Helper Function ********************************************************
