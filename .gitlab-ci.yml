@@ -193,7 +193,7 @@ deploy-staging:
     - docker-compose down --remove-orphans --timeout 30
     - while [ "$(docker ps -q)" ]; do
         echo "Waiting for containers to fully stop...";
-        sleep 2;
+        sleep 6;
       done
 
     - mkdir -p $RUNNER_FOLDER_PROD 
