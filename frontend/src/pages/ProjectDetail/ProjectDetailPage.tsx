@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import {
   IonPage,
   IonContent,
@@ -12,6 +12,8 @@ import {
   IonItem,
   IonLabel,
   IonText,
+  IonFab,
+  IonFabButton,
 } from '@ionic/react';
 import { Event, Profile, Project } from '../../types/types';
 import './ProjectDetailPage.css';
@@ -21,6 +23,7 @@ import {
   constructOutline,
   flagOutline,
   peopleOutline,
+  pencilOutline,
 } from 'ionicons/icons';
 import JoinProjectButton from '../../components/JoinProjectButton/JoinProjectButton';
 
@@ -32,6 +35,7 @@ interface ProjectDetailPageProps {
 
 const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ profile, event, projects }) => {
   const { id } = useParams<{ id: string }>();
+  const history = useHistory();
   const project = projects.find((p) => p.id === parseInt(id));
 
   console.log('ProjectDetailPage: Project ID: ', id);
@@ -47,6 +51,13 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ profile, event, p
     // Hier kannst du die Logik für das Beitreten eines Projekts implementieren
   };
 
+  const handleEditProject = () => {
+    history.push({
+      pathname: '/projects/add',
+      state: { project }, // Übergibt das bestehende Projekt zur Bearbeitung
+    });
+  };
+
   if (!project) {
     return (
       <IonPage>
@@ -57,9 +68,18 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ profile, event, p
     );
   }
 
+  const isInitiator = project.initiators.some((initiator) => initiator.id === profile?.id);
+
   return (
     <IonPage>
       <IonContent>
+        {isInitiator && (
+          <IonFab vertical="top" horizontal="end" slot="fixed">
+            <IonFabButton color="primary" onClick={handleEditProject}>
+              <IonIcon icon={pencilOutline} />
+            </IonFabButton>
+          </IonFab>
+        )}
         <IonCard className="hackathon-card project-detail-card">
           <IonCardHeader>
             <IonCardTitle style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>

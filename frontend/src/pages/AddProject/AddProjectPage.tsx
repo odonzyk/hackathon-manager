@@ -19,9 +19,9 @@ import {
 import { Event, Profile, Project } from '../../types/types';
 import { bulbOutline, constructOutline, flagOutline, peopleOutline } from 'ionicons/icons';
 import { getExistingToken } from '../../utils/authUtils';
-import { postProject, ResultType } from '../../utils/globalDataUtils';
+import { postProject, putProject, ResultType } from '../../utils/globalDataUtils';
 import { useToast } from '../../components/ToastProvider';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 interface AddProjectPageProps {
   profile: Profile | null;
@@ -43,10 +43,13 @@ const emptyProject: Project = {
 };
 
 const AddProjectPage: React.FC<AddProjectPageProps> = ({ profile, event, onProjectAdded }) => {
-  const [newProject, setNewProject] = useState<Project>(emptyProject);
+  const location = useLocation<{ project?: Project }>();
+  const [newProject, setNewProject] = useState<Project>(location.state?.project || emptyProject);
   const [loading, setLoading] = useState<boolean>(false);
   const { showToastMessage, showToastError } = useToast();
   const history = useHistory();
+
+  const isEditing = !!location.state?.project;
 
   // Funktion zum Aktualisieren des Projekts
   const handleInputChange = (field: keyof Project, value: string) => {
@@ -56,32 +59,34 @@ const AddProjectPage: React.FC<AddProjectPageProps> = ({ profile, event, onProje
     }));
   };
 
-  // Funktion zum Hinzufügen des Projekts
+  // Funktion zum Hinzufügen oder Aktualisieren des Projekts
   const handleAddProject = async () => {
     setLoading(true);
     const token = getExistingToken();
-    const result = await postProject(newProject, token);
+    const result = isEditing
+      ? await putProject(newProject, token) // Update bestehendes Projekt
+      : await postProject(newProject, token); // Neues Projekt erstellen
+
     if (result.resultType !== ResultType.SUCCESS || result.data === null) {
-      showToastError(result.resultMsg ?? 'Fehler beim Hinzufügen des Projekts');
+      showToastError(result.resultMsg ?? 'Fehler beim Speichern des Projekts');
     } else {
-      showToastMessage('Projekt erfolgreich hinzugefügt!');
+      showToastMessage(isEditing ? 'Projekt erfolgreich aktualisiert!' : 'Projekt erfolgreich hinzugefügt!');
       onProjectAdded();
-      history.push('/projects'); 
-      setLoading(false);
+      history.push('/projects');
     }
     setLoading(false);
   };
 
   useEffect(() => {
-    // Initialisiere das leere Projekt beim Laden der Seite
-    setNewProject({
-      ...emptyProject,
-      event_id: event?.id || 0,
-      initiators: profile ? [{ id: profile.id, name: profile.name, avatar_url: profile.avatar_url }] : [],
-    });
-  }, [event, profile]);
-
-  console.log('onProjectAdded:', onProjectAdded);
+    if (!isEditing) {
+      // Initialisiere das leere Projekt beim Laden der Seite
+      setNewProject({
+        ...emptyProject,
+        event_id: event?.id || 0,
+        initiators: profile ? [{ id: profile.id, name: profile.name, avatar_url: profile.avatar_url }] : [],
+      });
+    }
+  }, [event, profile, isEditing]);
 
   return (
     <IonPage>
@@ -89,12 +94,12 @@ const AddProjectPage: React.FC<AddProjectPageProps> = ({ profile, event, onProje
         <IonCard className="hackathon-card project-detail-card">
           <IonCardHeader>
             <IonCardTitle style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
-              Neue Projektidee einreichen
+              {isEditing ? 'Projektidee bearbeiten' : 'Neue Projektidee einreichen'}
             </IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
             <IonText className="project-detail">
-              Hier könnt ihr eure eigene Idee beschreiben und am Pitching Day vorstellen
+              Hier könnt ihr eure Idee beschreiben und am Pitching Day vorstellen
             </IonText>
 
             <IonList>
@@ -186,7 +191,7 @@ const AddProjectPage: React.FC<AddProjectPageProps> = ({ profile, event, onProje
 
         <IonCol size="12">
           <IonButton expand="block" color="primary" onClick={handleAddProject} disabled={loading}>
-            {loading ? 'Wird hinzugefügt...' : 'Projekt hinzufügen'}
+            {loading ? 'Wird hinzugefügt...' : isEditing ? 'Änderungen speichern' : 'Projekt hinzufügen'}
           </IonButton>
         </IonCol>
       </IonContent>
