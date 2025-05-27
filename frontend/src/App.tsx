@@ -179,6 +179,12 @@ const App = () => {
       profile: profile,
       event: selectedEvent,
       projects: projects,
+      onProjectAdded: () => {
+        const token = getExistingToken();
+        if (selectedEvent && token) {
+          fetchProjects(selectedEvent.id, token); // Projekte aktualisieren
+        }
+      }
     },
     {
       path: '/projectdetail/:id',
@@ -187,12 +193,6 @@ const App = () => {
       profile: profile,
       event: selectedEvent,
       projects: projects,
-      onProjectAdded: () => {
-        const token = getExistingToken();
-        if (selectedEvent && token) {
-          fetchProjects(selectedEvent.id, token); // Projekte nach dem Hinzufügen aktualisieren
-        }
-      },
     },
   ];
 

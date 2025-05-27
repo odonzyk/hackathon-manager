@@ -81,6 +81,8 @@ const AddProjectPage: React.FC<AddProjectPageProps> = ({ profile, event, onProje
     });
   }, [event, profile]);
 
+  console.log('onProjectAdded:', onProjectAdded);
+
   return (
     <IonPage>
       <IonContent>
