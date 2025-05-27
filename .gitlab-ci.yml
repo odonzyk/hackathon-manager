@@ -169,6 +169,7 @@ deploy-staging:
     - pwd
     - ls -lah
     - cp -rf . /DOCKER/containers/hackathon-manager/
+    - cd $PROJECT_PATH    
     - docker-compose down 
     - echo "restart Docker-Stack"
     - mkdir -p $PROJECT_PATH 
