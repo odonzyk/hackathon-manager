@@ -18,14 +18,26 @@ const createUser = (dbRow) => {
     telephone: dbRow?.telephone ?? '',
     is_private_telephone: dbRow?.is_private_telephone ?? false,
     role_id: dbRow?.role_id ?? 2,
-    avatar_url: dbRow?.avatar_url ?? '/assets/avatars/avatar_1.png'
+    avatar_url: dbRow?.avatar_url ?? '/assets/avatars/avatar_1.png',
+    participate: null
+  };
+};
+
+const createParticipate = (dbRow) => {
+  return {
+    id: dbRow?.id ?? null,
+    user_id: dbRow?.user_id ?? null,
+    project_id: dbRow?.project_id ?? null,
+    idea: dbRow?.idea ?? '',
+    event_id: dbRow?.event_id ?? null,
+    event_name: dbRow?.name ?? ''
   };
 };
 
 // *** GET /api/user/login ****************************************************
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  logger.debug(`API User -> Login User: ${email}`);
+  logger.debug(`API: POST /api/user/login -> Login User: ${email}`);
 
   if (!email || !password) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
@@ -55,7 +67,7 @@ router.post('/login', async (req, res) => {
 
 // *** GET /api/user/list *****************************************************
 router.get('/list', authenticateToken, async (req, res) => {
-  logger.debug(`API User -> List User`);
+  logger.debug(`API: GET  /api/user/list`);
   const result = await db_all(`SELECT User.* FROM User`);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (!result.row || (Array.isArray(result.row) && result.row.length === 0)) {
@@ -67,10 +79,98 @@ router.get('/list', authenticateToken, async (req, res) => {
   res.json(users);
 });
 
+// *** PARTICPATION *********************************************************
+const getUserParticipation = async (userId, project_id) => {
+  const result = await db_get(
+    `SELECT Participant.*, Project.idea, Project.event_id, Event.name FROM Participant 
+    JOIN Project ON Project.id = Participant.project_id 
+    JOIN Event ON Event.id = Project.event_id
+    WHERE Participant.user_id = ? AND Project.id = ?`, [userId, project_id]
+  );
+  if (result.err) throw new Error(ErrorMsg.SERVER.ERROR);
+  if (!result.row) throw new Error(ErrorMsg.NOT_FOUND.NO_PARTICIPANT);
+  return createParticipate(result.row);
+};
+const getUserParticipationList = async (userId) => {
+  const result = await db_all(
+    `SELECT Participant.*, Project.idea, Project.event_id, Event.name FROM Participant 
+    JOIN Project ON Project.id = Participant.project_id 
+    JOIN Event ON Event.id = Project.event_id
+    WHERE Participant.user_id = ?`, [userId]
+  );
+  if (result.err) throw new Error(ErrorMsg.SERVER.ERROR);
+  if (!result.row) throw new Error(ErrorMsg.NOT_FOUND.NO_PARTICIPANT);
+  return result.row.map(createParticipate);
+};
+
+// *** POST /api/user/participate *********************************************************
+router.post('/:id/participate', async (req, res) => {
+  const { id } = req.params;
+  const { project_id } = req.body;
+  logger.debug(`API: POST /api/user/${id}/participate`);
+
+  if (!project_id) {
+    return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
+  }
+
+  const resultChk = await db_all(
+    `SELECT Participant.id FROM Participant 
+    JOIN Project ON Participant.project_id = Project.id 
+    WHERE Participant.user_id = ? AND Project.event_id = (SELECT event_id FROM Project WHERE id = ?)`, 
+    [id, project_id]
+  );
+  if (resultChk.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
+  if (resultChk.row?.length > 0) {
+    return res.status(409).send(ErrorMsg.VALIDATION.CONFLICT);
+  }
+
+  const result = await db_run('INSERT INTO Participant (user_id, project_id) VALUES (?, ?)', [
+    id,
+    project_id
+  ]);
+  if (result.err || result.changes === 0) {
+    return res.status(500).send(`Server error`);
+  }
+
+  const participant = await getUserParticipation(id, project_id);
+  res.status(201).json(participant);
+});
+
+// *** GET /api/user/participate *********************************************************
+router.get('/:id/participate', authenticateToken, async (req, res) => {
+  const { id } = req.params;
+  logger.debug(`API: GET  /api/user/${id}/participate`);
+
+  try {
+    const projectList = await getUserParticipationList(id); 
+    res.json(projectList);
+  } catch (error) {
+    logger.error(`Error fetching participation list for user ${id}: ${error.message}`);
+    res.status(500).send(ErrorMsg.SERVER.ERROR);
+  }
+});
+
+// *** DELETE /api/user/paticipate *********************************************************
+router.delete('/:id/participate', authenticateToken, async (req, res) => {
+  const { id } = req.params;
+  const { project_id } = req.body;
+  logger.debug(`API: DEL  /api/user/${id}/participate`);
+
+  result = await db_run('DELETE FROM Participant WHERE project_id = ? AND user_id = ?', [project_id, id]);
+  if (result.err) {
+    return res.status(500).send(ErrorMsg.SERVER.ERROR);
+  }
+  if (result.changes === 0) {
+    return res.status(404).send(ErrorMsg.NOT_FOUND.NO_PARTICIPANT);
+  }
+  res.status(200).send('Participation deleted successfully');
+});
+
+// *** USER *******************************************************************
 // *** POST /api/user *********************************************************
 router.post('/', async (req, res) => {
   let { name, email, is_private_email, telephone, is_private_telephone, password, role_id, avatar_url } = req.body;
-  logger.debug(`API User -> Register User: ${name}`);
+  logger.debug(`API: POST /api/user -> Create User: ${name}`);
 
   //TODO: Set Passwort by Frontend
   if (!password) password = 'welcome!';
@@ -118,7 +218,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
   let { name, email, is_private_email, telephone, is_private_telephone, role_id, avatar_url } = req.body;
-  logger.debug(`API User -> Update User: ${name}`);
+  logger.debug(`API: PUT  /api/user/${id} -> Update User: ${name}`);
 
   if (!name || !email || !telephone) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
@@ -170,25 +270,23 @@ router.put('/:id', authenticateToken, async (req, res) => {
 // *** GET /api/user *********************************************************
 router.get('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
-  logger.debug(`API User -> Get User (id): ${id}`);
+  logger.debug(`API: GET  /api/user/${id}`);
 
   const result = await db_get(`SELECT * FROM User WHERE User.id = ?`, [id]);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (!result.row) return res.status(404).send(ErrorMsg.NOT_FOUND.NO_USER);
   const user = createUser(result.row);
+  user.participate = await getUserParticipationList(id).catch(err => {
+    logger.error(`Error fetching participation for user ${id}: ${err.message}`);
+    return [];
+  });
   res.json(user);
 });
 
 // *** DELETE /api/user *********************************************************
 router.delete('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
-  logger.debug(`API User -> Delete User (id): ${id}`);
-
-  // Delete Bookings
-  //let result = await db_run("DELETE FROM Booking WHERE user_id = ?", [id]);
-  //if (result.err) {
-  //  return res.status(500).send(ErrorMsg.SERVER.ERROR);
-  //}
+  logger.debug(`API: DEL  /api/user/${id}`);
 
   // Delete User
   result = await db_run('DELETE FROM User WHERE id = ?', [id]);
@@ -200,5 +298,6 @@ router.delete('/:id', authenticateToken, async (req, res) => {
   }
   res.status(200).send('User deleted successfully');
 });
+
 
 module.exports = router;

@@ -95,6 +95,188 @@ const userPaths = {
       }
     }
   },
+  '/user/{id}/participate': {
+    post: {
+      summary: 'Add a user as a participant to a project',
+      tags: ['User'],
+      parameters: [
+        {
+          in: 'path',
+          name: 'id',
+          required: true,
+          schema: {
+            type: 'integer'
+          },
+          description: 'The ID of the user'
+        }
+      ],
+      requestBody: {
+        required: true,
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              required: ['project_id'],
+              properties: {
+                project_id: {
+                  type: 'integer',
+                  description: 'The ID of the project to join',
+                  example: 1
+                }
+              }
+            }
+          }
+        }
+      },
+      responses: {
+        201: {
+          description: 'User successfully added as a participant',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  id: {
+                    type: 'integer',
+                    description: 'The ID of the participation entry'
+                  },
+                  user_id: {
+                    type: 'integer',
+                    description: 'The ID of the user'
+                  },
+                  project_id: {
+                    type: 'integer',
+                    description: 'The ID of the project'
+                  },
+                  idea: {
+                    type: 'string',
+                    description: 'The idea of the project'
+                  },
+                  event_id: {
+                    type: 'integer',
+                    description: 'The ID of the event'
+                  },
+                  event_name: {
+                    type: 'string',
+                    description: 'The name of the event'
+                  }
+                }
+              }
+            }
+          }
+        },
+        400: {
+          description: ErrorMsg.VALIDATION.MISSING_FIELDS
+        },
+        404: {
+          description: 'Project not found'
+        },
+        409: {
+          description: 'User already participates in another project within the same event'
+        },
+        500: {
+          description: ErrorMsg.SERVER.ERROR
+        }
+      }
+    },
+    get: {
+      summary: 'Get participation details for a user',
+      tags: ['User'],
+      parameters: [
+        {
+          in: 'path',
+          name: 'id',
+          required: true,
+          schema: {
+            type: 'integer'
+          },
+          description: 'The ID of the user'
+        }
+      ],
+      responses: {
+        200: {
+          description: 'Participation details retrieved successfully',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    id: {
+                      type: 'integer',
+                      description: 'The ID of the participation entry'
+                    },
+                    user_id: {
+                      type: 'integer',
+                      description: 'The ID of the user'
+                    },
+                    project_id: {
+                      type: 'integer',
+                      description: 'The ID of the project'
+                    },
+                    idea: {
+                      type: 'string',
+                      description: 'The idea of the project'
+                    },
+                    event_id: {
+                      type: 'integer',
+                      description: 'The ID of the event'
+                    },
+                    event_name: {
+                      type: 'string',
+                      description: 'The name of the event'
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        404: {
+          description: 'No participation found for the user'
+        },
+        500: {
+          description: ErrorMsg.SERVER.ERROR
+        }
+      }
+    },
+    delete: {
+      summary: 'Remove a user from a project',
+      tags: ['User'],
+      parameters: [
+        {
+          in: 'path',
+          name: 'id',
+          required: true,
+          schema: {
+            type: 'integer'
+          },
+          description: 'The ID of the user'
+        },
+        {
+          in: 'query',
+          name: 'project_id',
+          required: true,
+          schema: {
+            type: 'integer'
+          },
+          description: 'The ID of the project to leave'
+        }
+      ],
+      responses: {
+        200: {
+          description: 'User successfully removed from the project'
+        },
+        404: {
+          description: 'Participation not found'
+        },
+        500: {
+          description: ErrorMsg.SERVER.ERROR
+        }
+      }
+    },
+  },
   '/user': {
     post: {
       summary: 'Registers a new user',
