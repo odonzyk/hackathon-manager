@@ -11,7 +11,8 @@
 
 **📋 Projekt Liste**
 - **Begrenzte Beschreibung in der Projektliste**  
-  Projektbeschreibungen in der Projektliste werden jetzt auf drei Zeilen begrenzt, um die Übersichtlichkeit zu verbessern.
+  Projektbeschreibungen in der Projektliste werden jetzt auf drei Zeilen begrenzt, um die Übersichtlichkeit zu verbessern. Längere Texte werden automatisch abgeschnitten und mit "..." dargestellt.
+
 
 **📄 Projekt Detailseite**
 - **Teilnehmer-Übersicht in der Projekt-Detailansicht**  
@@ -21,19 +22,21 @@
 - **Anpassung des JoinProject-Buttons an den Projekt-Workflow**  
   - Alle Buttons (z. B. "Projekt abgeschlossen", "Projekt abgebrochen", "Projekt beitreten") wurden mit passenden Icons versehen, um die Benutzerfreundlichkeit zu erhöhen.
   - Der Benutzer kann einem Projekt beitreten oder seine Teilname zurückziehen
-  - Das Beitreten ist nur möglich wenn nicht bereits ein anderes Projekt als Teilnehmer oder Initiator unterstützt wird.
+  - Das Beitreten ist nur möglich, wenn nicht bereits ein anderes Projekt als Teilnehmer oder Initiator unterstützt wird.
 - **Responsive Design**  
   Die Teilnehmerliste in der Projekt-Detailansicht passt sich jetzt dynamisch an die Bildschirmgröße an und wird bei kleineren Auflösungen unterhalb der Projektdetails angezeigt.
 
 **👤 Teams Liste**
 - **Anbindung ans Backend**  
-  Es werden nun die echten Teamdaten angezeigt mit allen Initiatoren und Teilnehmern
+  Es werden nun die echten Teamdaten angezeigt, einschließlich aller Initiatoren und Teilnehmer
 
 **🛠️ Backend**
-- Neue Schnittstellen für das Bearbeiten von Initiatoren und Teilnehmern.
-- Erweiterung des Benutzerprofils um eine Liste aller beigetretenen Projekte.
-- Erweiterung der Projektliste um eine Liste aller Initiatoren und Teilnehmer.
-- Aktualisierung der Swagger-Dokumentation.
+- **Neue Schnittstellen** 
+  - Neue Schnittstellen für das Bearbeiten von Initiatoren und Teilnehmern.
+  - Erweiterung des Benutzerprofils um eine Liste aller beigetretenen Projekte.
+  - Die Projektliste enthält jetzt eine vollständige Übersicht aller Initiatoren und Teilnehmer.
+- **Swagger-Dokumentation aktualisiert**  
+  Die API-Dokumentation wurde erweitert, um die neuen Schnittstellen und Änderungen abzubilden.
 
 ### 🐞 Bug fixes & Verbesserungen
 - **Stabilitätsverbesserungen**  
