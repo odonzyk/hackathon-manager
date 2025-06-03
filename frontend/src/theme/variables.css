@@ -5,6 +5,7 @@
   --ion-color-primary: #00ffff; /* Neon Cyan */
   --ion-color-secondary: #ff00ff; /* Neon Magenta */
   --ion-color-tertiary: #00ff00; /* Neon Grün */
+  --ion-color-tertiary-contrast: #1e1e2f;
   --ion-font-family: 'Source Code Pro', monospace;
   --ion-color-warning: #ff6b6b;
 }

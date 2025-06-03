@@ -140,6 +140,35 @@ const schemaObjects = {
         example: 42
       }
     }
+  },
+  ParticipantListEntry: {
+    type: 'object',
+    properties: {
+      id: {
+        type: 'integer',
+        description: 'The ID of the participation entry'
+      },
+      user_id: {
+        type: 'integer',
+        description: 'The ID of the user'
+      },
+      project_id: {
+        type: 'integer',
+        description: 'The ID of the project'
+      },
+      idea: {
+        type: 'string',
+        description: 'The idea of the project'
+      },
+      event_id: {
+        type: 'integer',
+        description: 'The ID of the event'
+      },
+      event_name: {
+        type: 'string',
+        description: 'The name of the event'
+      }
+    }
   }
 };
 

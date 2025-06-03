@@ -53,11 +53,6 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ profile, event, proje
     history.push(`/projectdetail/${id}`);
   };
 
-  const handleJoinProject = (id: number) => {
-    console.log(`Projekt mit ID ${id} beitreten`);
-    // Hier kannst du die Logik für das Beitreten eines Projekts implementieren
-  };
-
   return (
     <IonPage>
       <IonContent>
@@ -103,7 +98,7 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ profile, event, proje
                   <IonCardHeader>
                     <IonCardTitle>{project.idea}</IonCardTitle>
                   </IonCardHeader>
-                  <ProjectListCard project={project} onJoinProject={handleJoinProject} />
+                  <ProjectListCard project={project} />
                 </IonCard>
               </IonCol>
             ))}

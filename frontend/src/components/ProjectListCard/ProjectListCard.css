@@ -1,0 +1,8 @@
+.project-detail {
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Begrenze auf 3 Zeilen */
+    line-clamp: 3; /* Begrenze auf 3 Zeilen */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }

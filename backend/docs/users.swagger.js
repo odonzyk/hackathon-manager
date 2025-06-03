@@ -133,46 +133,15 @@ const userPaths = {
           description: 'User successfully added as a participant',
           content: {
             'application/json': {
-              schema: {
-                type: 'object',
-                properties: {
-                  id: {
-                    type: 'integer',
-                    description: 'The ID of the participation entry'
-                  },
-                  user_id: {
-                    type: 'integer',
-                    description: 'The ID of the user'
-                  },
-                  project_id: {
-                    type: 'integer',
-                    description: 'The ID of the project'
-                  },
-                  idea: {
-                    type: 'string',
-                    description: 'The idea of the project'
-                  },
-                  event_id: {
-                    type: 'integer',
-                    description: 'The ID of the event'
-                  },
-                  event_name: {
-                    type: 'string',
-                    description: 'The name of the event'
-                  }
-                }
-              }
+              schema: { $ref: '#/components/schemas/ParticipantListEntry' }
             }
           }
         },
         400: {
           description: ErrorMsg.VALIDATION.MISSING_FIELDS
         },
-        404: {
-          description: 'Project not found'
-        },
         409: {
-          description: 'User already participates in another project within the same event'
+          description: ErrorMsg.VALIDATION.CONFLICT
         },
         500: {
           description: ErrorMsg.SERVER.ERROR
@@ -201,40 +170,11 @@ const userPaths = {
               schema: {
                 type: 'array',
                 items: {
-                  type: 'object',
-                  properties: {
-                    id: {
-                      type: 'integer',
-                      description: 'The ID of the participation entry'
-                    },
-                    user_id: {
-                      type: 'integer',
-                      description: 'The ID of the user'
-                    },
-                    project_id: {
-                      type: 'integer',
-                      description: 'The ID of the project'
-                    },
-                    idea: {
-                      type: 'string',
-                      description: 'The idea of the project'
-                    },
-                    event_id: {
-                      type: 'integer',
-                      description: 'The ID of the event'
-                    },
-                    event_name: {
-                      type: 'string',
-                      description: 'The name of the event'
-                    }
-                  }
+                  $ref: '#/components/schemas/ParticipantListEntry'
                 }
               }
             }
           }
-        },
-        404: {
-          description: 'No participation found for the user'
         },
         500: {
           description: ErrorMsg.SERVER.ERROR
@@ -266,16 +206,16 @@ const userPaths = {
       ],
       responses: {
         200: {
-          description: 'User successfully removed from the project'
+          description: 'Participation deleted successfully'
         },
         404: {
-          description: 'Participation not found'
+          description: ErrorMsg.NOT_FOUND.NO_PARTICIPANT
         },
         500: {
           description: ErrorMsg.SERVER.ERROR
         }
       }
-    },
+    }
   },
   '/user': {
     post: {

@@ -13,7 +13,7 @@ const db = mysql.createPool({
   database: config.mysqlDb,
   waitForConnections: true,
   connectionLimit: config.mysqlConnectionLimit,
-  queueLimit: config.mysqlQueueLimit,
+  queueLimit: config.mysqlQueueLimit
 });
 /*
 function db_run(statement, params = [], callback) {
@@ -29,13 +29,12 @@ function db_all(statement, params = [], callback) {
 }
 */
 
-
 async function db_run(statement, params = []) {
   try {
     const [result, fields] = await db.query(statement, params);
     return {
       changes: result.affectedRows,
-      lastID: result.insertId,
+      lastID: result.insertId
     };
   } catch (err) {
     logger.error(`db_run: ${err.message}`);
@@ -62,7 +61,6 @@ async function db_all(statement, params = []) {
     return { err };
   }
 }
-
 
 function execute_on_db(method, statement, params, callback) {
   return new Promise((resolve) => {
@@ -98,7 +96,6 @@ function db_exec(command) {
     });
   });
 }*/
-
 
 async function db_exec(command) {
   try {
@@ -137,7 +134,6 @@ async function fillTable(table, structure, values) {
   }
 }
 
-
 async function isTableEmpty(tablename) {
   const result = await db_get(`SELECT COUNT(*) as count FROM ${tablename}`);
   if (result.err) {
@@ -147,7 +143,7 @@ async function isTableEmpty(tablename) {
   return result.row.count === 0;
 }
 
-async function existTableEntry(tablename, checkColumn, checkValue) {  
+async function existTableEntry(tablename, checkColumn, checkValue) {
   const result = await db_get(`SELECT COUNT(*) as count FROM ${tablename} WHERE ${checkColumn} = ?`, [checkValue]);
   if (result.err) {
     logger.error(`existTableEntry: Error checking table ${tablename}: ${result.err.message}`);

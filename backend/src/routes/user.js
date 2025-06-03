@@ -85,7 +85,8 @@ const getUserParticipation = async (userId, project_id) => {
     `SELECT Participant.*, Project.idea, Project.event_id, Event.name FROM Participant 
     JOIN Project ON Project.id = Participant.project_id 
     JOIN Event ON Event.id = Project.event_id
-    WHERE Participant.user_id = ? AND Project.id = ?`, [userId, project_id]
+    WHERE Participant.user_id = ? AND Project.id = ?`,
+    [userId, project_id]
   );
   if (result.err) throw new Error(ErrorMsg.SERVER.ERROR);
   if (!result.row) throw new Error(ErrorMsg.NOT_FOUND.NO_PARTICIPANT);
@@ -96,7 +97,8 @@ const getUserParticipationList = async (userId) => {
     `SELECT Participant.*, Project.idea, Project.event_id, Event.name FROM Participant 
     JOIN Project ON Project.id = Participant.project_id 
     JOIN Event ON Event.id = Project.event_id
-    WHERE Participant.user_id = ?`, [userId]
+    WHERE Participant.user_id = ?`,
+    [userId]
   );
   if (result.err) throw new Error(ErrorMsg.SERVER.ERROR);
   if (!result.row) throw new Error(ErrorMsg.NOT_FOUND.NO_PARTICIPANT);
@@ -116,7 +118,7 @@ router.post('/:id/participate', async (req, res) => {
   const resultChk = await db_all(
     `SELECT Participant.id FROM Participant 
     JOIN Project ON Participant.project_id = Project.id 
-    WHERE Participant.user_id = ? AND Project.event_id = (SELECT event_id FROM Project WHERE id = ?)`, 
+    WHERE Participant.user_id = ? AND Project.event_id = (SELECT event_id FROM Project WHERE id = ?)`,
     [id, project_id]
   );
   if (resultChk.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
@@ -124,12 +126,9 @@ router.post('/:id/participate', async (req, res) => {
     return res.status(409).send(ErrorMsg.VALIDATION.CONFLICT);
   }
 
-  const result = await db_run('INSERT INTO Participant (user_id, project_id) VALUES (?, ?)', [
-    id,
-    project_id
-  ]);
+  const result = await db_run('INSERT INTO Participant (user_id, project_id) VALUES (?, ?)', [id, project_id]);
   if (result.err || result.changes === 0) {
-    return res.status(500).send(`Server error`);
+    return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }
 
   const participant = await getUserParticipation(id, project_id);
@@ -142,7 +141,7 @@ router.get('/:id/participate', authenticateToken, async (req, res) => {
   logger.debug(`API: GET  /api/user/${id}/participate`);
 
   try {
-    const projectList = await getUserParticipationList(id); 
+    const projectList = await getUserParticipationList(id);
     res.json(projectList);
   } catch (error) {
     logger.error(`Error fetching participation list for user ${id}: ${error.message}`);
@@ -276,7 +275,7 @@ router.get('/:id', authenticateToken, async (req, res) => {
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (!result.row) return res.status(404).send(ErrorMsg.NOT_FOUND.NO_USER);
   const user = createUser(result.row);
-  user.participate = await getUserParticipationList(id).catch(err => {
+  user.participate = await getUserParticipationList(id).catch((err) => {
     logger.error(`Error fetching participation for user ${id}: ${err.message}`);
     return [];
   });
@@ -298,6 +297,5 @@ router.delete('/:id', authenticateToken, async (req, res) => {
   }
   res.status(200).send('User deleted successfully');
 });
-
 
 module.exports = router;

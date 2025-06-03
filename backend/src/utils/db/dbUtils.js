@@ -23,7 +23,7 @@ function db_get(statement, params = [], callback) {
 }
 
 function db_all(statement, params = [], callback) {
-  return execute_on_db('all', statement, params, callback);  
+  return execute_on_db('all', statement, params, callback);
 }
 
 function execute_on_db(method, statement, params, callback) {
@@ -88,7 +88,6 @@ async function fillTable(table, structure, values) {
   }
 }
 
-
 async function isTableEmpty(tablename) {
   const result = await db_get(`SELECT COUNT(*) as count FROM ${tablename}`);
   if (result.err) {
@@ -98,7 +97,7 @@ async function isTableEmpty(tablename) {
   return result.row.count === 0;
 }
 
-async function existTableEntry(tablename, checkColumn, checkValue) {  
+async function existTableEntry(tablename, checkColumn, checkValue) {
   const result = await db_get(`SELECT COUNT(*) as count FROM ${tablename} WHERE ${checkColumn} = ?`, [checkValue]);
   if (result.err) {
     logger.error(`existTableEntry: Error checking table ${tablename}: ${result.err.message}`);

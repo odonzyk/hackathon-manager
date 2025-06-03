@@ -18,7 +18,8 @@ const createProject = (dbRow) => {
     goal: dbRow?.goal ?? '',
     components: dbRow?.components ?? '',
     skills: dbRow?.skills ?? '',
-    initiators: null
+    initiators: null,
+    participants: null
   };
 };
 
@@ -30,10 +31,18 @@ const createInitiator = (dbRow) => {
   };
 };
 
+const createParticipant = (dbRow) => {
+  return {
+    id: dbRow?.id ?? null,
+    name: dbRow?.name ?? '',
+    avatar_url: dbRow?.avatar_url ?? ''
+  };
+};
+
 // *** GET /api/project/list/:id *****************************************************
 router.get('/list/:event_id', authenticateToken, async (req, res) => {
   const { event_id } = req.params;
-  logger.debug(`API Project -> List Projects by ID: ${event_id}`);
+  logger.debug(`API: GET  /api/project/list/${event_id}`);
   if (!event_id) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
   }
@@ -48,6 +57,7 @@ router.get('/list/:event_id', authenticateToken, async (req, res) => {
   // Füge die Initiatoren zu jedem Projekt hinzu
   for (const project of projects) {
     project.initiators = await getInitiators(project.id);
+    project.participants = await getParticipants(project.id);
   }
 
   res.json(projects);
@@ -55,7 +65,7 @@ router.get('/list/:event_id', authenticateToken, async (req, res) => {
 
 // *** GET /api/project/list *****************************************************
 router.get('/list', authenticateToken, async (req, res) => {
-  logger.debug(`API Project -> List Projects`);
+  logger.debug(`API: GET  /api/project/list`);
   const result = await db_all(`SELECT Project.* FROM Project`);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (!result.row || (Array.isArray(result.row) && result.row.length === 0)) {
@@ -67,6 +77,7 @@ router.get('/list', authenticateToken, async (req, res) => {
   // Füge die Initiatoren zu jedem Projekt hinzu
   for (const project of projects) {
     project.initiators = await getInitiators(project.id);
+    project.participants = await getParticipants(project.id);
   }
 
   res.json(projects);
@@ -74,7 +85,7 @@ router.get('/list', authenticateToken, async (req, res) => {
 
 // *** GET /api/project/listByUser/:id **********************************************
 router.get('/listByUser/:id', authenticateToken, async (req, res) => {
-  logger.debug(`API Project -> List my participate projects`);
+  logger.debug(`API: GET  /api/project/listByUser/${id}`);
   const { id } = req.params;
   if (!id) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
@@ -98,7 +109,7 @@ router.get('/listByUser/:id', authenticateToken, async (req, res) => {
 // *** POST /api/project *********************************************************
 router.post('/', async (req, res) => {
   let { event_id, status_id, idea, description, team_name, team_avatar_url, initiators, goal, components, skills } = req.body;
-  logger.debug(`API Event -> Register Project: ${event_id}`);
+  logger.debug(`API: POST /api/project - ${idea}`);
   if (!event_id || !idea || !description || !initiators[0]?.id) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
   }
@@ -133,6 +144,7 @@ router.post('/', async (req, res) => {
   }
 
   const initiatorslist = await getInitiators(project_id);
+  const participantslist = await getParticipants(project_id);
   res.status(201).json({
     event_id,
     id: project_id,
@@ -144,7 +156,8 @@ router.post('/', async (req, res) => {
     goal,
     components,
     skills,
-    initiators: initiatorslist || []
+    initiators: initiatorslist || [],
+    participants: participantslist || []
   });
 });
 
@@ -152,7 +165,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
   let { event_id, status_id, idea, description, team_name, team_avatar_url, goal, components, skills } = req.body;
-  logger.debug(`API Project -> Update Project: ${idea}`);
+  logger.debug(`API: PUT  /api/project/${id} - ${idea}`);
 
   if (!event_id || !idea || !description) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
@@ -208,7 +221,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
 // *** GET /api/project *********************************************************
 router.get('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
-  logger.debug(`API Project -> Get Project (id): ${id}`);
+  logger.debug(`API: GET  /api/project/${id}`);
 
   const result = await db_get(`SELECT * FROM Project WHERE Project.id = ?`, [id]);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
@@ -217,6 +230,7 @@ router.get('/:id', authenticateToken, async (req, res) => {
 
   // Füge die Initiatoren zu dem Projekt hinzu
   project.initiators = await getInitiators(project.id);
+  project.participants = await getParticipants(project.id);
 
   res.json(project);
 });
@@ -224,7 +238,7 @@ router.get('/:id', authenticateToken, async (req, res) => {
 // *** DELETE /api/project *********************************************************
 router.delete('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
-  logger.debug(`API Project -> Delete Project (id): ${id}`);
+  logger.debug(`API: DEL  /api/project/${id}`);
 
   result = await db_run('DELETE FROM Project WHERE id = ?', [id]);
   if (result.err) {
@@ -250,6 +264,21 @@ const getInitiators = async (projectId) => {
   // Wandle jedes DB-Row-Objekt in ein Project-Objekt mit createProject()
   const initiators = result.row.map(createInitiator);
   return initiators;
+};
+
+const getParticipants = async (projectId) => {
+  const result = await db_all(
+    `SELECT User.id, User.name, User.avatar_url 
+    FROM User JOIN Participant ON User.id = Participant.user_id WHERE Participant.project_id = ?`,
+    [projectId]
+  );
+  if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
+  if (!result.row || (Array.isArray(result.row) && result.row.length === 0)) {
+    return [];
+  }
+  // Wandle jedes DB-Row-Objekt in ein Participant-Objekt mit createParticipant()
+  const participants = result.row.map(createParticipant);
+  return participants;
 };
 
 module.exports = router;

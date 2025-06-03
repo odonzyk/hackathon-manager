@@ -5,16 +5,16 @@ const dotenv = require('dotenv');
 const path = require('path');
 
 const envMap = {
-  production: '.env.prod',
-  prod: '.env.prod',
-  development: '.env.dev',
-  dev: '.env.dev',
-  staging: '.env.stage',
-  stage: '.env.stage'
+  production: 'prod',
+  prod: 'prod',
+  development: 'dev',
+  dev: 'dev',
+  staging: 'stage',
+  stage: 'stage'
 };
 
 // Wähle das richtige .env-File basierend auf NODE_ENV
-const envFile = envMap[process.env.NODE_ENV?.toLowerCase()] || '.env.stage';
+const envFile = '.env.' + (envMap[process.env.NODE_ENV?.toLowerCase()] || 'stage');
 
 dotenv.config({ path: path.resolve(__dirname, `../backend/${envFile}`) });
 
@@ -24,7 +24,7 @@ logEnvironmentVariables();
 module.exports = {
   name: require('../package.json').name,
   version: require('../package.json').version,
-  node_env: process.env.NODE_ENV,
+  node_env: envMap[process.env.NODE_ENV?.toLowerCase()] || 'dev',
   config_name: check(process.env.CONFIG_NAME, 'default'),
   logLevel: check(process.env.LOG_LEVEL, 'info'),
   apiUrl: check(process.env.API_URL, 'http://localhost'),

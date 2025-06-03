@@ -63,7 +63,12 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ profile, event, projects 
         <IonGrid className="hackathon-grid">
           <IonRow>
             <IonCol>
-              <IonCard className="hackathon-card">
+              <IonCard className="hackathon-card" 
+                button
+                onClick={() => {
+                  window.location.href = '/projects';
+                }}
+              >
                 <IonCardHeader>
                   <IonCardTitle>📁 Projekte</IonCardTitle>
                 </IonCardHeader>
@@ -75,7 +80,18 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ profile, event, projects 
                 <IonCardHeader>
                   <IonCardTitle>👥 Teilnehmer</IonCardTitle>
                 </IonCardHeader>
-                <IonCardContent>{event?.id === 1 ? '85' : '0'} angemeldet</IonCardContent>
+                <IonCardContent>
+                  {projects
+                    .filter((project) => project.event_id === event?.id) // Filtere Projekte des aktuellen Events
+                    .reduce(
+                      (sum, project) =>
+                        sum +
+                        (project.participants?.length || 0) + 
+                        (project.initiators?.length || 0), 
+                      0
+                    )}{' '}
+                  angemeldet
+                </IonCardContent>
               </IonCard>
             </IonCol>
           </IonRow>

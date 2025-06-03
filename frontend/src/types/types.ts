@@ -18,12 +18,28 @@ export type Profile = {
   telephone: string;
   is_private_telephone: boolean;
   avatar_url: string;
+  participate: Participate[];
 };
 
 export type Initiator = {
   id: number;
   name: string;
   avatar_url: string;
+};
+
+export type Participant = {
+  id: number;
+  name: string;
+  avatar_url: string;
+};
+
+export type Participate = {
+  id: number;
+  user_id: number;
+  project_id: number;
+  idea: string;
+  event_id: number;
+  event_name: string;
 };
 
 export type Project = {
@@ -37,8 +53,9 @@ export type Project = {
   components: string;
   skills: string;
   initiators: Initiator[];
+  participants: Participant[];
 };
-
+  
 export type Event = {
   id: number;
   name: string;

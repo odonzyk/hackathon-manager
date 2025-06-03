@@ -9,3 +9,18 @@
   font-style: italic;
   color: #a0a0a0;
 }
+
+.participant-card:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.participant-card .join-project-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.participant-card .join-project-button-container button {
+  width: 100%; /* Button nimmt die volle Breite der IonCard ein */
+}

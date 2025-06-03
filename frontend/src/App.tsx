@@ -29,18 +29,11 @@ import PrivateRoute from './components/PrivateRoute';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import TabBar from './components/TabBar/TabBar';
 
-import LoginPage from './pages/Login/LoginPage';
-import RegisterPage from './pages/Register/RegisterPage';
-import DashboardPage from './pages/Dashboard/Dashboard';
-import ProjectListPage from './pages/Projects/ProjectListPage';
-import HackathonTeams from './pages/Teams/HackathonTeams';
-import EventListPage from './pages/Events/EventListPage';
 import { getEvents, getProjects, loadStoredProfile, ResultType } from './utils/globalDataUtils';
 import { Event, Profile, Project } from './types/types';
 import { useToast } from './components/ToastProvider';
 import { getExistingToken } from './utils/authUtils';
-import ProjectDetailPage from './pages/ProjectDetail/ProjectDetailPage';
-import AddProjectPage from './pages/AddProject/AddProjectPage';
+import { getPublicRoutes, getPrivateRoutes } from './utils/routes';
 
 setupIonicReact();
 ReactGA.initialize('G-3LWGMR7G0P');
@@ -65,7 +58,7 @@ const App = () => {
     console.log(`App: ${result.data.length} Events fetched ! `);
     setEvents(result.data);
     //setSelectedEvent(result.data[result.data.length - 1]);
-    setSelectedEvent(result.data[0]);
+    setSelectedEvent(result.data[1]);
   };
 
   const fetchProjects = async (eventId: number | null, token: string | null) => {
@@ -148,53 +141,8 @@ const App = () => {
     }
   }, [selectedEvent]);
 
-  const publicRoutes = [
-    { path: '/login', component: LoginPage, exact: true },
-    { path: '/register', component: RegisterPage, exact: true },
-  ];
-
-  const privateRoutes = [
-    {
-      path: '/dashboard',
-      component: DashboardPage,
-      exact: true,
-      profile: profile,
-      event: selectedEvent,
-      projects: projects,
-    },
-    { path: '/events', component: EventListPage, exact: true, profile: profile },
-    { path: '/teams', component: HackathonTeams, exact: true },
-    {
-      path: '/projects',
-      component: ProjectListPage,
-      exact: true,
-      profile: profile,
-      event: selectedEvent,
-      projects: projects,
-    },
-    {
-      path: '/projects/add',
-      component: AddProjectPage,
-      exact: true,
-      profile: profile,
-      event: selectedEvent,
-      projects: projects,
-      onProjectAdded: () => {
-        const token = getExistingToken();
-        if (selectedEvent && token) {
-          fetchProjects(selectedEvent.id, token); // Projekte aktualisieren
-        }
-      }
-    },
-    {
-      path: '/projectdetail/:id',
-      component: ProjectDetailPage,
-      exact: true,
-      profile: profile,
-      event: selectedEvent,
-      projects: projects,
-    },
-  ];
+  const publicRoutes = getPublicRoutes();
+  const privateRoutes = getPrivateRoutes(profile, selectedEvent, projects, fetchProjects);
 
   return (
     <IonApp>

@@ -16,7 +16,6 @@ const apiDocumentation = require('./docs/apidoc');
 require('./src/middlewares/projectEventBus');
 require('./src/eventListener/prometheusExport');
 
-
 const healthRouter = require('./src/routes/health');
 const userRoutes = require('./src/routes/user');
 const eventRoutes = require('./src/routes/event');
