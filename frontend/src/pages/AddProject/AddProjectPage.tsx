@@ -40,6 +40,7 @@ const emptyProject: Project = {
   components: '',
   skills: '',
   initiators: [],
+  participants: [],
 };
 
 const AddProjectPage: React.FC<AddProjectPageProps> = ({ profile, event, onProjectAdded }) => {

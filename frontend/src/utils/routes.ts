@@ -2,11 +2,18 @@ import LoginPage from '../pages/Login/LoginPage';
 import RegisterPage from '../pages/Register/RegisterPage';
 import DashboardPage from '../pages/Dashboard/Dashboard';
 import ProjectListPage from '../pages/Projects/ProjectListPage';
-import HackathonTeams from '../pages/Teams/HackathonTeams';
 import EventListPage from '../pages/Events/EventListPage';
 import ProjectDetailPage from '../pages/ProjectDetail/ProjectDetailPage';
 import AddProjectPage from '../pages/AddProject/AddProjectPage';
 import { getExistingToken } from '../utils/authUtils';
+import TeamListPage from '../pages/Teams/TeamListPage';
+
+const handleProjectAdded = (selectedEvent: any, fetchProjects: any) => {
+  const token = getExistingToken();
+  if (selectedEvent && token) {
+    fetchProjects(selectedEvent.id, token); // Projekte aktualisieren
+  }
+};
 
 export const getPublicRoutes = () => [
   { path: '/login', component: LoginPage, exact: true },
@@ -23,7 +30,13 @@ export const getPrivateRoutes = (profile: any, selectedEvent: any, projects: any
     projects: projects,
   },
   { path: '/events', component: EventListPage, exact: true, profile: profile },
-  { path: '/teams', component: HackathonTeams, exact: true },
+  { path: '/teams', 
+    component: TeamListPage,
+    exact: true,
+    profile: profile,
+    event: selectedEvent,
+    projects: projects,
+  },
   {
     path: '/projects',
     component: ProjectListPage,
@@ -39,11 +52,8 @@ export const getPrivateRoutes = (profile: any, selectedEvent: any, projects: any
     profile: profile,
     event: selectedEvent,
     projects: projects,
-    onProjectAdded: () => {
-      const token = getExistingToken();
-      if (selectedEvent && token) {
-        fetchProjects(selectedEvent.id, token); // Projekte aktualisieren
-      }
+    onProjectAdded: () => { 
+      handleProjectAdded(selectedEvent, fetchProjects);
     },
   },
   {
@@ -53,5 +63,8 @@ export const getPrivateRoutes = (profile: any, selectedEvent: any, projects: any
     profile: profile,
     event: selectedEvent,
     projects: projects,
+    onParticipantChange: () => { 
+      handleProjectAdded(selectedEvent, fetchProjects);
+    },
   },
 ];

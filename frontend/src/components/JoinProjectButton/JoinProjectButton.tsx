@@ -7,9 +7,11 @@ interface JoinProjectButtonProps {
   project: Project;
   profile: Profile;
   onJoinProject: () => void;
+  onRejectProject: () => void;
+  disabled?: boolean;
 }
 
-const JoinProjectButton: React.FC<JoinProjectButtonProps> = ({ project, profile, onJoinProject }) => {
+const JoinProjectButton: React.FC<JoinProjectButtonProps> = ({ project, profile, onJoinProject, onRejectProject, disabled = false }) => {
   const eventId = project.event_id;
   const statusId = project.status_id;
   const userIsFree = profile.participate.every(
@@ -18,8 +20,8 @@ const JoinProjectButton: React.FC<JoinProjectButtonProps> = ({ project, profile,
   const userIsInitiator = project.initiators.some(
     (initiator) => initiator.id === profile.id
   );
-  const myParticipation = profile.participate.find(
-    (participation) => participation.project_id === project.id
+  const myParticipation = project.participants.find(
+    (participation) => participation.id === profile.id
   );
 
   if (statusId === 3) {
@@ -41,23 +43,16 @@ const JoinProjectButton: React.FC<JoinProjectButtonProps> = ({ project, profile,
   }
 
   if (statusId < 3) {
-    if (!userIsFree) {
-      if (myParticipation) {
-        return (
-          <IonButton expand="block" disabled={true} color="tertiary">
-            <IonIcon slot="start" icon={star}></IonIcon>
-            Du bist bereits in diesem Projekt
-          </IonButton>
-        );
-      }
 
+    if (myParticipation) {
       return (
-        <IonButton expand="block" disabled={true} color="warning">
-          <IonIcon slot="start" icon={warning}></IonIcon>
-          Du bist bereits in einem Projekt
+        <IonButton expand="block" onClick={onRejectProject} disabled={disabled} color="tertiary">
+          <IonIcon slot="start" icon={star}></IonIcon>
+          Teilnahme zurückziehen
         </IonButton>
       );
     }
+
     if (userIsInitiator) {
       return (
         <IonButton expand="block" disabled={true} color="secondary">
@@ -67,8 +62,17 @@ const JoinProjectButton: React.FC<JoinProjectButtonProps> = ({ project, profile,
       );
     }
 
+    if (!userIsFree) {
+      return (
+        <IonButton expand="block" disabled={true} color="warning">
+          <IonIcon slot="start" icon={warning}></IonIcon>
+          Du bist bereits in einem anderenProjekt
+        </IonButton>
+      );
+    }
+
     return (
-      <IonButton expand="block" onClick={onJoinProject}>
+      <IonButton expand="block" onClick={onJoinProject} disabled={disabled}>
         <IonIcon slot="start" icon={star}></IonIcon>
         Projekt beitreten
       </IonButton>

@@ -9,18 +9,25 @@
 - **Dynamische Teilnehmeranzahl im Dashboard**  
   Die Teilnehmeranzahl im Dashboard wird jetzt als Summe der Initiatoren und Teilnehmer aller Projekte des aktuellen Events angezeigt.
 
-**📋 ProjektListe**
+**📋 Projekt Liste**
 - **Begrenzte Beschreibung in der Projektliste**  
   Projektbeschreibungen in der Projektliste werden jetzt auf drei Zeilen begrenzt, um die Übersichtlichkeit zu verbessern.
 
-**📄 ProjektDetailseite**
+**📄 Projekt Detailseite**
 - **Teilnehmer-Übersicht in der Projekt-Detailansicht**  
   Teilnehmer und Initiatoren werden jetzt in der Projekt-Detailansicht übersichtlich mit Icons dargestellt. 
+- **Badge für Teilnehmer**  
+  Wenn der Nutzer Initiator oder Teilnehmer des Projektes ist, wird ihm das durch ein Banner in der rechten Ecke angezeigt.
 - **Anpassung des JoinProject-Buttons an den Projekt-Workflow**  
   - Alle Buttons (z. B. "Projekt abgeschlossen", "Projekt abgebrochen", "Projekt beitreten") wurden mit passenden Icons versehen, um die Benutzerfreundlichkeit zu erhöhen.
-  - Der Button ist dynamisch deaktiviert, wenn der Benutzer bereits einem Projekt des Events zugeordnet ist.
+  - Der Benutzer kann einem Projekt beitreten oder seine Teilname zurückziehen
+  - Das Beitreten ist nur möglich wenn nicht bereits ein anderes Projekt als Teilnehmer oder Initiator unterstützt wird.
 - **Responsive Design**  
   Die Teilnehmerliste in der Projekt-Detailansicht passt sich jetzt dynamisch an die Bildschirmgröße an und wird bei kleineren Auflösungen unterhalb der Projektdetails angezeigt.
+
+**👤 Teams Liste**
+- **Anbindung ans Backend**  
+  Es werden nun die echten Teamdaten angezeigt mit allen Initiatoren und Teilnehmern
 
 **🛠️ Backend**
 - Neue Schnittstellen für das Bearbeiten von Initiatoren und Teilnehmern.

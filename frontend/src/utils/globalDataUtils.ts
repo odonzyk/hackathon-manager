@@ -221,3 +221,57 @@ export const getEvent = async (
     return resultError('Event konnten nicht geladen werden');
   }
 };
+
+
+/* *************************************************** */
+/* Participate                                         */
+/* *************************************************** */
+
+export const postParticipant = async (
+  project_id: number | null,
+  user_id: number | null,
+  token: string | null,
+): Promise<{ resultType: ResultType; resultMsg: string | null; data: Project | null }> => {
+  if (!token || !project_id || !user_id) return resultError('Projekt, Benutzer oder Token fehlen');
+
+  try {
+    const response = await axios.post<Project>(`/api/participant`, {
+      project_id,
+      user_id,
+    }, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (response.status === 201) {
+      return resultSuccess(response.data);
+    } else {
+      return resultError('Projekt konnte nicht aktualisiert werden');
+    }
+  } catch (error) {
+    return resultError('Projekt konnte nicht aktualisiert werden');
+  }
+};
+
+export const deleteParticipant = async (
+  project_id: number | null,
+  user_id: number | null,
+  token: string | null,
+): Promise<{ resultType: ResultType; resultMsg: string | null; data: Project | null }> => {
+  if (!token || !project_id || !user_id) return resultError('Projekt, Benutzer oder Token fehlen');
+
+  try {
+    const response = await axios.delete<Project>(`/api/participant`, {
+      data: {
+        project_id,
+        user_id,
+      },
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (response.status === 200) {
+      return resultSuccess(response.data);
+    } else {
+      return resultError('Projekt konnte nicht aktualisiert werden');
+    }
+  } catch (error) {
+    return resultError('Projekt konnte nicht aktualisiert werden');
+  }
+};

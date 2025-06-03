@@ -90,7 +90,22 @@ router.delete('/:id', authenticateToken, async (req, res) => {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }
   if (result.changes === 0) {
-    return res.status(404).send(ErrorMsg.NOT_FOUND.NO_EVENT);
+    return res.status(404).send(ErrorMsg.NOT_FOUND.NO_PARTICIPANT);
+  }
+  res.status(200).send('Participant deleted successfully');
+});
+
+// *** DELETE /api/Participant *********************************************************
+router.delete('/', authenticateToken, async (req, res) => {
+  const { project_id, user_id } = req.body;
+  logger.debug(`API Participant -> Delete Participation: Project ID: ${project_id}, User ID: ${user_id}`);
+
+  result = await db_run('DELETE FROM Participant WHERE project_id = ? AND user_id = ?', [project_id, user_id]);
+  if (result.err) {
+    return res.status(500).send(ErrorMsg.SERVER.ERROR);
+  }
+  if (result.changes === 0) {
+    return res.status(404).send(ErrorMsg.NOT_FOUND.NO_PARTICIPANT);
   }
   res.status(200).send('Participant deleted successfully');
 });
