@@ -1,6 +1,25 @@
 import React from 'react';
-import { IonCardContent, IonText, IonList, IonItem, IonIcon, IonLabel, IonCard, IonCardHeader, IonCardTitle, IonFab, IonFabButton } from '@ionic/react';
-import { bulbOutline, callOutline, constructOutline, flagOutline, pencilOutline, peopleOutline } from 'ionicons/icons';
+import {
+  IonCardContent,
+  IonText,
+  IonList,
+  IonItem,
+  IonIcon,
+  IonLabel,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonFab,
+  IonFabButton,
+} from '@ionic/react';
+import {
+  bulbOutline,
+  callOutline,
+  constructOutline,
+  flagOutline,
+  pencilOutline,
+  peopleOutline,
+} from 'ionicons/icons';
 import { Profile, Project } from '../../../types/types';
 import './ProjectDetailCard.css';
 
@@ -11,7 +30,6 @@ interface ProjectDetailCardProps {
 }
 
 const ProjectDetailCard: React.FC<ProjectDetailCardProps> = ({ project, profile, onEditClick }) => {
-
   const isInitiator = project.initiators.some((initiator) => initiator.id === profile?.id);
   const isParticipant = project.participants?.some((p) => p.id === profile?.id);
 
@@ -76,12 +94,7 @@ const ProjectDetailCard: React.FC<ProjectDetailCardProps> = ({ project, profile,
           </IonItem>
         </IonList>
         {isInitiator && (
-          <IonFab
-            vertical="bottom"
-            horizontal="end"
-            slot="fixed"
-            className="fab-inside-card"
-          >
+          <IonFab vertical="bottom" horizontal="end" slot="fixed" className="fab-inside-card">
             <IonFabButton color="primary" onClick={onEditClick}>
               <IonIcon icon={pencilOutline} />
             </IonFabButton>

@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import {
-  IonPage,
-  IonContent,
-  IonGrid,
-  IonRow,
-  IonCol,
-} from '@ionic/react';
+import { IonPage, IonContent, IonGrid, IonRow, IonCol } from '@ionic/react';
 import { Event, Profile, Project } from '../../types/types';
 import './ProjectDetailPage.css';
 import { getExistingToken } from '../../utils/authUtils';
@@ -78,10 +72,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   }, []);
 
   if (!project) {
-    return <EmptyPage message='Projekt nicht gefunden' />;
+    return <EmptyPage message="Projekt nicht gefunden" />;
   }
-
-  
 
   return (
     <IonPage>
@@ -99,7 +91,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
 
             {/* Teilnehmer Liste */}
             <IonCol size="12" sizeLg="4">
-              <ProjectParticipantsCard 
+              <ProjectParticipantsCard
                 project={project}
                 profile={profile}
                 onJoinClick={() => handleJoinProject(project.id, profile?.id!)}

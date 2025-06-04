@@ -32,10 +32,9 @@ const JoinProjectButton: React.FC<JoinProjectButtonProps> = ({
     eventId,
     statusId,
     userIsFree,
-    userIsInitiator, 
+    userIsInitiator,
     myParticipation,
-    profile: profile, 
-    
+    profile: profile,
   });
 
   if (statusId === 3) {

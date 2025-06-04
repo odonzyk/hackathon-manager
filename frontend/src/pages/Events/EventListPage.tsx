@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  IonPage,
-  IonContent,
-  IonGrid,
-  IonRow,
-  IonCol,
-} from '@ionic/react';
+import { IonPage, IonContent, IonGrid, IonRow, IonCol } from '@ionic/react';
 import './EventListPage.css';
 import { Event, Profile } from '../../types/types';
 import { useToast } from '../../components/ToastProvider';

@@ -1,5 +1,15 @@
 import React from 'react';
-import { IonCardContent, IonText, IonList, IonItem, IonIcon, IonLabel, IonCard, IonCardHeader, IonCardTitle } from '@ionic/react';
+import {
+  IonCardContent,
+  IonText,
+  IonList,
+  IonItem,
+  IonIcon,
+  IonLabel,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+} from '@ionic/react';
 import { callOutline, flagOutline, peopleCircleOutline } from 'ionicons/icons';
 import { Project } from '../../../types/types';
 import './ProjectListCard.css';
@@ -11,11 +21,7 @@ interface ProjectListCardProps {
 
 const ProjectListCard: React.FC<ProjectListCardProps> = ({ project, onProjectClick }) => {
   return (
-    <IonCard
-      className="hackathon-card"
-      button
-      onClick={onProjectClick}
-    >
+    <IonCard className="hackathon-card" button onClick={onProjectClick}>
       <IonCardHeader>
         <IonCardTitle>{project.idea}</IonCardTitle>
       </IonCardHeader>

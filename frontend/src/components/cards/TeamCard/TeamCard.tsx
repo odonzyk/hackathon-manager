@@ -4,14 +4,14 @@ import { Project } from '../../../types/types';
 import './TeamCard.css';
 
 interface TeamCardProps {
-  project: Project
+  project: Project;
 }
 
 const TeamCard: React.FC<TeamCardProps> = ({ project }) => {
   const teamName = project ? project.team_name : 'Noch kein Teamname';
 
   return (
-    <IonCard className="hackathon-card team-card" >
+    <IonCard className="hackathon-card team-card">
       <IonCardHeader>
         <IonCardTitle>{teamName}</IonCardTitle>
       </IonCardHeader>
@@ -42,9 +42,7 @@ const TeamCard: React.FC<TeamCardProps> = ({ project }) => {
         <br />
         <p className="team-description">
           Mitglieder: (
-          {project.initiators.length +
-            (project.participants ? project.participants.length : 0)}
-          )
+          {project.initiators.length + (project.participants ? project.participants.length : 0)})
         </p>
       </IonCardContent>
     </IonCard>

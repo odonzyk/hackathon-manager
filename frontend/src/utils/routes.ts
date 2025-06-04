@@ -11,14 +11,19 @@ import TeamListPage from '../pages/Teams/TeamListPage';
 const handleProjectAdded = (selectedEvent: any, fetchProjects: any) => {
   const token = getExistingToken();
   if (selectedEvent && token) {
-    fetchProjects(selectedEvent.id, token); 
+    fetchProjects(selectedEvent.id, token);
   }
 };
 
-const handleParticipateChanged = (selectedEvent: any, fetchProjects: any, user_id: number, fetchParticipateList: any) => {
+const handleParticipateChanged = (
+  selectedEvent: any,
+  fetchProjects: any,
+  user_id: number,
+  fetchParticipateList: any,
+) => {
   const token = getExistingToken();
   if (selectedEvent && token) {
-    fetchProjects(selectedEvent.id, token); 
+    fetchProjects(selectedEvent.id, token);
     fetchParticipateList(user_id, token);
   }
 };

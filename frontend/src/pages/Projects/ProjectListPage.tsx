@@ -2,9 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   IonPage,
   IonContent,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
   IonGrid,
   IonRow,
   IonCol,
@@ -90,7 +87,10 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ profile, event, proje
           <IonRow>
             {filteredProjects.map((project) => (
               <IonCol size="12" sizeMd="6" key={project.id}>
-                  <ProjectListCard project={project} onProjectClick={() => handleProjectClick(project.id)} />
+                <ProjectListCard
+                  project={project}
+                  onProjectClick={() => handleProjectClick(project.id)}
+                />
               </IonCol>
             ))}
           </IonRow>

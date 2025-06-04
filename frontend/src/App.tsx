@@ -29,7 +29,13 @@ import PrivateRoute from './components/PrivateRoute';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import TabBar from './components/TabBar/TabBar';
 
-import { getEvents, getProjects, getUserParticipations, loadStoredProfile, ResultType } from './utils/globalDataUtils';
+import {
+  getEvents,
+  getProjects,
+  getUserParticipations,
+  loadStoredProfile,
+  ResultType,
+} from './utils/globalDataUtils';
 import { Event, Profile, Project } from './types/types';
 import { useToast } from './components/ToastProvider';
 import { getExistingToken } from './utils/authUtils';
@@ -157,7 +163,13 @@ const App = () => {
   }, [selectedEvent]);
 
   const publicRoutes = getPublicRoutes();
-  const privateRoutes = getPrivateRoutes(profile, selectedEvent, projects, fetchProjects, fetchParticipateList);
+  const privateRoutes = getPrivateRoutes(
+    profile,
+    selectedEvent,
+    projects,
+    fetchProjects,
+    fetchParticipateList,
+  );
 
   return (
     <IonApp>

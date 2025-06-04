@@ -1,15 +1,14 @@
 .participant-card:hover {
-    transform: none;
-    box-shadow: none;
-  }
-  
-  .participant-card .join-project-button-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 1rem;
-  }
-  
-  .participant-card .join-project-button-container button {
-    width: 100%; /* Button nimmt die volle Breite der IonCard ein */
-  }
-  
+  transform: none;
+  box-shadow: none;
+}
+
+.participant-card .join-project-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.participant-card .join-project-button-container button {
+  width: 100%; /* Button nimmt die volle Breite der IonCard ein */
+}
