@@ -29,18 +29,3 @@
   padding: 0 16px 0px;
   display: block;
 }
-
-.menu-settings ion-item ion-icon {
-  margin-right: 8px;
-}
-
-.menu-settings {
-  padding: 16px;
-  border-top: 1px solid var(--ion-color-light-shade);
-  background: var(--ion-background-color);
-}
-
-.menu-notification {
-  margin-top: 20px;
-  text-align: center;
-}

@@ -91,6 +91,7 @@ const App = () => {
     }
     console.log(`App: ${result.data.length} Participations fetched ! `);
     profile.participate = result.data;
+    setProfile(profile);
   };
 
   const getPageTitle = (pathname: string): string => {

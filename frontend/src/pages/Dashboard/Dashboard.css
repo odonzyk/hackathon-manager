@@ -1,1 +1,5 @@
 /* Allgemeine Stile */
+.no-hover:hover {
+  transform: none;
+  box-shadow: none;
+}

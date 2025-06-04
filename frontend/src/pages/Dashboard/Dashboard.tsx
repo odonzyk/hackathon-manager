@@ -14,6 +14,9 @@ import { useEffect } from 'react';
 import { Event, Profile, Project } from '../../types/types';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import { formatCountdown } from '../../utils/dateUtils';
+import ProjectOverviewCard from '../../components/cards/ProjectOverviewCard/ProjectOverviewCard';
+import TeamOverviewCard from '../../components/cards/TeamsOverviewCard/TeamOverviewCard';
+import MyProjectOverviewCard from '../../components/cards/MyProjectOverviewCard/MyProjectOverviewCard';
 
 interface DashboardPageProps {
   profile: Profile | null;
@@ -33,7 +36,7 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ profile, event, projects 
       <IonContent>
         {/* Countdown Box */}
         {event?.start_time && event?.end_time ? (
-          <IonCard className="hackathon-card">
+          <IonCard className="hackathon-card no-hover ">
             {event.end_time < Math.floor(new Date().getTime() / 1000) ? (
               <>
                 <IonCardHeader>
@@ -63,37 +66,10 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ profile, event, projects 
         <IonGrid className="hackathon-grid">
           <IonRow>
             <IonCol>
-              <IonCard
-                className="hackathon-card"
-                button
-                onClick={() => {
-                  window.location.href = '/projects';
-                }}
-              >
-                <IonCardHeader>
-                  <IonCardTitle>📁 Projekte</IonCardTitle>
-                </IonCardHeader>
-                <IonCardContent>{projects.length} eingereicht</IonCardContent>
-              </IonCard>
+              <ProjectOverviewCard projects={projects} />
             </IonCol>
             <IonCol>
-              <IonCard className="hackathon-card">
-                <IonCardHeader>
-                  <IonCardTitle>👥 Teilnehmer</IonCardTitle>
-                </IonCardHeader>
-                <IonCardContent>
-                  {projects
-                    .filter((project) => project.event_id === event?.id) // Filtere Projekte des aktuellen Events
-                    .reduce(
-                      (sum, project) =>
-                        sum +
-                        (project.participants?.length || 0) +
-                        (project.initiators?.length || 0),
-                      0,
-                    )}{' '}
-                  angemeldet
-                </IonCardContent>
-              </IonCard>
+              <TeamOverviewCard projects={projects} event={event} />
             </IonCol>
           </IonRow>
         </IonGrid>
@@ -102,19 +78,14 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ profile, event, projects 
         <IonGrid className="hackathon-grid">
           <IonRow>
             <IonCol>
-              <IonCard className="hackathon-card">
-                <IonCardHeader>
-                  <IonCardTitle>Dein aktuelles Projekt</IonCardTitle>
-                </IonCardHeader>
-                <IonCardContent>🤖 SmartCart AI</IonCardContent>
-              </IonCard>
+              <MyProjectOverviewCard profile={profile} event={event} />
             </IonCol>
             <IonCol>
-              <IonCard className="hackathon-card">
+              <IonCard className="hackathon-card no-hover">
                 <IonCardHeader>
                   <IonCardTitle>Raum</IonCardTitle>
                 </IonCardHeader>
-                <IonCardContent>Raum A203</IonCardContent>
+                <IonCardContent>Noch nicht bekannt</IonCardContent>
               </IonCard>
             </IonCol>
           </IonRow>

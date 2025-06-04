@@ -21,13 +21,13 @@ body {
 }
 
 ion-menu ion-header {
-  --ion-background-color: #1e3c72; /* Dunkler Blauton */
+  --ion-background-color: #1e1e2f; /* Dunkler Blauton */
   --ion-text-color: #ffffff;
 }
 
 /* Menü Liste */
 ion-menu ion-list {
-  --ion-background-color: #2a5298; /* Etwas heller als der Header */
+  --ion-background-color: #2e2e3e; /* Etwas heller als der Header */
   --ion-text-color: #ffffff;
 }
 
@@ -36,6 +36,10 @@ ion-menu ion-item {
   color: #ffffff;
   --ion-item-background: transparent;
   --ion-item-hover-background: rgba(255, 255, 255, 0.1); /* Leichter Hover-Effekt */
+}
+
+ion-menu ion-icon {
+  color: #ffffff;
 }
 
 ion-button {

@@ -8,6 +8,8 @@
 **🏠 Dashboard**
 - **Dynamische Teilnehmeranzahl im Dashboard**  
   Die Teilnehmeranzahl im Dashboard wird jetzt als Summe der Initiatoren und Teilnehmer aller Projekte des aktuellen Events angezeigt.
+- **Aktuelles Projekt anzeigen**  
+  Der Bereich "Dein aktuelles Projekt" zeigt das Projekt des aktuellen Events an, an dem der Benutzer Teilnehmer ist. Falls kein Projekt ausgewählt ist, wird ein Hinweis angezeigt.
 
 **🗂️ Projekt Liste**
 - **Begrenzte Beschreibung in der Projektliste**  
@@ -29,6 +31,8 @@
 **👥 Team Liste**
 - **Anbindung ans Backend**  
   Es werden nun die echten Teamdaten angezeigt, einschließlich aller Initiatoren und Teilnehmer
+- **Verbesserte Darstellung der TeamCards**  
+  Die TeamCards wurden optimiert, um die Übersichtlichkeit und Benutzerfreundlichkeit zu verbessern.
 
 **🛠️ Backend**
 - **Neue Schnittstellen** 
@@ -41,6 +45,8 @@
 ### 🐞 Bug fixes & Verbesserungen
 - **Stabilitätsverbesserungen**  
   Kleinere Fehler wurden behoben, um die allgemeine Stabilität und Performance der Anwendung zu verbessern.
+- **Fehler bei leerem participants-Array behoben**
+  Die Logik für die Überprüfung von Teilnehmern wurde angepasst, um sicherzustellen, dass leere Arrays korrekt behandelt werden.
 
 ## Version 0.2.4
 **Release Date:** 2025-05-27

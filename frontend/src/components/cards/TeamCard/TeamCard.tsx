@@ -1,7 +1,17 @@
 import React from 'react';
-import { IonCardContent, IonCard, IonCardHeader, IonCardTitle } from '@ionic/react';
+import {
+  IonCardContent,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonList,
+  IonItem,
+  IonIcon,
+  IonLabel,
+} from '@ionic/react';
 import { Project } from '../../../types/types';
 import './TeamCard.css';
+import { peopleCircleOutline, personOutline } from 'ionicons/icons';
 
 interface TeamCardProps {
   project: Project;
@@ -16,30 +26,20 @@ const TeamCard: React.FC<TeamCardProps> = ({ project }) => {
         <IonCardTitle>{teamName}</IonCardTitle>
       </IonCardHeader>
       <IonCardContent>
-        <p className="team-description">Initiatoren:</p>
-        <ul className="team-details">
-          {project.initiators.map((member, index) => (
-            <li key={index}>
-              <span role="img" aria-label="Person">
-                👤
-              </span>{' '}
-              {member.name}
-            </li>
+        <IonList>
+          {project.initiators.map((initiator) => (
+            <IonItem key={`initiator-${initiator.id}`}>
+              <IonIcon icon={personOutline} slot="start" style={{ color: '#007bff' }} />
+              <IonLabel>{initiator.name}</IonLabel>
+            </IonItem>
           ))}
-        </ul>
-        <br />
-        <p className="team-description">Teilnehmer:</p>
-        <ul className="team-details">
-          {project.participants.map((member, index) => (
-            <li key={index}>
-              <span role="img" aria-label="Person">
-                👤
-              </span>{' '}
-              {member.name}
-            </li>
+          {project.participants?.map((participant) => (
+            <IonItem key={`participant-${participant.id}`}>
+              <IonIcon icon={peopleCircleOutline} slot="start" style={{ color: '#17a2b8' }} />
+              <IonLabel>{participant.name}</IonLabel>
+            </IonItem>
           ))}
-        </ul>
-        <br />
+        </IonList>
         <p className="team-description">
           Mitglieder: (
           {project.initiators.length + (project.participants ? project.participants.length : 0)})

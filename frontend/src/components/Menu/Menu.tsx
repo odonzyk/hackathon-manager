@@ -52,7 +52,7 @@ const Menu = () => {
   return (
     <IonMenu menuId="main-menu" contentId="main-content">
       <IonHeader>
-        <IonToolbar color="primary">
+        <IonToolbar>
           <IonTitle className="menu-title">Menü</IonTitle>
           <IonText slot="end" className="menu-version">
             v{APP_VERSION}
