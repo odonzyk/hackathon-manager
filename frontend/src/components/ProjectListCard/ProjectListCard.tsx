@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  IonCardContent,
-  IonText,
-  IonList,
-  IonItem,
-  IonIcon,
-  IonLabel,
-} from '@ionic/react';
+import { IonCardContent, IonText, IonList, IonItem, IonIcon, IonLabel } from '@ionic/react';
 import { callOutline, flagOutline, peopleCircleOutline } from 'ionicons/icons';
 import { Project } from '../../types/types';
 import './ProjectListCard.css';
@@ -15,7 +8,7 @@ interface ProjectListCardProps {
   project: Project;
 }
 
-const ProjectListCard: React.FC<ProjectListCardProps> = ({ project}) => {
+const ProjectListCard: React.FC<ProjectListCardProps> = ({ project }) => {
   return (
     <IonCardContent>
       <IonText className="project-detail">{project.description}</IonText>
@@ -46,11 +39,12 @@ const ProjectListCard: React.FC<ProjectListCardProps> = ({ project}) => {
           <IonIcon icon={peopleCircleOutline} slot="start" style={{ color: '#17a2b8' }} />
           <IonLabel>
             <h2>Teilnehmer</h2>
-            <IonText>{project.participants.length + project.initiators.length} (von max. 12)</IonText>
+            <IonText>
+              {project.participants.length + project.initiators.length} (von max. 12)
+            </IonText>
           </IonLabel>
         </IonItem>
       </IonList>
-
     </IonCardContent>
   );
 };

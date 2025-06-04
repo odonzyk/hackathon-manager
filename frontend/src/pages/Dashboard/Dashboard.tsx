@@ -63,7 +63,8 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ profile, event, projects 
         <IonGrid className="hackathon-grid">
           <IonRow>
             <IonCol>
-              <IonCard className="hackathon-card" 
+              <IonCard
+                className="hackathon-card"
                 button
                 onClick={() => {
                   window.location.href = '/projects';
@@ -86,9 +87,9 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ profile, event, projects 
                     .reduce(
                       (sum, project) =>
                         sum +
-                        (project.participants?.length || 0) + 
-                        (project.initiators?.length || 0), 
-                      0
+                        (project.participants?.length || 0) +
+                        (project.initiators?.length || 0),
+                      0,
                     )}{' '}
                   angemeldet
                 </IonCardContent>

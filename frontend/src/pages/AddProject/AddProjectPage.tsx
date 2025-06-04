@@ -71,7 +71,9 @@ const AddProjectPage: React.FC<AddProjectPageProps> = ({ profile, event, onProje
     if (result.resultType !== ResultType.SUCCESS || result.data === null) {
       showToastError(result.resultMsg ?? 'Fehler beim Speichern des Projekts');
     } else {
-      showToastMessage(isEditing ? 'Projekt erfolgreich aktualisiert!' : 'Projekt erfolgreich hinzugefügt!');
+      showToastMessage(
+        isEditing ? 'Projekt erfolgreich aktualisiert!' : 'Projekt erfolgreich hinzugefügt!',
+      );
       onProjectAdded();
       history.push('/projects');
     }
@@ -84,7 +86,9 @@ const AddProjectPage: React.FC<AddProjectPageProps> = ({ profile, event, onProje
       setNewProject({
         ...emptyProject,
         event_id: event?.id || 0,
-        initiators: profile ? [{ id: profile.id, name: profile.name, avatar_url: profile.avatar_url }] : [],
+        initiators: profile
+          ? [{ id: profile.id, name: profile.name, avatar_url: profile.avatar_url }]
+          : [],
       });
     }
   }, [event, profile, isEditing]);
@@ -192,7 +196,11 @@ const AddProjectPage: React.FC<AddProjectPageProps> = ({ profile, event, onProje
 
         <IonCol size="12">
           <IonButton expand="block" color="primary" onClick={handleAddProject} disabled={loading}>
-            {loading ? 'Wird hinzugefügt...' : isEditing ? 'Änderungen speichern' : 'Projekt hinzufügen'}
+            {loading
+              ? 'Wird hinzugefügt...'
+              : isEditing
+                ? 'Änderungen speichern'
+                : 'Projekt hinzufügen'}
           </IonButton>
         </IonCol>
       </IonContent>

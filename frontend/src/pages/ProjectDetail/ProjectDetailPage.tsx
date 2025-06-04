@@ -42,7 +42,12 @@ interface ProjectDetailPageProps {
   onParticipantChange: () => void;
 }
 
-const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ profile, event, projects, onParticipantChange }) => {
+const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
+  profile,
+  event,
+  projects,
+  onParticipantChange,
+}) => {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
@@ -101,7 +106,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ profile, event, p
     );
   }
 
-  const isInitiator   = project.initiators.some((initiator) => initiator.id === profile?.id);
+  const isInitiator = project.initiators.some((initiator) => initiator.id === profile?.id);
   const isParticipant = project.participants?.some((p) => p.id === profile?.id);
 
   return (
@@ -140,7 +145,10 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ profile, event, p
                         <h2>Kontakt</h2>
                         <IonText>
                           {project.initiators.map((initiator) => (
-                            <span key={initiator.id}>{initiator.name}<br /></span>
+                            <span key={initiator.id}>
+                              {initiator.name}
+                              <br />
+                            </span>
                           ))}
                         </IonText>
                       </IonLabel>
@@ -168,7 +176,12 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ profile, event, p
                     </IonItem>
                   </IonList>
                   {isInitiator && (
-                    <IonFab vertical="bottom" horizontal="end" slot="fixed" className="fab-inside-card">
+                    <IonFab
+                      vertical="bottom"
+                      horizontal="end"
+                      slot="fixed"
+                      className="fab-inside-card"
+                    >
                       <IonFabButton color="primary" onClick={handleEditProject}>
                         <IonIcon icon={pencilOutline} />
                       </IonFabButton>
@@ -196,7 +209,11 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ profile, event, p
                     ))}
                     {project.participants?.map((participant) => (
                       <IonItem key={`participant-${participant.id}`}>
-                        <IonIcon icon={peopleCircleOutline} slot="start" style={{ color: '#17a2b8' }} />
+                        <IonIcon
+                          icon={peopleCircleOutline}
+                          slot="start"
+                          style={{ color: '#17a2b8' }}
+                        />
                         <IonLabel>{participant.name}</IonLabel>
                       </IonItem>
                     ))}

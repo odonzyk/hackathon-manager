@@ -20,7 +20,12 @@ export const getPublicRoutes = () => [
   { path: '/register', component: RegisterPage, exact: true },
 ];
 
-export const getPrivateRoutes = (profile: any, selectedEvent: any, projects: any, fetchProjects: any) => [
+export const getPrivateRoutes = (
+  profile: any,
+  selectedEvent: any,
+  projects: any,
+  fetchProjects: any,
+) => [
   {
     path: '/dashboard',
     component: DashboardPage,
@@ -30,7 +35,8 @@ export const getPrivateRoutes = (profile: any, selectedEvent: any, projects: any
     projects: projects,
   },
   { path: '/events', component: EventListPage, exact: true, profile: profile },
-  { path: '/teams', 
+  {
+    path: '/teams',
     component: TeamListPage,
     exact: true,
     profile: profile,
@@ -52,7 +58,7 @@ export const getPrivateRoutes = (profile: any, selectedEvent: any, projects: any
     profile: profile,
     event: selectedEvent,
     projects: projects,
-    onProjectAdded: () => { 
+    onProjectAdded: () => {
       handleProjectAdded(selectedEvent, fetchProjects);
     },
   },
@@ -63,7 +69,7 @@ export const getPrivateRoutes = (profile: any, selectedEvent: any, projects: any
     profile: profile,
     event: selectedEvent,
     projects: projects,
-    onParticipantChange: () => { 
+    onParticipantChange: () => {
       handleProjectAdded(selectedEvent, fetchProjects);
     },
   },

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   IonPage,
   IonContent,
@@ -67,7 +67,12 @@ const TeamListPage: React.FC<TeamListPageProps> = ({ profile, event, projects })
                         ))}
                       </ul>
                       <br />
-                      <p className="team-description">Mitglieder: ({project.initiators.length + (project.participants ? project.participants.length : 0)})</p>
+                      <p className="team-description">
+                        Mitglieder: (
+                        {project.initiators.length +
+                          (project.participants ? project.participants.length : 0)}
+                        )
+                      </p>
                     </IonCardContent>
                   </IonCard>
                 </IonCol>

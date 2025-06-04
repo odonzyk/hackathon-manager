@@ -111,7 +111,6 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ profile, event, proje
             <IonIcon icon={addOutline} />
           </IonFabButton>
         </IonFab>
-
       </IonContent>
     </IonPage>
   );

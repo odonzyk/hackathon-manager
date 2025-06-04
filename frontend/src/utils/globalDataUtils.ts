@@ -222,7 +222,6 @@ export const getEvent = async (
   }
 };
 
-
 /* *************************************************** */
 /* Participate                                         */
 /* *************************************************** */
@@ -235,12 +234,16 @@ export const postParticipant = async (
   if (!token || !project_id || !user_id) return resultError('Projekt, Benutzer oder Token fehlen');
 
   try {
-    const response = await axios.post<Project>(`/api/participant`, {
-      project_id,
-      user_id,
-    }, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await axios.post<Project>(
+      `/api/participant`,
+      {
+        project_id,
+        user_id,
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
     if (response.status === 201) {
       return resultSuccess(response.data);
     } else {

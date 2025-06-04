@@ -11,17 +11,21 @@ interface JoinProjectButtonProps {
   disabled?: boolean;
 }
 
-const JoinProjectButton: React.FC<JoinProjectButtonProps> = ({ project, profile, onJoinProject, onRejectProject, disabled = false }) => {
+const JoinProjectButton: React.FC<JoinProjectButtonProps> = ({
+  project,
+  profile,
+  onJoinProject,
+  onRejectProject,
+  disabled = false,
+}) => {
   const eventId = project.event_id;
   const statusId = project.status_id;
   const userIsFree = profile.participate.every(
-    (participation) => participation.event_id !== eventId
+    (participation) => participation.event_id !== eventId,
   );
-  const userIsInitiator = project.initiators.some(
-    (initiator) => initiator.id === profile.id
-  );
+  const userIsInitiator = project.initiators.some((initiator) => initiator.id === profile.id);
   const myParticipation = project.participants.find(
-    (participation) => participation.id === profile.id
+    (participation) => participation.id === profile.id,
   );
 
   if (statusId === 3) {
@@ -43,7 +47,6 @@ const JoinProjectButton: React.FC<JoinProjectButtonProps> = ({ project, profile,
   }
 
   if (statusId < 3) {
-
     if (myParticipation) {
       return (
         <IonButton expand="block" onClick={onRejectProject} disabled={disabled} color="tertiary">

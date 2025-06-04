@@ -55,7 +55,7 @@ export type Project = {
   initiators: Initiator[];
   participants: Participant[];
 };
-  
+
 export type Event = {
   id: number;
   name: string;

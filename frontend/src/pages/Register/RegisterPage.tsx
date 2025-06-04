@@ -30,6 +30,7 @@ const emptyProfile: Profile = {
   telephone: '',
   is_private_telephone: false,
   avatar_url: '',
+  participate: [],
 };
 
 const ROLE_USER = 2;
