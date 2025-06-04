@@ -1,8 +1,15 @@
-.project-detail {
+.project-list-short {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.project-list-detail {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  font-style: italic;
+  color: #a0a0a0;
 }

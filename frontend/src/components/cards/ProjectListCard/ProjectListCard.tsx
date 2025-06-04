@@ -26,7 +26,7 @@ const ProjectListCard: React.FC<ProjectListCardProps> = ({ project, onProjectCli
         <IonCardTitle>{project.idea}</IonCardTitle>
       </IonCardHeader>
       <IonCardContent>
-        <IonText className="project-detail">{project.description}</IonText>
+        <IonText className="project-list-detail project-list-short">{project.description}</IonText>
 
         <IonList>
           <IonItem>
@@ -47,7 +47,7 @@ const ProjectListCard: React.FC<ProjectListCardProps> = ({ project, onProjectCli
             <IonIcon icon={flagOutline} slot="start" style={{ color: '#ffc107' }} />
             <IonLabel>
               <h2>Ziel</h2>
-              <IonText>{project.goal}</IonText>
+              <IonText className='project-list-short'>{project.goal}</IonText>
             </IonLabel>
           </IonItem>
           <IonItem>
