@@ -2,10 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   IonPage,
   IonContent,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
   IonGrid,
   IonRow,
   IonCol,
@@ -16,7 +12,7 @@ import { useToast } from '../../components/ToastProvider';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import { getEvents, ResultType } from '../../utils/globalDataUtils';
 import { getExistingToken } from '../../utils/authUtils';
-import { formatDate } from '../../utils/dateUtils';
+import EventListCard from '../../components/cards/EventListCard.tsx/EventListCard';
 
 interface EventListPageProps {
   profile: Profile | null;
@@ -58,27 +54,7 @@ const EventListPage: React.FC<EventListPageProps> = ({ profile }) => {
           <IonRow>
             {events.map((event) => (
               <IonCol size="12" sizeMd="6" key={event.id}>
-                <IonCard className="hackathon-card">
-                  <IonCardHeader>
-                    <IonCardTitle>{event.name}</IonCardTitle>
-                  </IonCardHeader>
-                  <IonCardContent>
-                    <div className="project-details">
-                      <p>
-                        <span role="img" aria-label="Start Time">
-                          🕒
-                        </span>{' '}
-                        <strong>Start Time:</strong> {formatDate(event.start_time)}
-                      </p>
-                      <p>
-                        <span role="img" aria-label="End Time">
-                          🕒
-                        </span>{' '}
-                        <strong>End Time:</strong> {formatDate(event.end_time)}
-                      </p>
-                    </div>
-                  </IonCardContent>
-                </IonCard>
+                <EventListCard event={event} />
               </IonCol>
             ))}
           </IonRow>

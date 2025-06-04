@@ -29,7 +29,7 @@ import PrivateRoute from './components/PrivateRoute';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import TabBar from './components/TabBar/TabBar';
 
-import { getEvents, getProjects, loadStoredProfile, ResultType } from './utils/globalDataUtils';
+import { getEvents, getProjects, getUserParticipations, loadStoredProfile, ResultType } from './utils/globalDataUtils';
 import { Event, Profile, Project } from './types/types';
 import { useToast } from './components/ToastProvider';
 import { getExistingToken } from './utils/authUtils';
@@ -70,6 +70,21 @@ const App = () => {
     }
     console.log(`App: ${result.data.length} Projects fetched ! `);
     setProjects(result.data);
+  };
+
+  const fetchParticipateList = async (user_id: number, token: string | null) => {
+    console.log('App: Fetching Participate List');
+    if (!profile) {
+      showToastError('Profile not loaded');
+      return;
+    }
+    const result = await getUserParticipations(user_id, token);
+    if (result.resultType !== ResultType.SUCCESS || result.data === null) {
+      showToastError(result.resultMsg ?? 'Error');
+      return;
+    }
+    console.log(`App: ${result.data.length} Participations fetched ! `);
+    profile.participate = result.data;
   };
 
   const getPageTitle = (pathname: string): string => {
@@ -142,7 +157,7 @@ const App = () => {
   }, [selectedEvent]);
 
   const publicRoutes = getPublicRoutes();
-  const privateRoutes = getPrivateRoutes(profile, selectedEvent, projects, fetchProjects);
+  const privateRoutes = getPrivateRoutes(profile, selectedEvent, projects, fetchProjects, fetchParticipateList);
 
   return (
     <IonApp>

@@ -12,12 +12,3 @@
   border-color: #ffffff; /* Weiße Umrandung beim Fokus */
 }
 
-.project-details {
-  margin-top: 10px; /* Optional: Abstand nach oben */
-}
-
-/* Projekt-Details */
-.project-details p {
-  font-size: 1rem;
-  margin-bottom: 5px;
-}

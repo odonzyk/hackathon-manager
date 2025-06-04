@@ -1,4 +1,4 @@
-import { Event, Profile, Project, STORAGE_PROFILE } from '../types/types';
+import { Event, Participate, Profile, Project, STORAGE_PROFILE } from '../types/types';
 import axios from 'axios';
 
 export enum ResultType {
@@ -118,6 +118,22 @@ export const getAllUsers = async (
 
   try {
     const response = await axios.get<Profile[]>(`/api/user/list/`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return resultSuccess(response.data);
+  } catch (error) {
+    return resultError('User konnten nicht geladen werden');
+  }
+};
+
+export const getUserParticipations = async (
+  user_id: number,
+  token: string | null,
+): Promise<{ resultType: ResultType; resultMsg: string | null; data: Participate[] | null }> => {
+  if (!token) return resultError('token is missing');
+
+  try {
+    const response = await axios.get<Participate[]>(`/api/user/${user_id}/participate/`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return resultSuccess(response.data);

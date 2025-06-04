@@ -11,7 +11,15 @@ import TeamListPage from '../pages/Teams/TeamListPage';
 const handleProjectAdded = (selectedEvent: any, fetchProjects: any) => {
   const token = getExistingToken();
   if (selectedEvent && token) {
-    fetchProjects(selectedEvent.id, token); // Projekte aktualisieren
+    fetchProjects(selectedEvent.id, token); 
+  }
+};
+
+const handleParticipateChanged = (selectedEvent: any, fetchProjects: any, user_id: number, fetchParticipateList: any) => {
+  const token = getExistingToken();
+  if (selectedEvent && token) {
+    fetchProjects(selectedEvent.id, token); 
+    fetchParticipateList(user_id, token);
   }
 };
 
@@ -25,6 +33,7 @@ export const getPrivateRoutes = (
   selectedEvent: any,
   projects: any,
   fetchProjects: any,
+  fetchParticipateList: any,
 ) => [
   {
     path: '/dashboard',
@@ -70,7 +79,7 @@ export const getPrivateRoutes = (
     event: selectedEvent,
     projects: projects,
     onParticipantChange: () => {
-      handleProjectAdded(selectedEvent, fetchProjects);
+      handleParticipateChanged(selectedEvent, fetchProjects, profile.id, fetchParticipateList);
     },
   },
 ];

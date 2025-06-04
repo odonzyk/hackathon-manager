@@ -9,12 +9,12 @@
 - **Dynamische Teilnehmeranzahl im Dashboard**  
   Die Teilnehmeranzahl im Dashboard wird jetzt als Summe der Initiatoren und Teilnehmer aller Projekte des aktuellen Events angezeigt.
 
-**📋 Projekt Liste**
+**🗂️ Projekt Liste**
 - **Begrenzte Beschreibung in der Projektliste**  
   Projektbeschreibungen in der Projektliste werden jetzt auf drei Zeilen begrenzt, um die Übersichtlichkeit zu verbessern. Längere Texte werden automatisch abgeschnitten und mit "..." dargestellt.
 
 
-**📄 Projekt Detailseite**
+**📝 Projekt Detailseite**
 - **Teilnehmer-Übersicht in der Projekt-Detailansicht**  
   Teilnehmer und Initiatoren werden jetzt in der Projekt-Detailansicht übersichtlich mit Icons dargestellt. 
 - **Badge für Teilnehmer**  
@@ -26,7 +26,7 @@
 - **Responsive Design**  
   Die Teilnehmerliste in der Projekt-Detailansicht passt sich jetzt dynamisch an die Bildschirmgröße an und wird bei kleineren Auflösungen unterhalb der Projektdetails angezeigt.
 
-**👤 Teams Liste**
+**👥 Team Liste**
 - **Anbindung ans Backend**  
   Es werden nun die echten Teamdaten angezeigt, einschließlich aller Initiatoren und Teilnehmer
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { IonButton, IonIcon } from '@ionic/react';
-import { Profile, Project } from '../../types/types';
+import { Profile, Project } from '../../../types/types';
 import { star, checkmarkCircle, closeCircle, warning, personCircle } from 'ionicons/icons';
 
 interface JoinProjectButtonProps {
@@ -27,6 +27,16 @@ const JoinProjectButton: React.FC<JoinProjectButtonProps> = ({
   const myParticipation = project.participants.find(
     (participation) => participation.id === profile.id,
   );
+
+  console.log('JoinProjectButton: ', {
+    eventId,
+    statusId,
+    userIsFree,
+    userIsInitiator, 
+    myParticipation,
+    profile: profile, 
+    
+  });
 
   if (statusId === 3) {
     return (

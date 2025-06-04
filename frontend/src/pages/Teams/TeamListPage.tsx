@@ -13,6 +13,7 @@ import {
 import './TeamListPage.css';
 import { Event, Profile, Project } from '../../types/types';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
+import TeamCard from '../../components/cards/TeamCard/TeamCard';
 
 interface TeamListPageProps {
   profile: Profile | null;
@@ -38,43 +39,7 @@ const TeamListPage: React.FC<TeamListPageProps> = ({ profile, event, projects })
 
               return (
                 <IonCol size="12" sizeMd="6" key={project.id}>
-                  <IonCard className="hackathon-card">
-                    <IonCardHeader>
-                      <IonCardTitle>{teamName}</IonCardTitle>
-                    </IonCardHeader>
-                    <IonCardContent>
-                      <p className="team-description">Initiatoren:</p>
-                      <ul className="team-details">
-                        {project.initiators.map((member, index) => (
-                          <li key={index}>
-                            <span role="img" aria-label="Person">
-                              👤
-                            </span>{' '}
-                            {member.name}
-                          </li>
-                        ))}
-                      </ul>
-                      <br />
-                      <p className="team-description">Teilnehmer:</p>
-                      <ul className="team-details">
-                        {project.participants.map((member, index) => (
-                          <li key={index}>
-                            <span role="img" aria-label="Person">
-                              👤
-                            </span>{' '}
-                            {member.name}
-                          </li>
-                        ))}
-                      </ul>
-                      <br />
-                      <p className="team-description">
-                        Mitglieder: (
-                        {project.initiators.length +
-                          (project.participants ? project.participants.length : 0)}
-                        )
-                      </p>
-                    </IonCardContent>
-                  </IonCard>
+                  <TeamCard project={project} />
                 </IonCol>
               );
             })}

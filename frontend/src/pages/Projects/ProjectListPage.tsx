@@ -18,7 +18,7 @@ import './ProjectListPage.css';
 import { Event, Profile, Project } from '../../types/types';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import { useHistory } from 'react-router-dom';
-import ProjectListCard from '../../components/ProjectListCard/ProjectListCard';
+import ProjectListCard from '../../components/cards/ProjectListCard/ProjectListCard';
 
 interface ProjectListPageProps {
   profile: Profile | null;
@@ -90,16 +90,7 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ profile, event, proje
           <IonRow>
             {filteredProjects.map((project) => (
               <IonCol size="12" sizeMd="6" key={project.id}>
-                <IonCard
-                  className="hackathon-card"
-                  button
-                  onClick={() => handleProjectClick(project.id)} // Navigation bei Klick
-                >
-                  <IonCardHeader>
-                    <IonCardTitle>{project.idea}</IonCardTitle>
-                  </IonCardHeader>
-                  <ProjectListCard project={project} />
-                </IonCard>
+                  <ProjectListCard project={project} onProjectClick={() => handleProjectClick(project.id)} />
               </IonCol>
             ))}
           </IonRow>
