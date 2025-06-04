@@ -1,16 +1,10 @@
 import {
   IonApp,
-  IonButtons,
   IonContent,
   IonHeader,
-  IonMenuButton,
   IonPage,
   IonRouterOutlet,
-  IonSelect,
-  IonSelectOption,
   IonTabs,
-  IonTitle,
-  IonToolbar,
   setupIonicReact,
 } from '@ionic/react';
 import { Redirect, Route, useLocation } from 'react-router-dom';
@@ -21,7 +15,6 @@ import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
 import './App.css';
 import './theme/variables.css';
-import ThaliaLogo from './assets/thalia_logo.png';
 import { useEffect, useState } from 'react';
 
 import Menu from './components/Menu/Menu';
@@ -40,6 +33,7 @@ import { Event, Profile, Project } from './types/types';
 import { useToast } from './components/ToastProvider';
 import { getExistingToken } from './utils/authUtils';
 import { getPublicRoutes, getPrivateRoutes } from './utils/routes';
+import Toolbar from './components/Toolbar.tsx/Toolbar';
 
 setupIonicReact();
 ReactGA.initialize('***REMOVED***');
@@ -178,6 +172,12 @@ const App = () => {
     fetchParticipateList,
   );
 
+const onSelectEvent = (selectedId : number) => {
+  console.log('App: onSelectEvent: ', selectedId);
+  const event = events.find((ev) => ev.id === selectedId);
+  setSelectedEvent(event || null);
+}
+
   return (
     <IonApp>
       <Menu />
@@ -186,32 +186,11 @@ const App = () => {
       <IonPage id="main-content">
         {/* Header */}
         <IonHeader>
-          <IonToolbar className="hackathon-toolbar">
-            <IonButtons slot="start">
-              <IonMenuButton />
-            </IonButtons>
-            <div className="logo">
-              <img src={ThaliaLogo} alt="Thalia Logo" className="logo-image" />
-              <IonTitle>Innovation Days</IonTitle>
-            </div>
-            <IonSelect
-              value={selectedEvent?.id}
-              placeholder="Event auswählen"
-              onIonChange={(e) => {
-                const selectedId = e.detail.value;
-                const event = events.find((ev) => ev.id === selectedId);
-                setSelectedEvent(event || null);
-              }}
-              interface="popover"
-              slot="end"
-            >
-              {events.map((event) => (
-                <IonSelectOption key={event.id} value={event.id}>
-                  {event.name}
-                </IonSelectOption>
-              ))}
-            </IonSelect>
-          </IonToolbar>
+          <Toolbar 
+            selectedEvent={selectedEvent}
+            events={events}
+            onSelectEvent={onSelectEvent} 
+          />
         </IonHeader>
 
         {/* Content */}

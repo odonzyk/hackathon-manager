@@ -1,9 +1,20 @@
 # 📦 Changelog
 
+## Version 0.2.6
+**Release Date:** 2025-06-??
+
+### ✨ Neue Features
+
+
 ## Version 0.2.5
 **Release Date:** 2025-06-04
 
 ### ✨ Neue Features
+
+### 🐞 Bug fixes & Verbesserungen
+- **Desing Fix im Header**  
+  - Die einzelnen Elemente im Header sind nun vertical Zentriert
+  - Bei kleinen Auflösungn bricht die Event Auswahl in die nächste Zeile um
 
 **🏠 Dashboard**
 - **Dynamische Teilnehmeranzahl im Dashboard**  

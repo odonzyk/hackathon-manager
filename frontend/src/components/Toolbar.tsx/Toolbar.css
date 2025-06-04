@@ -1,0 +1,65 @@
+.hackathon-toolbar {
+  background-color: #2e2e3e;
+  color: var(--ion-color-primary);
+  display: flex;
+}
+
+.hackathon-toolbar-container {
+  display: flex;
+  align-items: center; /* Vertikale Ausrichtung */
+  justify-content: space-between; /* Abstand zwischen den Elementen */
+  flex-wrap: nowrap; /* Elemente bleiben nebeneinander */
+}
+
+.hackathon-toolbar-left {
+  display: flex;
+  align-items: center; /* Vertikale Ausrichtung von Logo und Titel */
+}
+
+.hackathon-toolbar-logo {
+  height: 40px; /* Einheitliche Höhe für das Bild */
+  width: auto; /* Verhindert Verzerrung */
+  margin-right: 8px; /* Kleiner Abstand zum Titel */
+}
+
+.hackathon-toolbar-title {
+  font-size: 2.0rem; /* Größerer Titel */
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5); /* Leichter Schatten */
+  margin: 0;
+  padding: 0; /* Kein Padding */
+}
+
+.hackathon-toolbar-right {
+  display: flex;
+  align-items: center; /* Vertikale Ausrichtung */
+  margin-right: 12px;
+}
+
+.hackathon-toolbar-select {
+  margin-left: 16px; /* Abstand zum rechten Rand */
+  min-width: 150px; /* Mindestbreite für die Select-Box */
+}
+
+@media (max-width: 768px) {
+  .hackathon-toolbar-container {
+      flex-direction: column; /* Elemente untereinander anordnen */
+      align-items: flex-start; /* Links ausrichten */
+  }
+
+  .hackathon-toolbar-left {
+      margin-bottom: 8px; /* Abstand zum rechten Bereich */
+  }
+
+  .hackathon-toolbar-right {
+      margin-left: 50px;
+      width: 100%; /* Nimmt die gesamte Breite ein */
+  }
+
+  .hackathon-toolbar-select {
+      margin-left: 0; /* Kein Abstand zum rechten Rand */
+      margin-top: 8px; /* Abstand zum vorherigen Element */
+      width: 100%; /* Nimmt die gesamte Breite ein */
+  }
+}

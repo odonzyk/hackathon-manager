@@ -78,7 +78,7 @@ const JoinProjectButton: React.FC<JoinProjectButtonProps> = ({
       return (
         <IonButton expand="block" disabled={true} color="warning">
           <IonIcon slot="start" icon={warning}></IonIcon>
-          Du bist bereits in einem anderenProjekt
+          Du bist bereits in einem anderen Projekt
         </IonButton>
       );
     }

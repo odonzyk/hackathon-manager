@@ -13,10 +13,10 @@ import './Dashboard.css';
 import { useEffect } from 'react';
 import { Event, Profile, Project } from '../../types/types';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
-import { formatCountdown } from '../../utils/dateUtils';
 import ProjectOverviewCard from '../../components/cards/ProjectOverviewCard/ProjectOverviewCard';
 import TeamOverviewCard from '../../components/cards/TeamsOverviewCard/TeamOverviewCard';
 import MyProjectOverviewCard from '../../components/cards/MyProjectOverviewCard/MyProjectOverviewCard';
+import CountdownCard from '../../components/cards/CountdownCard/CountdownCard';
 
 interface DashboardPageProps {
   profile: Profile | null;
@@ -34,41 +34,15 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ profile, event, projects 
   return (
     <IonPage>
       <IonContent>
-        {/* Countdown Box */}
-        {event?.start_time && event?.end_time ? (
-          <IonCard className="hackathon-card no-hover ">
-            {event.end_time < Math.floor(new Date().getTime() / 1000) ? (
-              <>
-                <IonCardHeader>
-                  <IonCardTitle>Hackathon bereits vorbei</IonCardTitle>
-                </IonCardHeader>
-                <IonCardContent>
-                  seit{' '}
-                  {formatCountdown(-(event.start_time - Math.floor(new Date().getTime() / 1000)))}
-                </IonCardContent>
-              </>
-            ) : (
-              <>
-                <IonCardHeader>
-                  <IonCardTitle>Hackathon Countdown</IonCardTitle>
-                </IonCardHeader>
-                <IonCardContent>
-                  {formatCountdown(event.start_time - Math.floor(new Date().getTime() / 1000))}
-                </IonCardContent>
-              </>
-            )}
-          </IonCard>
-        ) : null}
-
-        {/* Event Box */}
+        <CountdownCard event={event} />
 
         {/* Projekte und Teilnehmer Boxen */}
         <IonGrid className="hackathon-grid">
           <IonRow>
-            <IonCol>
+            <IonCol size="12" sizeMd="6">
               <ProjectOverviewCard projects={projects} />
             </IonCol>
-            <IonCol>
+            <IonCol size="12" sizeMd="6">
               <TeamOverviewCard projects={projects} event={event} />
             </IonCol>
           </IonRow>
@@ -77,10 +51,10 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ profile, event, projects 
         {/* Aktuelles Projekt und Raumzuweisung */}
         <IonGrid className="hackathon-grid">
           <IonRow>
-            <IonCol>
+            <IonCol size="12" sizeMd="6">
               <MyProjectOverviewCard profile={profile} event={event} />
             </IonCol>
-            <IonCol>
+            <IonCol size="12" sizeMd="6">
               <IonCard className="hackathon-card no-hover">
                 <IonCardHeader>
                   <IonCardTitle>Raum</IonCardTitle>

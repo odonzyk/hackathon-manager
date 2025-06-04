@@ -83,32 +83,6 @@ ion-select {
   padding: 16px;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-}
-.logo ion-title {
-  font-size: 2.5rem; /* Größerer Titel */
-  font-weight: bold;
-  color: #ffd700;
-  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5); /* Leichter Schatten */
-}
-
-.logo-image {
-  width: 60px; /* Größeres Logo */
-  height: auto;
-  margin-right: 15px;
-}
-
-.logo-image {
-  height: 40px;
-}
-
-.hackathon-toolbar {
-  background-color: #2e2e3e;
-  color: var(--ion-color-primary);
-}
 
 .hackathon-container {
   display: flex;
