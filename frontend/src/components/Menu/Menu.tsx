@@ -22,6 +22,8 @@ import {
   peopleOutline,
   folderOutline,
   homeOutline,
+  informationOutline,
+  calendarOutline,
 } from 'ionicons/icons';
 
 import { APP_VERSION } from '../../../config';
@@ -44,9 +46,11 @@ const Menu = () => {
   };
 
   const menuItems = [
-    { link: '/dashboard', icon: homeOutline, labelKey: 'Startseite' },
+    { link: '/dashboard', icon: homeOutline, labelKey: 'Dashboard' },
+    { link: '/events', icon: calendarOutline, labelKey: 'Events' },
     { link: '/projects', icon: folderOutline, labelKey: 'Projekte' },
     { link: '/teams', icon: peopleOutline, labelKey: 'Teams' },
+    { link: '/about', icon: informationOutline, labelKey: 'Über uns' },
   ];
 
   return (

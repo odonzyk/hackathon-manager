@@ -7,38 +7,39 @@ import ProjectDetailPage from '../pages/ProjectDetail/ProjectDetailPage';
 import AddProjectPage from '../pages/AddProject/AddProjectPage';
 import { getExistingToken } from '../utils/authUtils';
 import TeamListPage from '../pages/Teams/TeamListPage';
+import AboutPage from '../pages/AboutPage/AboutPage';
 
-const handleProjectAdded = (selectedEvent: any, fetchProjects: any) => {
+const handleProjectAdded = (selectedEvent: any, updateProjects: any) => {
   const token = getExistingToken();
   if (selectedEvent && token) {
-    fetchProjects(selectedEvent.id, token);
+    updateProjects(selectedEvent.id, token);
   }
 };
 
 const handleParticipateChanged = (
   selectedEvent: any,
-  fetchProjects: any,
-  user_id: number,
-  fetchParticipateList: any,
+  updateProjects: any,
+  updateParticipateList: any,
 ) => {
   const token = getExistingToken();
   if (selectedEvent && token) {
-    fetchProjects(selectedEvent.id, token);
-    fetchParticipateList(user_id, token);
+    updateProjects(selectedEvent.id, token);
+    updateParticipateList(token);
   }
 };
 
 export const getPublicRoutes = () => [
   { path: '/login', component: LoginPage, exact: true },
   { path: '/register', component: RegisterPage, exact: true },
+  { path: '/about', component: AboutPage, exact: true },
 ];
 
 export const getPrivateRoutes = (
   profile: any,
   selectedEvent: any,
   projects: any,
-  fetchProjects: any,
-  fetchParticipateList: any,
+  updateProjects: any,
+  updateParticipateList: any,
 ) => [
   {
     path: '/dashboard',
@@ -73,7 +74,7 @@ export const getPrivateRoutes = (
     event: selectedEvent,
     projects: projects,
     onProjectAdded: () => {
-      handleProjectAdded(selectedEvent, fetchProjects);
+      handleProjectAdded(selectedEvent, updateProjects);
     },
   },
   {
@@ -84,7 +85,7 @@ export const getPrivateRoutes = (
     event: selectedEvent,
     projects: projects,
     onParticipantChange: () => {
-      handleParticipateChanged(selectedEvent, fetchProjects, profile.id, fetchParticipateList);
+      handleParticipateChanged(selectedEvent, updateProjects, updateParticipateList);
     },
   },
 ];

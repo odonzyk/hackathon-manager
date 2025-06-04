@@ -1,6 +1,6 @@
 import React from 'react';
 import { IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/react';
-import { homeOutline, calendarOutline, peopleOutline } from 'ionicons/icons';
+import { homeOutline, calendarOutline, peopleOutline, folderOutline } from 'ionicons/icons';
 import './TabBar.css';
 
 const TabBar: React.FC = () => {
@@ -15,7 +15,7 @@ const TabBar: React.FC = () => {
         <IonLabel>Events</IonLabel>
       </IonTabButton>
       <IonTabButton tab="projects" href="/projects">
-        <IonIcon icon={calendarOutline} />
+        <IonIcon icon={folderOutline} />
         <IonLabel>Projekte</IonLabel>
       </IonTabButton>
       <IonTabButton tab="teams" href="/teams">

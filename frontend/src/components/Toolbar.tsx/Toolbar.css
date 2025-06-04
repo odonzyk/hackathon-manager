@@ -23,7 +23,7 @@
 }
 
 .hackathon-toolbar-title {
-  font-size: 2.0rem; /* Größerer Titel */
+  font-size: 2rem; /* Größerer Titel */
   font-weight: bold;
   color: #ffd700;
   text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5); /* Leichter Schatten */
@@ -44,22 +44,22 @@
 
 @media (max-width: 768px) {
   .hackathon-toolbar-container {
-      flex-direction: column; /* Elemente untereinander anordnen */
-      align-items: flex-start; /* Links ausrichten */
+    flex-direction: column; /* Elemente untereinander anordnen */
+    align-items: flex-start; /* Links ausrichten */
   }
 
   .hackathon-toolbar-left {
-      margin-bottom: 8px; /* Abstand zum rechten Bereich */
+    margin-bottom: 8px; /* Abstand zum rechten Bereich */
   }
 
   .hackathon-toolbar-right {
-      margin-left: 50px;
-      width: 100%; /* Nimmt die gesamte Breite ein */
+    margin-left: 50px;
+    width: 100%; /* Nimmt die gesamte Breite ein */
   }
 
   .hackathon-toolbar-select {
-      margin-left: 0; /* Kein Abstand zum rechten Rand */
-      margin-top: 8px; /* Abstand zum vorherigen Element */
-      width: 100%; /* Nimmt die gesamte Breite ein */
+    margin-left: 0; /* Kein Abstand zum rechten Rand */
+    margin-top: 8px; /* Abstand zum vorherigen Element */
+    width: 100%; /* Nimmt die gesamte Breite ein */
   }
 }

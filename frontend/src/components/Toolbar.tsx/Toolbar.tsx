@@ -1,5 +1,12 @@
 import React from 'react';
-import { IonToolbar, IonButtons, IonMenuButton, IonTitle, IonSelect, IonSelectOption } from '@ionic/react';
+import {
+  IonToolbar,
+  IonButtons,
+  IonMenuButton,
+  IonTitle,
+  IonSelect,
+  IonSelectOption,
+} from '@ionic/react';
 import './Toolbar.css';
 import ThaliaLogo from '../../assets/thalia_logo.png';
 import { Event } from '../../types/types';
@@ -10,8 +17,7 @@ interface ToolbarProps {
   onSelectEvent: (selectedId: number) => void;
 }
 
-
-const Toolbar: React.FC<ToolbarProps> = ({ selectedEvent, events, onSelectEvent}) => {
+const Toolbar: React.FC<ToolbarProps> = ({ selectedEvent, events, onSelectEvent }) => {
   return (
     <IonToolbar className="hackathon-toolbar">
       <IonButtons slot="start">

@@ -21,19 +21,13 @@ import Menu from './components/Menu/Menu';
 import PrivateRoute from './components/PrivateRoute';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import TabBar from './components/TabBar/TabBar';
-
-import {
-  getEvents,
-  getProjects,
-  getUserParticipations,
-  loadStoredProfile,
-  ResultType,
-} from './utils/globalDataUtils';
+import { loadStoredProfile } from './utils/globalDataUtils';
 import { Event, Profile, Project } from './types/types';
 import { useToast } from './components/ToastProvider';
 import { getExistingToken } from './utils/authUtils';
 import { getPublicRoutes, getPrivateRoutes } from './utils/routes';
 import Toolbar from './components/Toolbar.tsx/Toolbar';
+import { fetchEvents, fetchProjects, fetchParticipateList } from './utils/dataFetchUtils';
 
 setupIonicReact();
 ReactGA.initialize('***REMOVED***');
@@ -47,46 +41,6 @@ const App = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const location = useLocation();
 
-  // Funktion zum Abrufen der Aktivitäten
-  const fetchEvents = async (token: string | null) => {
-    console.log('App: Fetching Events');
-    const result = await getEvents(token);
-    if (result.resultType !== ResultType.SUCCESS || result.data === null) {
-      showToastError(result.resultMsg ?? 'Error');
-      return;
-    }
-    console.log(`App: ${result.data.length} Events fetched ! `);
-    setEvents(result.data);
-    //setSelectedEvent(result.data[result.data.length - 1]);
-    setSelectedEvent(result.data[1]);
-  };
-
-  const fetchProjects = async (eventId: number | null, token: string | null) => {
-    console.log('App: Fetching Projects');
-    const result = await getProjects(eventId, token);
-    if (result.resultType !== ResultType.SUCCESS || result.data === null) {
-      showToastError(result.resultMsg ?? 'Error');
-      return;
-    }
-    console.log(`App: ${result.data.length} Projects fetched ! `);
-    setProjects(result.data);
-  };
-
-  const fetchParticipateList = async (user_id: number, token: string | null) => {
-    console.log('App: Fetching Participate List');
-    if (!profile) {
-      showToastError('Profile not loaded');
-      return;
-    }
-    const result = await getUserParticipations(user_id, token);
-    if (result.resultType !== ResultType.SUCCESS || result.data === null) {
-      showToastError(result.resultMsg ?? 'Error');
-      return;
-    }
-    console.log(`App: ${result.data.length} Participations fetched ! `);
-    profile.participate = result.data;
-    setProfile(profile);
-  };
 
   const getPageTitle = (pathname: string): string => {
     const pageTitles: { [key: string]: string } = {
@@ -97,6 +51,7 @@ const App = () => {
       '/projectdetail': 'ProjectDetail',
       '/login': 'Login',
       '/register': 'Register',
+      '/about': 'About',
     };
 
     // Dynamische Routen abfangen
@@ -144,7 +99,7 @@ const App = () => {
         showToastError('Token nicht gefunden. Bitte anmelden.');
         return;
       }
-      fetchEvents(token);
+      fetchEvents(token, setEvents, setSelectedEvent, showToastError);
     }
   }, [profile]);
 
@@ -158,25 +113,37 @@ const App = () => {
         return;
       }
       if (selectedEvent) {
-        fetchProjects(selectedEvent.id, token);
+        fetchProjects(
+          selectedEvent.id,
+          token,
+          setProjects,
+          showToastError);
       }
     }
   }, [selectedEvent]);
+
+
+  const updateProjects = (eventId: number, token: string) => {
+    fetchProjects(eventId, token, setProjects, showToastError);
+  }
+  const updateParticipateList = (token: string) => {
+    fetchParticipateList(token, profile, setProfile, showToastError);
+  };
 
   const publicRoutes = getPublicRoutes();
   const privateRoutes = getPrivateRoutes(
     profile,
     selectedEvent,
     projects,
-    fetchProjects,
-    fetchParticipateList,
+    updateProjects,
+    updateParticipateList,
   );
 
-const onSelectEvent = (selectedId : number) => {
-  console.log('App: onSelectEvent: ', selectedId);
-  const event = events.find((ev) => ev.id === selectedId);
-  setSelectedEvent(event || null);
-}
+  const onSelectEvent = (selectedId: number) => {
+    console.log('App: onSelectEvent: ', selectedId);
+    const event = events.find((ev) => ev.id === selectedId);
+    setSelectedEvent(event || null);
+  };
 
   return (
     <IonApp>
@@ -186,11 +153,7 @@ const onSelectEvent = (selectedId : number) => {
       <IonPage id="main-content">
         {/* Header */}
         <IonHeader>
-          <Toolbar 
-            selectedEvent={selectedEvent}
-            events={events}
-            onSelectEvent={onSelectEvent} 
-          />
+          <Toolbar selectedEvent={selectedEvent} events={events} onSelectEvent={onSelectEvent} />
         </IonHeader>
 
         {/* Content */}
