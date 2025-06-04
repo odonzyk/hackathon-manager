@@ -7,7 +7,7 @@ const packageJson = require('../../package.json');
 
 // *** GET /api/health ********************************************************
 router.get('/', (req, res) => {
-  logger.debug(`API Health -> health`);
+  logger.debug(`API: GET  /api/health`);
   res.json({
     project: packageJson.name,
     version: packageJson.version,
@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
 
 // *** GET /api/health/config *************************************************
 router.get('/config', (req, res) => {
-  logger.debug(`API Health -> config`);
+  logger.debug(`API: GET  /api/health/config`);
   const safeConfig = { ...config };
 
   // Verhindert die Rückgabe sensibler Daten wie Passwörter oder API-Schlüssel

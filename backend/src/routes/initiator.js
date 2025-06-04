@@ -17,7 +17,7 @@ const createInitiator = (dbRow) => {
 // *** POST /api/Initiator *********************************************************
 router.post('/', async (req, res) => {
   const { project_id, user_id } = req.body;
-  logger.debug(`API Initiator -> Register Participation: Project ID: ${project_id}, User ID: ${user_id}`);
+  logger.debug(`API: POST /api/initiator -> Project ID: ${project_id}, User ID: ${user_id}`);
 
   if (!project_id || !user_id) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
@@ -43,7 +43,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', authenticateToken, async (req, res) => {
   const { project_id, user_id } = req.body;
   const { id } = req.params;
-  logger.debug(`API Initiator -> Update Initiator: Project ID: ${project_id}, User ID: ${user_id}`);
+  logger.debug(`API: PUT /api/initiator/${id} -> Project ID: ${project_id}, User ID: ${user_id}`);
 
   if (!project_id || !user_id) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
@@ -71,7 +71,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
 // *** GET /api/Initiator *********************************************************
 router.get('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
-  logger.debug(`API Initiator -> Get Participation (id): ${id}`);
+  logger.debug(`API: GET  /api/initiator/${id}`);
 
   const result = await db_get(`SELECT * FROM Initiator WHERE Initiator.id = ?`, [id]);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
@@ -83,14 +83,14 @@ router.get('/:id', authenticateToken, async (req, res) => {
 // *** DELETE /api/Initiator *********************************************************
 router.delete('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
-  logger.debug(`API Initiator -> Delete Participation (id): ${id}`);
+  logger.debug(`API: DEL  /api/initiator/${id}`);
 
   result = await db_run('DELETE FROM Initiator WHERE id = ?', [id]);
   if (result.err) {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }
   if (result.changes === 0) {
-    return res.status(404).send(ErrorMsg.NOT_FOUND.NO_EVENT);
+    return res.status(404).send(ErrorMsg.NOT_FOUND.NO_INITIATOR);
   }
   res.status(200).send('Initiator deleted successfully');
 });

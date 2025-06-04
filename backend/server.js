@@ -21,6 +21,7 @@ const userRoutes = require('./src/routes/user');
 const eventRoutes = require('./src/routes/event');
 const projectRoutes = require('./src/routes/project');
 const participateRoutes = require('./src/routes/participant');
+const initiatorRoutes = require('./src/routes/initiator');
 const adminRoutes = require('./src/routes/admin');
 const { dbInitialisation } = require('./src/utils/db/db');
 
@@ -51,6 +52,7 @@ app.use('/api/health', healthRouter);
 app.use('/api/user', userRoutes);
 app.use('/api/event', eventRoutes);
 app.use('/api/project', projectRoutes);
+app.use('/api/initiator', initiatorRoutes);
 app.use('/api/participant', participateRoutes);
 app.use('/api/admin', adminRoutes);
 

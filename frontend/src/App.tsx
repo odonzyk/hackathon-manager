@@ -42,7 +42,7 @@ import { getExistingToken } from './utils/authUtils';
 import { getPublicRoutes, getPrivateRoutes } from './utils/routes';
 
 setupIonicReact();
-ReactGA.initialize('G-3LWGMR7G0P');
+ReactGA.initialize('***REMOVED***');
 
 const App = () => {
   const isAuthenticated = useIsAuthenticated();
@@ -104,6 +104,12 @@ const App = () => {
       '/login': 'Login',
       '/register': 'Register',
     };
+
+    // Dynamische Routen abfangen
+    if (pathname.startsWith('/projectdetail')) {
+      return pageTitles['/projectdetail'];
+    }
+
     return pageTitles[pathname] || pathname;
   };
 

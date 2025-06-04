@@ -17,7 +17,7 @@ const createEvent = (dbRow) => {
 
 // *** GET /api/event/list *****************************************************
 router.get('/list', authenticateToken, async (req, res) => {
-  logger.debug(`API Event -> List Events`);
+  logger.debug(`API: GET  /api/event/list`);
   const result = await db_all(`SELECT Event.* FROM Event`);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (!result.row || (Array.isArray(result.row) && result.row.length === 0)) {
@@ -31,7 +31,7 @@ router.get('/list', authenticateToken, async (req, res) => {
 // *** POST /api/event *********************************************************
 router.post('/', async (req, res) => {
   let { name, start_time, end_time } = req.body;
-  logger.debug(`API Event -> Register Event: ${name}`);
+  logger.debug(`API: POST /api/event/ (Create Event): ${name}`);
   if (!name || !start_time || !end_time) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
   }
@@ -58,7 +58,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
   let { name, start_time, end_time } = req.body;
-  logger.debug(`API Event -> Update Event: ${name}`);
+  logger.debug(`API: PUT  /api/event/${id}`);
 
   if (!name || !start_time || !end_time) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
@@ -97,7 +97,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
 // *** GET /api/event *********************************************************
 router.get('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
-  logger.debug(`API Event -> Get Event (id): ${id}`);
+  logger.debug(`API: GET  /api/event/${id}`);
 
   const result = await db_get(`SELECT * FROM Event WHERE Event.id = ?`, [id]);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
@@ -109,7 +109,7 @@ router.get('/:id', authenticateToken, async (req, res) => {
 // *** DELETE /api/event *********************************************************
 router.delete('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
-  logger.debug(`API Event -> Delete Event (id): ${id}`);
+  logger.debug(`API: DEL  /api/event/${id}`);
 
   result = await db_run('DELETE FROM Event WHERE id = ?', [id]);
   if (result.err) {

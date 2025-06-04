@@ -45,7 +45,7 @@
 ### 🐞 Bug fixes & Verbesserungen
 - **Stabilitätsverbesserungen**  
   Kleinere Fehler wurden behoben, um die allgemeine Stabilität und Performance der Anwendung zu verbessern.
-- **Fehler bei leerem participants-Array behoben**
+- **Fehler bei leerem participants-Array behoben**  
   Die Logik für die Überprüfung von Teilnehmern wurde angepasst, um sicherzustellen, dass leere Arrays korrekt behandelt werden.
 
 ## Version 0.2.4

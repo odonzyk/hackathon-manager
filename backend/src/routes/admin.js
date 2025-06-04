@@ -9,7 +9,7 @@ const tables = ['Participant', 'Initiator', 'Project', 'Event', 'User', 'Role', 
 
 // *** GET /api/health/config *************************************************
 router.get('/dbReset', authenticateToken, async (req, res) => {
-  logger.debug(`API Admin -> dbReset`);
+  logger.debug(`API: GET  /api/dbReset`);
 
   try {
     // Lösche jede Tabelle
