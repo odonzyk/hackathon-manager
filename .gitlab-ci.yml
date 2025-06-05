@@ -67,6 +67,7 @@ build-frontend-image-staging:
   rules:
     - changes:
         - ./frontend/**/*
+    - if: '$CI_COMMIT_BRANCH == "develop"
 
 build-frontend-image-production:
   tags:    
@@ -92,7 +93,7 @@ build-frontend-image-production:
   rules:
     - changes:
         - ./frontend/**/*
-
+    - if: '$CI_COMMIT_BRANCH == "production"
 
 
 build-backend-image:
