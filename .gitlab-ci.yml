@@ -10,7 +10,7 @@ variables:
   PROJECT_PATH: "/opt/data/docker/containers/hackathon-manager"
   DOCKER_COMPOSE_FILE: "/opt/data/docker/containers/hackathon-manager/docker-compose.yaml"
   RUNNER_FOLDER: "/opt/data/gitlab-runner/builds/t1_bMHsFQ/0/hackathon/hackathon-manager"
-  # RUNNER_FOLDER_PROD: "/opt/data/gitlab-runner/builds/t1_5JD6zW/0/hackerton/hackathon-manager"
+  RUNNER_FOLDER_PROD: "/opt/data/gitlab-runner/builds/t1_5JD6zW/0/hackathon/hackathon-manager"
 
 .default_trigger:
   rules:
@@ -221,10 +221,7 @@ deploy-production:
 #    - docker-compose down --remove-orphans --timeout 30
 #    - mkdir -p $RUNNER_FOLDER_PROD 
     - cd $RUNNER_FOLDER_PROD
-    - cp -rf frontend/dist/. /DOCKER/containers/hackathon-manager/nginx/content/
-    - cp -rf backend/. /DOCKER/containers/hackathon-manager/backend
-    - cp ./DOCKER-CONFIG/docker-compose.yaml /opt/data/docker/containers/hackathon-manager/
-    
+    - cp -rf . /DOCKER/containers/hackathon-manager/
     - echo "Restart Docker-Stack"
     - cd $PROJECT_PATH
     - docker-compose up -d --build
