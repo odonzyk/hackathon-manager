@@ -3,12 +3,16 @@ variables:
   GIT_STRATEGY: clone
   GIT_CLEAN_FLAGS: none
   IMAGE_NAME: $CI_REGISTRY_IMAGE
+
   IMAGE_FRONTEND_TAG: "frontend"
   IMAGE_BACKEND_TAG: "backend"
+
   STAGE_IMAGE_APP_TAG: "hackathon-$IMAGE_TAG"
   PROD_IMAGE_APP_TAG: "hackathon-$IMAGE_TAG"
+
   PROJECT_PATH: "/opt/data/docker/containers/hackathon-manager"
   DOCKER_COMPOSE_FILE: "/opt/data/docker/containers/hackathon-manager/docker-compose.yaml"
+
   RUNNER_FOLDER: "/opt/data/gitlab-runner/builds/t1_bMHsFQ/0/hackathon/hackathon-manager"
   RUNNER_FOLDER_PROD: "/opt/data/gitlab-runner/builds/t1_5JD6zW/0/hackathon/hackathon-manager"
 
@@ -22,7 +26,7 @@ variables:
     - if: $CI_PIPELINE_SOURCE == "api"
 
     # Automatisch auf staging
-    - if: $CI_COMMIT_BRANCH == "develop"
+    # - if: $CI_COMMIT_BRANCH == "develop"
 
     # Main: Nur über Web und nur als "manual" Schritt
     # - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "web"
@@ -95,7 +99,7 @@ build-frontend-image-production:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       exists:
-        - ./frontend/**/*  # Optional als Ergänzung zu 'changes', je nach Setup
+        - ./frontend/**/*  
       changes:
         - ./frontend/**/*
 
@@ -119,7 +123,7 @@ build-backend-image-staging:
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
       exists:
-        - ./DOCKER-CONFIG/backend/**/*  # Optional als Ergänzung zu 'changes', je nach Setup
+        - ./DOCKER-CONFIG/backend/**/* 
       changes:
         - ./DOCKER-CONFIG/backend/**/*
 
@@ -190,8 +194,10 @@ build-job-production:
       - frontend/dist/  
     expire_in: 1 hour  
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-  
+    - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "web"'
+      when: manual
+      allow_failure: false    
+
 deploy-staging:
   tags:    
     - shell
@@ -206,18 +212,13 @@ deploy-staging:
   script:
     - echo "Deploying application..."
     - mkdir -p $PROJECT_PATH
-    - echo $PROJECT_PATH
     - cd $PROJECT_PATH
+
     - echo "delete Docker-Stack"
-    - docker-compose down 
-    - cd $RUNNER_FOLDER
-    - pwd
-    - ls -lah
-    - cp -rf . /DOCKER/containers/hackathon-manager/
-    - cd $PROJECT_PATH    
     - docker-compose down --remove-orphans --timeout 30
+
+    - cp -rf $RUNNER_FOLDER/. $PROJECT_PATH
     - echo "restart Docker-Stack"
-    - cd $PROJECT_PATH
     - docker-compose up -d --build
   rules:
     !reference [.default_trigger, rules ]
@@ -234,17 +235,16 @@ deploy-production:
   environment: production
 
   script:
-    - echo "Deploying application to production..."
+    - echo "prepare deploy to production..."
     - mkdir -p $PROJECT_PATH
     - cd $PROJECT_PATH
-    - echo "Stop & Delete Docker-Stack"
+
+    - echo "Stop & delete Docker-Stack"
     - docker compose down --remove-orphans --timeout 30
-    # - cd $RUNNER_FOLDER_PROD
-    - cp -rf $RUNNER_FOLDER_PROD/. /DOCKER/containers/hackathon-manager/
+    - cp -rf $RUNNER_FOLDER_PROD/. $PROJECT_PATH
 
     - echo "Restart Docker-Stack"
-    # - cd $PROJECT_PATH
-    - sed -i 's/hackathon-stg.drsbln.de/hackathon.drsbln.de/g' /DOCKER/containers/hackathon-manager/docker-compose.yaml
+    - sed -i 's/hackathon-stg.drsbln.de/hackathon.drsbln.de/g' $DOCKER_COMPOSE_FILE
     - sed -i 's/hackathon-stg.drsbln.de/hackathon.drsbln.de/g' /DOCKER/containers/hackathon-manager/frontend/nginx/default.conf
     - docker compose up -d --build
   rules:
