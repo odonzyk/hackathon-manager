@@ -191,32 +191,14 @@ build-job-production:
     expire_in: 1 hour  
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
-
-
-
-.lint-test-job:
-  tags:    
-    - docker
-    - staging  
-  stage: test
-  script:
-    - npm ci  
-    - npx eslint . 
-  rules:
-    - changes:
-      - "**/*.js"  
-#  rules:
-#    !reference [.default_trigger, rules ]        
   
-
-
 deploy-staging:
   tags:    
     - shell
     - staging
 
   needs:
-    - job: build-job  
+    - job: build-job-develop  
 
   stage: deploy 
   environment: staging
@@ -244,6 +226,9 @@ deploy-production:
   tags:    
     - shell
     - production
+
+  needs:
+    - job: build-job-production    
     
   stage: deploy
   environment: production
