@@ -20,17 +20,19 @@ variables:
   rules:
     # Automatisch bei Merge-Request auf staging
     - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop"
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop"
 
     # Zeitgesteuerter oder API-basierter Trigger
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - if: $CI_PIPELINE_SOURCE == "api"
 
     # Automatisch auf staging
-    # - if: $CI_COMMIT_BRANCH == "develop"
+    - if: $CI_COMMIT_BRANCH == "develop"
 
     # Main: Nur über Web und nur als "manual" Schritt
     # - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "web"
     - if: '$CI_PIPELINE_SOURCE == "web" && ($CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop")'
+    - if: '$CI_PIPELINE_SOURCE == "web" && ($CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "Develop")'
       when: manual
       allow_failure: false
 
