@@ -4,7 +4,7 @@ import { IonPage, IonContent, IonGrid, IonRow, IonCol } from '@ionic/react';
 import { Event, Profile, Project } from '../../types/types';
 import './ProjectDetailPage.css';
 import { getExistingToken } from '../../utils/authUtils';
-import { deleteParticipant, postParticipant, ResultType } from '../../utils/globalDataUtils';
+import { deleteParticipant, postParticipant, ResultType } from '../../utils/dataApiConnector';
 import { useToast } from '../../components/ToastProvider';
 import EmptyPage from '../../components/EmptyPage';
 import ProjectDetailCard from '../../components/cards/ProjectDetailCard/ProjectDetailCard';

@@ -8,7 +8,7 @@ import useSignOut from 'react-auth-kit/hooks/useSignOut';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 
 import { cleanUpStorage, getExistingToken } from '../../utils/authUtils';
-import { getProfile, ResultType } from '../../utils/globalDataUtils';
+import { getProfile, ResultType } from '../../utils/dataApiConnector';
 import { STORAGE_PROFILE, STORAGE_TOKEN, User } from '../../types/types';
 import { APP_VERSION, SUPPORT_EMAIL } from '../../../config';
 import { useToast } from '../../components/ToastProvider';

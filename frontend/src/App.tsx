@@ -8,7 +8,6 @@ import {
   setupIonicReact,
 } from '@ionic/react';
 import { Redirect, Route, useLocation } from 'react-router-dom';
-import ReactGA from 'react-ga4';
 import '@ionic/react/css/core.css';
 import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
@@ -21,16 +20,17 @@ import Menu from './components/Menu/Menu';
 import PrivateRoute from './components/PrivateRoute';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import TabBar from './components/TabBar/TabBar';
-import { loadStoredProfile } from './utils/globalDataUtils';
+import { loadStoredProfile } from './utils/dataApiConnector';
 import { Event, Profile, Project } from './types/types';
 import { useToast } from './components/ToastProvider';
 import { getExistingToken } from './utils/authUtils';
 import { getPublicRoutes, getPrivateRoutes } from './utils/routes';
 import Toolbar from './components/Toolbar.tsx/Toolbar';
 import { fetchEvents, fetchProjects, fetchParticipateList } from './utils/dataFetchUtils';
+import { requestTracking, trackingInit } from './utils/googleGA4';
 
 setupIonicReact();
-ReactGA.initialize('***REMOVED***');
+trackingInit;
 
 const App = () => {
   const isAuthenticated = useIsAuthenticated();
@@ -41,39 +41,8 @@ const App = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const location = useLocation();
 
-
-  const getPageTitle = (pathname: string): string => {
-    const pageTitles: { [key: string]: string } = {
-      '/dashboard': 'Dashboard',
-      '/events': 'Events',
-      '/teams': 'Teams',
-      '/projects': 'Projects',
-      '/projectdetail': 'ProjectDetail',
-      '/login': 'Login',
-      '/register': 'Register',
-      '/about': 'About',
-    };
-
-    // Dynamische Routen abfangen
-    if (pathname.startsWith('/projectdetail')) {
-      return pageTitles['/projectdetail'];
-    }
-
-    return pageTitles[pathname] || pathname;
-  };
-
   useEffect(() => {
-    const domain = window.location.hostname;
-    const pageTitle = getPageTitle(location.pathname);
-    console.log('Tracking pageview:', domain, location.pathname, pageTitle);
-    if (domain === 'localhost') {
-      ReactGA.send({
-        hitType: 'pageview',
-        page: location.pathname,
-        hostname: domain,
-        title: pageTitle,
-      });
-    }
+    requestTracking();
   }, [location]);
 
   useEffect(() => {
@@ -113,19 +82,14 @@ const App = () => {
         return;
       }
       if (selectedEvent) {
-        fetchProjects(
-          selectedEvent.id,
-          token,
-          setProjects,
-          showToastError);
+        fetchProjects(selectedEvent.id, token, setProjects, showToastError);
       }
     }
   }, [selectedEvent]);
 
-
   const updateProjects = (eventId: number, token: string) => {
     fetchProjects(eventId, token, setProjects, showToastError);
-  }
+  };
   const updateParticipateList = (token: string) => {
     fetchParticipateList(token, profile, setProfile, showToastError);
   };

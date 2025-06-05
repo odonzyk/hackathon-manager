@@ -1,11 +1,11 @@
-import { getEvents, getProjects, getUserParticipations, ResultType } from './globalDataUtils';
+import { getEvents, getProjects, getUserParticipations, ResultType } from './dataApiConnector';
 import { Event, Profile, Project } from '../types/types';
 
 export const fetchEvents = async (
-    token: string | null, 
-    setEvents: (events: Event[]) => void, 
-    setSelectedEvent: (event: Event | null) => void, 
-    showToastError: (msg: string) => void
+  token: string | null,
+  setEvents: (events: Event[]) => void,
+  setSelectedEvent: (event: Event | null) => void,
+  showToastError: (msg: string) => void,
 ) => {
   console.log('Fetching Events');
   const result = await getEvents(token);
@@ -19,10 +19,10 @@ export const fetchEvents = async (
 };
 
 export const fetchProjects = async (
-    eventId: number | null, 
-    token: string | null, 
-    setProjects: (projects: Project[]) => void, 
-    showToastError: (msg: string) => void
+  eventId: number | null,
+  token: string | null,
+  setProjects: (projects: Project[]) => void,
+  showToastError: (msg: string) => void,
 ) => {
   console.log('Fetching Projects');
   const result = await getProjects(eventId, token);
@@ -35,10 +35,10 @@ export const fetchProjects = async (
 };
 
 export const fetchParticipateList = async (
-    token: string | null, 
-    profile: Profile | null, 
-    setProfile: (profile: Profile) => void, 
-    showToastError: (msg: string) => void
+  token: string | null,
+  profile: Profile | null,
+  setProfile: (profile: Profile) => void,
+  showToastError: (msg: string) => void,
 ) => {
   console.log('Fetching Participate List');
   if (!profile) {

@@ -19,7 +19,7 @@ import {
 import { Event, Profile, Project } from '../../types/types';
 import { bulbOutline, constructOutline, flagOutline, peopleOutline } from 'ionicons/icons';
 import { getExistingToken } from '../../utils/authUtils';
-import { postProject, putProject, ResultType } from '../../utils/globalDataUtils';
+import { postProject, putProject, ResultType } from '../../utils/dataApiConnector';
 import { useToast } from '../../components/ToastProvider';
 import { useHistory, useLocation } from 'react-router-dom';
 

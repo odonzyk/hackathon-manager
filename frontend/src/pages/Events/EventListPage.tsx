@@ -4,7 +4,7 @@ import './EventListPage.css';
 import { Event, Profile } from '../../types/types';
 import { useToast } from '../../components/ToastProvider';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
-import { getEvents, ResultType } from '../../utils/globalDataUtils';
+import { getEvents, ResultType } from '../../utils/dataApiConnector';
 import { getExistingToken } from '../../utils/authUtils';
 import EventListCard from '../../components/cards/EventListCard.tsx/EventListCard';
 
