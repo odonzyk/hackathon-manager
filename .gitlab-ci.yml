@@ -117,11 +117,11 @@ build-backend-image:
     - docker build -t $IMAGE_NAME:$IMAGE_BACKEND_TAG -f Dockerfile .
     - docker push $IMAGE_NAME:$IMAGE_BACKEND_TAG
   rules:
-    - changes:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      exists:
+        - ./DOCKER-CONFIG/backend/**/*  # Optional als Ergänzung zu 'changes', je nach Setup
+      changes:
         - ./DOCKER-CONFIG/backend/**/*
-#  when: manual    
-#  rules:
-#    !reference [.default_trigger, rules ]
 
 
 build-job:
