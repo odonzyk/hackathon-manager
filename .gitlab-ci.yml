@@ -184,7 +184,7 @@ deploy-staging:
     - job: build-job  
 
   stage: deploy 
-  environment: production
+  environment: staging
 
   script:
     - echo "Deploying application..."
@@ -218,8 +218,7 @@ deploy-production:
     - mkdir -p $PROJECT_PATH
     - cd $PROJECT_PATH
     - echo "Delete Docker-Stack"
-#    - docker-compose down --remove-orphans --timeout 30
-#    - mkdir -p $RUNNER_FOLDER_PROD 
+    - docker compose down --remove-orphans --timeout 30
     - cd $RUNNER_FOLDER_PROD
     - cp -rf . /DOCKER/containers/hackathon-manager/
     - echo "Restart Docker-Stack"
