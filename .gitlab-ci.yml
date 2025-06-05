@@ -43,7 +43,7 @@ stages:
   - test
   - deploy
 
-build-frontend-image:
+build-frontend-image-staging:
   tags:    
     - shell
     - staging
@@ -68,9 +68,31 @@ build-frontend-image:
     - changes:
         - ./frontend/**/*
 
-#  when: manual        
-  #rules:
-  #  !reference [.default_trigger, rules ]
+build-frontend-image-production:
+  tags:    
+    - shell
+    - production
+
+  stage: build-frontend-image
+  
+  script:
+    - echo "Logging into Docker registry"
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+    - echo "Source $CI_PIPELINE_SOURCE"
+    - echo "Branch $CI_COMMIT_BRANCH"
+    - pwd
+    - whoami
+    - node -v
+    - ls -lah
+    - cd ./frontend/
+    - npm install
+    - npm run build
+    - docker build -t $IMAGE_NAME:$IMAGE_FRONTEND_TAG -f Dockerfile .
+    - docker push $IMAGE_NAME:$IMAGE_FRONTEND_TAG
+  rules:
+    - changes:
+        - ./frontend/**/*
+
 
 
 build-backend-image:
