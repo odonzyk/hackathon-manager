@@ -191,8 +191,8 @@ deploy-production:
     - mkdir -p $PROJECT_PATH
     - cd $PROJECT_PATH
     - echo "Delete Docker-Stack"
-    - docker-compose down --remove-orphans --timeout 30
-    - mkdir -p $RUNNER_FOLDER_PROD 
+#    - docker-compose down --remove-orphans --timeout 30
+#    - mkdir -p $RUNNER_FOLDER_PROD 
     - cd $RUNNER_FOLDER_PROD
     - cp -rf frontend/dist/. /DOCKER/containers/hackathon-manager/nginx/content/
     - cp -rf backend/. /DOCKER/containers/hackathon-manager/backend
