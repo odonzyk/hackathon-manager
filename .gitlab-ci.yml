@@ -148,7 +148,7 @@ build-backend-image-production:
         - ./DOCKER-CONFIG/backend/**/*
 
 
-build-job:
+build-job-develop:
   tags:    
     - docker
     - staging
@@ -170,17 +170,28 @@ build-job:
   rules:
     !reference [.default_trigger, rules ]
 
-.unit-test-job:
+
+build-job-production:
   tags:    
     - docker
-    - staging
-  stage: test 
+    - production
+    
+  stage: build
   script:
-    - echo "Running unit tests... This will take about 60 seconds."
-    - sleep 1
-    - echo "Code coverage to be done"
+    - echo "Compiling the code..."
+    - cd ./frontend    
+    - npm install
+    - npm run build
+    - ls -lah
+    - cd dist
+    - echo "Build compilation complete."
+  artifacts:
+    paths:
+      - frontend/dist/  
+    expire_in: 1 hour  
   rules:
-    !reference [.default_trigger, rules ]    
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
 
 
 .lint-test-job:
