@@ -155,8 +155,10 @@ deploy-staging:
 
   needs:
     - job: build-job  
+
   stage: deploy 
   environment: production
+
   script:
     - echo "Deploying application..."
     - mkdir -p $PROJECT_PATH
@@ -176,7 +178,7 @@ deploy-staging:
   rules:
     !reference [.default_trigger, rules ]
     
-.deploy-production:
+deploy-production:
   tags:    
     - shell
     - production
