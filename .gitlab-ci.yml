@@ -31,8 +31,7 @@ variables:
 
     # Main: Nur über Web und nur als "manual" Schritt
     # - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "web"
-    - if: '$CI_PIPELINE_SOURCE == "web" && ($CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop")'
-    - if: '$CI_PIPELINE_SOURCE == "web" && ($CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "Develop")'
+    - if: '$CI_PIPELINE_SOURCE == "web" && ($CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_BRANCH == "develop")'
       when: manual
       allow_failure: false
 
@@ -240,13 +239,14 @@ deploy-production:
     - echo "prepare deploy to production..."
     - mkdir -p $PROJECT_PATH
     - cd $PROJECT_PATH
-
-    - echo "Stop & delete Docker-Stack"
+    - echo "Stop & Delete Docker-Stack"
     - docker compose down --remove-orphans --timeout 30
-    - cp -rf $RUNNER_FOLDER_PROD/. $PROJECT_PATH
+    # - cd $RUNNER_FOLDER_PROD
+    - cp -rf $RUNNER_FOLDER_PROD/. /DOCKER/containers/hackathon-manager/
 
     - echo "Restart Docker-Stack"
-    - sed -i 's/hackathon-stg.drsbln.de/hackathon.drsbln.de/g' $DOCKER_COMPOSE_FILE
+    # - cd $PROJECT_PATH
+    - sed -i 's/hackathon-stg.drsbln.de/hackathon.drsbln.de/g' /DOCKER/containers/hackathon-manager/docker-compose.yaml
     - sed -i 's/hackathon-stg.drsbln.de/hackathon.drsbln.de/g' /DOCKER/containers/hackathon-manager/frontend/nginx/default.conf
     - docker compose up -d --build
   rules:
