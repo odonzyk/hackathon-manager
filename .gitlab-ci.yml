@@ -239,14 +239,13 @@ deploy-production:
     - echo "prepare deploy to production..."
     - mkdir -p $PROJECT_PATH
     - cd $PROJECT_PATH
-    - echo "Stop & Delete Docker-Stack"
+
+    - echo "Stop & delete Docker-Stack"
     - docker compose down --remove-orphans --timeout 30
-    # - cd $RUNNER_FOLDER_PROD
-    - cp -rf $RUNNER_FOLDER_PROD/. /DOCKER/containers/hackathon-manager/
+    - cp -rf $RUNNER_FOLDER_PROD/. $PROJECT_PATH
 
     - echo "Restart Docker-Stack"
-    # - cd $PROJECT_PATH
-    - sed -i 's/hackathon-stg.drsbln.de/hackathon.drsbln.de/g' /DOCKER/containers/hackathon-manager/docker-compose.yaml
+    - sed -i 's/hackathon-stg.drsbln.de/hackathon.drsbln.de/g' $DOCKER_COMPOSE_FILE
     - sed -i 's/hackathon-stg.drsbln.de/hackathon.drsbln.de/g' /DOCKER/containers/hackathon-manager/frontend/nginx/default.conf
     - docker compose up -d --build
   rules:
