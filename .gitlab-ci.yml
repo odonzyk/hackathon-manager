@@ -65,9 +65,11 @@ build-frontend-image-staging:
     - docker build -t $IMAGE_NAME:$IMAGE_FRONTEND_TAG -f Dockerfile .
     - docker push $IMAGE_NAME:$IMAGE_FRONTEND_TAG
   rules:
-    - changes:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+      exists:
         - ./frontend/**/*
-    - if: $CI_COMMIT_BRANCH == "develop"
+      changes:
+        - ./frontend/**/*
 
 build-frontend-image-production:
   tags:    
@@ -91,9 +93,11 @@ build-frontend-image-production:
     - docker build -t $IMAGE_NAME:$IMAGE_FRONTEND_TAG -f Dockerfile .
     - docker push $IMAGE_NAME:$IMAGE_FRONTEND_TAG
   rules:
-    - changes:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      exists:
+        - ./frontend/**/*  # Optional als Ergänzung zu 'changes', je nach Setup
+      changes:
         - ./frontend/**/*
-    - if: $CI_COMMIT_BRANCH == "production"
 
 
 build-backend-image:
