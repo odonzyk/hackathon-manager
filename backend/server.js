@@ -79,14 +79,14 @@ function registerPrometheus() {
   register.registerMetric(http_request_counter);
 
   //TODO REMOVE THIS LINE IN PRODUCTION
-  //  const newUser= {
-  //    email: '***REMOVED***',
-  //    name: 'Emil Mustermann',
-  //    activation_code: Math.random().toString(36).substring(2, 15)
-  //  };
-  //  sendActivationEmail(newUser).catch((err) => {
-  //    logger.error(`Error sending activation email for user ${newUser.email}: ${err.message}`);
-  //  });
+  const newUser= {
+    email: '***REMOVED***',
+    name: 'Emil Mustermann',
+    activation_code: Math.random().toString(36).substring(2, 15)
+  };
+  sendActivationEmail(newUser).catch((err) => {
+    logger.error(`Error sending activation email for user ${newUser.email}: ${err.message}`);
+  });
 
   app.use(
     prometheus({
