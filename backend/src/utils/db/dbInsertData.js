@@ -6,14 +6,15 @@ const { defaultProjects } = require('./data/Projects');
 const { defaultUsers } = require('./data/User');
 const { defaultTeams } = require('./data/Teams');
 const config = require('../../config'); // Importiere die Konfiguration
+const { RoleTypes } = require('../../constants');
 
 const DEFAULT_PASSWORD = 'welcome!';
 
 async function insertUserAdmin() {
   let count = 0;
-  let result = await db_get('SELECT * FROM User WHERE role_id = 1');
+  let result = await db_get(`SELECT * FROM User WHERE role_id = ${RoleTypes.ADMIN}`);
   if (!result.row) {
-    await createUser('Admin', 'hackathon@thalia.de', '+49 30 12345678', DEFAULT_PASSWORD, 1);
+    await createUser('Admin', 'hackathon@thalia.de', '+49 30 12345678', DEFAULT_PASSWORD, RoleTypes.ADMIN);
     count++;
   }
   logger.info(`... DB Insert: ${count} admin user inserted.`);

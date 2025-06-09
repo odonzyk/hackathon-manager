@@ -106,6 +106,29 @@ async function existTableEntry(tablename, checkColumn, checkValue) {
   return result.row.count > 0;
 }
 
+async function getRowCount(tablename) {
+  const result = await db_get(`SELECT COUNT(*) as count FROM ${tablename}`);
+  if (result.err) {
+    logger.error(`getRowCount: Error checking table ${tablename}: ${result.err.message}`);
+    return 0;
+  }
+  return result.row.count;
+}
+
+async function columnExists(tableName, columnName) {
+  try {
+    const result = await db_all(`PRAGMA table_info(${tableName});`);
+    if (result.err) {
+      logger.error('columnExists: Error checking table info:', result.err.message);
+    }
+    const test = result.row.some((column) => column.name === columnName);
+    return result.row.some((column) => column.name === columnName);
+  } catch (error) {
+    console.error(`Error checking if column ${columnName} exists in table ${tableName}:`, error);
+    return false;
+  }
+}
+
 module.exports = {
   db,
   db_run,
@@ -115,5 +138,7 @@ module.exports = {
   createTable,
   fillTable,
   isTableEmpty,
-  existTableEntry
+  existTableEntry,
+  getRowCount,
+  columnExists
 };

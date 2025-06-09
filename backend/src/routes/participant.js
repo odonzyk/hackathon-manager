@@ -2,9 +2,9 @@ const express = require('express');
 const { db_get, db_run } = require('../utils/db/dbUtils');
 const logger = require('../logger');
 
-const authenticateToken = require('../middlewares/authMiddleware');
+const { checkPermissions, authenticateAndAuthorize } = require('../middlewares/authMiddleware');
 const router = express.Router();
-const { ErrorMsg } = require('../constants');
+const { ErrorMsg, RoleTypes } = require('../constants');
 
 const createParticipant = (dbRow) => {
   return {
@@ -15,13 +15,17 @@ const createParticipant = (dbRow) => {
 };
 
 // *** POST /api/Participant *********************************************************
-router.post('/', async (req, res) => {
+router.post('/', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
   const { project_id, user_id } = req.body;
   logger.debug(`API: POST /api/participant -> Project ID: ${project_id}, User ID: ${user_id}`);
 
   if (!project_id || !user_id) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
   }
+  if (!checkPermissions(req.user.role, RoleTypes.MANAGER) && req.user.role === RoleTypes.USER && req.user.id !== parseInt(user_id)) {
+    return res.status(403).send(ErrorMsg.AUTH.NO_PERMISSION);
+  }
+
   let result = await db_get('SELECT * FROM Participant WHERE project_id = ? AND user_id = ?', [project_id, user_id]);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (result.row) return res.status(409).send(ErrorMsg.VALIDATION.CONFLICT);
@@ -40,11 +44,14 @@ router.post('/', async (req, res) => {
 });
 
 // *** PUT /api/Participant/:project_id/user/:user_id ************************
-router.put('/:id', authenticateToken, async (req, res) => {
+router.put('/:id', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
   const { project_id, user_id } = req.body;
   const { id } = req.params;
   logger.debug(`API: PUT  /api/participant/${id} -> Project ID: ${project_id}, User ID: ${user_id}`);
 
+  if (!checkPermissions(req.user.role, RoleTypes.MANAGER) && req.user.role === RoleTypes.USER && req.user.id !== parseInt(id)) {
+    return res.status(403).send(ErrorMsg.AUTH.NO_PERMISSION);
+  }
   if (!project_id || !user_id) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
   }
@@ -69,7 +76,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
 });
 
 // *** GET /api/Participant *********************************************************
-router.get('/:id', authenticateToken, async (req, res) => {
+router.get('/:id', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
   const { id } = req.params;
   logger.debug(`API: GET  /api/participant/${id}`);
 
@@ -81,7 +88,7 @@ router.get('/:id', authenticateToken, async (req, res) => {
 });
 
 // *** DELETE /api/Participant *********************************************************
-router.delete('/:id', authenticateToken, async (req, res) => {
+router.delete('/:id', authenticateAndAuthorize(RoleTypes.ADMIN), async (req, res) => {
   const { id } = req.params;
   logger.debug(`API: DEL  /api/participant/${id}`);
 
@@ -96,12 +103,15 @@ router.delete('/:id', authenticateToken, async (req, res) => {
 });
 
 // *** DELETE /api/Participant *********************************************************
-router.delete('/', authenticateToken, async (req, res) => {
+router.delete('/', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
   const { project_id, user_id } = req.body;
   logger.debug(`API: DEL  /api/participant -> Project ID: ${project_id}, User ID: ${user_id}`);
 
   if (!project_id || !user_id) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
+  }
+  if (!checkPermissions(req.user.role, RoleTypes.MANAGER) && req.user.role === RoleTypes.USER && req.user.id !== user_id) {
+    return res.status(403).send(ErrorMsg.AUTH.NO_PERMISSION);
   }
 
   result = await db_run('DELETE FROM Participant WHERE project_id = ? AND user_id = ?', [project_id, user_id]);

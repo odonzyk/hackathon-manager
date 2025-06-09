@@ -17,6 +17,7 @@ import ProjectOverviewCard from '../../components/cards/ProjectOverviewCard/Proj
 import TeamOverviewCard from '../../components/cards/TeamsOverviewCard/TeamOverviewCard';
 import MyProjectOverviewCard from '../../components/cards/MyProjectOverviewCard/MyProjectOverviewCard';
 import CountdownCard from '../../components/cards/CountdownCard/CountdownCard';
+import { isDemo } from '../../utils/dataApiConnector';
 
 interface DashboardPageProps {
   profile: Profile | null;
@@ -34,6 +35,17 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ profile, event, projects 
   return (
     <IonPage>
       <IonContent>
+        {isDemo(profile) && (
+          <IonCard color={'secondary'}>
+            <IonCardHeader>
+              <IonCardTitle>Demo Mode</IonCardTitle>
+            </IonCardHeader>
+            <IonCardContent>
+              Bis zur vollständien Aktivierung ihres Accounts können Sie die Demo-Funktion nutzen.
+            </IonCardContent>
+          </IonCard>
+        )}
+
         <CountdownCard event={event} />
 
         {/* Projekte und Teilnehmer Boxen */}

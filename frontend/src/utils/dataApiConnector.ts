@@ -1,4 +1,5 @@
-import { Event, Participate, Profile, Project, STORAGE_PROFILE } from '../types/types';
+import { DEMO_RESULTS } from '../types/demoData';
+import { Event, Participate, Profile, Project, RoleTypes, STORAGE_PROFILE } from '../types/types';
 import axios from 'axios';
 
 export enum ResultType {
@@ -9,14 +10,16 @@ export enum ResultType {
 const resultSuccess = (data: any) => {
   return {
     resultType: ResultType.SUCCESS,
+    resultCode: 200,
     resultMsg: null,
     data: data,
   };
 };
-const resultError = (msg: string) => {
+const resultError = (msg: string, code: number | null = null) => {
   return {
     resultType: ResultType.ERROR,
     resultMsg: msg,
+    resultCode: code ? code : 500,
     data: null,
   };
 };
@@ -26,10 +29,17 @@ export const loadStoredProfile = (): Profile | null => {
   let userProfile: Profile | null = null;
   try {
     userProfile = storedUser ? (JSON.parse(storedUser) as Profile) : null;
+    console.log('loadStoredProfile: userProfile: ', userProfile);
   } catch (error) {
     console.error('Error on loading profile', error);
   }
   return userProfile;
+};
+
+export const isDemo = (profile: Profile | null): boolean => {
+  if (!profile) return true;
+  const nonDemoRoles = [RoleTypes.ADMIN, RoleTypes.MANAGER, RoleTypes.USER];
+  return !profile || !profile.role_id || !nonDemoRoles.includes(profile.role_id);
 };
 
 /* *************************************************** */
@@ -45,9 +55,10 @@ export const getProfile = async (
     const response = await axios.get<Profile>(`/api/user/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
+    console.log('getProfile: response: ', response.data);
     return resultSuccess(response.data);
   } catch (error) {
-    return resultError('Profile konnte nicht geladen werden');
+    return resultError('getProfile: Profil konnte nicht geladen werden');
   }
 };
 
@@ -67,7 +78,7 @@ export const putProfile = async (
       return resultError('Profil konnte nicht aktualisiert werden');
     }
   } catch (error) {
-    return resultError('Profil konnte nicht aktualisiert werden');
+    return resultError('putProfile: Profil konnte nicht aktualisiert werden');
   }
 };
 
@@ -96,6 +107,7 @@ export const deleteProfile = async (
   token: string | null,
 ): Promise<{ resultType: ResultType; resultMsg: string | null; data: Profile | null }> => {
   if (!token || !profile) return resultError('token or profile is missing');
+  if (isDemo(profile)) return resultError('deleteProfile: Not allowed in demo mode');
 
   try {
     const response = await axios.delete(`/api/user/${profile.id}`, {
@@ -112,9 +124,12 @@ export const deleteProfile = async (
 };
 
 export const getAllUsers = async (
+  profile: Profile | null,
   token: string | null,
 ): Promise<{ resultType: ResultType; resultMsg: string | null; data: Profile[] | null }> => {
   if (!token) return resultError('token is missing');
+  if (!token || !profile) return resultError('token or profile is missing');
+  if (isDemo(profile)) return resultSuccess(DEMO_RESULTS.profiles);
 
   try {
     const response = await axios.get<Profile[]>(`/api/user/list/`, {
@@ -142,14 +157,48 @@ export const getUserParticipations = async (
   }
 };
 
+export const postActivate = async (
+  email: string,
+  activationCode: string,
+): Promise<{
+  resultType: ResultType;
+  resultCode: number;
+  resultMsg: string | null;
+  data: { message: string; role: number } | null;
+}> => {
+  if (!email || !activationCode) return resultError('Email oder Aktivierungscode fehlen');
+
+  try {
+    const response = await axios.post(`/api/user/activate`, null, {
+      params: { email, ac: activationCode },
+    });
+    if (response.status === 200) {
+      return resultSuccess(response.data);
+    } else {
+      return resultError('Aktivierung fehlgeschlagen');
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const errorMessage = error.response.data || 'Unbekannter Fehler';
+      return resultError(errorMessage, error.response.status);
+    }
+    return resultError(
+      'Aktivierung fehlgeschlagen. Bitte überprüfen Sie den Link oder kontaktieren Sie uns.',
+    );
+  }
+};
+
 /* *************************************************** */
 /* Projects API                                         */
 /* *************************************************** */
 export const getProjects = async (
   eventId: number | null,
+  profile: Profile | null = null,
   token: string | null,
 ): Promise<{ resultType: ResultType; resultMsg: string | null; data: Project[] | null }> => {
-  if (!token || !eventId) return resultError('token or userId is missing');
+  if (!token || !eventId) return resultError('token or eventId is missing');
+  if (!profile) return resultError('profile is missing');
+  if (isDemo(profile)) return resultSuccess(DEMO_RESULTS.projects[eventId - 1]);
 
   try {
     const response = await axios.get<Project[]>(`/api/project/list/${eventId}`, {
@@ -158,7 +207,7 @@ export const getProjects = async (
     return resultSuccess(response.data);
   } catch (error: any) {
     if (error?.response?.status === 404) return resultSuccess([]);
-    return resultError('Projects konnten nicht geladen werden');
+    return resultError('getProjects: Projects konnten nicht geladen werden');
   }
 };
 
@@ -207,8 +256,10 @@ export const postProject = async (
 /* *************************************************** */
 export const getEvents = async (
   token: string | null,
+  profile: Profile | null = null,
 ): Promise<{ resultType: ResultType; resultMsg: string | null; data: Event[] | null }> => {
-  if (!token) return resultError('token  is missing');
+  if (!token || !profile) return resultError('token or profile is missing');
+  if (isDemo(profile)) return resultSuccess(DEMO_RESULTS.events);
 
   try {
     const response = await axios.get<Event[]>(`/api/event/list`, {
@@ -221,22 +272,22 @@ export const getEvents = async (
   }
 };
 
-export const getEvent = async (
-  id: number | null,
-  token: string | null,
-): Promise<{ resultType: ResultType; resultMsg: string | null; data: Event | null }> => {
-  if (!token || !id) return resultError('token or id is missing');
+// export const getEvent = async (
+//   id: number | null,
+//   token: string | null,
+// ): Promise<{ resultType: ResultType; resultMsg: string | null; data: Event | null }> => {
+//   if (!token || !id) return resultError('token or id is missing');
 
-  try {
-    const response = await axios.get<Event>(`/api/event/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return resultSuccess(response.data);
-  } catch (error: any) {
-    if (error?.response?.status === 404) return resultSuccess(null);
-    return resultError('Event konnten nicht geladen werden');
-  }
-};
+//   try {
+//     const response = await axios.get<Event>(`/api/event/${id}`, {
+//       headers: { Authorization: `Bearer ${token}` },
+//     });
+//     return resultSuccess(response.data);
+//   } catch (error: any) {
+//     if (error?.response?.status === 404) return resultSuccess(null);
+//     return resultError('Event konnten nicht geladen werden');
+//   }
+// };
 
 /* *************************************************** */
 /* Participate                                         */

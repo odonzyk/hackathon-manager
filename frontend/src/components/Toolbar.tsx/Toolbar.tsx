@@ -10,6 +10,7 @@ import {
 import './Toolbar.css';
 import ThaliaLogo from '../../assets/thalia_logo.png';
 import { Event } from '../../types/types';
+import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 
 interface ToolbarProps {
   events: Event[];
@@ -18,6 +19,7 @@ interface ToolbarProps {
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({ selectedEvent, events, onSelectEvent }) => {
+  const isAuthenticated = useIsAuthenticated();
   return (
     <IonToolbar className="hackathon-toolbar">
       <IonButtons slot="start">
@@ -31,6 +33,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ selectedEvent, events, onSelectEvent 
         <div className="hackathon-toolbar-right">
           <IonSelect
             value={selectedEvent?.id}
+            disabled={!isAuthenticated}
             placeholder="Event auswählen"
             onIonChange={(e) => {
               onSelectEvent(e.detail.value);

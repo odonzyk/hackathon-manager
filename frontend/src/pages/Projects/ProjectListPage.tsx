@@ -16,6 +16,7 @@ import { Event, Profile, Project } from '../../types/types';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import { useHistory } from 'react-router-dom';
 import ProjectListCard from '../../components/cards/ProjectListCard/ProjectListCard';
+import { isDemo } from '../../utils/dataApiConnector';
 
 interface ProjectListPageProps {
   profile: Profile | null;
@@ -97,11 +98,13 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ profile, event, proje
         </IonGrid>
 
         {/* IonFab Button */}
-        <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton color="primary" onClick={() => history.push('/projects/add')}>
-            <IonIcon icon={addOutline} />
-          </IonFabButton>
-        </IonFab>
+        {!isDemo(profile) && (
+          <IonFab vertical="bottom" horizontal="end" slot="fixed">
+            <IonFabButton color="primary" onClick={() => history.push('/projects/add')}>
+              <IonIcon icon={addOutline} />
+            </IonFabButton>
+          </IonFab>
+        )}
       </IonContent>
     </IonPage>
   );
