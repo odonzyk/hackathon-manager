@@ -27,6 +27,9 @@
   - Automatischer Versand einer Aktivierungs-E-Mail nach der Registrierung.
 - **Unit-Tests**  
   - Die Testabdeckung wurde erweitert, um die neuen Backend-Funktionen abzudecken.
+- **Prepare Production Release**  
+  - Neue Config für die Produktion Umbgebung angelegt
+  - Die Deployment Pipelines angepasst um Test & Produktivumgebung zu behandeln.
 
 ### 🐞 Fehlerbehebungen & Verbesserungen
 - **Design-Optimierungen im Header**  
