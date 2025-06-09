@@ -17,7 +17,7 @@ const envMap = {
 // Wähle das richtige .env-File basierend auf NODE_ENV
 const envFile = '.env.' + (envMap[process.env.NODE_ENV?.toLowerCase()] || 'stage');
 
-dotenv.config({ path: path.resolve(__dirname, `../backend/${envFile}`) });
+dotenv.config({ path: path.resolve(__dirname, `../${envFile}`) });
 
 // Rufe die Logging-Funktion auf
 logEnvironmentVariables();
