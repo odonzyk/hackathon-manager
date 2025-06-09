@@ -20,4 +20,4 @@ COPY . .
 EXPOSE 3005
 
 # Starte den Server
-CMD ["npm", "run start-dev"]
+CMD ["npm", "run start"]
