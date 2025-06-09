@@ -2,9 +2,9 @@ const express = require('express');
 const { db_get, db_run, db_all } = require('../utils/db/dbUtils');
 const logger = require('../logger');
 
-const authenticateToken = require('../middlewares/authMiddleware');
+const { authenticateAndAuthorize } = require('../middlewares/authMiddleware');
 const router = express.Router();
-const { ErrorMsg } = require('../constants');
+const { ErrorMsg, RoleTypes } = require('../constants');
 
 const createEvent = (dbRow) => {
   return {
@@ -16,7 +16,7 @@ const createEvent = (dbRow) => {
 };
 
 // *** GET /api/event/list *****************************************************
-router.get('/list', authenticateToken, async (req, res) => {
+router.get('/list', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
   logger.debug(`API: GET  /api/event/list`);
   const result = await db_all(`SELECT Event.* FROM Event`);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
@@ -29,7 +29,7 @@ router.get('/list', authenticateToken, async (req, res) => {
 });
 
 // *** POST /api/event *********************************************************
-router.post('/', async (req, res) => {
+router.post('/', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res) => {
   let { name, start_time, end_time } = req.body;
   logger.debug(`API: POST /api/event/ (Create Event): ${name}`);
   if (!name || !start_time || !end_time) {
@@ -55,7 +55,7 @@ router.post('/', async (req, res) => {
 });
 
 // *** PUT /api/event *********************************************************
-router.put('/:id', authenticateToken, async (req, res) => {
+router.put('/:id', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res) => {
   const { id } = req.params;
   let { name, start_time, end_time } = req.body;
   logger.debug(`API: PUT  /api/event/${id}`);
@@ -95,7 +95,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
 });
 
 // *** GET /api/event *********************************************************
-router.get('/:id', authenticateToken, async (req, res) => {
+router.get('/:id', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res) => {
   const { id } = req.params;
   logger.debug(`API: GET  /api/event/${id}`);
 
@@ -107,7 +107,7 @@ router.get('/:id', authenticateToken, async (req, res) => {
 });
 
 // *** DELETE /api/event *********************************************************
-router.delete('/:id', authenticateToken, async (req, res) => {
+router.delete('/:id', authenticateAndAuthorize(RoleTypes.ADMIN), async (req, res) => {
   const { id } = req.params;
   logger.debug(`API: DEL  /api/event/${id}`);
 

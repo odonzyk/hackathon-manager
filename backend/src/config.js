@@ -1,6 +1,7 @@
 // be aware that backend is not using vite.env from frontend application, because backend run as seperate application process
 // vite frontend variables are public so a security issue to don´t use it together in one .env!
 
+const { log } = require('console');
 const dotenv = require('dotenv');
 const path = require('path');
 
@@ -40,7 +41,16 @@ module.exports = {
   mysqlConnectionLimit: check(process.env.MYSQL_CONNECTION_LIMIT, 10),
   mysqlQueueLimit: check(process.env.MYSQL_QUEUE_LIMIT, 0),
   jwtSecret: check(process.env.JWT_SECRET, 'your-secret-key'),
-  check
+  allowedDomains: check(process.env.ALLOWED_DOMAINS, 'dummy.de'),
+  activationUrl: check(process.env.ACTIVATION_URL, 'http://localhost:3000/api/user/activate'),
+  smtpHost: check(process.env.SMTP_HOST, 'localhost'),
+  smtpPort: check(process.env.SMTP_PORT, 587),
+  smtpSecure: check(process.env.SMTP_SECURE, false),
+  smtpUser: check(process.env.SMTP_USER, ''),
+  smtpPassword: check(process.env.SMTP_PASSWORD, ''),
+  smtpFrom: check(process.env.SMTP_FROM, ''),
+  check,
+  logEnvironmentVariables
 };
 
 function check(value, defaultValue) {
@@ -49,6 +59,9 @@ function check(value, defaultValue) {
   }
   if (typeof defaultValue === 'number') {
     return isNaN(Number(value)) ? defaultValue : Number(value);
+  }
+  if (typeof defaultValue === 'boolean') {
+    return value === 'true' || value === true;
   }
   return value;
 }
@@ -69,6 +82,11 @@ function logEnvironmentVariables() {
   console.log('API_PORT:', process.env.API_PORT);
   console.log('HOST_URL:', process.env.HOST_URL);
   console.log('HOST_PORT:', process.env.HOST_PORT);
+  console.log('SMTP_HOST:', process.env.SMTP_HOST);
+  console.log('SMTP_PORT:', process.env.SMTP_PORT);
+  console.log('SMTP_SECURE:', process.env.SMTP_SECURE);
+  console.log('SMTP_USER:', process.env.SMTP_USER);
+
   console.log('Aktueller Modus (NODE_ENV):', process.env.NODE_ENV || 'nicht gesetzt');
   console.log('Geladene .env-Datei:', envFile);
   console.log('#############################################################');

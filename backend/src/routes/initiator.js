@@ -2,9 +2,9 @@ const express = require('express');
 const { db_get, db_run } = require('../utils/db/dbUtils');
 const logger = require('../logger');
 
-const authenticateToken = require('../middlewares/authMiddleware');
+const { authenticateAndAuthorize, checkPermissions } = require('../middlewares/authMiddleware');
 const router = express.Router();
-const { ErrorMsg } = require('../constants');
+const { ErrorMsg, RoleTypes } = require('../constants');
 
 const createInitiator = (dbRow) => {
   return {
@@ -15,12 +15,15 @@ const createInitiator = (dbRow) => {
 };
 
 // *** POST /api/Initiator *********************************************************
-router.post('/', async (req, res) => {
+router.post('/', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
   const { project_id, user_id } = req.body;
   logger.debug(`API: POST /api/initiator -> Project ID: ${project_id}, User ID: ${user_id}`);
 
   if (!project_id || !user_id) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
+  }
+  if (!checkPermissions(req.user.role, RoleTypes.MANAGER) && req.user.role === RoleTypes.USER && req.user.id !== parseInt(user_id)) {
+    return res.status(403).send(ErrorMsg.AUTH.NO_PERMISSION);
   }
   let result = await db_get('SELECT * FROM Initiator WHERE project_id = ? AND user_id = ?', [project_id, user_id]);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
@@ -40,11 +43,14 @@ router.post('/', async (req, res) => {
 });
 
 // *** PUT /api/Initiator/:project_id/user/:user_id ************************
-router.put('/:id', authenticateToken, async (req, res) => {
+router.put('/:id', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
   const { project_id, user_id } = req.body;
   const { id } = req.params;
   logger.debug(`API: PUT /api/initiator/${id} -> Project ID: ${project_id}, User ID: ${user_id}`);
 
+  if (!checkPermissions(req.user.role, RoleTypes.MANAGER) && req.user.role === RoleTypes.USER && req.user.id !== parseInt(id)) {
+    return res.status(403).send(ErrorMsg.AUTH.NO_PERMISSION);
+  }
   if (!project_id || !user_id) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
   }
@@ -69,7 +75,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
 });
 
 // *** GET /api/Initiator *********************************************************
-router.get('/:id', authenticateToken, async (req, res) => {
+router.get('/:id', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
   const { id } = req.params;
   logger.debug(`API: GET  /api/initiator/${id}`);
 
@@ -81,7 +87,7 @@ router.get('/:id', authenticateToken, async (req, res) => {
 });
 
 // *** DELETE /api/Initiator *********************************************************
-router.delete('/:id', authenticateToken, async (req, res) => {
+router.delete('/:id', authenticateAndAuthorize(RoleTypes.ADMIN), async (req, res) => {
   const { id } = req.params;
   logger.debug(`API: DEL  /api/initiator/${id}`);
 

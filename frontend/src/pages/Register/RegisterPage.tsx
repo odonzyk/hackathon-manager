@@ -21,9 +21,10 @@ import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import { getExistingToken } from '../../utils/authUtils';
 import { useToast } from '../../components/ToastProvider';
 
+const ROLE_USER = 5;
 const emptyProfile: Profile = {
   id: 0,
-  role_id: 2,
+  role_id: ROLE_USER,
   name: '',
   email: '',
   is_private_email: false,
@@ -31,9 +32,8 @@ const emptyProfile: Profile = {
   is_private_telephone: false,
   avatar_url: '',
   participate: [],
+  initiate: [],
 };
-
-const ROLE_USER = 2;
 
 const RegisterPage = () => {
   const [isFirstLoad, setIsFirstLoad] = useState(true);
@@ -83,17 +83,20 @@ const RegisterPage = () => {
 
       if (response.status === 201) {
         showToastMessage('Benutzer erfolgreich erstellt');
-        console.log('RegisterPage: User created successfully', response.data);
-
-        // Weiterleitung zur Login-Seite oder Dashboard
         setTimeout(() => {
-          document.location.href = '/login';
+          document.location.href = '/request-activation';
         }, 2000);
+      } else {
+        showToastError('Fehler bei der Registrierung. Bitte versuchen Sie es erneut.\n');
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage = error.response.data || 'Unbekannter Fehler';
+        console.error('RegisterPage: Error during registration:', error);
+        showToastError(`Fehler bei der Registrierung: ${errorMessage}`);
       } else {
         showToastError('Fehler bei der Registrierung. Bitte versuchen Sie es erneut.');
       }
-    } catch (error) {
-      showToastError('Fehler bei der Registrierung. Bitte versuchen Sie es erneut.');
     } finally {
       setIsButtonDisabled(false);
     }

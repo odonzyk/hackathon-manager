@@ -2,9 +2,9 @@ const express = require('express');
 const { db_get, db_run, db_all } = require('../utils/db/dbUtils');
 const logger = require('../logger');
 
-const authenticateToken = require('../middlewares/authMiddleware');
+const { authenticateAndAuthorize } = require('../middlewares/authMiddleware');
 const router = express.Router();
-const { ErrorMsg } = require('../constants');
+const { ErrorMsg, RoleTypes } = require('../constants');
 
 const createProject = (dbRow) => {
   return {
@@ -40,7 +40,7 @@ const createParticipant = (dbRow) => {
 };
 
 // *** GET /api/project/list/:id *****************************************************
-router.get('/list/:event_id', authenticateToken, async (req, res) => {
+router.get('/list/:event_id', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
   const { event_id } = req.params;
   logger.debug(`API: GET  /api/project/list/${event_id}`);
   if (!event_id) {
@@ -64,7 +64,7 @@ router.get('/list/:event_id', authenticateToken, async (req, res) => {
 });
 
 // *** GET /api/project/list *****************************************************
-router.get('/list', authenticateToken, async (req, res) => {
+router.get('/list', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
   logger.debug(`API: GET  /api/project/list`);
   const result = await db_all(`SELECT Project.* FROM Project`);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
@@ -84,9 +84,9 @@ router.get('/list', authenticateToken, async (req, res) => {
 });
 
 // *** GET /api/project/listByUser/:id **********************************************
-router.get('/listByUser/:id', authenticateToken, async (req, res) => {
-  logger.debug(`API: GET  /api/project/listByUser/${id}`);
+router.get('/listByUser/:id', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
   const { id } = req.params;
+  logger.debug(`API: GET  /api/project/listByUser/${id}`);
   if (!id) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
   }
@@ -107,7 +107,7 @@ router.get('/listByUser/:id', authenticateToken, async (req, res) => {
 });
 
 // *** POST /api/project *********************************************************
-router.post('/', async (req, res) => {
+router.post('/', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res) => {
   let { event_id, status_id, idea, description, team_name, team_avatar_url, initiators, goal, components, skills } = req.body;
   logger.debug(`API: POST /api/project - ${idea}`);
   if (!event_id || !idea || !description || !initiators[0]?.id) {
@@ -161,8 +161,8 @@ router.post('/', async (req, res) => {
   });
 });
 
-// *** PUT /api/event *********************************************************
-router.put('/:id', authenticateToken, async (req, res) => {
+// *** PUT /api/project *********************************************************
+router.put('/:id', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res) => {
   const { id } = req.params;
   let { event_id, status_id, idea, description, team_name, team_avatar_url, goal, components, skills } = req.body;
   logger.debug(`API: PUT  /api/project/${id} - ${idea}`);
@@ -174,7 +174,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
   //Load existing data
   result = await db_get(`SELECT * FROM Project WHERE Project.id = ?`, [id]);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
-  if (!result.row) return res.status(404).send(ErrorMsg.NOT_FOUND.NO_EVENT);
+  if (!result.row) return res.status(404).send(ErrorMsg.NOT_FOUND.NO_PROJECT);
 
   let project = createProject(result.row);
 
@@ -219,7 +219,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
 });
 
 // *** GET /api/project *********************************************************
-router.get('/:id', authenticateToken, async (req, res) => {
+router.get('/:id', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
   const { id } = req.params;
   logger.debug(`API: GET  /api/project/${id}`);
 
@@ -236,7 +236,7 @@ router.get('/:id', authenticateToken, async (req, res) => {
 });
 
 // *** DELETE /api/project *********************************************************
-router.delete('/:id', authenticateToken, async (req, res) => {
+router.delete('/:id', authenticateAndAuthorize(RoleTypes.ADMIN), async (req, res) => {
   const { id } = req.params;
   logger.debug(`API: DEL  /api/project/${id}`);
 

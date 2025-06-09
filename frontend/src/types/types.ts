@@ -2,6 +2,15 @@ export const STORAGE_TOKEN = 'hackathonToken';
 export const STORAGE_PROFILE = 'hackathonProfile';
 import { archiveOutline, checkmark, closeOutline, playOutline, stopOutline } from 'ionicons/icons';
 
+export const RoleTypes = {
+  ADMIN: 1,
+  MANAGER: 2,
+  USER: 3,
+  GUEST: 4,
+  NEW: 5,
+  DUMMY: 6,
+};
+
 export type User = {
   id: number;
   email: string;
@@ -19,6 +28,7 @@ export type Profile = {
   is_private_telephone: boolean;
   avatar_url: string;
   participate: Participate[];
+  initiate: Initiate[];
 };
 
 export type Initiator = {
@@ -34,6 +44,14 @@ export type Participant = {
 };
 
 export type Participate = {
+  id: number;
+  user_id: number;
+  project_id: number;
+  idea: string;
+  event_id: number;
+  event_name: string;
+};
+export type Initiate = {
   id: number;
   user_id: number;
   project_id: number;
@@ -65,7 +83,11 @@ export type Event = {
 
 export const UserRoleMap: Record<number, { name: string; color: string; emoji: string }> = {
   1: { name: 'Admin', color: '#FF5733', emoji: '👑' }, // Rot für Admin
-  2: { name: 'User', color: '#3498DB', emoji: '👤' }, // Blau für User
+  2: { name: 'Organizer', color: '#33FF57', emoji: '🎉' }, // Grün für Organisator
+  3: { name: 'User', color: '#3498DB', emoji: '👤' }, // Blau für Benutzer
+  4: { name: 'Guest', color: '#F1C40F', emoji: '👥' }, // Gelb für Gast
+  5: { name: 'New', color: '#9B59B6', emoji: '✨' }, // Lila für Neu
+  6: { name: 'Dummy', color: '#95A5A6', emoji: '🤖' }, // Grau für Dummy
 };
 
 export const ActivityStatusMap: Record<number, { name: string; icon: any }> = {

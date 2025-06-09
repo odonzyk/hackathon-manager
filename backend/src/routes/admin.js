@@ -2,13 +2,14 @@ const express = require('express');
 const router = express.Router();
 const logger = require('../logger');
 const { db_run } = require('../utils/db/dbUtils');
-const authenticateToken = require('../middlewares/authMiddleware');
+const { authenticateAndAuthorize } = require('../middlewares/authMiddleware');
 const { dbInitialisation } = require('../utils/db/db');
+const { RoleTypes } = require('../constants');
 
 const tables = ['Participant', 'Initiator', 'Project', 'Event', 'User', 'Role', 'ProjectStatus'];
 
 // *** GET /api/health/config *************************************************
-router.get('/dbReset', authenticateToken, async (req, res) => {
+router.get('/dbReset', authenticateAndAuthorize(RoleTypes.ADMIN), async (req, res) => {
   logger.debug(`API: GET  /api/dbReset`);
 
   try {

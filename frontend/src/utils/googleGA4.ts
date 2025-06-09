@@ -11,7 +11,9 @@ const getPageTitle = (pathname: string): string => {
     '/events': 'Events',
     '/teams': 'Teams',
     '/projects': 'Projects',
+    '/projects/add': 'NewProjects',
     '/projectdetail': 'ProjectDetail',
+    '/userlist': 'UserList',
   };
 
   // Dynamische Routen abfangen
