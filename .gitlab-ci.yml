@@ -19,7 +19,6 @@ variables:
   rules:
     # Automatisch bei Merge-Request auf staging
     - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop"
-    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop"
 
     # Zeitgesteuerter oder API-basierter Trigger
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -30,7 +29,7 @@ variables:
 
     # Main: Nur über Web und nur als "manual" Schritt
     # - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "web"
-    - if: '$CI_PIPELINE_SOURCE == "web" && ($CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_BRANCH == "develop")'
+    - if: '$CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_BRANCH == "develop"'
       when: manual
       allow_failure: false
 
@@ -206,6 +205,7 @@ deploy-staging:
   environment: staging
 
   script:
+    - export
     - echo "Deploying application..."
     - echo "Source $CI_PIPELINE_SOURCE"
     - echo "Branch $CI_COMMIT_BRANCH"    
@@ -233,6 +233,7 @@ deploy-production:
   environment: production
 
   script:
+    - export
     - echo "prepare deploy to production..."
     - echo "Source $CI_PIPELINE_SOURCE"
     - echo "Branch $CI_COMMIT_BRANCH"    
@@ -252,18 +253,3 @@ deploy-production:
       when: manual
       allow_failure: false
 
-debug-job:
-  tags:
-    - shell
-  stage: test
-  script:
-    - echo "Source $CI_PIPELINE_SOURCE"
-    - echo "Branch $CI_COMMIT_BRANCH"
-    - echo "Merge Request Source Branch $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
-    - echo "Target Branch $CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
-    - echo "Checking frontend directory..."
-    - ls -lah ./frontend/
-    - echo "Checking backend directory..."
-    - ls -lah ./backend/
-  rules:
-    - when: always
