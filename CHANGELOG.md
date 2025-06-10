@@ -1,7 +1,15 @@
 # 📦 Changelog
 
+## Version 0.2.7
+**Release Date:** 2025-10-06
+
+### ✨ Neue Funktionen
+- **Neues Design**
+  - Ein neues helleres Design das stärker an die Farben und Elemente von Thalia angepasst ist
+  - verbesserter Kontrast
+
 ## Version 0.2.6
-**Release Date:** 2025-06-06
+**Release Date:** 2025-09-06
 
 ### ✨ Neue Funktionen
 - **Neue Seite: Teilnehmerliste**  

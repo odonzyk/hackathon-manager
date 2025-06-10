@@ -25,7 +25,7 @@
 
 .menu-version {
   font-size: 0.75rem;
-  color: var(--ion-color-light);
+  color: var(--ion-text-color-light);
   padding: 0 16px 0px;
   display: block;
 }
