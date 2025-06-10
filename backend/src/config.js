@@ -49,6 +49,7 @@ module.exports = {
   smtpUser: check(process.env.SMTP_USER, ''),
   smtpPassword: check(process.env.SMTP_PASSWORD, ''),
   smtpFrom: check(process.env.SMTP_FROM, ''),
+  smtpRejectUnauthorized: check(process.env.SMTP_UNAUTOHORIZED, false),
   check,
   logEnvironmentVariables
 };

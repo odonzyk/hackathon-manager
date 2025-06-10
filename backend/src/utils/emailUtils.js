@@ -2,16 +2,23 @@ const nodemailer = require('nodemailer');
 const config = require('../config');
 const logger = require('../logger');
 
-const transporter = nodemailer.createTransport({
+const transporterOptions = {
   host: config.smtpHost,
   port: config.smtpPort,
   secure: config.smtpSecure,
   debug: true,
-  auth: {
+  tls: {
+    rejectUnauthorized: config.smtpRejectUnauthorized,
+  },
+};
+// Auth nur hinzufügen, wenn smtpUser nicht leer ist
+if (config.smtpUser) {
+  transporterOptions.auth = {
     user: config.smtpUser,
-    pass: config.smtpPassword
-  }
-});
+    pass: config.smtpPassword,
+  };
+}
+const transporter = nodemailer.createTransport(transporterOptions);
 
 /**
  * Sendet eine E-Mail.
