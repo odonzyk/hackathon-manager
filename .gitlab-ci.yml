@@ -1,3 +1,4 @@
+
 variables:
   GIT_STRATEGY: clone
   GIT_CLEAN_FLAGS: none
@@ -68,7 +69,7 @@ build-frontend-image-staging:
     - docker build -t $IMAGE_NAME:$IMAGE_FRONTEND_TAG -f Dockerfile .
     - docker push $IMAGE_NAME:$IMAGE_FRONTEND_TAG
   rules:
-    - if: '$CI_COMMIT_BRANCH == "develop"'
+    !reference [.default_trigger, rules ]
 
 
 build-frontend-image-production:
@@ -111,12 +112,10 @@ build-backend-image-staging:
     - pwd
     - ls -lah
     - cd ./backend
-    - echo "Setting NODE_ENV to staging"
-    - export NODE_ENV=staging
-    - docker build --build-arg NODE_ENV=$NODE_ENV -t $IMAGE_NAME:$IMAGE_BACKEND_TAG -f Dockerfile .    
+    - docker build -t $IMAGE_NAME:$IMAGE_BACKEND_TAG -f Dockerfile .
     - docker push $IMAGE_NAME:$IMAGE_BACKEND_TAG
   rules:
-    - if: '$CI_COMMIT_BRANCH == "develop"'
+    !reference [.default_trigger, rules ]
 
 
 
@@ -134,9 +133,7 @@ build-backend-image-production:
     - pwd
     - ls -lah
     - cd ./backend
-    - echo "Setting NODE_ENV to production"
-    - export NODE_ENV=production
-    - docker build --build-arg NODE_ENV=$NODE_ENV -t $IMAGE_NAME:$IMAGE_BACKEND_TAG -f Dockerfile .    
+    - docker build -t $IMAGE_NAME:$IMAGE_BACKEND_TAG -f Dockerfile .
     - docker push $IMAGE_NAME:$IMAGE_BACKEND_TAG
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
@@ -151,8 +148,6 @@ build-job-develop:
   stage: build
   script:
     - echo "Compiling the code..."
-    - echo "Source $CI_PIPELINE_SOURCE"
-    - echo "Branch $CI_COMMIT_BRANCH"    
     - cd ./frontend    
     - npm install
     - npm run build
@@ -176,8 +171,6 @@ build-job-production:
   stage: build
   script:
     - echo "Compiling the code..."
-    - echo "Source $CI_PIPELINE_SOURCE"
-    - echo "Branch $CI_COMMIT_BRANCH"    
     - cd ./frontend    
     - npm install
     - npm run build
@@ -205,10 +198,7 @@ deploy-staging:
   environment: staging
 
   script:
-    - export
     - echo "Deploying application..."
-    - echo "Source $CI_PIPELINE_SOURCE"
-    - echo "Branch $CI_COMMIT_BRANCH"    
     - mkdir -p $PROJECT_PATH
     - cd $PROJECT_PATH
 
@@ -233,10 +223,7 @@ deploy-production:
   environment: production
 
   script:
-    - export
     - echo "prepare deploy to production..."
-    - echo "Source $CI_PIPELINE_SOURCE"
-    - echo "Branch $CI_COMMIT_BRANCH"    
     - mkdir -p $PROJECT_PATH
     - cd $PROJECT_PATH
 
@@ -252,4 +239,3 @@ deploy-production:
     - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "web"'
       when: manual
       allow_failure: false
-
