@@ -323,7 +323,7 @@ router.get('/:id', authenticateToken, async (req, res) => {
 
   if (!checkPermissions(req.user.role, RoleTypes.USER)) {
     if (req.user.id !== parseInt(id)) {
-      logger.debug(`User ${user.username} with role ${req.user.role} does not have permission for ${RoleTypes.USER}`);
+      logger.debug(`User ${req.user.id} with role ${req.user.role} does not have permission for ${RoleTypes.USER}`);
       return res.status(403).send(ErrorMsg.AUTH.NO_PERMISSION);
     }
   }

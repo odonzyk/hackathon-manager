@@ -183,7 +183,7 @@ describe('Participant API Endpoints', () => {
     });
 
     it('should delete all participants and return 200', async () => {
-      db_run.mockResolvedValue({ changes: 5 }); // Beispiel: 5 Teilnehmer wurden gelöscht
+      db_run.mockResolvedValue({ changes: 1 }); 
 
       const response = await request(app).delete('/api/participant').set('Authorization', `Bearer ${adminToken}`).send({ project_id: 3, user_id: 4 });
 
@@ -204,11 +204,22 @@ describe('Participant API Endpoints', () => {
       const userToken = jwt.sign({ id: 3, name: 'Regular User', email: 'user@example.com', role: RoleTypes.USER }, config.jwtSecret, {
         expiresIn: '2h'
       });
+      const guestToken = jwt.sign({ id: 3, name: 'Guest User', email: 'user@example.com', role: RoleTypes.GUEST }, config.jwtSecret, {
+        expiresIn: '2h'
+      });
 
-      const response = await request(app).delete('/api/participant').set('Authorization', `Bearer ${userToken}`);
+      let response = await request(app).delete('/api/participant').set('Authorization', `Bearer ${guestToken}`);
 
       expect(response.status).toBe(403);
       expect(response.text).toBe(ErrorMsg.AUTH.NO_PERMISSION);
+
+      response = await request(app).delete('/api/participant').set('Authorization', `Bearer ${userToken}`).send({ project_id: 3, user_id: 4 });
+      expect(response.status).toBe(403);
+      expect(response.text).toBe(ErrorMsg.AUTH.NO_PERMISSION);
+
+      db_run.mockResolvedValueOnce({ changes: 1 }); 
+      response = await request(app).delete('/api/participant').set('Authorization', `Bearer ${adminToken}`).send({ project_id: 3, user_id: 4 });
+      expect(response.status).toBe(200);
     });
   });
 });

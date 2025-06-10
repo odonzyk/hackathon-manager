@@ -470,7 +470,7 @@ describe('User API Endpoints', () => {
       expect(response.body).toHaveProperty('telephone', '12345');
       expect(response.body).toHaveProperty('is_private_email', true);
       expect(response.body).toHaveProperty('is_private_telephone', false);
-      expect(response.body).toHaveProperty('role_id', RoleTypes.USER);
+      expect(response.body).toHaveProperty('role_id', RoleTypes.NEW);
       expect(response.body).toHaveProperty('avatar_url', '/assets/avatars/avatar_2.png');
       expect(response.body).toHaveProperty('participate', []);
     });
@@ -538,7 +538,7 @@ describe('User API Endpoints', () => {
       });
 
       expect(response.status).toBe(201);
-      expect(response.body).toHaveProperty('role_id', RoleTypes.USER);
+      expect(response.body).toHaveProperty('role_id', RoleTypes.NEW);
       expect(response.body).toHaveProperty('avatar_url', '/assets/avatars/avatar_1.png');
       expect(response.body).toHaveProperty('is_private_email', false);
       expect(response.body).toHaveProperty('is_private_telephone', false);
