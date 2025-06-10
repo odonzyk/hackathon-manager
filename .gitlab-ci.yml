@@ -31,7 +31,7 @@ variables:
     # Main: Nur über Web und nur als "manual" Schritt
     # - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "web"
     - if: '$CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_BRANCH == "develop"'
-      when: manual
+#      when: manual
       allow_failure: false
 
 
@@ -66,7 +66,7 @@ build-frontend-image-staging:
     - cd ./frontend/
     - npm install
     - npm run build
-    - docker build -t $IMAGE_NAME:$IMAGE_FRONTEND_TAG -f Dockerfile .
+    - docker build --build-arg NODE_ENV="staging" -t $IMAGE_NAME:$IMAGE_FRONTEND_TAG -f Dockerfile .
     - docker push $IMAGE_NAME:$IMAGE_FRONTEND_TAG
   rules:
     !reference [.default_trigger, rules ]
@@ -91,7 +91,7 @@ build-frontend-image-production:
     - cd ./frontend/
     - npm install
     - npm run build
-    - docker build -t $IMAGE_NAME:$IMAGE_FRONTEND_TAG -f Dockerfile .
+    - docker build --build-arg NODE_ENV="production"  -t $IMAGE_NAME:$IMAGE_FRONTEND_TAG -f Dockerfile .
     - docker push $IMAGE_NAME:$IMAGE_FRONTEND_TAG
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
@@ -112,7 +112,7 @@ build-backend-image-staging:
     - pwd
     - ls -lah
     - cd ./backend
-    - docker build -t $IMAGE_NAME:$IMAGE_BACKEND_TAG -f Dockerfile .
+    - docker build --build-arg NODE_ENV="staging"  -t $IMAGE_NAME:$IMAGE_BACKEND_TAG -f Dockerfile .
     - docker push $IMAGE_NAME:$IMAGE_BACKEND_TAG
   rules:
     !reference [.default_trigger, rules ]
@@ -133,7 +133,7 @@ build-backend-image-production:
     - pwd
     - ls -lah
     - cd ./backend
-    - docker build -t $IMAGE_NAME:$IMAGE_BACKEND_TAG -f Dockerfile .
+    - docker build --build-arg NODE_ENV="production" -t $IMAGE_NAME:$IMAGE_BACKEND_TAG -f Dockerfile .
     - docker push $IMAGE_NAME:$IMAGE_BACKEND_TAG
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
@@ -198,6 +198,7 @@ deploy-staging:
   environment: staging
 
   script:
+    - export
     - echo "Deploying application..."
     - mkdir -p $PROJECT_PATH
     - cd $PROJECT_PATH
@@ -223,6 +224,7 @@ deploy-production:
   environment: production
 
   script:
+    - export
     - echo "prepare deploy to production..."
     - mkdir -p $PROJECT_PATH
     - cd $PROJECT_PATH
