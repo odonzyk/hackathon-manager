@@ -69,7 +69,7 @@ build-frontend-image-staging:
     - docker build -t $IMAGE_NAME:$IMAGE_FRONTEND_TAG -f Dockerfile .
     - docker push $IMAGE_NAME:$IMAGE_FRONTEND_TAG
   rules:
-    - if: '$CI_COMMIT_BRANCH == "develop"'
+    !reference [.default_trigger, rules ]
 
 
 build-frontend-image-production:
@@ -115,7 +115,7 @@ build-backend-image-staging:
     - docker build -t $IMAGE_NAME:$IMAGE_BACKEND_TAG -f Dockerfile .
     - docker push $IMAGE_NAME:$IMAGE_BACKEND_TAG
   rules:
-    - if: '$CI_COMMIT_BRANCH == "develop"'
+    !reference [.default_trigger, rules ]
 
 
 
