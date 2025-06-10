@@ -198,6 +198,7 @@ deploy-staging:
   environment: staging
 
   script:
+    - export
     - echo "Deploying application..."
     - mkdir -p $PROJECT_PATH
     - cd $PROJECT_PATH
@@ -223,6 +224,7 @@ deploy-production:
   environment: production
 
   script:
+    - export
     - echo "prepare deploy to production..."
     - mkdir -p $PROJECT_PATH
     - cd $PROJECT_PATH
