@@ -3,8 +3,6 @@ FROM node:21
 
 ARG NODE_ENV
 ENV NODE_ENV=$NODE_ENV
-ENV CONFIG_NAME=Production
-ENV LOG_LEVEL=debug
 
 # Setze das Arbeitsverzeichnis
 WORKDIR /usr/src/app
