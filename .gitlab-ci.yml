@@ -70,10 +70,7 @@ build-frontend-image-staging:
     - docker push $IMAGE_NAME:$IMAGE_FRONTEND_TAG
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
-      exists:
-        - ./frontend/**/*
-      changes:
-        - ./frontend/**/*
+
 
 build-frontend-image-production:
   tags:    
@@ -98,10 +95,7 @@ build-frontend-image-production:
     - docker push $IMAGE_NAME:$IMAGE_FRONTEND_TAG
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
-      exists:
-        - ./frontend/**/*  
-      changes:
-        - ./frontend/**/*
+
 
 
 build-backend-image-staging:
@@ -124,10 +118,7 @@ build-backend-image-staging:
     - docker push $IMAGE_NAME:$IMAGE_BACKEND_TAG
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
-      exists:
-        - ./DOCKER-CONFIG/backend/**/* 
-      changes:
-        - ./DOCKER-CONFIG/backend/**/*
+
 
 
 build-backend-image-production:
@@ -150,10 +141,7 @@ build-backend-image-production:
     - docker push $IMAGE_NAME:$IMAGE_BACKEND_TAG
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
-      exists:
-        - ./DOCKER-CONFIG/backend/**/*  
-      changes:
-        - ./DOCKER-CONFIG/backend/**/*
+
 
 
 build-job-develop:
