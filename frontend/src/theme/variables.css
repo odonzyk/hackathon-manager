@@ -61,7 +61,7 @@ ion-select {
   font-size: 1.5rem;
   color: var(--ion-color-primary);
 }
-
+/* Toast Messages */
 .custom-toast {
   --background: var(--ion-color-primary);
   --color: white; /* Textfarbe */
@@ -72,8 +72,6 @@ ion-select {
   margin-bottom: 40px;
 }
 
-/* Toast Messages */
-
 .custom-toast-error {
   --background: #ff6b6b; /* Fehlerfarbe */
   --color: white;
@@ -83,6 +81,16 @@ ion-select {
   padding: 16px;
 }
 
+/* Hackathon Page Styles */
+.hackathon-content {
+  padding: 16px;
+}
+
+.hackathon-grid {
+  margin-top: 16px;
+}
+
+/* Hackathon Card Styles */
 .hackathon-container {
   display: flex;
   flex-direction: column;
@@ -135,12 +143,4 @@ ion-select {
 .hackathon-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 255, 255, 0.4);
-}
-
-.hackathon-content {
-  padding: 16px;
-}
-
-.hackathon-grid {
-  margin-top: 16px;
 }
