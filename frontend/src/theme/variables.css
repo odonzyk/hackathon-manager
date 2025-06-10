@@ -1,50 +1,48 @@
 :root {
-  --ion-background-color: #1e1e2f;
-  --ion-text-color: #ffffff;
-  --ion-card-background: #2e2e3e;
-  --ion-color-primary: #00ffff; /* Neon Cyan */
-  --ion-color-secondary: #ff00ff; /* Neon Magenta */
-  --ion-color-tertiary: #00ff00; /* Neon Grün */
-  --ion-color-tertiary-contrast: #1e1e2f;
-  --ion-font-family: 'Source Code Pro', monospace;
-  --ion-color-warning: #ff6b6b;
+  --ion-background-color: #F5F5F5;
+  --ion-text-color: #555555;
+  --ion-text-color-dark: #555555;
+  --ion-text-color-light: #707070;
+  --ion-text-color-contrast: #F0F0F0;
+  --ion-card-background: #FFFFFF;
+  --ion-card-border: #E0E0E0; /* Leichte Umrandung */
+  --ion-color-primary: #00509E; /* Thalia-Blau */
+  --ion-color-secondary: #FFD700; /* Warmes Gelb */
+  --ion-color-tertiary: #6BBF59; /* Sanftes Grün */
+  --ion-font-family: 'Roboto', sans-serif;
 }
 
 body {
-  background: radial-gradient(circle, #1e1e2f, #121212);
-  font-family: 'Source Code Pro', monospace;
-  overflow: hidden; /* Verhindert Scrollen durch Animation */
-  background-image:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-  background-size: 20px 20px; /* Größe des Grid-Musters */
+  background-color: var(--ion-background-color);
+  font-family: 'Roboto', sans-serif;
+  color: var(--ion-text-color);
 }
 
 ion-menu ion-header {
-  --ion-background-color: #1e1e2f; /* Dunkler Blauton */
-  --ion-text-color: #ffffff;
+  background-color: var(--ion-background-color);
+  color: var(--ion-text-color-dark);
 }
 
 /* Menü Liste */
 ion-menu ion-list {
-  --ion-background-color: #2e2e3e; /* Etwas heller als der Header */
-  --ion-text-color: #ffffff;
+  background-color: var(--ion-background-color);
+  color: var(--ion-text-color);
 }
 
 ion-menu ion-item {
   font-size: 1.2rem;
-  color: #ffffff;
+  color: var(--ion-text-color);
   --ion-item-background: transparent;
   --ion-item-hover-background: rgba(255, 255, 255, 0.1); /* Leichter Hover-Effekt */
 }
 
 ion-menu ion-icon {
-  color: #ffffff;
+  color: var(--ion-text-color);
 }
 
 ion-button {
   background-color: var(--ion-color-primary);
-  color: #000;
+  color: #f5f5f5;
   border-radius: 8px;
   margin-top: 10px;
   transition:
@@ -100,9 +98,9 @@ ion-select {
 
 .hackathon-card {
   background-color: var(--ion-card-background);
-  color: var(--ion-text-color);
-  border-radius: 12px;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--ion-card-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition:
     transform 0.3s,
     box-shadow 0.3s;
@@ -111,36 +109,36 @@ ion-select {
 .hackathon-card ion-card-title {
   font-size: 1.8rem;
   margin-bottom: 10px; /* Mehr Abstand unter dem Titel */
-  color: #ffffff; /* Weiße Schrift */
-  border-bottom: 2px solid #e9e2bc; /* Gelbe Unterstreichung */
+  color: var(--ion-color-primary);
+  border-bottom: 2px solid var(--ion-color-secondary);
   padding-bottom: 5px;
 }
 
 .hackathon-card ion-card-content {
   font-size: 1.5rem;
-  color: #e0e0e0;
+  color: var(--ion-text-color);
 }
 
 /* Menü Liste */
 .hackathon-card ion-list {
   background-color: var(--ion-card-background);
-  --ion-text-color: #ffffff;
+  color: var(--ion-text-color-light);
 }
 
 .hackathon-card ion-item {
   align-items: flex-start;
   font-size: 1.2rem;
-  color: #ffffff;
+  color: var(--ion-text-color-dark);
   --ion-item-background: transparent;
   --ion-item-hover-background: rgba(255, 255, 255, 0.1); /* Leichter Hover-Effekt */
 }
 
 .hackathon-card ion-item ion-label ion-text {
   font-size: 0.9rem;
-  color: #a0a0a0;
+  color: var(--ion-text-color-light);
 }
 
 .hackathon-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 255, 255, 0.4);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }

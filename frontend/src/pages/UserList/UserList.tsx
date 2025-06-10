@@ -176,8 +176,8 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
             {Array.from('ABCDEFGHIJKLMNOPQRSTUVWXYZ').map((letter) => (
               <IonCol key={letter} size="auto">
                 <IonButton
+                className='alphabet-navigation-button'
                   size="small"
-                  color="#17a2b8"
                   onClick={() => {
                     const element = document.getElementById(`section-${letter}`);
                     if (element) {

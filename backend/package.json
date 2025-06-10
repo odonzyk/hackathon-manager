@@ -1,7 +1,7 @@
 {
   "name": "hackathon-manager-backend",
   "description": "hackaton organisation backend",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "main": "server.js",
   "scripts": {
     "start:": "node server.js",

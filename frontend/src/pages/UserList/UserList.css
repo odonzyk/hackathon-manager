@@ -14,9 +14,9 @@
   margin: 16px 0;
 }
 
-.alphabet-navigation .button-solid {
-  background: #17a2b8;
-  color: var(--ion-text-color);
+.alphabet-navigation-button {
+  --background: var(var(--primary-color));
+  color: var(--ion-text-color-contrast);
 }
 
 .user-section {

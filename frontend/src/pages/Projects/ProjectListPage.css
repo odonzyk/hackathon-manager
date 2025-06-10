@@ -1,13 +1,20 @@
 .filter-input {
-  --background: rgba(255, 255, 255, 0.1); /* Halbtransparenter Hintergrund */
-  --color: #ffffff; /* Weiße Schriftfarbe */
-  --placeholder-color: rgba(255, 255, 255, 0.6); /* Helleres Weiß für Platzhalter */
+  --background: #FFFFFF; /* Weißer Hintergrund */
+  --color: #333333; /* Dunkle Schriftfarbe */
+  --placeholder-color: #707070; /* Helles Grau für Platzhalter */
   --padding-start: 10px; /* Innenabstand links */
-  border-radius: 5px; /* Abgerundete Ecken */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Leichte Umrandung */
+  border-radius: 8px; /* Abgerundete Ecken */
+  border: 1px solid #E0E0E0; /* Dezente Umrandung */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Leichter Schatten */
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .filter-input:focus {
-  --background: rgba(255, 255, 255, 0.2); /* Hellerer Hintergrund beim Fokus */
-  border-color: #ffffff; /* Weiße Umrandung beim Fokus */
+  --background: #F5F5F5; /* Hellerer Hintergrund beim Fokus */
+  border-color: #00509E; /* Thalia-Blau für Umrandung beim Fokus */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Stärkerer Schatten beim Fokus */
+}
+
+.filter-input::placeholder {
+  color: var(--placeholder-color); /* Platzhalterfarbe */
 }

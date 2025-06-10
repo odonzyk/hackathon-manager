@@ -1,5 +1,5 @@
 .custom-tab-bar {
-  background-color: #2e2e3e;
+  background-color: var(--ion-color-primary);
   color: var(--ion-color-primary);
   padding: 4px 12px;
   margin: 8px;
@@ -8,7 +8,15 @@
 }
 
 .custom-tab-bar ion-tab-button {
-  color: #f0f4f8;
-  background-color: #2e2e3e;
+  color: var(--ion-text-color-contrast);
+  background-color: var(--ion-color-primary);
   font-size: 1rem;
+  transition: background-color 0.3s, color 0.3s, padding 0.3s, border-radius 0.3s; /* Sanfter Übergang bei Hover */
+}
+
+.custom-tab-bar ion-tab-button:hover {
+  background-color: var(--ion-color-secondary); /* Sekundärfarbe beim Hover */
+  color: var(--ion-text-color); 
+  padding: 2px 8px;
+  border-radius: 10px;
 }
