@@ -18,7 +18,7 @@ variables:
 .default_trigger:
   rules:
     # Automatisch bei Merge-Request auf staging
-#    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop"
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop"
 
     # Zeitgesteuerter oder API-basierter Trigger
     - if: $CI_PIPELINE_SOURCE == "schedule"
