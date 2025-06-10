@@ -165,6 +165,8 @@ build-job-develop:
   stage: build
   script:
     - echo "Compiling the code..."
+    - echo "Source $CI_PIPELINE_SOURCE"
+    - echo "Branch $CI_COMMIT_BRANCH"    
     - cd ./frontend    
     - npm install
     - npm run build
@@ -188,6 +190,8 @@ build-job-production:
   stage: build
   script:
     - echo "Compiling the code..."
+    - echo "Source $CI_PIPELINE_SOURCE"
+    - echo "Branch $CI_COMMIT_BRANCH"    
     - cd ./frontend    
     - npm install
     - npm run build
@@ -216,6 +220,8 @@ deploy-staging:
 
   script:
     - echo "Deploying application..."
+    - echo "Source $CI_PIPELINE_SOURCE"
+    - echo "Branch $CI_COMMIT_BRANCH"    
     - mkdir -p $PROJECT_PATH
     - cd $PROJECT_PATH
 
@@ -241,6 +247,8 @@ deploy-production:
 
   script:
     - echo "prepare deploy to production..."
+    - echo "Source $CI_PIPELINE_SOURCE"
+    - echo "Branch $CI_COMMIT_BRANCH"    
     - mkdir -p $PROJECT_PATH
     - cd $PROJECT_PATH
 
