@@ -1,12 +1,13 @@
 {
   "name": "hackathon-manager-backend",
   "description": "hackaton organisation backend",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "main": "server.js",
   "scripts": {
-    "start-dev": "cross-env NODE_ENV=development node --env-file=.env.dev server.js",
-    "start-stage": "cross-env NODE_ENV=staging node --env-file=.env.stage server.js",
-    "start-prod": "cross-env NODE_ENV=production node --env-file=.env.prod server.js",
+    "start:": "node server.js",
+    "start-dev": "cross-env NODE_ENV=development node server.js",
+    "start-stage": "cross-env NODE_ENV=staging node server.js",
+    "start-prod": "cross-env NODE_ENV=production node server.js",
     "format": "prettier --write \"**/*.{js,jsx,ts}\"",
     "test": "jest --coverage"
   },
@@ -25,12 +26,13 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.6.0",
+    "prometheus-api-metrics": "3.2.2",
     "sqlite3": "^5.1.7",
     "swagger-jsdoc": "6.2.8",
     "swagger-ui-express": "5.0.1",
     "winston": "^3.17.0",
-    "prometheus-api-metrics": "3.2.2",
-    "mysql2": "^3.6.0"
+    "nodemailer": "^6.9.1"
   },
   "devDependencies": {
     "jest": "^29.7.0",

@@ -1,46 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { IonPage, IonContent, IonGrid, IonRow, IonCol } from '@ionic/react';
 import './EventListPage.css';
-import { Event, Profile } from '../../types/types';
-import { useToast } from '../../components/ToastProvider';
-import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
-import { getEvents, ResultType } from '../../utils/dataApiConnector';
-import { getExistingToken } from '../../utils/authUtils';
+import { Event } from '../../types/types';
 import EventListCard from '../../components/cards/EventListCard.tsx/EventListCard';
 
 interface EventListPageProps {
-  profile: Profile | null;
+  events: Event[];
 }
 
-const EventListPage: React.FC<EventListPageProps> = ({ profile }) => {
-  const isAuthenticated = useIsAuthenticated();
-  const { showToastError } = useToast();
-  const [events, setEvents] = useState<Event[]>([]);
-
-  // Funktion zum Abrufen der Aktivitäten
-  const fetchEvents = async (token: string | null) => {
-    console.log('EventListPage: Fetching Events');
-    const result = await getEvents(token);
-    if (result.resultType !== ResultType.SUCCESS || result.data === null) {
-      showToastError(result.resultMsg ?? 'Error');
-      return;
-    }
-    console.log('EventListPage: Events fetched: ', result.data);
-    setEvents(result.data);
-  };
-
-  useEffect(() => {
-    console.log('EventListPage: useEffect: ', isAuthenticated, profile);
-    if (profile) {
-      const token = getExistingToken();
-      if (!token) {
-        showToastError('Token nicht gefunden. Bitte anmelden.');
-        return;
-      }
-      fetchEvents(token);
-    }
-  }, [profile]);
-
+const EventListPage: React.FC<EventListPageProps> = ({ events }) => {
   return (
     <IonPage>
       <IonContent>

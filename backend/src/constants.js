@@ -1,12 +1,16 @@
 const ErrorMsg = Object.freeze({
   AUTH: {
     INVALID_CREDENTIALS: 'Invalid credentials',
-    INVALID_TOKEN: 'Invalid Token'
+    INVALID_TOKEN: 'Invalid Token',
+    INVALID_ACTIVATION_CODE: 'Invalid activation code',
+    NO_PERMISSION: 'No permission to access this resource'
   },
   VALIDATION: {
     MISSING_FIELDS: 'Missing fields',
     CONFLICT: 'Already exists',
-    WRONG_USER: 'Not the same user'
+    ALREADY_ACTIVE: 'User is already active',
+    WRONG_USER: 'Not the same user',
+    PASSWORD_TOO_SHORT: 'Password must be at least 8 characters long'
   },
   SERVER: {
     ERROR: 'Server error',
@@ -26,4 +30,13 @@ const EventTypes = {
   PARTICIPANT_CHANGE: 'Participant Changed'
 };
 
-module.exports = { ErrorMsg, EventTypes };
+const RoleTypes = {
+  ADMIN: 1,
+  MANAGER: 2,
+  USER: 3,
+  GUEST: 4,
+  NEW: 5,
+  DUMMY: 6
+};
+
+module.exports = { ErrorMsg, EventTypes, RoleTypes };

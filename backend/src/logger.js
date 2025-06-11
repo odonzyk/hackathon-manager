@@ -12,7 +12,7 @@ const logFormat = printf(({ level, message, timestamp }) => {
 });
 
 const level = process.env.LOG_LEVEL || 'info';
-const logDir = process.env.LOG_DIR || 'log';
+const logDir = process.env.LOG_DIR || 'logs';
 
 const logger = winston.createLogger({
   level: level,

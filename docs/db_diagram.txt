@@ -14,6 +14,7 @@ Table User {
     password text
     role_id integer [ref: > Role.id]
     avatar_url text
+    activation_code text
 }
 
 Table ProjectStatus {

@@ -5,11 +5,14 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 1.2rem; /* Etwas größere Schrift für bessere Lesbarkeit */
+  color: var(--ion-text-color)
 }
 
 .project-list-detail {
   font-size: 1rem;
   margin-bottom: 1rem;
   font-style: italic;
-  color: #a0a0a0;
+  color: var(--ion-text-color-light);
 }
+

@@ -8,6 +8,7 @@ import {
   IonGrid,
   IonRow,
   IonCol,
+  IonIcon,
 } from '@ionic/react';
 import './Dashboard.css';
 import { useEffect } from 'react';
@@ -17,6 +18,8 @@ import ProjectOverviewCard from '../../components/cards/ProjectOverviewCard/Proj
 import TeamOverviewCard from '../../components/cards/TeamsOverviewCard/TeamOverviewCard';
 import MyProjectOverviewCard from '../../components/cards/MyProjectOverviewCard/MyProjectOverviewCard';
 import CountdownCard from '../../components/cards/CountdownCard/CountdownCard';
+import { isDemo } from '../../utils/dataApiConnector';
+import { bookOutline } from 'ionicons/icons';
 
 interface DashboardPageProps {
   profile: Profile | null;
@@ -34,6 +37,17 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ profile, event, projects 
   return (
     <IonPage>
       <IonContent>
+        {isDemo(profile) && (
+          <IonCard style={{ backgroundColor: '#EAF4FC', color: '#003366' }}>
+            <IonCardHeader>
+              <IonCardTitle><IonIcon icon={bookOutline} style={{ marginRight: '8px' }} />Demo Mode</IonCardTitle>
+            </IonCardHeader>
+            <IonCardContent>
+              Bis zur vollständien Aktivierung ihres Accounts können Sie die Demo-Funktion nutzen.
+            </IonCardContent>
+          </IonCard>
+        )}
+
         <CountdownCard event={event} />
 
         {/* Projekte und Teilnehmer Boxen */}

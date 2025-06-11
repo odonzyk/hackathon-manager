@@ -17,7 +17,7 @@ describe('Environment Config', () => {
     process.env.NODE_ENV = 'production';
     const config = require('../src/config'); // Modul neu laden
     expect(dotenv.config).toHaveBeenCalledWith({
-      path: path.resolve(__dirname, '../backend/.env.prod')
+      path: path.resolve(__dirname, '../.env.prod')
     });
   });
 
@@ -25,7 +25,7 @@ describe('Environment Config', () => {
     process.env.NODE_ENV = 'dev';
     const config = require('../src/config'); // Modul neu laden
     expect(dotenv.config).toHaveBeenCalledWith({
-      path: path.resolve(__dirname, '../backend/.env.dev')
+      path: path.resolve(__dirname, '../.env.dev')
     });
   });
 
@@ -33,7 +33,7 @@ describe('Environment Config', () => {
     delete process.env.NODE_ENV; // NODE_ENV entfernen
     const config = require('../src/config'); // Modul neu laden
     expect(dotenv.config).toHaveBeenCalledWith({
-      path: path.resolve(__dirname, '../backend/.env.stage')
+      path: path.resolve(__dirname, '../.env.stage')
     });
   });
 });
@@ -69,11 +69,67 @@ describe('Environment Config properties', () => {
   it('should export the correct configuration values', () => {
     expect(config).toHaveProperty('name');
     expect(config).toHaveProperty('version');
+    expect(config).toHaveProperty('node_env');
+    expect(config).toHaveProperty('logLevel');
     expect(config).toHaveProperty('apiUrl');
     expect(config).toHaveProperty('apiPort');
     expect(config).toHaveProperty('dbPath');
     expect(config).toHaveProperty('jwtSecret');
-    expect(config).toHaveProperty('oneSignalApi');
-    expect(config).toHaveProperty('appID');
+  });
+});
+
+describe('logEnvironmentVariables', () => {
+  let originalLog;
+
+  beforeEach(() => {
+    jest.resetModules(); // Module-Cache leeren, um require() zu erzwingen
+    jest.clearAllMocks(); // Aufrufhistorie aller Mocks zurücksetzen
+    originalLog = console.log;
+    console.log = jest.fn();
+    dotenv = require('dotenv');
+  });
+
+  afterEach(() => {
+    // Restore original console.log
+    console.log = originalLog;
+  });
+
+  it('should log environment variables in debug mode', () => {
+    // Simuliere Umgebungsvariablen
+    process.env.LOG_LEVEL = 'debug';
+    process.env.CONFIG_NAME = 'test-config';
+    process.env.API_URL = 'http://localhost';
+    process.env.API_PORT = '3000';
+    process.env.HOST_URL = 'http://localhost';
+    process.env.HOST_PORT = '8100';
+    process.env.NODE_ENV = 'development';
+
+    const config = require('../src/config'); // Modul neu laden
+    config.logEnvironmentVariables();
+
+    // Überprüfe, ob die erwarteten Werte geloggt wurden
+    expect(console.log).toHaveBeenCalledWith('### Config Printout #########################################');
+    expect(console.log).toHaveBeenCalledWith('Aktuelles Arbeitsverzeichnis:', process.cwd());
+    expect(console.log).toHaveBeenCalled();
+    expect(console.log).toHaveBeenCalledWith('CONFIG_NAME:', 'test-config');
+    expect(console.log).toHaveBeenCalledWith('LOG_LEVEL:', 'debug');
+    expect(console.log).toHaveBeenCalledWith('API_URL:', 'http://localhost');
+    expect(console.log).toHaveBeenCalledWith('API_PORT:', '3000');
+    expect(console.log).toHaveBeenCalledWith('HOST_URL:', 'http://localhost');
+    expect(console.log).toHaveBeenCalledWith('HOST_PORT:', '8100');
+    expect(console.log).toHaveBeenCalledWith('Aktueller Modus (NODE_ENV):', 'development');
+    expect(console.log).toHaveBeenCalledWith('Geladene .env-Datei:', '.env.dev');
+    expect(console.log).toHaveBeenCalledWith('#############################################################');
+  });
+
+  it('should not log anything if LOG_LEVEL is not debug', () => {
+    // Simuliere Umgebungsvariablen
+    process.env.LOG_LEVEL = 'info';
+    const { logEnvironmentVariables } = require('../src/config');
+    // Rufe die Methode auf
+    logEnvironmentVariables();
+
+    // Überprüfe, dass console.log nicht aufgerufen wurde
+    expect(console.log).not.toHaveBeenCalled();
   });
 });

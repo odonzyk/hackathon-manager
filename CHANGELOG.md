@@ -1,21 +1,59 @@
 # 📦 Changelog
 
+## Version 0.2.7
+**Release Date:** 2025-10-06
+
+### ✨ Neue Funktionen
+- **Neues Design**
+  - Ein neues helleres Design das stärker an die Farben und Elemente von Thalia angepasst ist
+  - verbesserter Kontrast
+
 ## Version 0.2.6
-**Release Date:** 2025-06-??
+**Release Date:** 2025-09-06
 
-### ✨ Neue Features
+### ✨ Neue Funktionen
+- **Neue Seite: Teilnehmerliste**  
+  - Die neue Seite zeigt eine Alphabetische Übersicht aller Teilnehmer
+  - Eine Suchfunktion ermöglicht das schnelle Filtern nach Namen.
+  - Zusätzlich können Teilnehmer basierend auf Events, an dehnen sie teilgenommen haben, gefiltert werden.
+- **Neue Seite: Über uns**  
+  - Eine neue Seite mit Informationen über die Anwendung und das Team wurde hinzugefügt.
+- **Registrierung neuer Nutzer**  
+  - **Wiedererkennung neuer Nutzer**: Bereits initial angelegte Teilnehmer werden erkannt. Dadurch sind vergangene Projekte automatisch den neuen Nutzern zugeordnet
+  - **Aktivierungs-E-Mail**: Nach der Registrierung wird eine E-Mail mit einem Aktivierungslink versendet, um die E-Mail-Adresse zu bestätigen.  
+  - **Neue Registrierungsseite**: Die Benutzerführung wurde optimiert, um den Registrierungsprozess einfacher und intuitiver zu gestalten.  
+  - **Tabbar-Ausblendung**: Die Navigationsleiste wird automatisch ausgeblendet, wenn der Benutzer nicht eingeloggt ist.
+  - **Demo Modus**: Solange ein Teilnehmer nicht vollständig freigeschaltet ist, läuft der Hackathon Manager im Demo Modus. Dort sind keine echten Projekte oder Teilnehmerdaten abrufbar.
 
+### 🛠️ Backend-Verbesserungen
+- **Rollen- und Berechtigungsprüfung**  
+  - Alle relevanten Endpunkte prüfen jetzt die Benutzerrolle, um sicherzustellen, dass nur berechtigte Nutzer Zugriff haben.
+- **Privatsphäre-Einstellungen**  
+  - Die Privatsphäre-Einstellungen der Benutzer werden jetzt bei allen Datenbankabfragen berücksichtigt.
+- **E-Mail-Versand**  
+  - Integration von Nodemailer für den Versand von E-Mails über SMTP.
+  - Automatischer Versand einer Aktivierungs-E-Mail nach der Registrierung.
+- **Unit-Tests**  
+  - Die Testabdeckung wurde erweitert, um die neuen Backend-Funktionen abzudecken.
+- **Prepare Production Release**  
+  - Neue Config für die Produktion Umbgebung angelegt
+  - Die Deployment Pipelines angepasst um Test & Produktivumgebung zu behandeln.
+
+### 🐞 Fehlerbehebungen & Verbesserungen
+- **Design-Optimierungen im Header**  
+  - Elemente im Header sind jetzt vertikal zentriert.
+  - Bei kleineren Bildschirmen wird die Event-Auswahl in die nächste Zeile verschoben, um die Lesbarkeit zu verbessern.
+- **Teilnehmer-Logik**  
+  - Die Handhabung von leeren Teilnehmerlisten wurde verbessert, um Fehler zu vermeiden.
+- **Projekt beitritt fälschlich möglich**  
+  - Trotz eines eigenen initierten Projekts war der Beitritt zu anderen Projekten möglich.
+- **Stabilitätsverbesserungen**  
+  - Kleinere Fehler wurden behoben, um die allgemeine Stabilität und Performance der Anwendung zu erhöhen.
 
 ## Version 0.2.5
 **Release Date:** 2025-06-04
 
 ### ✨ Neue Features
-
-### 🐞 Bug fixes & Verbesserungen
-- **Desing Fix im Header**  
-  - Die einzelnen Elemente im Header sind nun vertical Zentriert
-  - Bei kleinen Auflösungn bricht die Event Auswahl in die nächste Zeile um
-
 **🏠 Dashboard**
 - **Dynamische Teilnehmeranzahl im Dashboard**  
   Die Teilnehmeranzahl im Dashboard wird jetzt als Summe der Initiatoren und Teilnehmer aller Projekte des aktuellen Events angezeigt.

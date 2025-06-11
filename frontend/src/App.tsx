@@ -68,7 +68,7 @@ const App = () => {
         showToastError('Token nicht gefunden. Bitte anmelden.');
         return;
       }
-      fetchEvents(token, setEvents, setSelectedEvent, showToastError);
+      fetchEvents(token, profile, setEvents, setSelectedEvent, showToastError);
     }
   }, [profile]);
 
@@ -82,13 +82,16 @@ const App = () => {
         return;
       }
       if (selectedEvent) {
-        fetchProjects(selectedEvent.id, token, setProjects, showToastError);
+        console.log('App: Fetching projects for event: ', selectedEvent.id);
+        console.log('App: Profile: ', profile);
+        console.log('App: Token: ', token);
+        fetchProjects(selectedEvent.id, profile, token, setProjects, showToastError);
       }
     }
   }, [selectedEvent]);
 
   const updateProjects = (eventId: number, token: string) => {
-    fetchProjects(eventId, token, setProjects, showToastError);
+    fetchProjects(eventId, profile, token, setProjects, showToastError);
   };
   const updateParticipateList = (token: string) => {
     fetchParticipateList(token, profile, setProfile, showToastError);
@@ -97,6 +100,7 @@ const App = () => {
   const publicRoutes = getPublicRoutes();
   const privateRoutes = getPrivateRoutes(
     profile,
+    events,
     selectedEvent,
     projects,
     updateProjects,

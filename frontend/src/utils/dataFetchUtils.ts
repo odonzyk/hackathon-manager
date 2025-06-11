@@ -3,12 +3,13 @@ import { Event, Profile, Project } from '../types/types';
 
 export const fetchEvents = async (
   token: string | null,
+  profile: Profile | null,
   setEvents: (events: Event[]) => void,
   setSelectedEvent: (event: Event | null) => void,
   showToastError: (msg: string) => void,
 ) => {
   console.log('Fetching Events');
-  const result = await getEvents(token);
+  const result = await getEvents(token, profile);
   if (result.resultType !== ResultType.SUCCESS || result.data === null) {
     showToastError(result.resultMsg ?? 'Error');
     return;
@@ -20,16 +21,18 @@ export const fetchEvents = async (
 
 export const fetchProjects = async (
   eventId: number | null,
+  profile: Profile | null,
   token: string | null,
   setProjects: (projects: Project[]) => void,
   showToastError: (msg: string) => void,
 ) => {
   console.log('Fetching Projects');
-  const result = await getProjects(eventId, token);
+  const result = await getProjects(eventId, profile, token);
   if (result.resultType !== ResultType.SUCCESS || result.data === null) {
     showToastError(result.resultMsg ?? 'Error');
     return;
   }
+  console.log(`Result Data${result.data}`);
   console.log(`${result.data.length} Projects fetched!`);
   setProjects(result.data);
 };

@@ -24,6 +24,7 @@
 /backend/node_modules
 !/backend/.env.example
 !/backend/.env.prod
+!/backend/.env.stage
 !/backend/hackathon.prod.db
 
 # Codeing Environment
