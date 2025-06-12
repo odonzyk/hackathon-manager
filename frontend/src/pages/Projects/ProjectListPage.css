@@ -1,20 +1,11 @@
-.filter-input {
-  --background: #FFFFFF; /* Weißer Hintergrund */
-  --color: #333333; /* Dunkle Schriftfarbe */
-  --placeholder-color: #707070; /* Helles Grau für Platzhalter */
-  --padding-start: 10px; /* Innenabstand links */
-  border-radius: 8px; /* Abgerundete Ecken */
-  border: 1px solid #E0E0E0; /* Dezente Umrandung */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Leichter Schatten */
-  transition: background-color 0.3s, box-shadow 0.3s;
+
+.project-filter-grid{
+  margin: 8px 12px;
 }
 
-.filter-input:focus {
-  --background: #F5F5F5; /* Hellerer Hintergrund beim Fokus */
-  border-color: #00509E; /* Thalia-Blau für Umrandung beim Fokus */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Stärkerer Schatten beim Fokus */
+.project-filter-input {
+  --background: var(--ion-card-background); 
+  --placeholder-color: var(--ion-text-color-light);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
-.filter-input::placeholder {
-  color: var(--placeholder-color); /* Platzhalterfarbe */
-}

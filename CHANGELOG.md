@@ -1,5 +1,17 @@
 # 📦 Changelog
 
+
+## Version 0.2.8
+**Release Date:** 2025-10-??
+
+### ✨ Neue Funktionen
+- 
+
+### 🐞 Fehlerbehebungen & Verbesserungen
+- **Filter auf Projektliste & Teilnehmer liste nicht einheitlich**  
+  - Das Design der Elemente ist nun einheitlich
+  - Beide Seiten filtern nun direkt beim tippen
+
 ## Version 0.2.7
 **Release Date:** 2025-10-06
 
