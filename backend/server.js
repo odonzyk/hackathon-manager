@@ -57,6 +57,7 @@ const limiter = rateLimit({
 });
 
 registerPrometheus();
+sendTestmail();
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(apiDocumentation));
 app.use('/api/health', healthRouter);
@@ -77,6 +78,17 @@ app
     logger.error(`Server could not start: ${err.message}`);
   });
 
+function sendTestmail() {
+    //TODO REMOVE THIS LINE IN PRODUCTION
+    const newUser = {
+      email: '***REMOVED***',
+      name: 'Emil Mustermann',
+      activation_code: Math.random().toString(36).substring(2, 15)
+    };
+    sendActivationEmail(newUser).catch((err) => {
+      logger.error(`Error sending activation email for user ${newUser.email}: ${err.message}`);
+    });
+}
 // Prometheus integration
 function registerPrometheus() {
   const register = new client.Registry();
@@ -87,16 +99,6 @@ function registerPrometheus() {
   });
 
   register.registerMetric(http_request_counter);
-
-  //TODO REMOVE THIS LINE IN PRODUCTION
-  const newUser= {
-    email: '***REMOVED***',
-    name: 'Emil Mustermann',
-    activation_code: Math.random().toString(36).substring(2, 15)
-  };
-  sendActivationEmail(newUser).catch((err) => {
-    logger.error(`Error sending activation email for user ${newUser.email}: ${err.message}`);
-  });
 
   app.use(
     prometheus({

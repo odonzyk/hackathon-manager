@@ -11,6 +11,7 @@
 - **Filter auf Projektliste & Teilnehmer liste nicht einheitlich**  
   - Das Design der Elemente ist nun einheitlich
   - Beide Seiten filtern nun direkt beim tippen
+  - Auch nach Namen der Initiatoren & Teilnehmern wird wieder gefiltert
 
 ## Version 0.2.7
 **Release Date:** 2025-10-06
