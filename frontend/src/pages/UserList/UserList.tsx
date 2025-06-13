@@ -137,7 +137,7 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonGrid>
+        <IonGrid >
           <IonRow>
             <IonCol size="12" sizeMd="8">
               {/* Suchfeld */}
@@ -145,7 +145,7 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
                 value={searchTerm}
                 fill="outline"
                 placeholder="Benutzer suchen..."
-                onIonChange={(e) => handleSearch(e.detail.value!)}
+                onIonInput={(e) => handleSearch(e.detail.value!)}
                 className="search-input"
               />
             </IonCol>
