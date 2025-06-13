@@ -3,6 +3,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const client = require('prom-client');
 const prometheus = require('prometheus-api-metrics');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 const config = require('./src/config');
 const logger = require('./src/logger');
@@ -46,6 +48,14 @@ logger.debug('Initialise routes');
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
+app.use(helmet());
+
+// Rate Limiting
+const limiter = rateLimit({
+  windowMs: config.rateLimitWindowMs || 15 * 60 * 1000, // 15 minutes
+  max: config.rateLimitMax || 100 // limit each IP to 100 requests per windowMs
+});
+
 registerPrometheus();
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(apiDocumentation));
