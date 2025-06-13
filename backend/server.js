@@ -3,6 +3,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const client = require('prom-client');
 const prometheus = require('prometheus-api-metrics');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 const config = require('./src/config');
 const logger = require('./src/logger');
@@ -24,7 +26,7 @@ const participateRoutes = require('./src/routes/participant');
 const initiatorRoutes = require('./src/routes/initiator');
 const adminRoutes = require('./src/routes/admin');
 const { dbInitialisation } = require('./src/utils/db/db');
-const { sendActivationEmail } = require('./src/utils/emailUtils');
+const { sendActivationEmail, sendServerRestartNotification } = require('./src/utils/emailUtils');
 
 // CORS-Options for Frontend
 const corsOptions = {
@@ -46,7 +48,16 @@ logger.debug('Initialise routes');
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
+app.use(helmet());
+
+// Rate Limiting
+const limiter = rateLimit({
+  windowMs: config.rateLimitWindowMs || 15 * 60 * 1000, // 15 minutes
+  max: config.rateLimitMax || 100 // limit each IP to 100 requests per windowMs
+});
+
 registerPrometheus();
+sendTestmail();
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(apiDocumentation));
 app.use('/api/health', healthRouter);
@@ -67,6 +78,17 @@ app
     logger.error(`Server could not start: ${err.message}`);
   });
 
+function sendTestmail() {
+    //TODO REMOVE THIS LINE IN PRODUCTION
+    const newUser = {
+      email: '***REMOVED***',
+      name: 'Emil Mustermann',
+      activation_code: Math.random().toString(36).substring(2, 15)
+    };
+    sendServerRestartNotification(newUser.email).catch((err) => {
+      logger.error(`Error sending server restart notification for user ${newUser.email}: ${err.message}`);
+    });
+}
 // Prometheus integration
 function registerPrometheus() {
   const register = new client.Registry();
@@ -77,16 +99,6 @@ function registerPrometheus() {
   });
 
   register.registerMetric(http_request_counter);
-
-  //TODO REMOVE THIS LINE IN PRODUCTION
-  const newUser= {
-    email: '***REMOVED***',
-    name: 'Emil Mustermann',
-    activation_code: Math.random().toString(36).substring(2, 15)
-  };
-  sendActivationEmail(newUser).catch((err) => {
-    logger.error(`Error sending activation email for user ${newUser.email}: ${err.message}`);
-  });
 
   app.use(
     prometheus({

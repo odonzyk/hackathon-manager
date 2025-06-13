@@ -50,6 +50,8 @@ module.exports = {
   smtpPassword: check(process.env.SMTP_PASSWORD, ''),
   smtpFrom: check(process.env.SMTP_FROM, ''),
   smtpRejectUnauthorized: check(process.env.SMTP_UNAUTOHORIZED, false),
+  rateLimitWindowMs: check(process.env.RATE_LIMIT_WINDOW_MS, 15 * 60 * 1000),
+  rateLimitMax: check(process.env.RATE_LIMIT_MAX, 100),
   check,
   logEnvironmentVariables
 };

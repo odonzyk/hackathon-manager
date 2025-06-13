@@ -1,7 +1,7 @@
 {
   "name": "hackathon-manager-backend",
   "description": "hackaton organisation backend",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "main": "server.js",
   "scripts": {
     "start:": "node server.js",
@@ -32,7 +32,9 @@
     "swagger-jsdoc": "6.2.8",
     "swagger-ui-express": "5.0.1",
     "winston": "^3.17.0",
-    "nodemailer": "^6.9.1"
+    "nodemailer": "^6.9.1",
+    "helmet": "^7.1.0",
+    "express-rate-limit": "^7.1.5"
   },
   "devDependencies": {
     "jest": "^29.7.0",

@@ -25,6 +25,7 @@
 }
 
 .user-section-title {
+  color: var(--ion-text-color-light);
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 0px;

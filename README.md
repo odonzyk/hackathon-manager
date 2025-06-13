@@ -12,6 +12,7 @@ Er bietet Funktionen zur Verwaltung von Projekten, Teams und Teilnehmern sowie z
   - [Backend](#backend)
 - [Entwicklung](#entwicklung)
 - [Autoren](#autoren)
+- [Build- und Test-Badges](#build-und-test-badges)
 
 ## Motivation
 
@@ -57,3 +58,7 @@ Du kannst uns fragen, wenn es irgendwelche Fragen gibt!
 
 - J.Zech
 - O.Donzyk (Initialentwurf)
+
+## Build- und Test-Badges
+
+[![Build Status](https://gitlab-ext.drsbln.de/hackathon/hackathon-manager/badges/main/pipeline.svg)](https://gitlab-ext.drsbln.de/hackathon/hackathon-manager/-/commits/main)

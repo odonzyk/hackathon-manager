@@ -64,4 +64,38 @@ async function sendActivationEmail(newUser) {
         </div>`
   );
 }
-module.exports = { sendActivationEmail };
+
+async function sendServerRestartNotification(adminEmail) {
+  const restartTime = new Date().toLocaleString(); // Aktuelle Zeit des Neustarts
+  const serverInfo = `${config.hostUrl || 'Hackathon Server'}`;
+  const websiteLink = config.hostPort ? `${config.hostUrl}:${config.hostPort}` : config.hostUrl; 
+
+  await sendEmail(
+    adminEmail,
+    'Server Neustart Benachrichtigung',
+    `Hallo Admin,\n\nDer Server wurde erfolgreich neu gestartet.\n\nDetails:\nServer: ${serverInfo}\nZeitpunkt: ${restartTime}\n\nWeitere Informationen finden Sie auf unserer Webseite:\n${websiteLink}\n\nFalls Sie diese Benachrichtigung nicht erwartet haben, überprüfen Sie bitte die Serverlogs.`,
+    `<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <h2 style="color: #4CAF50;">Server Neustart Benachrichtigung</h2>
+            <p>Hallo Admin,</p>
+            <p>Der Server wurde erfolgreich neu gestartet.</p>
+            <p><strong>Details:</strong></p>
+            <ul>
+                <li><strong>Server:</strong> ${serverInfo}</li>
+                <li><strong>Zeitpunkt:</strong> ${restartTime}</li>
+            </ul>
+            <p>Hier gehts direkt zu Anwendung:</p>
+            <p style="text-align: center; margin: 20px 0;">
+                <a href="${websiteLink}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: 16px;">Zur Webseite</a>
+            </p>
+            <p>Falls der Button nicht funktioniert, können Sie auch diesen Link verwenden:</p>
+            <p style="word-wrap: break-word;">
+                <a href="${websiteLink}" style="color: #4CAF50;">${websiteLink}</a>
+            </p>
+            <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
+            <p style="font-size: 12px; color: #777;">Falls Sie diese Benachrichtigung nicht erwartet haben, überprüfen Sie bitte die Serverlogs.</p>
+            <p style="font-size: 12px; color: #777;">Mit freundlichen Grüßen,<br>Das Hackathon Manager Team</p>
+        </div>`
+  );
+}
+
+module.exports = { sendActivationEmail, sendServerRestartNotification };

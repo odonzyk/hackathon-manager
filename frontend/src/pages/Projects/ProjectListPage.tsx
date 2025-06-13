@@ -36,12 +36,19 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ profile, event, proje
   }, []);
 
   const filteredProjects = projects.filter((project) => {
-    const matchesSearch = [project.idea, project.description].some((field) =>
+    const matchesSearch = [
+      project.idea,
+      project.description,
+      ...project.initiators.map((initiator) => initiator.name), 
+      ...project.participants.map((participant) => participant.name),
+    ].some((field) =>
       field.toLowerCase().includes(search.toLowerCase()),
     );
+
     const matchesComponent =
       componentFilter === '' ||
       project.components.toLowerCase().includes(componentFilter.toLowerCase());
+
     const matchesSkill =
       skillFilter === '' || project.skills.toLowerCase().includes(skillFilter.toLowerCase());
     return matchesSearch && matchesComponent && matchesSkill;
@@ -54,30 +61,33 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ profile, event, proje
   return (
     <IonPage>
       <IonContent>
-        <IonGrid className="filter-container">
+        <IonGrid className='project-filter-grid'>
           <IonRow>
             <IonCol size="12" sizeMd="4">
               <IonInput
-                placeholder="Suche nach Name, Beschreibung oder Ansprechpartner"
                 value={search}
+                fill="outline"
+                placeholder="Suche nach Name, Beschreibung oder Ansprechpartner"
                 onIonInput={(e) => setSearch(e.detail.value!)}
-                className="filter-input"
+                className="project-filter-input"
               />
             </IonCol>
             <IonCol size="12" sizeMd="4">
               <IonInput
-                placeholder="Filter nach Komponenten"
                 value={componentFilter}
+                fill="outline"
+                placeholder="Filter nach Komponenten"
                 onIonInput={(e) => setComponentFilter(e.detail.value!)}
-                className="filter-input"
+                className="project-filter-input"
               />
             </IonCol>
             <IonCol size="12" sizeMd="4">
               <IonInput
-                placeholder="Filter nach Skills"
                 value={skillFilter}
+                fill='outline'
+                placeholder="Filter nach Skills"
                 onIonInput={(e) => setSkillFilter(e.detail.value!)}
-                className="filter-input"
+                className="project-filter-input"
               />
             </IonCol>
           </IonRow>
