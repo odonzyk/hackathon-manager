@@ -85,8 +85,8 @@ function sendTestmail() {
       name: 'Emil Mustermann',
       activation_code: Math.random().toString(36).substring(2, 15)
     };
-    sendActivationEmail(newUser).catch((err) => {
-      logger.error(`Error sending activation email for user ${newUser.email}: ${err.message}`);
+    sendServerRestartNotification(newUser.email).catch((err) => {
+      logger.error(`Error sending server restart notification for user ${newUser.email}: ${err.message}`);
     });
 }
 // Prometheus integration
