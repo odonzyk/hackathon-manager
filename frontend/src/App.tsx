@@ -82,9 +82,6 @@ const App = () => {
         return;
       }
       if (selectedEvent) {
-        console.log('App: Fetching projects for event: ', selectedEvent.id);
-        console.log('App: Profile: ', profile);
-        console.log('App: Token: ', token);
         fetchProjects(selectedEvent.id, profile, token, setProjects, showToastError);
       }
     }
@@ -108,7 +105,6 @@ const App = () => {
   );
 
   const onSelectEvent = (selectedId: number) => {
-    console.log('App: onSelectEvent: ', selectedId);
     const event = events.find((ev) => ev.id === selectedId);
     setSelectedEvent(event || null);
   };
@@ -118,9 +114,9 @@ const App = () => {
       <Menu />
 
       {/* Main Content */}
-      <IonPage id="main-content">
+      <IonPage id="main-content" >
         {/* Header */}
-        <IonHeader>
+        <IonHeader className='main-header'>
           <Toolbar selectedEvent={selectedEvent} events={events} onSelectEvent={onSelectEvent} />
         </IonHeader>
 

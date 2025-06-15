@@ -34,12 +34,14 @@ export type Profile = {
 export type Initiator = {
   id: number;
   name: string;
+  email: string;
   avatar_url: string;
 };
 
 export type Participant = {
   id: number;
   name: string;
+  email: string;
   avatar_url: string;
 };
 
@@ -70,6 +72,8 @@ export type Project = {
   goal: string;
   components: string;
   skills: string;
+  max_team_size: number;
+  teams_channel_id: string;
   initiators: Initiator[];
   participants: Participant[];
 };

@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { IonPage, IonContent, IonGrid, IonRow, IonCol } from '@ionic/react';
+import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonHeader, IonToolbar, IonTitle, IonIcon } from '@ionic/react';
 import './TeamListPage.css';
 import { Event, Profile, Project } from '../../types/types';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import TeamCard from '../../components/cards/TeamCard/TeamCard';
+import { peopleOutline } from 'ionicons/icons';
 
 interface TeamListPageProps {
   profile: Profile | null;
@@ -20,6 +21,15 @@ const TeamListPage: React.FC<TeamListPageProps> = ({ profile, event, projects })
 
   return (
     <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>
+            <IonIcon icon={peopleOutline}/>
+            Team Übersicht
+          </IonTitle>
+        </IonToolbar>
+      </IonHeader>
+
       <IonContent>
         <IonGrid className="hackathon-grid">
           <IonRow>

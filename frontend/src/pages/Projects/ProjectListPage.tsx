@@ -9,8 +9,11 @@ import {
   IonFab,
   IonFabButton,
   IonIcon,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
 } from '@ionic/react';
-import { addOutline } from 'ionicons/icons';
+import { addOutline, folderOutline } from 'ionicons/icons';
 import './ProjectListPage.css';
 import { Event, Profile, Project } from '../../types/types';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
@@ -60,6 +63,15 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ profile, event, proje
 
   return (
     <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>
+            <IonIcon icon={folderOutline}/>
+            Projekt Übersicht
+          </IonTitle>
+        </IonToolbar>
+      </IonHeader>
+
       <IonContent>
         <IonGrid className='project-filter-grid'>
           <IonRow>

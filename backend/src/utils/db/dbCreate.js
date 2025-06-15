@@ -53,7 +53,9 @@ async function dbCreate() {
               team_avatar_url TEXT,
               goal TEXT,
               components TEXT,
-              skills TEXT,
+              skills TEXT, 
+              max_team_size INTEGER DEFAULT 20,
+              teams_channel_id TEXT,
               FOREIGN KEY (event_id) REFERENCES Event(id),
               FOREIGN KEY (status_id) REFERENCES ProjectStatus(id)
           )`

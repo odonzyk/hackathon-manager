@@ -18,6 +18,33 @@ body {
   color: var(--ion-text-color);
 }
 
+.main-header ion-toolbar {
+  box-shadow: 0 4px 2px var(--ion-color-secondary);
+}
+
+.hackathon-content ion-toolbar { 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  margin-top: 5px;
+}
+.hackathon-content ion-toolbar ion-title {
+  color: var(--ion-color-primary); 
+  font-size: 1.5rem; 
+  font-weight: bold;
+  vertical-align: middle; 
+}
+.hackathon-content ion-toolbar ion-icon {
+  color: var(--ion-color-primary); 
+  font-size: 1.5rem;
+  margin-right: 8px;
+  vertical-align: middle; 
+}
+
+
+.hackathon-content ion-toolbar ion-button ion-icon {
+  color: var(--ion-color-background); 
+  margin-left: 5px;
+}
+
 ion-menu ion-header {
   background-color: var(--ion-background-color);
   color: var(--ion-text-color-dark);
@@ -59,6 +86,9 @@ ion-select {
   font-size: 1.5rem;
   color: var(--ion-color-primary);
 }
+
+
+
 /* Toast Messages */
 .custom-toast {
   --background: var(--ion-color-primary);

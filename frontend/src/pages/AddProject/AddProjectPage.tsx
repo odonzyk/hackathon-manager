@@ -17,7 +17,7 @@ import {
   IonIcon,
 } from '@ionic/react';
 import { Event, Profile, Project } from '../../types/types';
-import { bulbOutline, constructOutline, flagOutline, peopleOutline } from 'ionicons/icons';
+import { bulbOutline, constructOutline, documentTextOutline, flagOutline, peopleCircleOutline, peopleOutline } from 'ionicons/icons';
 import { getExistingToken } from '../../utils/authUtils';
 import { postProject, putProject, ResultType } from '../../utils/dataApiConnector';
 import { useToast } from '../../components/ToastProvider';
@@ -39,6 +39,8 @@ const emptyProject: Project = {
   goal: '',
   components: '',
   skills: '',
+  max_team_size: 20,
+  teams_channel_id: '',
   initiators: [],
   participants: [],
 };
@@ -53,7 +55,7 @@ const AddProjectPage: React.FC<AddProjectPageProps> = ({ profile, event, onProje
   const isEditing = !!location.state?.project;
 
   // Funktion zum Aktualisieren des Projekts
-  const handleInputChange = (field: keyof Project, value: string) => {
+  const handleInputChange = (field: keyof Project, value: string | number) => {
     setNewProject((prevProject) => ({
       ...prevProject,
       [field]: value,
@@ -109,7 +111,7 @@ const AddProjectPage: React.FC<AddProjectPageProps> = ({ profile, event, onProje
 
             <IonList>
               <IonItem>
-                <IonIcon icon={peopleOutline} slot="start" style={{ color: '#007bff' }} />
+                <IonIcon icon={bulbOutline} slot="start" style={{ color: '#ffc107' }} />
                 <IonLabel>
                   <h2>Idee / Projekt Titel</h2>
                   <IonInput
@@ -122,7 +124,7 @@ const AddProjectPage: React.FC<AddProjectPageProps> = ({ profile, event, onProje
                 </IonLabel>
               </IonItem>
               <IonItem>
-                <IonIcon icon={peopleOutline} slot="start" style={{ color: '#007bff' }} />
+                <IonIcon icon={documentTextOutline} slot="start" style={{ color: '#6f42c1' }} />
                 <IonLabel>
                   <h2>Beschreibung</h2>
                   <IonTextarea
@@ -187,6 +189,35 @@ const AddProjectPage: React.FC<AddProjectPageProps> = ({ profile, event, onProje
                     counter={true}
                     maxlength={1000}
                     onIonChange={(e) => handleInputChange('skills', e.detail.value!)}
+                  />
+                </IonLabel>
+              </IonItem>
+              <IonItem>
+                <IonIcon icon={peopleCircleOutline} slot="start" style={{ color: '#007bff' }} />
+                <IonLabel>
+                  <h2>Maximale Teamgröße</h2>
+                  <IonInput
+                    type="number"
+                    value={newProject.max_team_size.toString()}
+                    fill="outline"
+                    counter={true}
+                    maxlength={3}
+                    onIonChange={(e) => handleInputChange('max_team_size', e.detail.value ? parseInt(e.detail.value, 10) : 0)}
+                  />
+                </IonLabel>
+              </IonItem>
+
+              <IonItem>
+                <IonIcon icon={bulbOutline} slot="start" style={{ color: '#6f42c1' }} />
+                <IonLabel>
+                  <h2>MS Teams Channel ID</h2>
+                  <IonInput
+                    type="text"
+                    value={newProject.teams_channel_id}
+                    fill="outline"
+                    counter={true}
+                    maxlength={255}
+                    onIonChange={(e) => handleInputChange('teams_channel_id', e.detail.value!)}
                   />
                 </IonLabel>
               </IonItem>

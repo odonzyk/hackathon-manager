@@ -20,6 +20,11 @@ interface ProjectListCardProps {
 }
 
 const ProjectListCard: React.FC<ProjectListCardProps> = ({ project, onProjectClick }) => {
+  if (!project) {
+    return null;
+  }
+  const countTeamMembers = project.participants.length + project.initiators.length;
+
   return (
     <IonCard className="hackathon-card" button onClick={onProjectClick}>
       <IonCardHeader>
@@ -55,7 +60,7 @@ const ProjectListCard: React.FC<ProjectListCardProps> = ({ project, onProjectCli
             <IonLabel>
               <h2>Teilnehmer</h2>
               <IonText>
-                {project.participants.length + project.initiators.length} (von max. 12)
+                {countTeamMembers} (von max. {project.max_team_size})
               </IonText>
             </IonLabel>
           </IonItem>
