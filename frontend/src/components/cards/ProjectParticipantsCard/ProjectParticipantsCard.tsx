@@ -10,6 +10,7 @@ import {
   IonItem,
   IonLabel,
   IonList,
+  IonText,
 } from '@ionic/react';
 import { peopleCircleOutline, personOutline } from 'ionicons/icons';
 import JoinProjectButton from '../../buttons/JoinProjectButton/JoinProjectButton';
@@ -29,6 +30,11 @@ const ProjectParticipantsCard: React.FC<ProjectParticipantsCardProps> = ({
   onRecjectClick,
   isLoading,
 }) => {
+  if (!project || !profile) {
+    return null;
+  }
+  const countTeamMembers = project.participants.length + project.initiators.length;
+
   return (
     <IonCard className="hackathon-card participant-card">
       <IonCardHeader>
@@ -48,6 +54,13 @@ const ProjectParticipantsCard: React.FC<ProjectParticipantsCardProps> = ({
               <IonLabel>{participant.name}</IonLabel>
             </IonItem>
           ))}
+          <IonItem>
+            <IonLabel>
+              <IonText>
+                {countTeamMembers} (von max. {project.max_team_size})
+              </IonText>
+            </IonLabel>
+          </IonItem>
         </IonList>
         <div className="join-project-button-container">
           <JoinProjectButton

@@ -9,8 +9,11 @@ import {
   IonFab,
   IonFabButton,
   IonIcon,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
 } from '@ionic/react';
-import { addOutline } from 'ionicons/icons';
+import { addOutline, folderOutline } from 'ionicons/icons';
 import './ProjectListPage.css';
 import { Event, Profile, Project } from '../../types/types';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
@@ -39,11 +42,9 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ profile, event, proje
     const matchesSearch = [
       project.idea,
       project.description,
-      ...project.initiators.map((initiator) => initiator.name), 
+      ...project.initiators.map((initiator) => initiator.name),
       ...project.participants.map((participant) => participant.name),
-    ].some((field) =>
-      field.toLowerCase().includes(search.toLowerCase()),
-    );
+    ].some((field) => field.toLowerCase().includes(search.toLowerCase()));
 
     const matchesComponent =
       componentFilter === '' ||
@@ -60,8 +61,17 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ profile, event, proje
 
   return (
     <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>
+            <IonIcon icon={folderOutline} />
+            Projekt Übersicht
+          </IonTitle>
+        </IonToolbar>
+      </IonHeader>
+
       <IonContent>
-        <IonGrid className='project-filter-grid'>
+        <IonGrid className="project-filter-grid">
           <IonRow>
             <IonCol size="12" sizeMd="4">
               <IonInput
@@ -84,7 +94,7 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ profile, event, proje
             <IonCol size="12" sizeMd="4">
               <IonInput
                 value={skillFilter}
-                fill='outline'
+                fill="outline"
                 placeholder="Filter nach Skills"
                 onIonInput={(e) => setSkillFilter(e.detail.value!)}
                 className="project-filter-input"

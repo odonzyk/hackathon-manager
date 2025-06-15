@@ -3,6 +3,7 @@ const { getRowCount, db_run, columnExists } = require('./dbUtils');
 
 async function migrateDB() {
   await migrateToVersion025();
+  await migrateToVersion028();
   logger.info('... DB Migration: Completed');
 }
 
@@ -19,6 +20,17 @@ async function migrateToVersion025() {
   if (!(await columnExists('User', 'activation_code'))) {
     logger.debug('.... DB Migration: v0.2.5 -> User table update');
     await db_run('ALTER TABLE User ADD COLUMN activation_code TEXT;');
+  }
+}
+
+async function migrateToVersion028() {
+  if (!(await columnExists('Project', 'max_team_size'))) {
+    logger.debug('.... DB Migration: v0.2.8 -> Project table update');
+    await db_run('ALTER TABLE Project ADD COLUMN max_team_size INTEGER DEFAULT 20;');
+  }
+  if (!(await columnExists('Project', 'teams_channel_id'))) {
+    logger.debug('.... DB Migration: v0.2.8 -> Project table update');
+    await db_run('ALTER TABLE Project ADD COLUMN teams_channel_id TEXT;');
   }
 }
 

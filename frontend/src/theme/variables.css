@@ -1,14 +1,14 @@
 :root {
-  --ion-background-color: #F5F5F5;
+  --ion-background-color: #f5f5f5;
   --ion-text-color: #555555;
   --ion-text-color-dark: #555555;
   --ion-text-color-light: #707070;
-  --ion-text-color-contrast: #F0F0F0;
-  --ion-card-background: #FFFFFF;
-  --ion-card-border: #E0E0E0; /* Leichte Umrandung */
-  --ion-color-primary: #00509E; /* Thalia-Blau */
-  --ion-color-secondary: #FFD700; /* Warmes Gelb */
-  --ion-color-tertiary: #6BBF59; /* Sanftes Grün */
+  --ion-text-color-contrast: #f0f0f0;
+  --ion-card-background: #ffffff;
+  --ion-card-border: #e0e0e0; /* Leichte Umrandung */
+  --ion-color-primary: #00509e; /* Thalia-Blau */
+  --ion-color-secondary: #ffd700; /* Warmes Gelb */
+  --ion-color-tertiary: #6bbf59; /* Sanftes Grün */
   --ion-font-family: 'Roboto', sans-serif;
 }
 
@@ -16,6 +16,32 @@ body {
   background-color: var(--ion-background-color);
   font-family: 'Roboto', sans-serif;
   color: var(--ion-text-color);
+}
+
+.main-header ion-toolbar {
+  box-shadow: 0 4px 2px var(--ion-color-secondary);
+}
+
+.hackathon-content ion-toolbar {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
+}
+.hackathon-content ion-toolbar ion-title {
+  color: var(--ion-color-primary);
+  font-size: 1.5rem;
+  font-weight: bold;
+  vertical-align: middle;
+}
+.hackathon-content ion-toolbar ion-icon {
+  color: var(--ion-color-primary);
+  font-size: 1.5rem;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.hackathon-content ion-toolbar ion-button ion-icon {
+  color: var(--ion-color-background);
+  margin-left: 5px;
 }
 
 ion-menu ion-header {
@@ -59,6 +85,7 @@ ion-select {
   font-size: 1.5rem;
   color: var(--ion-color-primary);
 }
+
 /* Toast Messages */
 .custom-toast {
   --background: var(--ion-color-primary);

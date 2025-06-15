@@ -1,7 +1,8 @@
 ## Backend
-* Swagger: Prometheus API
-* Grafana Dashboard
+* Prometheus API
 * Badge auf der Projektlisten Seite
-* Maximale Teilnehmer: Config, individuell pro Projekt
-* MS Teams Kanal hinzufügen
-* MAil Adresseb export
+
+* Profil Ansicht
+* Profil Bearbeitung
+* Setzen von Nutzerrechten
+* Badges Als Element für den Countdown

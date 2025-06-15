@@ -42,6 +42,12 @@ export const isDemo = (profile: Profile | null): boolean => {
   return !profile || !profile.role_id || !nonDemoRoles.includes(profile.role_id);
 };
 
+export const isOrganisator = (profile: Profile | null): boolean => {
+  if (!profile) return false;
+  const organisatorRoles = [RoleTypes.ADMIN, RoleTypes.MANAGER];
+  return organisatorRoles.includes(profile.role_id);
+};
+
 /* *************************************************** */
 /* User API                                            */
 /* *************************************************** */

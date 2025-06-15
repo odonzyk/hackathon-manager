@@ -16,6 +16,7 @@ import {
   IonCardContent,
   IonSelect,
   IonSelectOption,
+  IonIcon,
 } from '@ionic/react';
 import './UserList.css';
 import { getAllUsers, getProjects, ResultType } from '../../utils/dataApiConnector';
@@ -23,6 +24,7 @@ import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import { useToast } from '../../components/ToastProvider';
 import { Event, Profile, Project } from '../../types/types';
 import { getExistingToken } from '../../utils/authUtils';
+import { personCircleOutline } from 'ionicons/icons';
 
 interface UserListPageProps {
   profile: Profile | null;
@@ -133,11 +135,15 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Teilnehmer Liste</IonTitle>
+          <IonTitle>
+            <IonIcon icon={personCircleOutline} />
+            Teilnehmer Liste
+          </IonTitle>
         </IonToolbar>
       </IonHeader>
+
       <IonContent>
-        <IonGrid >
+        <IonGrid>
           <IonRow>
             <IonCol size="12" sizeMd="8">
               {/* Suchfeld */}
@@ -176,7 +182,7 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
             {Array.from('ABCDEFGHIJKLMNOPQRSTUVWXYZ').map((letter) => (
               <IonCol key={letter} size="auto">
                 <IonButton
-                className='alphabet-navigation-button'
+                  className="alphabet-navigation-button"
                   size="small"
                   onClick={() => {
                     const element = document.getElementById(`section-${letter}`);

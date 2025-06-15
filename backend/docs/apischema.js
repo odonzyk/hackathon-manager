@@ -104,6 +104,14 @@ const schemaObjects = {
       skills: {
         type: 'string',
         example: 'React, Node.js'
+      },
+      max_team_size: {
+        type: 'integer',
+        example: 20
+      },
+      teams_channel_id: {
+        type: 'string',
+        example: '1234567890'
       }
     }
   },

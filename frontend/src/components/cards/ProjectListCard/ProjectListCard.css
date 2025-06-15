@@ -6,7 +6,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 1.2rem; /* Etwas größere Schrift für bessere Lesbarkeit */
-  color: var(--ion-text-color)
+  color: var(--ion-text-color);
 }
 
 .project-list-detail {
@@ -15,4 +15,3 @@
   font-style: italic;
   color: var(--ion-text-color-light);
 }
-

@@ -30,6 +30,9 @@ const JoinProjectButton: React.FC<JoinProjectButtonProps> = ({
   const isInitiator = project.initiators.some((initiator) => initiator.id === profile?.id);
   const isParticipant = project.participants?.some((p) => p.id === profile?.id);
 
+  const countTeamMembers = project.participants.length + project.initiators.length;
+  const isFull = countTeamMembers >= project.max_team_size;
+
   console.log('JoinProjectButton: ', {
     eventId,
     statusId,
@@ -83,6 +86,15 @@ const JoinProjectButton: React.FC<JoinProjectButtonProps> = ({
         <IonButton expand="block" disabled={true} color="warning">
           <IonIcon slot="start" icon={warning}></IonIcon>
           Du bist bereits in einem anderen Projekt
+        </IonButton>
+      );
+    }
+
+    if (isFull) {
+      return (
+        <IonButton expand="block" disabled={true} color="danger">
+          <IonIcon slot="start" icon={closeCircle}></IonIcon>
+          Projekt voll
         </IonButton>
       );
     }

@@ -18,10 +18,12 @@ import {
   constructOutline,
   flagOutline,
   pencilOutline,
+  peopleCircleOutline,
   peopleOutline,
 } from 'ionicons/icons';
 import { Profile, Project } from '../../../types/types';
 import './ProjectDetailCard.css';
+import { isOrganisator } from '../../../utils/dataApiConnector';
 
 interface ProjectDetailCardProps {
   project: Project;
@@ -46,6 +48,7 @@ const ProjectDetailCard: React.FC<ProjectDetailCardProps> = ({ project, profile,
           {project.idea}
         </IonCardTitle>
       </IonCardHeader>
+
       <IonCardContent>
         <IonText className="project-detail">{project.description}</IonText>
 
@@ -92,14 +95,22 @@ const ProjectDetailCard: React.FC<ProjectDetailCardProps> = ({ project, profile,
               <IonText>{project.skills}</IonText>
             </IonLabel>
           </IonItem>
+          <IonItem>
+            <IonIcon icon={peopleCircleOutline} slot="start" style={{ color: '#007bff' }} />
+            <IonLabel>
+              <h2>Maximale Teamgröße</h2>
+              <IonText>{project.max_team_size}</IonText>
+            </IonLabel>
+          </IonItem>
         </IonList>
-        {isInitiator && (
-          <IonFab vertical="bottom" horizontal="end" slot="fixed" className="fab-inside-card">
-            <IonFabButton color="primary" onClick={onEditClick}>
-              <IonIcon icon={pencilOutline} />
-            </IonFabButton>
-          </IonFab>
-        )}
+        {isInitiator ||
+          (isOrganisator(profile) && (
+            <IonFab vertical="bottom" horizontal="end" slot="fixed" className="fab-inside-card">
+              <IonFabButton color="primary" onClick={onEditClick}>
+                <IonIcon icon={pencilOutline} />
+              </IonFabButton>
+            </IonFab>
+          ))}
       </IonCardContent>
     </IonCard>
   );

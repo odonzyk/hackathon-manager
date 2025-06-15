@@ -2,7 +2,7 @@ const express = require('express');
 const { db_get, db_run, db_all } = require('../utils/db/dbUtils');
 const logger = require('../logger');
 
-const { authenticateAndAuthorize } = require('../middlewares/authMiddleware');
+const { authenticateAndAuthorize, checkPermissions } = require('../middlewares/authMiddleware');
 const router = express.Router();
 const { ErrorMsg, RoleTypes } = require('../constants');
 
@@ -18,23 +18,27 @@ const createProject = (dbRow) => {
     goal: dbRow?.goal ?? '',
     components: dbRow?.components ?? '',
     skills: dbRow?.skills ?? '',
+    max_team_size: dbRow?.max_team_size ?? 20,
+    teams_channel_id: dbRow?.teams_channel_id ?? '',
     initiators: null,
     participants: null
   };
 };
 
-const createInitiator = (dbRow) => {
+const createInitiator = (dbRow, requesterRole) => {
   return {
     id: dbRow?.id ?? null,
     name: dbRow?.name ?? '',
+    email: !dbRow.is_private_email || checkPermissions(requesterRole, RoleTypes.MANAGER) ? dbRow.email : '',
     avatar_url: dbRow?.avatar_url ?? ''
   };
 };
 
-const createParticipant = (dbRow) => {
+const createParticipant = (dbRow, requesterRole) => {
   return {
     id: dbRow?.id ?? null,
     name: dbRow?.name ?? '',
+    email: !dbRow.is_private_email || checkPermissions(requesterRole, RoleTypes.MANAGER) ? dbRow.email : '',
     avatar_url: dbRow?.avatar_url ?? ''
   };
 };
@@ -56,8 +60,8 @@ router.get('/list/:event_id', authenticateAndAuthorize(RoleTypes.USER), async (r
 
   // Füge die Initiatoren zu jedem Projekt hinzu
   for (const project of projects) {
-    project.initiators = await getInitiators(project.id);
-    project.participants = await getParticipants(project.id);
+    project.initiators = await getInitiators(project.id, req.user.role_id);
+    project.participants = await getParticipants(project.id, req.user.role_id);
   }
 
   res.json(projects);
@@ -76,8 +80,8 @@ router.get('/list', authenticateAndAuthorize(RoleTypes.USER), async (req, res) =
 
   // Füge die Initiatoren zu jedem Projekt hinzu
   for (const project of projects) {
-    project.initiators = await getInitiators(project.id);
-    project.participants = await getParticipants(project.id);
+    project.initiators = await getInitiators(project.id, req.user.role_id);
+    project.participants = await getParticipants(project.id, req.user.role_id);
   }
 
   res.json(projects);
@@ -108,7 +112,7 @@ router.get('/listByUser/:id', authenticateAndAuthorize(RoleTypes.USER), async (r
 
 // *** POST /api/project *********************************************************
 router.post('/', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res) => {
-  let { event_id, status_id, idea, description, team_name, team_avatar_url, initiators, goal, components, skills } = req.body;
+  let { event_id, status_id, idea, description, team_name, team_avatar_url, initiators, goal, components, skills, max_team_size, teams_channel_id } = req.body;
   logger.debug(`API: POST /api/project - ${idea}`);
   if (!event_id || !idea || !description || !initiators[0]?.id) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
@@ -118,17 +122,11 @@ router.post('/', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res) =
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (result.row) return res.status(409).send(ErrorMsg.VALIDATION.CONFLICT);
 
-  result = await db_run('INSERT INTO Project (event_id, status_id, idea, description, team_name, team_avatar_url, goal, components, skills) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [
-    event_id,
-    status_id,
-    idea,
-    description,
-    team_name,
-    team_avatar_url,
-    goal,
-    components,
-    skills
-  ]);
+  max_team_size = max_team_size || 20;
+  result = await db_run(
+    'INSERT INTO Project (event_id, status_id, idea, description, team_name, team_avatar_url, goal, components, skills, max_team_size, teams_channel_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    [event_id, status_id, idea, description, team_name, team_avatar_url, goal, components, skills, max_team_size, teams_channel_id]
+  );
   const project_id = result.lastID;
   if (result.err || result.changes === 0) {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
@@ -143,8 +141,8 @@ router.post('/', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res) =
     }
   }
 
-  const initiatorslist = await getInitiators(project_id);
-  const participantslist = await getParticipants(project_id);
+  const initiatorslist = await getInitiators(project_id, req.user.role_id);
+  const participantslist = await getParticipants(project_id, req.user.role_id);
   res.status(201).json({
     event_id,
     id: project_id,
@@ -156,6 +154,8 @@ router.post('/', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res) =
     goal,
     components,
     skills,
+    max_team_size,
+    teams_channel_id,
     initiators: initiatorslist || [],
     participants: participantslist || []
   });
@@ -164,7 +164,7 @@ router.post('/', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res) =
 // *** PUT /api/project *********************************************************
 router.put('/:id', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res) => {
   const { id } = req.params;
-  let { event_id, status_id, idea, description, team_name, team_avatar_url, goal, components, skills } = req.body;
+  let { event_id, status_id, idea, description, team_name, team_avatar_url, goal, components, skills, max_team_size, teams_channel_id } = req.body;
   logger.debug(`API: PUT  /api/project/${id} - ${idea}`);
 
   if (!event_id || !idea || !description) {
@@ -197,20 +197,27 @@ router.put('/:id', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res)
   project.goal = goal ?? project.goal;
   project.components = components ?? project.components;
   project.skills = skills ?? project.skills;
+  project.max_team_size = max_team_size ?? project.max_team_size;
+  project.teams_channel_id = teams_channel_id ?? project.teams_channel_id;
 
   // Update Project
-  result = await db_run('UPDATE Project SET event_id=?, status_id=?, idea=?, description=?, team_name=?, team_avatar_url=?, goal=?, components=?, skills=? WHERE id = ?', [
-    project.event_id,
-    project.status_id,
-    project.idea,
-    project.description,
-    project.team_name,
-    project.team_avatar_url,
-    project.goal,
-    project.components,
-    project.skills,
-    id
-  ]);
+  result = await db_run(
+    'UPDATE Project SET event_id=?, status_id=?, idea=?, description=?, team_name=?, team_avatar_url=?, goal=?, components=?, skills=?, max_team_size=?, teams_channel_id=? WHERE id = ?',
+    [
+      project.event_id,
+      project.status_id,
+      project.idea,
+      project.description,
+      project.team_name,
+      project.team_avatar_url,
+      project.goal,
+      project.components,
+      project.skills,
+      project.max_team_size,
+      project.teams_channel_id,
+      id
+    ]
+  );
   if (result.err) {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }
@@ -229,8 +236,8 @@ router.get('/:id', authenticateAndAuthorize(RoleTypes.USER), async (req, res) =>
   const project = createProject(result.row);
 
   // Füge die Initiatoren zu dem Projekt hinzu
-  project.initiators = await getInitiators(project.id);
-  project.participants = await getParticipants(project.id);
+  project.initiators = await getInitiators(project.id, req.user.role_id);
+  project.participants = await getParticipants(project.id, req.user.role_id);
 
   res.json(project);
 });
@@ -251,9 +258,9 @@ router.delete('/:id', authenticateAndAuthorize(RoleTypes.ADMIN), async (req, res
 });
 
 // ** Helper Functions *****************************************************
-const getInitiators = async (projectId) => {
+const getInitiators = async (projectId, requesterRole) => {
   const result = await db_all(
-    `SELECT User.id, User.name, User.avatar_url 
+    `SELECT User.id, User.name, User.avatar_url, User.email, User.is_private_email 
     FROM User JOIN Initiator ON User.id = Initiator.user_id WHERE Initiator.project_id = ?`,
     [projectId]
   );
@@ -262,13 +269,13 @@ const getInitiators = async (projectId) => {
     return [];
   }
   // Wandle jedes DB-Row-Objekt in ein Project-Objekt mit createProject()
-  const initiators = result.row.map(createInitiator);
+  const initiators = result.row.map((dbRow) => createInitiator(dbRow, requesterRole));
   return initiators;
 };
 
-const getParticipants = async (projectId) => {
+const getParticipants = async (projectId, requesterRole) => {
   const result = await db_all(
-    `SELECT User.id, User.name, User.avatar_url 
+    `SELECT User.id, User.name, User.avatar_url, User.email, User.is_private_email 
     FROM User JOIN Participant ON User.id = Participant.user_id WHERE Participant.project_id = ?`,
     [projectId]
   );
@@ -277,7 +284,8 @@ const getParticipants = async (projectId) => {
     return [];
   }
   // Wandle jedes DB-Row-Objekt in ein Participant-Objekt mit createParticipant()
-  const participants = result.row.map(createParticipant);
+  const participants = result.row.map((dbRow) => createParticipant(dbRow, requesterRole));
+
   return participants;
 };
 
