@@ -2,16 +2,32 @@
 
 
 ## Version 0.2.8
-**Release Date:** 2025-10-??
+**Release Date:** 2025-10-15
 
 ### ✨ Neue Funktionen
-- 
+
+**Einstellbare Projekt Teamgröße**  
+- Anpassung der Projektliste mit  Anzeige der max. Teamgröße, basierend auf den individuellen Projekteinstellungen.
+- Anpassung der ProjektDetail Seite mit Anzeige der max. Teamgröße
+- ProjektEdit / Anlegen Seite ermöglicht das Bearbeiten der individuellen Teamgröße
+- Erweiterung der Backend APIs & Datenbank um die Projekt Teamgröße
+**MS Teams Link auf Projektseite**  
+- In der Kopfzeile des Projekts ist ein Button der direkt zum MS Teams Kanal weiterleitet.
+- ProjektEdit / Anlegen Seite ermöglicht das Bearbeiten der MS Teams Chanal ID
+- Erweiterung der Backend APIs & Datenbank um die MS Teams ID
+**Organisator Berechntigung**  
+- Auch Organisatoren dürfen ein Projekt bearbeiten
+**Mail Adress Export**  
+- Organisatoren haben einen zusätzzlichen Button in der Projekt Kopfzeile zum Exportieren aller Teilnehmer Mail Adressen.
 
 ### 🐞 Fehlerbehebungen & Verbesserungen
 - **Filter auf Projektliste & Teilnehmer liste nicht einheitlich**  
   - Das Design der Elemente ist nun einheitlich
   - Beide Seiten filtern nun direkt beim tippen
   - Auch nach Namen der Initiatoren & Teilnehmern wird wieder gefiltert
+- **Monitoring**  
+  - Auslesen des Monitoring Backends per Prometheus
+  - Aufsetzen eines Grafana Dashbord
 
 ## Version 0.2.7
 **Release Date:** 2025-10-06
