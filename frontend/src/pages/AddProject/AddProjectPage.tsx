@@ -96,7 +96,7 @@ const AddProjectPage: React.FC<AddProjectPageProps> = ({ profile, event, onProje
         ...emptyProject,
         event_id: event?.id || 0,
         initiators: profile
-          ? [{ id: profile.id, name: profile.name, avatar_url: profile.avatar_url }]
+          ? [{ id: profile.id, name: profile.name, email: profile.email, avatar_url: profile.avatar_url }]
           : [],
       });
     }
