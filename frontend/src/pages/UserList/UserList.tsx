@@ -136,14 +136,14 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>
-            <IonIcon icon={personCircleOutline}/>
+            <IonIcon icon={personCircleOutline} />
             Teilnehmer Liste
           </IonTitle>
         </IonToolbar>
       </IonHeader>
-      
+
       <IonContent>
-        <IonGrid >
+        <IonGrid>
           <IonRow>
             <IonCol size="12" sizeMd="8">
               {/* Suchfeld */}
@@ -182,7 +182,7 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
             {Array.from('ABCDEFGHIJKLMNOPQRSTUVWXYZ').map((letter) => (
               <IonCol key={letter} size="auto">
                 <IonButton
-                className='alphabet-navigation-button'
+                  className="alphabet-navigation-button"
                   size="small"
                   onClick={() => {
                     const element = document.getElementById(`section-${letter}`);

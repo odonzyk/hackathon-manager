@@ -79,15 +79,15 @@ app
   });
 
 function sendTestmail() {
-    //TODO REMOVE THIS LINE IN PRODUCTION
-    const newUser = {
-      email: '***REMOVED***',
-      name: 'Emil Mustermann',
-      activation_code: Math.random().toString(36).substring(2, 15)
-    };
-    sendServerRestartNotification(newUser.email).catch((err) => {
-      logger.error(`Error sending server restart notification for user ${newUser.email}: ${err.message}`);
-    });
+  //TODO REMOVE THIS LINE IN PRODUCTION
+  const newUser = {
+    email: '***REMOVED***',
+    name: 'Emil Mustermann',
+    activation_code: Math.random().toString(36).substring(2, 15)
+  };
+  sendServerRestartNotification(newUser.email).catch((err) => {
+    logger.error(`Error sending server restart notification for user ${newUser.email}: ${err.message}`);
+  });
 }
 // Prometheus integration
 function registerPrometheus() {

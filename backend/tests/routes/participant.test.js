@@ -183,7 +183,7 @@ describe('Participant API Endpoints', () => {
     });
 
     it('should delete all participants and return 200', async () => {
-      db_run.mockResolvedValue({ changes: 1 }); 
+      db_run.mockResolvedValue({ changes: 1 });
 
       const response = await request(app).delete('/api/participant').set('Authorization', `Bearer ${adminToken}`).send({ project_id: 3, user_id: 4 });
 
@@ -217,7 +217,7 @@ describe('Participant API Endpoints', () => {
       expect(response.status).toBe(403);
       expect(response.text).toBe(ErrorMsg.AUTH.NO_PERMISSION);
 
-      db_run.mockResolvedValueOnce({ changes: 1 }); 
+      db_run.mockResolvedValueOnce({ changes: 1 });
       response = await request(app).delete('/api/participant').set('Authorization', `Bearer ${adminToken}`).send({ project_id: 3, user_id: 4 });
       expect(response.status).toBe(200);
     });

@@ -30,7 +30,6 @@ const ProjectParticipantsCard: React.FC<ProjectParticipantsCardProps> = ({
   onRecjectClick,
   isLoading,
 }) => {
-
   if (!project || !profile) {
     return null;
   }

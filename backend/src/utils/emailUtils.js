@@ -8,14 +8,14 @@ const transporterOptions = {
   secure: config.smtpSecure,
   debug: true,
   tls: {
-    rejectUnauthorized: config.smtpRejectUnauthorized,
-  },
+    rejectUnauthorized: config.smtpRejectUnauthorized
+  }
 };
 // Auth nur hinzufügen, wenn smtpUser nicht leer ist
 if (config.smtpUser) {
   transporterOptions.auth = {
     user: config.smtpUser,
-    pass: config.smtpPassword,
+    pass: config.smtpPassword
   };
 }
 const transporter = nodemailer.createTransport(transporterOptions);
@@ -68,7 +68,7 @@ async function sendActivationEmail(newUser) {
 async function sendServerRestartNotification(adminEmail) {
   const restartTime = new Date().toLocaleString(); // Aktuelle Zeit des Neustarts
   const serverInfo = `${config.hostUrl || 'Hackathon Server'}`;
-  const websiteLink = config.hostPort ? `${config.hostUrl}:${config.hostPort}` : config.hostUrl; 
+  const websiteLink = config.hostPort ? `${config.hostUrl}:${config.hostPort}` : config.hostUrl;
 
   await sendEmail(
     adminEmail,

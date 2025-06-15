@@ -40,7 +40,10 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ profile, event, projects 
         {isDemo(profile) && (
           <IonCard style={{ backgroundColor: '#EAF4FC', color: '#003366' }}>
             <IonCardHeader>
-              <IonCardTitle><IonIcon icon={bookOutline} style={{ marginRight: '8px' }} />Demo Mode</IonCardTitle>
+              <IonCardTitle>
+                <IonIcon icon={bookOutline} style={{ marginRight: '8px' }} />
+                Demo Mode
+              </IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
               Bis zur vollständien Aktivierung ihres Accounts können Sie die Demo-Funktion nutzen.

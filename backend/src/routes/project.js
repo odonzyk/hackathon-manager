@@ -29,7 +29,7 @@ const createInitiator = (dbRow, requesterRole) => {
   return {
     id: dbRow?.id ?? null,
     name: dbRow?.name ?? '',
-    email: (!dbRow.is_private_email || checkPermissions(requesterRole,RoleTypes.MANAGER)) ? dbRow.email : '', 
+    email: !dbRow.is_private_email || checkPermissions(requesterRole, RoleTypes.MANAGER) ? dbRow.email : '',
     avatar_url: dbRow?.avatar_url ?? ''
   };
 };
@@ -38,7 +38,7 @@ const createParticipant = (dbRow, requesterRole) => {
   return {
     id: dbRow?.id ?? null,
     name: dbRow?.name ?? '',
-    email: (!dbRow.is_private_email || checkPermissions(requesterRole,RoleTypes.MANAGER)) ? dbRow.email : '', 
+    email: !dbRow.is_private_email || checkPermissions(requesterRole, RoleTypes.MANAGER) ? dbRow.email : '',
     avatar_url: dbRow?.avatar_url ?? ''
   };
 };
@@ -123,19 +123,10 @@ router.post('/', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res) =
   if (result.row) return res.status(409).send(ErrorMsg.VALIDATION.CONFLICT);
 
   max_team_size = max_team_size || 20;
-  result = await db_run('INSERT INTO Project (event_id, status_id, idea, description, team_name, team_avatar_url, goal, components, skills, max_team_size, teams_channel_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
-    event_id,
-    status_id,
-    idea,
-    description,
-    team_name,
-    team_avatar_url,
-    goal,
-    components,
-    skills,
-    max_team_size,
-    teams_channel_id
-  ]);
+  result = await db_run(
+    'INSERT INTO Project (event_id, status_id, idea, description, team_name, team_avatar_url, goal, components, skills, max_team_size, teams_channel_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    [event_id, status_id, idea, description, team_name, team_avatar_url, goal, components, skills, max_team_size, teams_channel_id]
+  );
   const project_id = result.lastID;
   if (result.err || result.changes === 0) {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
@@ -209,22 +200,24 @@ router.put('/:id', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res)
   project.max_team_size = max_team_size ?? project.max_team_size;
   project.teams_channel_id = teams_channel_id ?? project.teams_channel_id;
 
-
   // Update Project
-  result = await db_run('UPDATE Project SET event_id=?, status_id=?, idea=?, description=?, team_name=?, team_avatar_url=?, goal=?, components=?, skills=?, max_team_size=?, teams_channel_id=? WHERE id = ?', [
-    project.event_id,
-    project.status_id,
-    project.idea,
-    project.description,
-    project.team_name,
-    project.team_avatar_url,
-    project.goal,
-    project.components,
-    project.skills,
-    project.max_team_size,
-    project.teams_channel_id,
-    id
-  ]);
+  result = await db_run(
+    'UPDATE Project SET event_id=?, status_id=?, idea=?, description=?, team_name=?, team_avatar_url=?, goal=?, components=?, skills=?, max_team_size=?, teams_channel_id=? WHERE id = ?',
+    [
+      project.event_id,
+      project.status_id,
+      project.idea,
+      project.description,
+      project.team_name,
+      project.team_avatar_url,
+      project.goal,
+      project.components,
+      project.skills,
+      project.max_team_size,
+      project.teams_channel_id,
+      id
+    ]
+  );
   if (result.err) {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }

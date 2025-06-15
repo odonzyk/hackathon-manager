@@ -1,10 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonHeader, IonToolbar, IonTitle, IonIcon, IonButtons, IonButton } from '@ionic/react';
+import {
+  IonPage,
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonIcon,
+  IonButtons,
+  IonButton,
+} from '@ionic/react';
 import { Event, Profile, Project } from '../../types/types';
 import './ProjectDetailPage.css';
 import { getExistingToken } from '../../utils/authUtils';
-import { deleteParticipant, isOrganisator, postParticipant, ResultType } from '../../utils/dataApiConnector';
+import {
+  deleteParticipant,
+  isOrganisator,
+  postParticipant,
+  ResultType,
+} from '../../utils/dataApiConnector';
 import { useToast } from '../../components/ToastProvider';
 import EmptyPage from '../../components/EmptyPage';
 import ProjectDetailCard from '../../components/cards/ProjectDetailCard/ProjectDetailCard';
@@ -63,23 +80,26 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
 
   const handleCopyEmailsToClipboard = () => {
     if (!project || !project.participants) return;
-  
+
     let emails = project.initiators.map((initiator) => initiator.email).join(',');
     if (emails && project.participants.length > 0) {
       emails += ',' + project.participants.map((participant) => participant.email).join(',');
     }
-    navigator.clipboard.writeText(emails).then(() => {
-      showToastMessage('E-Mail-Adressen erfolgreich in die Zwischenablage kopiert!');
-    }).catch(() => {
-      showToastError('Fehler beim Kopieren der E-Mail-Adressen.');
-    });
+    navigator.clipboard
+      .writeText(emails)
+      .then(() => {
+        showToastMessage('E-Mail-Adressen erfolgreich in die Zwischenablage kopiert!');
+      })
+      .catch(() => {
+        showToastError('Fehler beim Kopieren der E-Mail-Adressen.');
+      });
   };
-  
+
   const handleOpenTeamsChannel = () => {
     if (!project || !project.teams_channel_id) {
       showToastError('MS Teams Kanal nicht verfügbar.');
       return;
-    }    
+    }
     const teams_channel_id = project.teams_channel_id;
     const group_id = '3fbaca9f-b59d-4aef-9ad9-24e4d9af582a';
     const tenant_id = '7006e676-abe8-4660-a98f-afd740c750ff';
@@ -116,7 +136,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
           {isOrganisator(profile) && (
             <IonButtons slot="end">
               <IonButton onClick={handleCopyEmailsToClipboard} title="E-Mail-Adressen kopieren">
-                <IonIcon icon={clipboardOutline}  />
+                <IonIcon icon={clipboardOutline} />
               </IonButton>
             </IonButtons>
           )}
@@ -127,7 +147,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      
+
       <IonContent>
         <IonGrid>
           <IonRow>

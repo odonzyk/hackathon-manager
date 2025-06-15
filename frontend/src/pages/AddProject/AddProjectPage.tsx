@@ -17,7 +17,14 @@ import {
   IonIcon,
 } from '@ionic/react';
 import { Event, Profile, Project } from '../../types/types';
-import { bulbOutline, constructOutline, documentTextOutline, flagOutline, peopleCircleOutline, peopleOutline } from 'ionicons/icons';
+import {
+  bulbOutline,
+  constructOutline,
+  documentTextOutline,
+  flagOutline,
+  peopleCircleOutline,
+  peopleOutline,
+} from 'ionicons/icons';
 import { getExistingToken } from '../../utils/authUtils';
 import { postProject, putProject, ResultType } from '../../utils/dataApiConnector';
 import { useToast } from '../../components/ToastProvider';
@@ -202,7 +209,12 @@ const AddProjectPage: React.FC<AddProjectPageProps> = ({ profile, event, onProje
                     fill="outline"
                     counter={true}
                     maxlength={3}
-                    onIonChange={(e) => handleInputChange('max_team_size', e.detail.value ? parseInt(e.detail.value, 10) : 0)}
+                    onIonChange={(e) =>
+                      handleInputChange(
+                        'max_team_size',
+                        e.detail.value ? parseInt(e.detail.value, 10) : 0,
+                      )
+                    }
                   />
                 </IonLabel>
               </IonItem>
