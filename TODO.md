@@ -5,4 +5,4 @@
 * Profil Ansicht
 * Profil Bearbeitung
 * Setzen von Nutzerrechten
-* 
+* Badges Als Element für den Countdown
