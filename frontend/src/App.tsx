@@ -114,9 +114,9 @@ const App = () => {
       <Menu />
 
       {/* Main Content */}
-      <IonPage id="main-content" >
+      <IonPage id="main-content">
         {/* Header */}
-        <IonHeader className='main-header'>
+        <IonHeader className="main-header">
           <Toolbar selectedEvent={selectedEvent} events={events} onSelectEvent={onSelectEvent} />
         </IonHeader>
 

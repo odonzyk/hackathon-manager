@@ -112,7 +112,7 @@ const schemaObjects = {
       teams_channel_id: {
         type: 'string',
         example: '1234567890'
-      },
+      }
     }
   },
   Participant: {

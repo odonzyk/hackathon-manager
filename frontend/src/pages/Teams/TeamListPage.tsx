@@ -1,5 +1,15 @@
 import React, { useEffect } from 'react';
-import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonHeader, IonToolbar, IonTitle, IonIcon } from '@ionic/react';
+import {
+  IonPage,
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonIcon,
+} from '@ionic/react';
 import './TeamListPage.css';
 import { Event, Profile, Project } from '../../types/types';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
@@ -24,7 +34,7 @@ const TeamListPage: React.FC<TeamListPageProps> = ({ profile, event, projects })
       <IonHeader>
         <IonToolbar>
           <IonTitle>
-            <IonIcon icon={peopleOutline}/>
+            <IonIcon icon={peopleOutline} />
             Team Übersicht
           </IonTitle>
         </IonToolbar>

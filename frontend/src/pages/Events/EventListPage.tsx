@@ -1,5 +1,15 @@
 import React from 'react';
-import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonHeader, IonToolbar, IonTitle, IonIcon } from '@ionic/react';
+import {
+  IonPage,
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonIcon,
+} from '@ionic/react';
 import './EventListPage.css';
 import { Event } from '../../types/types';
 import EventListCard from '../../components/cards/EventListCard.tsx/EventListCard';
@@ -15,7 +25,7 @@ const EventListPage: React.FC<EventListPageProps> = ({ events }) => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>
-            <IonIcon icon={calendarOutline}/>
+            <IonIcon icon={calendarOutline} />
             Event Liste
           </IonTitle>
         </IonToolbar>
