@@ -11,9 +11,7 @@ import {
   IonIcon,
 } from '@ionic/react';
 import './Dashboard.css';
-import { useEffect } from 'react';
 import { Event, Profile, Project } from '../../types/types';
-import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import ProjectOverviewCard from '../../components/cards/ProjectOverviewCard/ProjectOverviewCard';
 import TeamOverviewCard from '../../components/cards/TeamsOverviewCard/TeamOverviewCard';
 import MyProjectOverviewCard from '../../components/cards/MyProjectOverviewCard/MyProjectOverviewCard';
@@ -28,12 +26,6 @@ interface DashboardPageProps {
 }
 
 const DashboardPage: React.FC<DashboardPageProps> = ({ profile, event, projects }) => {
-  const isAuthenticated = useIsAuthenticated();
-
-  useEffect(() => {
-    console.log('DashboardPage: useEffect: ', isAuthenticated, profile?.id, event?.id);
-  }, []);
-
   return (
     <IonPage>
       <IonContent>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   IonPage,
   IonContent,
@@ -11,24 +11,15 @@ import {
   IonIcon,
 } from '@ionic/react';
 import './TeamListPage.css';
-import { Event, Profile, Project } from '../../types/types';
-import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
+import { Project } from '../../types/types';
 import TeamCard from '../../components/cards/TeamCard/TeamCard';
 import { peopleOutline } from 'ionicons/icons';
 
 interface TeamListPageProps {
-  profile: Profile | null;
   projects: Project[];
-  event: Event | null;
 }
 
-const TeamListPage: React.FC<TeamListPageProps> = ({ profile, event, projects }) => {
-  const isAuthenticated = useIsAuthenticated();
-
-  useEffect(() => {
-    console.log('TeamListPage: useEffect: ', isAuthenticated, profile?.id, event?.id);
-  }, []);
-
+const TeamListPage: React.FC<TeamListPageProps> = ({ projects }) => {
   return (
     <IonPage>
       <IonHeader>

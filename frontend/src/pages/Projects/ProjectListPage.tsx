@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   IonPage,
   IonContent,
@@ -15,8 +15,7 @@ import {
 } from '@ionic/react';
 import { addOutline, folderOutline } from 'ionicons/icons';
 import './ProjectListPage.css';
-import { Event, Profile, Project } from '../../types/types';
-import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
+import { Profile, Project } from '../../types/types';
 import { useHistory } from 'react-router-dom';
 import ProjectListCard from '../../components/cards/ProjectListCard/ProjectListCard';
 import { isDemo } from '../../utils/dataApiConnector';
@@ -24,19 +23,13 @@ import { isDemo } from '../../utils/dataApiConnector';
 interface ProjectListPageProps {
   profile: Profile | null;
   projects: Project[];
-  event: Event | null;
 }
 
-const ProjectListPage: React.FC<ProjectListPageProps> = ({ profile, event, projects }) => {
-  const isAuthenticated = useIsAuthenticated();
+const ProjectListPage: React.FC<ProjectListPageProps> = ({ profile, projects }) => {
   const [search, setSearch] = useState('');
   const [componentFilter, setComponentFilter] = useState('');
   const [skillFilter, setSkillFilter] = useState('');
   const history = useHistory();
-
-  useEffect(() => {
-    console.log('ProjectListPage: useEffect: ', isAuthenticated, profile?.id, event?.id);
-  }, []);
 
   const filteredProjects = projects.filter((project) => {
     const matchesSearch = [

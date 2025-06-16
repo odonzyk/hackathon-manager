@@ -1,5 +1,15 @@
 # 📦 Changelog
 
+## Version 0.2.9
+**Release Date:** 2025-10-??
+
+### ✨ Neue Funktionen
+
+- **Teilnehmer Liste**  
+  - Farbliche Markierung von Gast & Orga Accounts
+- **Backend**  
+  - PW Reset Funktion implementiert
+  - Absender Mail Adresse freischalten lassen um lange SPAM Filter Zeiten zu reduzieren
 
 ## Version 0.2.8
 **Release Date:** 2025-10-15

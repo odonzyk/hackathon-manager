@@ -31,7 +31,7 @@ export const trackingInit = () => {
 export const requestTracking = () => {
   const domain = window.location.hostname;
   const pageTitle = getPageTitle(location.pathname);
-  console.log('Tracking pageview:', domain, location.pathname, pageTitle);
+  //console.log('Tracking pageview:', domain, location.pathname, pageTitle);
   if (domain === 'localhost') {
     ReactGA.send({
       hitType: 'pageview',

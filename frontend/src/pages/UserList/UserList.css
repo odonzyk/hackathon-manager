@@ -47,9 +47,18 @@
 
 .user-section-detail {
   font-size: 1rem;
-
   font-style: italic;
-  color: #a0a0a0;
+  color: var(--ion-color-primary);
+}
+.user-section-detail-guest {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--ion-text-color-light);
+}
+.user-section-detail-manager {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--ion-color-secondary);
 }
 
 .tooltip-container {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { IonButton, IonIcon } from '@ionic/react';
-import { Profile, Project } from '../../../types/types';
+import { Profile, Project, ProjectStatus } from '../../../types/types';
 import { star, checkmarkCircle, closeCircle, warning, personCircle } from 'ionicons/icons';
 import { isDemo } from '../../../utils/dataApiConnector';
 
@@ -33,18 +33,7 @@ const JoinProjectButton: React.FC<JoinProjectButtonProps> = ({
   const countTeamMembers = project.participants.length + project.initiators.length;
   const isFull = countTeamMembers >= project.max_team_size;
 
-  console.log('JoinProjectButton: ', {
-    eventId,
-    statusId,
-    isEventParticipator,
-    isEventInitiator,
-    userIsFree,
-    isInitiator,
-    isParticipant,
-    profile: profile,
-  });
-
-  if (statusId === 3) {
+  if (statusId === ProjectStatus.ENDED) {
     return (
       <IonButton expand="block" disabled={true} color="secondary">
         <IonIcon slot="start" icon={checkmarkCircle}></IonIcon>
@@ -53,7 +42,7 @@ const JoinProjectButton: React.FC<JoinProjectButtonProps> = ({
     );
   }
 
-  if (statusId === 4) {
+  if (statusId === ProjectStatus.CANCELD) {
     return (
       <IonButton expand="block" disabled={true} color="danger">
         <IonIcon slot="start" icon={closeCircle}></IonIcon>
@@ -62,7 +51,7 @@ const JoinProjectButton: React.FC<JoinProjectButtonProps> = ({
     );
   }
 
-  if (statusId < 3) {
+  if (statusId <= ProjectStatus.ACTIVE) {
     if (isParticipant) {
       return (
         <IonButton expand="block" onClick={onRejectProject} disabled={disabled} color="tertiary">

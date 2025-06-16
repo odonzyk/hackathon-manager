@@ -69,7 +69,6 @@ export const getPrivateRoutes = (
     component: UserListPage,
     exact: true,
     profile: profile,
-    projects: projects,
     events: events,
   },
   {
@@ -77,7 +76,6 @@ export const getPrivateRoutes = (
     component: ProjectListPage,
     exact: true,
     profile: profile,
-    event: selectedEvent,
     projects: projects,
   },
   {
@@ -96,7 +94,6 @@ export const getPrivateRoutes = (
     component: ProjectDetailPage,
     exact: true,
     profile: profile,
-    event: selectedEvent,
     projects: projects,
     onParticipantChange: () => {
       handleParticipateChanged(selectedEvent, updateProjects, updateParticipateList);
