@@ -6,19 +6,19 @@
 
 ### ✨ Neue Funktionen
 
-**Einstellbare Projekt Teamgröße**  
-- Anpassung der Projektliste mit  Anzeige der max. Teamgröße, basierend auf den individuellen Projekteinstellungen.
-- Anpassung der ProjektDetail Seite mit Anzeige der max. Teamgröße
-- ProjektEdit / Anlegen Seite ermöglicht das Bearbeiten der individuellen Teamgröße
-- Erweiterung der Backend APIs & Datenbank um die Projekt Teamgröße
-**MS Teams Link auf Projektseite**  
-- In der Kopfzeile des Projekts ist ein Button der direkt zum MS Teams Kanal weiterleitet.
-- ProjektEdit / Anlegen Seite ermöglicht das Bearbeiten der MS Teams Chanal ID
-- Erweiterung der Backend APIs & Datenbank um die MS Teams ID
-**Organisator Berechntigung**  
-- Auch Organisatoren dürfen ein Projekt bearbeiten
-**Mail Adress Export**  
-- Organisatoren haben einen zusätzzlichen Button in der Projekt Kopfzeile zum Exportieren aller Teilnehmer Mail Adressen.
+- **Einstellbare Projekt Teamgröße**  
+  - Anpassung der Projektliste mit  Anzeige der max. Teamgröße, basierend auf den individuellen Projekteinstellungen.
+  - Anpassung der Projekt Detail Seite mit Anzeige der max. Teamgröße
+  - Projekt Edit / Anlegen Seite ermöglicht das Bearbeiten der individuellen Teamgröße
+  - Erweiterung der Backend APIs & Datenbank um die Projekt Teamgröße
+- **MS Teams Link auf Projektseite**  
+  - In der Kopfzeile des Projekts ist ein Button der direkt zum MS Teams Kanal weiterleitet.
+  - Projekt Edit / Anlegen Seite ermöglicht das Bearbeiten der MS Teams Chanel ID
+  - Erweiterung der Backend APIs & Datenbank um die MS Teams ID
+- **Organisator Berechtigung**  
+  - Auch Organisatoren dürfen ein Projekt bearbeiten
+- **Mail Adressen Export**  
+  - Organisatoren haben einen zusätzlichen Button in der Projekt Kopfzeile zum Exportieren aller Teilnehmer Mail Adressen.
 
 ### 🐞 Fehlerbehebungen & Verbesserungen
 - **Filter auf Projektliste & Teilnehmer liste nicht einheitlich**  
