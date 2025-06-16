@@ -19,7 +19,7 @@ interface TeamListPageProps {
   projects: Project[];
 }
 
-const TeamListPage: React.FC<TeamListPageProps> = ({projects }) => {
+const TeamListPage: React.FC<TeamListPageProps> = ({ projects }) => {
   return (
     <IonPage>
       <IonHeader>

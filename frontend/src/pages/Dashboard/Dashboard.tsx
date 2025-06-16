@@ -26,7 +26,6 @@ interface DashboardPageProps {
 }
 
 const DashboardPage: React.FC<DashboardPageProps> = ({ profile, event, projects }) => {
-
   return (
     <IonPage>
       <IonContent>

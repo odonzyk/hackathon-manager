@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   IonPage,
   IonContent,
@@ -30,7 +30,6 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ profile, projects }) 
   const [componentFilter, setComponentFilter] = useState('');
   const [skillFilter, setSkillFilter] = useState('');
   const history = useHistory();
-
 
   const filteredProjects = projects.filter((project) => {
     const matchesSearch = [

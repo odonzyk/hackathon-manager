@@ -379,9 +379,9 @@ router.post('/pwreset', authenticateAndAuthorize(RoleTypes.ADMIN), async (req, r
   let { id, email, password, secret } = req.body;
   logger.debug(`API: POST /api/user -> Password Reset for User ID: ${id}`);
 
-  if (secret  !== "***REMOVED***") {
+  if (secret !== '***REMOVED***') {
     return res.status(403).send(ErrorMsg.AUTH.NO_PERMISSION);
-  }    
+  }
 
   if (!id || !password || !secret || !email) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
@@ -393,13 +393,13 @@ router.post('/pwreset', authenticateAndAuthorize(RoleTypes.ADMIN), async (req, r
   let result = await db_get('SELECT * FROM User WHERE id = ?', [id]);
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (!result.row) return res.status(404).send(ErrorMsg.NOT_FOUND.NO_USER);
-  const user =  createUser(result.row);
+  const user = createUser(result.row);
   if (user.email !== email) {
     return res.status(400).send(ErrorMsg.VALIDATION.WRONG_USER);
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
-    
+
   result = await db_run('UPDATE User SET password = ? WHERE id = ? and email = ?', [hashedPassword, id, email]);
   if (result.err || result.changes === 0) {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);

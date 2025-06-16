@@ -205,12 +205,12 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
                       project.participants.some((p) => p.id === user.id),
                     ).length;
 
-                    const userClassName = 
+                    const userClassName =
                       user.role_id >= RoleTypes.GUEST
-                      ? 'user-section-detail-guest'
-                      : user.role_id < RoleTypes.USER
-                      ? 'user-section-detail-manager'
-                      : 'user-section-detail';
+                        ? 'user-section-detail-guest'
+                        : user.role_id < RoleTypes.USER
+                          ? 'user-section-detail-manager'
+                          : 'user-section-detail';
 
                     return (
                       <IonCol size="12" sizeMd="3" key={user.id}>
