@@ -20,9 +20,8 @@ import {
 } from '@ionic/react';
 import './UserList.css';
 import { getAllUsers, getProjects, ResultType } from '../../utils/dataApiConnector';
-import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import { useToast } from '../../components/ToastProvider';
-import { Event, Profile, Project } from '../../types/types';
+import { Event, Profile, Project, RoleTypes } from '../../types/types';
 import { getExistingToken } from '../../utils/authUtils';
 import { personCircleOutline } from 'ionicons/icons';
 
@@ -32,7 +31,6 @@ interface UserListPageProps {
 }
 
 const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
-  const isAuthenticated = useIsAuthenticated();
   const { showToastError } = useToast();
   const [userlist, setUserlist] = useState<Profile[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -42,19 +40,16 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
 
   // Funktion zum Abrufen der Benutzerliste
   const fetchUserList = async (token: string | null) => {
-    console.log('UserListPage: Fetching Users');
     const result = await getAllUsers(profile, token);
     if (result.resultType !== ResultType.SUCCESS || result.data === null) {
       showToastError(result.resultMsg ?? 'Error');
       return;
     }
-    console.log('UserListPage: Users fetched: ', result.data);
     setUserlist(result.data);
     setFilteredUsers(result.data);
   };
 
   const fetchProjectList = async (token: string | null) => {
-    console.log('UserListPage: Fetching Projects for all Events');
     const aggregatedProjects: Project[] = [];
 
     for (const event of events) {
@@ -63,14 +58,12 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
         showToastError(result.resultMsg ?? 'Error');
         continue;
       }
-      console.log(`UserListPage: Projects fetched for event ${event.id}:`, result.data);
       aggregatedProjects.push(...result.data);
     }
     setProjects(aggregatedProjects);
   };
 
   useEffect(() => {
-    console.log('UserListPage: useEffect: ', isAuthenticated, profile);
     if (profile) {
       const token = getExistingToken();
       if (!token) {
@@ -128,8 +121,6 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
     acc[firstLetter].push(user);
     return acc;
   }, {});
-
-  console.log('UserListPage: projects: ', projects);
 
   return (
     <IonPage>
@@ -214,11 +205,18 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
                       project.participants.some((p) => p.id === user.id),
                     ).length;
 
+                    const userClassName = 
+                      user.role_id >= RoleTypes.GUEST
+                      ? 'user-section-detail-guest'
+                      : user.role_id < RoleTypes.USER
+                      ? 'user-section-detail-manager'
+                      : 'user-section-detail';
+
                     return (
                       <IonCol size="12" sizeMd="3" key={user.id}>
                         <IonCard className="user-card">
                           <IonCardContent>
-                            <IonText className="user-section-detail">{user.name}</IonText>
+                            <IonText className={userClassName}>{user.name}</IonText>
                             <div>
                               <div className="tooltip-container">
                                 <IonBadge color="secondary">{initiatorCount}</IonBadge>

@@ -29,7 +29,6 @@ export const loadStoredProfile = (): Profile | null => {
   let userProfile: Profile | null = null;
   try {
     userProfile = storedUser ? (JSON.parse(storedUser) as Profile) : null;
-    console.log('loadStoredProfile: userProfile: ', userProfile);
   } catch (error) {
     console.error('Error on loading profile', error);
   }
@@ -61,7 +60,6 @@ export const getProfile = async (
     const response = await axios.get<Profile>(`/api/user/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log('getProfile: response: ', response.data);
     return resultSuccess(response.data);
   } catch (error) {
     return resultError('getProfile: Profil konnte nicht geladen werden');

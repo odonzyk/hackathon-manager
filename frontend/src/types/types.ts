@@ -11,6 +11,14 @@ export const RoleTypes = {
   DUMMY: 6,
 };
 
+export const ProjectStatus = {
+  PITCHING: 1,
+  ACTIVE: 2,
+  ENDED: 3,
+  CANCELD: 4,
+  ARCHIVED: 5,
+};
+
 export type User = {
   id: number;
   email: string;

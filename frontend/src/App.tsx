@@ -46,7 +46,6 @@ const App = () => {
   }, [location]);
 
   useEffect(() => {
-    console.log('App: useEffect: ', isAuthenticated, profile);
     if (!isAuthenticated) return;
 
     if (!profile) {
@@ -60,8 +59,6 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    console.log('App: useEffect: ', isAuthenticated, profile);
-
     if (profile) {
       const token = getExistingToken();
       if (!token) {
@@ -73,8 +70,6 @@ const App = () => {
   }, [profile]);
 
   useEffect(() => {
-    console.log('App: useEffect: ', isAuthenticated, selectedEvent, profile?.id);
-
     if (profile) {
       const token = getExistingToken();
       if (!token) {

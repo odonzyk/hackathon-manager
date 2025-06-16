@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import {
   IonPage,
@@ -37,7 +37,6 @@ interface ProjectDetailPageProps {
 
 const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   profile,
-  event,
   projects,
   onParticipantChange,
 }) => {
@@ -49,7 +48,6 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   const project = projects.find((p) => p.id === parseInt(id));
 
   const handleJoinProject = async (project_id: number, user_id: number) => {
-    console.log(`Projekt mit ID ${project_id} beitreten`);
     setLoading(true);
     const token = getExistingToken();
     const result = await postParticipant(project_id, user_id, token);
@@ -64,7 +62,6 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   };
 
   const handleRejectProject = async (project_id: number, user_id: number) => {
-    console.log(`Projekt mit ID ${project_id} ablehnen`);
     setLoading(true);
     const token = getExistingToken();
     const result = await deleteParticipant(project_id, user_id, token);
@@ -114,12 +111,6 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
       state: { project },
     });
   };
-
-  useEffect(() => {
-    console.log('ProjectDetailPage: useEffect: ', profile?.id, event?.id);
-    console.log('ProjectDetailPage: Project ID:', id);
-    console.log('ProjectDetailPage: Project:', project);
-  }, []);
 
   if (!project) {
     return <EmptyPage message="Projekt nicht gefunden" />;
