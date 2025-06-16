@@ -15,7 +15,7 @@ logger.info(`Log Level: ${logger.level}`);
 const swaggerUi = require('swagger-ui-express');
 const apiDocumentation = require('./docs/apidoc');
 
-require('./src/middlewares/projectEventBus');
+require('./src/middlewares/hackathonEventBus');
 require('./src/eventListener/prometheusExport');
 
 const healthRouter = require('./src/routes/health');

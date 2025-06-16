@@ -26,6 +26,7 @@ const ErrorMsg = Object.freeze({
 });
 
 const EventTypes = {
+  USER_CHANGE: 'User Changed',
   PROJECT_CHANGE: 'Project Changed',
   PARTICIPANT_CHANGE: 'Participant Changed'
 };

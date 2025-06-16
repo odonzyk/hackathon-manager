@@ -6,8 +6,9 @@ const config = require('../config');
 const logger = require('../logger');
 const { checkPermissions, authenticateAndAuthorize, authenticateToken } = require('../middlewares/authMiddleware');
 const router = express.Router();
-const { ErrorMsg, RoleTypes } = require('../constants');
+const { ErrorMsg, RoleTypes, EventTypes } = require('../constants');
 const { sendActivationEmail } = require('../utils/emailUtils');
+const hackingEventBus = require('../middlewares/hackathonEventBus');
 
 const createUser = (dbRow) => {
   return {
@@ -253,8 +254,10 @@ router.post('/', async (req, res) => {
   sendActivationEmail(newUser).catch((err) => {
     logger.error(`Error sending activation email for user ${newUser.email}: ${err.message}`);
   });
-
   newUser.id = newUser.id ? newUser.id : result.lastID;
+
+  notifyUserChangge();
+
   res.status(201).json(newUser);
 });
 
@@ -312,6 +315,8 @@ router.put('/:id', authenticateAndAuthorize(RoleTypes.USER), async (req, res) =>
   if (result.err) {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }
+
+  notifyUserChangge();
 
   res.status(200).json(user);
 });
@@ -372,6 +377,9 @@ router.delete('/:id', authenticateAndAuthorize(RoleTypes.USER), async (req, res)
   if (result.changes === 0) {
     return res.status(404).send(ErrorMsg.NOT_FOUND.NO_USER);
   }
+
+  notifyUserChangge();
+
   res.status(200).send('User deleted successfully');
 });
 
@@ -460,3 +468,8 @@ const privacyFilter = (user, requesterRole) => {
   }
   return user;
 };
+
+async function notifyUserChangge() {
+  logger.info(`EVENT is raised: ${EventTypes.USER_CHANGE} `);
+  hackingEventBus.emit(EventTypes.USER_CHANGE);
+}
