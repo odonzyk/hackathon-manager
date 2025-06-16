@@ -1,6 +1,6 @@
 # Entwicklung
 
-Das Repository liegt auf dem Thalia DRS GitLab Server. Dort kann das Projekt ausgeschekt (für weitere Anweisungen siehe [hier](cloning-the-repo)) und ein branch erstellt werden.
+Das Repository liegt auf dem Thalia DRS GitLab Server. Dort kann das Projekt ausgecheckt (für weitere Anweisungen siehe [hier](cloning-the-repo)) und ein branch erstellt werden.
 
 ## Projekt einrichten
 Um das Projekt lokal auszuführen, folge diesen Schritten:
