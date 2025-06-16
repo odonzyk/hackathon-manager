@@ -132,7 +132,7 @@ router.get('/list', authenticateAndAuthorize(RoleTypes.USER), async (req, res) =
   let users = result.row.map(createUser);
 
   // Filtere die privaten Felder basierend auf den Einstellungen
-  users = users.map(privacyFilter);
+  users = users.map((user) => privacyFilter(user, req.user.role));
 
   res.json(users);
 });
@@ -449,12 +449,14 @@ const getUserInitiatorList = async (userId) => {
   return result.row.map(createInitiate);
 };
 
-const privacyFilter = (user) => {
-  if (user.is_private_email) {
-    user.email = '';
-  }
-  if (user.is_private_telephone) {
-    user.telephone = '';
+const privacyFilter = (user, requesterRole) => {
+  if (!checkPermissions(requesterRole, RoleTypes.MANAGER)) {
+    if (user.is_private_email) {
+      user.email = '';
+    }
+    if (user.is_private_telephone) {
+      user.telephone = '';
+    }
   }
   return user;
 };

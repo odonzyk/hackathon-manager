@@ -111,7 +111,7 @@ router.get('/listByUser/:id', authenticateAndAuthorize(RoleTypes.USER), async (r
 });
 
 // *** POST /api/project *********************************************************
-router.post('/', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res) => {
+router.post('/', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
   let { event_id, status_id, idea, description, team_name, team_avatar_url, initiators, goal, components, skills, max_team_size, teams_channel_id } = req.body;
   logger.debug(`API: POST /api/project - ${idea}`);
   if (!event_id || !idea || !description || !initiators[0]?.id) {
