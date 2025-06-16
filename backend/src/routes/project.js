@@ -4,7 +4,8 @@ const logger = require('../logger');
 
 const { authenticateAndAuthorize, checkPermissions } = require('../middlewares/authMiddleware');
 const router = express.Router();
-const { ErrorMsg, RoleTypes } = require('../constants');
+const { ErrorMsg, RoleTypes, EventTypes } = require('../constants');
+const hackingEventBus = require('../middlewares/hackathonEventBus');
 
 const createProject = (dbRow) => {
   return {
@@ -111,7 +112,7 @@ router.get('/listByUser/:id', authenticateAndAuthorize(RoleTypes.USER), async (r
 });
 
 // *** POST /api/project *********************************************************
-router.post('/', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res) => {
+router.post('/', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
   let { event_id, status_id, idea, description, team_name, team_avatar_url, initiators, goal, components, skills, max_team_size, teams_channel_id } = req.body;
   logger.debug(`API: POST /api/project - ${idea}`);
   if (!event_id || !idea || !description || !initiators[0]?.id) {
@@ -143,6 +144,8 @@ router.post('/', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res) =
 
   const initiatorslist = await getInitiators(project_id, req.user.role_id);
   const participantslist = await getParticipants(project_id, req.user.role_id);
+
+  notifyProjectChange();
   res.status(201).json({
     event_id,
     id: project_id,
@@ -222,6 +225,7 @@ router.put('/:id', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res)
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }
 
+  notifyProjectChange();
   res.status(200).json(project);
 });
 
@@ -254,6 +258,8 @@ router.delete('/:id', authenticateAndAuthorize(RoleTypes.ADMIN), async (req, res
   if (result.changes === 0) {
     return res.status(404).send(ErrorMsg.NOT_FOUND.NO_PROJECT);
   }
+
+  notifyProjectChange(); 
   res.status(200).send('Project deleted successfully');
 });
 
@@ -288,5 +294,10 @@ const getParticipants = async (projectId, requesterRole) => {
 
   return participants;
 };
+
+async function notifyProjectChange() {
+  logger.info(`EVENT is raised: ${EventTypes.PROJECT_CHANGE} `);
+  hackingEventBus.emit(EventTypes.PROJECT_CHANGE);
+}
 
 module.exports = router;

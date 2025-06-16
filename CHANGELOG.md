@@ -11,6 +11,11 @@
   - PW Reset Funktion implementiert
   - Absender Mail Adresse freischalten lassen um lange SPAM Filter Zeiten zu reduzieren
 
+### 🐞 Fehlerbehebungen & Verbesserungen
+- User konnten keine neuen Projekte anlegnen
+- Initiatoren konnten ihre eigenen Projekte nicht editieren
+
+
 ## Version 0.2.8
 **Release Date:** 2025-10-15
 
