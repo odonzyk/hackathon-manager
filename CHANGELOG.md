@@ -14,6 +14,7 @@
 ### 🐞 Fehlerbehebungen & Verbesserungen
 - User konnten keine neuen Projekte anlegnen
 - Initiatoren konnten ihre eigenen Projekte nicht editieren
+- Erweitertes Prometheus Monitoring 
 
 
 ## Version 0.2.8
