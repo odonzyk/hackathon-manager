@@ -112,4 +112,27 @@ async function notifyParticipantChange() {
   hackingEventBus.emit(EventTypes.PARTICIPANT_CHANGE);
 }
 
+// *** DELETE /api/Participant *********************************************************
+router.delete('/', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
+  const { project_id, user_id } = req.body;
+  logger.debug(`API: DEL  /api/initiator -> Project ID: ${project_id}, User ID: ${user_id}`);
+
+  if (!project_id || !user_id) {
+    return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
+  }
+  if (!checkPermissions(req.user.role, RoleTypes.MANAGER) && req.user.role === RoleTypes.USER && req.user.id !== user_id) {
+    return res.status(403).send(ErrorMsg.AUTH.NO_PERMISSION);
+  }
+
+  result = await db_run('DELETE FROM Initiator WHERE project_id = ? AND user_id = ?', [project_id, user_id]);
+  if (result.err) {
+    return res.status(500).send(ErrorMsg.SERVER.ERROR);
+  }
+  if (result.changes === 0) {
+    return res.status(404).send(ErrorMsg.NOT_FOUND.NO_INITIATOR);
+  }
+  notifyParticipantChange();
+  res.status(200).send('Initiator deleted successfully');
+});
+
 module.exports = router;
