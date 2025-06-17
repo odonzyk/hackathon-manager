@@ -6,11 +6,12 @@ import { formatDate } from '../../../utils/dateUtils';
 
 interface EventListCardProps {
   event: Event;
+  onEventClick: () => void;
 }
 
-const EventListCard: React.FC<EventListCardProps> = ({ event }) => {
+const EventListCard: React.FC<EventListCardProps> = ({ event, onEventClick }) => {
   return (
-    <IonCard className="hackathon-card event-card">
+    <IonCard className="hackathon-card" button onClick={onEventClick}>
       <IonCardHeader>
         <IonCardTitle>{event.name}</IonCardTitle>
       </IonCardHeader>
