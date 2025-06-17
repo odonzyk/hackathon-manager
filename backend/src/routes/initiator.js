@@ -35,6 +35,7 @@ router.post('/', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
     return res.status(500).send(`Server error`);
   }
 
+  notifyParticipantChange();
   res.status(201).json({
     id: initiator_id,
     project_id,
@@ -71,6 +72,7 @@ router.put('/:id', authenticateAndAuthorize(RoleTypes.USER), async (req, res) =>
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }
 
+  notifyParticipantChange();
   res.status(200).json(initiator);
 });
 
@@ -83,6 +85,8 @@ router.get('/:id', authenticateAndAuthorize(RoleTypes.USER), async (req, res) =>
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (!result.row) return res.status(404).send(ErrorMsg.NOT_FOUND.NO_INITIATOR);
   const initiator = createInitiator(result.row);
+  
+  notifyParticipantChange();
   res.json(initiator);
 });
 
@@ -98,7 +102,13 @@ router.delete('/:id', authenticateAndAuthorize(RoleTypes.ADMIN), async (req, res
   if (result.changes === 0) {
     return res.status(404).send(ErrorMsg.NOT_FOUND.NO_INITIATOR);
   }
+  notifyParticipantChange();
   res.status(200).send('Initiator deleted successfully');
 });
+
+async function notifyParticipantChange() {
+  logger.info(`EVENT is raised: ${EventTypes.PARTICIPANT_CHANGE} `);
+  hackingEventBus.emit(EventTypes.PARTICIPANT_CHANGE);
+}
 
 module.exports = router;

@@ -168,6 +168,7 @@ router.post('/:id/participate', authenticateAndAuthorize(RoleTypes.USER), async 
   }
 
   const participant = await getUserParticipation(id, project_id);
+  notifyParticipantChange();
   res.status(201).json(participant);
 });
 
@@ -202,6 +203,8 @@ router.delete('/:id/participate', authenticateAndAuthorize(RoleTypes.USER), asyn
   if (result.changes === 0) {
     return res.status(404).send(ErrorMsg.NOT_FOUND.NO_PARTICIPANT);
   }
+
+  notifyParticipantChange();
   res.status(200).send('Participation deleted successfully');
 });
 
@@ -472,4 +475,8 @@ const privacyFilter = (user, requesterRole) => {
 async function notifyUserChangge() {
   logger.info(`EVENT is raised: ${EventTypes.USER_CHANGE} `);
   hackingEventBus.emit(EventTypes.USER_CHANGE);
+}
+async function notifyParticipantChange() {
+  logger.info(`EVENT is raised: ${EventTypes.PARTICIPANT_CHANGE} `);
+  hackingEventBus.emit(EventTypes.PARTICIPANT_CHANGE);
 }

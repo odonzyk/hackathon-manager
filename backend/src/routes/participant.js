@@ -4,7 +4,7 @@ const logger = require('../logger');
 
 const { checkPermissions, authenticateAndAuthorize } = require('../middlewares/authMiddleware');
 const router = express.Router();
-const { ErrorMsg, RoleTypes } = require('../constants');
+const { ErrorMsg, RoleTypes, EventTypes } = require('../constants');
 
 const createParticipant = (dbRow) => {
   return {
@@ -36,6 +36,7 @@ router.post('/', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
     return res.status(500).send(`Server error`);
   }
 
+  notifyParticipantChange();
   res.status(201).json({
     id: participant_id,
     project_id,
@@ -72,6 +73,7 @@ router.put('/:id', authenticateAndAuthorize(RoleTypes.USER), async (req, res) =>
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }
 
+  notifyParticipantChange();
   res.status(200).json(participant);
 });
 
@@ -99,6 +101,7 @@ router.delete('/:id', authenticateAndAuthorize(RoleTypes.ADMIN), async (req, res
   if (result.changes === 0) {
     return res.status(404).send(ErrorMsg.NOT_FOUND.NO_PARTICIPANT);
   }
+  notifyParticipantChange();
   res.status(200).send('Participant deleted successfully');
 });
 
@@ -121,7 +124,13 @@ router.delete('/', authenticateAndAuthorize(RoleTypes.USER), async (req, res) =>
   if (result.changes === 0) {
     return res.status(404).send(ErrorMsg.NOT_FOUND.NO_PARTICIPANT);
   }
+  notifyParticipantChange();
   res.status(200).send('Participant deleted successfully');
 });
+
+async function notifyParticipantChange() {
+  logger.info(`EVENT is raised: ${EventTypes.PARTICIPANT_CHANGE} `);
+  hackingEventBus.emit(EventTypes.PARTICIPANT_CHANGE);
+}
 
 module.exports = router;

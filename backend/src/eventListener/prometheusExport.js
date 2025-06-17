@@ -23,6 +23,15 @@ const kpi_commitedProjects = new promClient.Gauge({
   labelNames: ['environment', 'event']
 });
 
+const kpi_project_paricipants = new promClient.Gauge({
+  name: 'kpi_hackathon_participants',
+  help: 'Number of participants in the hackathon projects',
+  labelNames: ['environment', 'event', 'project', 'type']
+});
+
+// checkParticipantCounts().then(participantCounts => {
+//   console.log(participantCounts);
+// });
 
 // **  *************************************
 async function exportUserCount(userCounts) {
@@ -47,6 +56,18 @@ async function exportProjectCount(projectCounts) {
   });
 }
 
+async function exportParticipantCount(participantCounts) {
+  if (!participantCounts) return;
+
+  //logger.debug(`exportParticipantCount -> ParticipantCounts: ${JSON.stringify(participantCounts)}`);
+
+  // Iteriere über die Events und sende die Werte als Prometheus-Metriken mit Labels
+  Object.keys(participantCounts).forEach((event) => {
+    kpi_project_paricipants.labels({ ...globalLabels, event: participantCounts[event].event, project: participantCounts[event].project, type: 'count' }).set(participantCounts[event].count);
+    kpi_project_paricipants.labels({ ...globalLabels, event: participantCounts[event].event, project: participantCounts[event].project, type: 'max' }).set(participantCounts[event].max);
+  });
+}
+
 
 
 // ** Handle Eventbus notification ********************************************
@@ -67,6 +88,17 @@ hackEventBus.on(EventTypes.PROJECT_CHANGE, async (event_id) => {
   try {
     const projectCounts = await checkProjectsCounts();
     exportProjectCount(projectCounts);
+  } catch (err) {
+    logger.error('Error during PrometheusExport', err);
+  }
+});
+
+hackEventBus.on(EventTypes.PARTICIPANT_CHANGE, async (event_id) => {
+  logger.debug(`PrometheusExport -> EVENT is received: ${EventTypes.PARTICIPANT_CHANGE}`);
+  
+  try {
+    const participantCounts = await checkParticipantCounts();
+    exportParticipantCount(participantCounts);
   } catch (err) {
     logger.error('Error during PrometheusExport', err);
   }
@@ -121,6 +153,40 @@ async function checkProjectsCounts() {
     }, {});
 
     return projectCounts; 
+  } catch (error) {
+    logger.error(error.message);
+    return {}; 
+  }
+}
+
+async function checkParticipantCounts() {
+  try {
+    const result = await db_all(
+      `SELECT Project.id, Event.name, Project.idea, 
+        (select count(*) from Participant where project_id = Project.id) + 
+        (select count(*) from Initiator where project_id = Project.id) as count,
+        MAX(Project.max_team_size) as max_team_size
+      FROM Project
+      JOIN Event ON Project.event_id = Event.id 
+      GROUP BY Event.name, Project.idea` 
+    );
+
+    if (result.err) {
+      throw new Error('Error occurred while fetching participant counts');
+    }
+
+    // Transformiere die Ergebnisse in ein Objekt
+    const participantCounts = result.row.reduce((acc, row) => {
+      acc[row.id] = {
+        count: row.count,
+        max: row.max_team_size,
+        event: row.name,
+        project: row.idea
+      };
+      return acc;
+    }, {});
+
+    return participantCounts; 
   } catch (error) {
     logger.error(error.message);
     return {}; 
