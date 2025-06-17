@@ -4,7 +4,8 @@ const logger = require('../logger');
 
 const { authenticateAndAuthorize, checkPermissions } = require('../middlewares/authMiddleware');
 const router = express.Router();
-const { ErrorMsg, RoleTypes } = require('../constants');
+const { ErrorMsg, RoleTypes, EventTypes } = require('../constants');
+const hackingEventBus = require('../middlewares/hackathonEventBus');
 
 const createInitiator = (dbRow) => {
   return {

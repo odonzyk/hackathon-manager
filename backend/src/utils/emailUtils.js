@@ -44,11 +44,12 @@ async function sendEmail(to, subject, text, html) {
 
 async function sendActivationEmail(newUser) {
   const activationLink = `${config.activationUrl}?email=${encodeURIComponent(newUser.email)}&ac=${newUser.activation_code}`;
-  await sendEmail(
-    newUser.email,
-    'Hackathon Kontoaktivierung',
-    `Hallo ${newUser.name},\n\nBitte aktiviere Dein Konto mit folgendem Link:\n${activationLink}`,
-    `<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+  try {
+    await sendEmail(
+      newUser.email,
+      'Hackathon Kontoaktivierung',
+      `Hallo ${newUser.name},\n\nBitte aktiviere Dein Konto mit folgendem Link:\n${activationLink}`,
+      `<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
             <h2 style="color: #4CAF50;">Hallo ${newUser.name}, willkommen beim Hackathon Manager!</h2>
             <p>Vielen Dank, dass du dich registriert hast. Um dein Konto zu aktivieren, klicke bitte auf den folgenden Link:</p>
             <p style="text-align: center; margin: 20px 0;">
@@ -62,7 +63,10 @@ async function sendActivationEmail(newUser) {
             <p style="font-size: 12px; color: #777;">Wenn du diese E-Mail nicht angefordert hast, kannst du sie ignorieren.</p>
             <p style="font-size: 12px; color: #777;">Mit freundlichen Grüßen,<br>Das Hackathon Manager Team</p>
         </div>`
-  );
+    );
+  } catch (error) {
+    throw new Error(`Failed to send activation email: ${error.message}`);
+  }
 }
 
 async function sendServerRestartNotification(adminEmail) {
@@ -70,11 +74,12 @@ async function sendServerRestartNotification(adminEmail) {
   const serverInfo = `${config.hostUrl || 'Hackathon Server'}`;
   const websiteLink = config.hostPort ? `${config.hostUrl}:${config.hostPort}` : config.hostUrl;
 
-  await sendEmail(
-    adminEmail,
-    'Server Neustart Benachrichtigung',
-    `Hallo Admin,\n\nDer Server wurde erfolgreich neu gestartet.\n\nDetails:\nServer: ${serverInfo}\nZeitpunkt: ${restartTime}\n\nWeitere Informationen finden Sie auf unserer Webseite:\n${websiteLink}\n\nFalls Sie diese Benachrichtigung nicht erwartet haben, überprüfen Sie bitte die Serverlogs.`,
-    `<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+  try {
+    await sendEmail(
+      adminEmail,
+      'Server Neustart Benachrichtigung',
+      `Hallo Admin,\n\nDer Server wurde erfolgreich neu gestartet.\n\nDetails:\nServer: ${serverInfo}\nZeitpunkt: ${restartTime}\n\nWeitere Informationen finden Sie auf unserer Webseite:\n${websiteLink}\n\nFalls Sie diese Benachrichtigung nicht erwartet haben, überprüfen Sie bitte die Serverlogs.`,
+      `<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
             <h2 style="color: #4CAF50;">Server Neustart Benachrichtigung</h2>
             <p>Hallo Admin,</p>
             <p>Der Server wurde erfolgreich neu gestartet.</p>
@@ -95,7 +100,10 @@ async function sendServerRestartNotification(adminEmail) {
             <p style="font-size: 12px; color: #777;">Falls Sie diese Benachrichtigung nicht erwartet haben, überprüfen Sie bitte die Serverlogs.</p>
             <p style="font-size: 12px; color: #777;">Mit freundlichen Grüßen,<br>Das Hackathon Manager Team</p>
         </div>`
-  );
+    );
+  } catch (error) {
+    throw new Error(`Failed to send activation email: ${error.message}`);
+  }
 }
 
 module.exports = { sendActivationEmail, sendServerRestartNotification };

@@ -254,9 +254,11 @@ router.post('/', async (req, res) => {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }
 
-  sendActivationEmail(newUser).catch((err) => {
+  try {
+    await sendActivationEmail(newUser);
+  } catch (err) {
     logger.error(`Error sending activation email for user ${newUser.email}: ${err.message}`);
-  });
+  }
   newUser.id = newUser.id ? newUser.id : result.lastID;
 
   notifyUserChangge();

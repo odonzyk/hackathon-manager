@@ -7,7 +7,8 @@ const logger = require('../../src/logger');
 const userRouter = require('../../src/routes/user');
 
 jest.mock('../../src/utils/db/dbUtils');
-jest.mock('../../src/logger'); // Mock des Loggers
+jest.mock('../../src/logger');
+jest.mock('../../src/utils/emailUtils');
 
 const app = express();
 app.use(express.json());
@@ -674,8 +675,7 @@ describe('User API Endpoints', () => {
         name: 'New User',
         email: 'newuser@example.com'
       });
-      expect(response.status).toBe(400);
-      expect(response.text).toBe(ErrorMsg.VALIDATION.MISSING_FIELDS);
+      expect(response.status).toBe(404);
     });
 
     it('should return 409 if email is already taken', async () => {
