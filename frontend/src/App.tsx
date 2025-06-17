@@ -88,6 +88,9 @@ const App = () => {
   const updateParticipateList = (token: string) => {
     fetchParticipateList(token, profile, setProfile, showToastError);
   };
+  const updateSelectedEvent = (event: Event) => {
+    setSelectedEvent(event); // Speichert das ausgewählte Event
+  };
 
   const publicRoutes = getPublicRoutes();
   const privateRoutes = getPrivateRoutes(
@@ -97,12 +100,15 @@ const App = () => {
     projects,
     updateProjects,
     updateParticipateList,
+    updateSelectedEvent
   );
 
   const onSelectEvent = (selectedId: number) => {
     const event = events.find((ev) => ev.id === selectedId);
     setSelectedEvent(event || null);
   };
+
+
 
   return (
     <IonApp>

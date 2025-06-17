@@ -1,7 +1,23 @@
 # 📦 Changelog
 
+## Version 0.3.0
+**Release Date:** 2025-10-16
+
+### ✨ Neue Funktionen
+
+- **Stable Hackathon Release**
+  - Feature completed MVP
+- **Realtime Monitoring per Grafana**
+  - Teamgröße pro Projekt
+  - Anzahl der Projekte pro Event
+  - Registrierte Nutzer insgesamt
+
+### 🐞 Fehlerbehebungen & Verbesserungen
+- Eventliste ist nun Klickbar und wechselt das aktuell angezeigte Event
+
+
 ## Version 0.2.9
-**Release Date:** 2025-10-??
+**Release Date:** 2025-10-16
 
 ### ✨ Neue Funktionen
 

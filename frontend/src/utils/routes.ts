@@ -11,6 +11,8 @@ import AboutPage from '../pages/AboutPage/AboutPage';
 import UserListPage from '../pages/UserList/UserList';
 import RequestActivationPage from '../pages/Register/RequestActivationPage';
 import ActivationPage from '../pages/Register/ActivationPage';
+import { Event } from '../types/types';
+import { on } from 'events';
 
 const handleProjectAdded = (selectedEvent: any, updateProjects: any) => {
   const token = getExistingToken();
@@ -31,6 +33,10 @@ const handleParticipateChanged = (
   }
 };
 
+const handleSelectedEvent = (event: Event, updateSelectedEvent: any) => {
+  updateSelectedEvent(event);
+};
+
 export const getPublicRoutes = () => [
   { path: '/login', component: LoginPage, exact: true },
   { path: '/register', component: RegisterPage, exact: true },
@@ -46,6 +52,7 @@ export const getPrivateRoutes = (
   projects: any,
   updateProjects: any,
   updateParticipateList: any,
+  updateSelectedEvent: any
 ) => [
   {
     path: '/dashboard',
@@ -55,7 +62,15 @@ export const getPrivateRoutes = (
     event: selectedEvent,
     projects: projects,
   },
-  { path: '/events', component: EventListPage, exact: true, events: events },
+  { 
+    path: '/events', 
+    component: EventListPage, 
+    exact: true, 
+    events: events,
+    onEventSelect: (event: Event) => {
+      handleSelectedEvent(event, updateSelectedEvent);
+    }
+  },
   {
     path: '/teams',
     component: TeamListPage,
