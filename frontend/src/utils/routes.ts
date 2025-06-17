@@ -12,7 +12,6 @@ import UserListPage from '../pages/UserList/UserList';
 import RequestActivationPage from '../pages/Register/RequestActivationPage';
 import ActivationPage from '../pages/Register/ActivationPage';
 import { Event } from '../types/types';
-import { on } from 'events';
 
 const handleProjectAdded = (selectedEvent: any, updateProjects: any) => {
   const token = getExistingToken();
