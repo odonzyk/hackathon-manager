@@ -318,10 +318,10 @@ export const postParticipant = async (
     if (response.status === 201) {
       return resultSuccess(response.data);
     } else {
-      return resultError('Projekt konnte nicht aktualisiert werden');
+      return resultError('Participant konnte nicht aktualisiert werden');
     }
   } catch (error) {
-    return resultError('Projekt konnte nicht aktualisiert werden');
+    return resultError('Participant konnte nicht aktualisiert werden');
   }
 };
 
@@ -343,9 +343,67 @@ export const deleteParticipant = async (
     if (response.status === 200) {
       return resultSuccess(response.data);
     } else {
-      return resultError('Projekt konnte nicht aktualisiert werden');
+      return resultError('Participant konnte nicht aktualisiert werden');
     }
   } catch (error) {
-    return resultError('Projekt konnte nicht aktualisiert werden');
+    return resultError('Participant konnte nicht aktualisiert werden');
+  }
+};
+
+
+/* *************************************************** */
+/* Initiator                                           */
+/* *************************************************** */
+
+export const postInitiator = async (
+  project_id: number | null,
+  user_id: number | null,
+  token: string | null,
+): Promise<{ resultType: ResultType; resultMsg: string | null; data: Project | null }> => {
+  if (!token || !project_id || !user_id) return resultError('Projekt, Benutzer oder Token fehlen');
+
+  try {
+    const response = await axios.post<Project>(
+      `/api/initiator`,
+      {
+        project_id,
+        user_id,
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
+    if (response.status === 201) {
+      return resultSuccess(response.data);
+    } else {
+      return resultError('Initiator konnte nicht aktualisiert werden');
+    }
+  } catch (error) {
+    return resultError('Initiator konnte nicht geladen werden');
+  }
+};
+
+export const deleteInitiator = async (
+  project_id: number | null,
+  user_id: number | null,
+  token: string | null,
+): Promise<{ resultType: ResultType; resultMsg: string | null; data: Project | null }> => {
+  if (!token || !project_id || !user_id) return resultError('Projekt, Benutzer oder Token fehlen');
+
+  try {
+    const response = await axios.delete<Project>(`/api/initiator`, {
+      data: {
+        project_id,
+        user_id,
+      },
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (response.status === 200) {
+      return resultSuccess(response.data);
+    } else {
+      return resultError('Initiator konnte nicht aktualisiert werden');
+    }
+  } catch (error) {
+    return resultError('Initiator konnte nicht geladen werden');
   }
 };

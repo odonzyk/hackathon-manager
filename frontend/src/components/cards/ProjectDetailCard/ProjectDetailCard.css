@@ -29,9 +29,10 @@
   color: white;
   font-size: 0.9rem;
   font-weight: bold;
-  padding: 5px 30px; /* Größe des Banners */
+  padding: 5px 0px; 
   text-align: center;
   z-index: 3;
+  width: 150px;
 }
 
 .initiator-badge {
@@ -40,4 +41,8 @@
 
 .participant-badge {
   background-color: #28a745; /* Grün für Teilnehmer */
+}
+
+.closed-badge {
+  background-color: #a72828; /* Rot für geschlossene Projekte */
 }

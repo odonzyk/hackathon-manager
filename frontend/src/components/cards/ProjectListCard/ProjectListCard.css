@@ -15,3 +15,27 @@
   font-style: italic;
   color: var(--ion-text-color-light);
 }
+
+.project-badge {
+  position: absolute;
+  top: 80px; /* Abstand vom oberen Rand der IonCard */
+  right: -20px; /* Abstand vom rechten Rand der IonCard */
+  transform: rotate(45deg); /* Diagonale Ausrichtung */
+  transform-origin: top right;
+  background-color: #007bff; /* Standardfarbe für das Badge */
+  color: white;
+  font-size: 0.9rem;
+  font-weight: bold;
+  padding: 5px 0px; 
+  text-align: center;
+  z-index: 3;
+  width: 150px;
+}
+
+.initiator-badge {
+  background-color: #007bff; /* Blau für Initiator */
+}
+
+.participant-badge {
+  background-color: #28a745; /* Grün für Teilnehmer */
+}

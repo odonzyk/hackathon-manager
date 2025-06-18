@@ -14,6 +14,7 @@
 
 ### 🐞 Fehlerbehebungen & Verbesserungen
 - Eventliste ist nun Klickbar und wechselt das aktuell angezeigte Event
+- Status Badge auch auf der Projektliste (Teilnehmer, Initiator, Projekt abgebrochen)
 
 
 ## Version 0.2.9

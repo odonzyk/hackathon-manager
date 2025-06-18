@@ -1,4 +1,4 @@
-import { getEvents, getProjects, getUserParticipations, ResultType } from './dataApiConnector';
+import { deleteParticipant, getEvents, getProjects, getUserParticipations, ResultType } from './dataApiConnector';
 import { Event, Profile, Project } from '../types/types';
 
 export const fetchEvents = async (

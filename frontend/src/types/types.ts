@@ -41,6 +41,7 @@ export type Profile = {
 
 export type Initiator = {
   id: number;
+  user_id: number;
   name: string;
   email: string;
   avatar_url: string;
@@ -48,6 +49,7 @@ export type Initiator = {
 
 export type Participant = {
   id: number;
+  user_id: number;
   name: string;
   email: string;
   avatar_url: string;

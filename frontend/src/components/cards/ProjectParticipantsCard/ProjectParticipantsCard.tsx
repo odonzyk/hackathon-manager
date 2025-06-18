@@ -1,7 +1,8 @@
 import React from 'react';
 import './ProjectParticipantsCard.css';
-import { Profile, Project } from '../../../types/types';
+import { Profile, Project, RoleTypes } from '../../../types/types';
 import {
+  IonButton,
   IonCard,
   IonCardContent,
   IonCardHeader,
@@ -12,8 +13,10 @@ import {
   IonList,
   IonText,
 } from '@ionic/react';
-import { peopleCircleOutline, personOutline } from 'ionicons/icons';
+import { peopleCircleOutline, personOutline, trashOutline } from 'ionicons/icons';
 import JoinProjectButton from '../../buttons/JoinProjectButton/JoinProjectButton';
+import { getExistingToken } from '../../../utils/authUtils';
+import { deleteParticipant, ResultType } from '../../../utils/dataApiConnector';
 
 interface ProjectParticipantsCardProps {
   project: Project;
@@ -21,6 +24,8 @@ interface ProjectParticipantsCardProps {
   onJoinClick: () => void;
   onRecjectClick: () => void;
   isLoading?: boolean;
+  onRemoveParticipant: (user_id: number, project_id: number) => void;
+  onRemoveInitiator: (user_id: number, project_id: number) => void;
 }
 
 const ProjectParticipantsCard: React.FC<ProjectParticipantsCardProps> = ({
@@ -29,11 +34,17 @@ const ProjectParticipantsCard: React.FC<ProjectParticipantsCardProps> = ({
   onJoinClick,
   onRecjectClick,
   isLoading,
+  onRemoveParticipant,
+  onRemoveInitiator,
 }) => {
   if (!project || !profile) {
     return null;
   }
+
   const countTeamMembers = project.participants.length + project.initiators.length;
+
+  // Überprüfen, ob der Benutzer Manager oder Admin ist
+  const isManagerOrAdmin = profile.role_id === RoleTypes.MANAGER || profile.role_id === RoleTypes.ADMIN;
 
   return (
     <IonCard className="hackathon-card participant-card">
@@ -46,12 +57,32 @@ const ProjectParticipantsCard: React.FC<ProjectParticipantsCardProps> = ({
             <IonItem key={`initiator-${initiator.id}`}>
               <IonIcon icon={personOutline} slot="start" style={{ color: '#007bff' }} />
               <IonLabel>{initiator.name}</IonLabel>
+              {isManagerOrAdmin && (
+                <IonButton
+                  slot="end"
+                  color="danger"
+                  onClick={() => onRemoveInitiator(initiator.user_id, project.id)} // Verwende die Prop
+                  className="round-button"
+                >
+                  <IonIcon icon={trashOutline} />
+                </IonButton>
+              )}              
             </IonItem>
           ))}
           {project.participants?.map((participant) => (
             <IonItem key={`participant-${participant.id}`}>
               <IonIcon icon={peopleCircleOutline} slot="start" style={{ color: '#17a2b8' }} />
               <IonLabel>{participant.name}</IonLabel>
+              {isManagerOrAdmin && (
+                <IonButton
+                  slot="end"
+                  color="danger"
+                  onClick={() => onRemoveParticipant(participant.user_id, project.id)} // Verwende die Prop
+                  className="round-button"
+                >
+                  <IonIcon icon={trashOutline} />
+                </IonButton>
+              )}
             </IonItem>
           ))}
           <IonItem>

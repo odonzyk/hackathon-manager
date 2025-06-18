@@ -29,6 +29,7 @@ const createProject = (dbRow) => {
 const createInitiator = (dbRow, requesterRole) => {
   return {
     id: dbRow?.id ?? null,
+    user_id: dbRow?.user_id ?? null,
     name: dbRow?.name ?? '',
     email: !dbRow.is_private_email || checkPermissions(requesterRole, RoleTypes.MANAGER) ? dbRow.email : '',
     avatar_url: dbRow?.avatar_url ?? ''
@@ -38,6 +39,7 @@ const createInitiator = (dbRow, requesterRole) => {
 const createParticipant = (dbRow, requesterRole) => {
   return {
     id: dbRow?.id ?? null,
+    user_id: dbRow?.user_id ?? null,
     name: dbRow?.name ?? '',
     email: !dbRow.is_private_email || checkPermissions(requesterRole, RoleTypes.MANAGER) ? dbRow.email : '',
     avatar_url: dbRow?.avatar_url ?? ''
@@ -266,7 +268,7 @@ router.delete('/:id', authenticateAndAuthorize(RoleTypes.ADMIN), async (req, res
 // ** Helper Functions *****************************************************
 const getInitiators = async (projectId, requesterRole) => {
   const result = await db_all(
-    `SELECT User.id, User.name, User.avatar_url, User.email, User.is_private_email 
+    `SELECT Initiator.id, Initiator.user_id, User.name, User.avatar_url, User.email, User.is_private_email 
     FROM User JOIN Initiator ON User.id = Initiator.user_id WHERE Initiator.project_id = ?`,
     [projectId]
   );
@@ -281,7 +283,7 @@ const getInitiators = async (projectId, requesterRole) => {
 
 const getParticipants = async (projectId, requesterRole) => {
   const result = await db_all(
-    `SELECT User.id, User.name, User.avatar_url, User.email, User.is_private_email 
+    `SELECT Participant.id, Participant.user_id, User.name, User.avatar_url, User.email, User.is_private_email 
     FROM User JOIN Participant ON User.id = Participant.user_id WHERE Participant.project_id = ?`,
     [projectId]
   );

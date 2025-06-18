@@ -102,8 +102,8 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
       filtered = filtered.filter((user) =>
         projects.some(
           (project) =>
-            (project.initiators.some((initiator) => initiator.id === user.id) ||
-              project.participants.some((p) => p.id === user.id)) &&
+            (project.initiators.some((initiator) => initiator.user_id === user.id) ||
+              project.participants.some((p) => p.user_id === user.id)) &&
             project.event_id === event.id,
         ),
       );
@@ -121,6 +121,9 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
     acc[firstLetter].push(user);
     return acc;
   }, {});
+
+  console.log('Grouped Users:', groupedUsers);
+  console.log('Filtered Users:', projects);
 
   return (
     <IonPage>
@@ -199,10 +202,10 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
                 <IonRow>
                   {groupedUsers[letter].map((user) => {
                     const initiatorCount = projects.filter((project) =>
-                      project.initiators.some((initiator) => initiator.id === user.id),
+                      project.initiators.some((initiator) => initiator.user_id === user.id),
                     ).length;
                     const participantCount = projects.filter((project) =>
-                      project.participants.some((p) => p.id === user.id),
+                      project.participants.some((p) => p.user_id === user.id),
                     ).length;
 
                     const userClassName =

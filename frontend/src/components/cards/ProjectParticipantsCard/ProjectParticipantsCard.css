@@ -12,3 +12,15 @@
 .participant-card .join-project-button-container button {
   width: 100%; /* Button nimmt die volle Breite der IonCard ein */
 }
+
+.round-button {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.round-button ion-icon {
+  font-size: 20px;
+}

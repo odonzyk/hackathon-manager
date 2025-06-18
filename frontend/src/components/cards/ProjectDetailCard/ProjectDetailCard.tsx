@@ -32,8 +32,8 @@ interface ProjectDetailCardProps {
 }
 
 const ProjectDetailCard: React.FC<ProjectDetailCardProps> = ({ project, profile, onEditClick }) => {
-  const isInitiator = project.initiators.some((initiator) => initiator.id === profile?.id);
-  const isParticipant = project.participants?.some((p) => p.id === profile?.id);
+  const isInitiator = project.initiators.some((initiator) => initiator.user_id === profile?.id);
+  const isParticipant = project.participants?.some((p) => p.user_id === profile?.id);
 
   return (
     <IonCard className="hackathon-card project-detail-card">

@@ -17,6 +17,7 @@ import { Event, Profile, Project } from '../../types/types';
 import './ProjectDetailPage.css';
 import { getExistingToken } from '../../utils/authUtils';
 import {
+  deleteInitiator,
   deleteParticipant,
   isOrganisator,
   postParticipant,
@@ -112,6 +113,45 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
     });
   };
 
+  const handleRemoveParticipant = async (user_id: number, project_id: number) => {
+    setLoading(true);
+    const token = getExistingToken();
+
+    console.log(`Removing participant: user_id=${user_id}, project_id=${project_id}`);
+    const result = await deleteParticipant(project_id, user_id, token);
+
+    if (result.resultType !== ResultType.SUCCESS || result.data === null) {
+      showToastError(result.resultMsg ?? 'Fehler beim Entfernen des Teilnehmers');
+    } else {
+      showToastMessage('Teilnehmer erfolgreich entfernt!');
+    }
+    setLoading(false);
+    onParticipantChange();
+  };
+
+  const handleRemoveInitiator = async (user_id: number, project_id: number) => {
+    if (!isOrganisator(profile)) {
+      showToastError('Nur Organisatoren können Initiatoren entfernen.');
+      return;
+    }
+    if (!project?.initiators.length || project.initiators.length <= 1) {
+      showToastError('Es muss mindestens ein Initiator vorhanden sein');
+      return;
+    }
+
+    setLoading(true);
+    const token = getExistingToken();
+    const result = await deleteInitiator(project_id, user_id, token);
+
+    if (result.resultType !== ResultType.SUCCESS || result.data === null) {
+      showToastError(result.resultMsg ?? 'Fehler beim Entfernen des Initiators');
+    } else {
+      showToastMessage('Initiator erfolgreich entfernt!');
+    }
+    setLoading(false);
+    onParticipantChange();
+  };
+
   if (!project) {
     return <EmptyPage message="Projekt nicht gefunden" />;
   }
@@ -159,6 +199,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
                 onJoinClick={() => handleJoinProject(project.id, profile?.id!)}
                 onRecjectClick={() => handleRejectProject(project.id, profile?.id!)}
                 isLoading={loading}
+                onRemoveParticipant={handleRemoveParticipant}
+                onRemoveInitiator={handleRemoveInitiator}
               />
             </IonCol>
           </IonRow>
