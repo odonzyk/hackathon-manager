@@ -261,7 +261,7 @@ router.delete('/:id', authenticateAndAuthorize(RoleTypes.ADMIN), async (req, res
     return res.status(404).send(ErrorMsg.NOT_FOUND.NO_PROJECT);
   }
 
-  notifyProjectChange(); 
+  notifyProjectChange();
   res.status(200).send('Project deleted successfully');
 });
 

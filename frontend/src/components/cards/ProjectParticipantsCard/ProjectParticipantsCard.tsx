@@ -15,8 +15,6 @@ import {
 } from '@ionic/react';
 import { peopleCircleOutline, personOutline, trashOutline } from 'ionicons/icons';
 import JoinProjectButton from '../../buttons/JoinProjectButton/JoinProjectButton';
-import { getExistingToken } from '../../../utils/authUtils';
-import { deleteParticipant, ResultType } from '../../../utils/dataApiConnector';
 
 interface ProjectParticipantsCardProps {
   project: Project;
@@ -44,7 +42,8 @@ const ProjectParticipantsCard: React.FC<ProjectParticipantsCardProps> = ({
   const countTeamMembers = project.participants.length + project.initiators.length;
 
   // Überprüfen, ob der Benutzer Manager oder Admin ist
-  const isManagerOrAdmin = profile.role_id === RoleTypes.MANAGER || profile.role_id === RoleTypes.ADMIN;
+  const isManagerOrAdmin =
+    profile.role_id === RoleTypes.MANAGER || profile.role_id === RoleTypes.ADMIN;
 
   return (
     <IonCard className="hackathon-card participant-card">
@@ -66,7 +65,7 @@ const ProjectParticipantsCard: React.FC<ProjectParticipantsCardProps> = ({
                 >
                   <IonIcon icon={trashOutline} />
                 </IonButton>
-              )}              
+              )}
             </IonItem>
           ))}
           {project.participants?.map((participant) => (

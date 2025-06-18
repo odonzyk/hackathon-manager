@@ -86,7 +86,7 @@ router.get('/:id', authenticateAndAuthorize(RoleTypes.USER), async (req, res) =>
   if (result.err) return res.status(500).send(ErrorMsg.SERVER.ERROR);
   if (!result.row) return res.status(404).send(ErrorMsg.NOT_FOUND.NO_INITIATOR);
   const initiator = createInitiator(result.row);
-  
+
   notifyParticipantChange();
   res.json(initiator);
 });

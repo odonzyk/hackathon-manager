@@ -20,7 +20,7 @@ interface ProjectListCardProps {
   onProjectClick: () => void;
 }
 
-const ProjectListCard: React.FC<ProjectListCardProps> = ({ project, profile,onProjectClick }) => {
+const ProjectListCard: React.FC<ProjectListCardProps> = ({ project, profile, onProjectClick }) => {
   if (!project) {
     return null;
   }
@@ -28,14 +28,15 @@ const ProjectListCard: React.FC<ProjectListCardProps> = ({ project, profile,onPr
   const isInitiator = project.initiators.some((initiator) => initiator.user_id === profile?.id);
   const isParticipant = project.participants?.some((p) => p.user_id === profile?.id);
   const isCanceled = project.status_id === ProjectStatus.CANCELD;
-  const isClosed = project.status_id === ProjectStatus.ARCHIVED || project.status_id === ProjectStatus.ENDED;
+  const isClosed =
+    project.status_id === ProjectStatus.ARCHIVED || project.status_id === ProjectStatus.ENDED;
 
   return (
     <IonCard className="hackathon-card" button onClick={onProjectClick}>
       <div className="project-badge-container">
         {isInitiator && <div className="project-badge initiator-badge">Initiator</div>}
         {isCanceled && <div className="project-badge closed-badge">Abgebrochen</div>}
-        {isClosed && <div className="project-badge closed-badge">Geschlossen</div>} 
+        {isClosed && <div className="project-badge closed-badge">Geschlossen</div>}
         {!isInitiator && isParticipant && (
           <div className="project-badge participant-badge">Teilnehmer</div>
         )}

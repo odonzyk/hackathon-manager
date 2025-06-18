@@ -15,6 +15,7 @@
 ### 🐞 Fehlerbehebungen & Verbesserungen
 - Eventliste ist nun Klickbar und wechselt das aktuell angezeigte Event
 - Status Badge auch auf der Projektliste (Teilnehmer, Initiator, Projekt abgebrochen)
+- Teilnehmer & Inititatoren (bei mehr als einem) können nun direkt über das Frontend von Organisatoren gelöscht werden.
 
 
 ## Version 0.2.9

@@ -103,13 +103,13 @@ const ProjectDetailCard: React.FC<ProjectDetailCardProps> = ({ project, profile,
             </IonLabel>
           </IonItem>
         </IonList>
-        {(isInitiator || isOrganisator(profile))  && (
-            <IonFab vertical="bottom" horizontal="end" slot="fixed" className="fab-inside-card">
-              <IonFabButton color="primary" onClick={onEditClick}>
-                <IonIcon icon={pencilOutline} />
-              </IonFabButton>
-            </IonFab>
-          )}
+        {(isInitiator || isOrganisator(profile)) && (
+          <IonFab vertical="bottom" horizontal="end" slot="fixed" className="fab-inside-card">
+            <IonFabButton color="primary" onClick={onEditClick}>
+              <IonIcon icon={pencilOutline} />
+            </IonFabButton>
+          </IonFab>
+        )}
       </IonCardContent>
     </IonCard>
   );
