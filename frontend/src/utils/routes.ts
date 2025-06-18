@@ -51,7 +51,7 @@ export const getPrivateRoutes = (
   projects: any,
   updateProjects: any,
   updateParticipateList: any,
-  updateSelectedEvent: any
+  updateSelectedEvent: any,
 ) => [
   {
     path: '/dashboard',
@@ -61,14 +61,14 @@ export const getPrivateRoutes = (
     event: selectedEvent,
     projects: projects,
   },
-  { 
-    path: '/events', 
-    component: EventListPage, 
-    exact: true, 
+  {
+    path: '/events',
+    component: EventListPage,
+    exact: true,
     events: events,
     onEventSelect: (event: Event) => {
       handleSelectedEvent(event, updateSelectedEvent);
-    }
+    },
   },
   {
     path: '/teams',

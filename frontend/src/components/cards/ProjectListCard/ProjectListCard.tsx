@@ -11,22 +11,36 @@ import {
   IonCardTitle,
 } from '@ionic/react';
 import { callOutline, flagOutline, peopleCircleOutline } from 'ionicons/icons';
-import { Project } from '../../../types/types';
+import { Profile, Project, ProjectStatus } from '../../../types/types';
 import './ProjectListCard.css';
 
 interface ProjectListCardProps {
   project: Project;
+  profile: Profile | null;
   onProjectClick: () => void;
 }
 
-const ProjectListCard: React.FC<ProjectListCardProps> = ({ project, onProjectClick }) => {
+const ProjectListCard: React.FC<ProjectListCardProps> = ({ project, profile, onProjectClick }) => {
   if (!project) {
     return null;
   }
   const countTeamMembers = project.participants.length + project.initiators.length;
+  const isInitiator = project.initiators.some((initiator) => initiator.user_id === profile?.id);
+  const isParticipant = project.participants?.some((p) => p.user_id === profile?.id);
+  const isCanceled = project.status_id === ProjectStatus.CANCELD;
+  const isClosed =
+    project.status_id === ProjectStatus.ARCHIVED || project.status_id === ProjectStatus.ENDED;
 
   return (
     <IonCard className="hackathon-card" button onClick={onProjectClick}>
+      <div className="project-badge-container">
+        {isInitiator && <div className="project-badge initiator-badge">Initiator</div>}
+        {isCanceled && <div className="project-badge closed-badge">Abgebrochen</div>}
+        {isClosed && <div className="project-badge closed-badge">Geschlossen</div>}
+        {!isInitiator && isParticipant && (
+          <div className="project-badge participant-badge">Teilnehmer</div>
+        )}
+      </div>
       <IonCardHeader>
         <IonCardTitle>{project.idea}</IonCardTitle>
       </IonCardHeader>

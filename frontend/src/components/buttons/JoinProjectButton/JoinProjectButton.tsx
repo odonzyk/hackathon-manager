@@ -27,8 +27,8 @@ const JoinProjectButton: React.FC<JoinProjectButtonProps> = ({
   const isEventInitiator = profile.initiate.some((initiation) => initiation.event_id === eventId);
   const userIsFree = !isEventParticipator && !isEventInitiator;
 
-  const isInitiator = project.initiators.some((initiator) => initiator.id === profile?.id);
-  const isParticipant = project.participants?.some((p) => p.id === profile?.id);
+  const isInitiator = project.initiators.some((initiator) => initiator.user_id === profile?.id);
+  const isParticipant = project.participants?.some((p) => p.user_id === profile?.id);
 
   const countTeamMembers = project.participants.length + project.initiators.length;
   const isFull = countTeamMembers >= project.max_team_size;

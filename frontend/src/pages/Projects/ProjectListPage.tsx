@@ -103,6 +103,7 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ profile, projects }) 
               <IonCol size="12" sizeMd="6" key={project.id}>
                 <ProjectListCard
                   project={project}
+                  profile={profile}
                   onProjectClick={() => handleProjectClick(project.id)}
                 />
               </IonCol>

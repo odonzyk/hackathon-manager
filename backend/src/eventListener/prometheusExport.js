@@ -68,12 +68,10 @@ async function exportParticipantCount(participantCounts) {
   });
 }
 
-
-
 // ** Handle Eventbus notification ********************************************
 hackEventBus.on(EventTypes.USER_CHANGE, async (event_id) => {
   logger.debug(`PrometheusExport -> EVENT is received: ${EventTypes.USER_CHANGE}`);
-  
+
   try {
     const userCounts = await checkUserCounts();
     exportUserCount(userCounts);
@@ -84,7 +82,7 @@ hackEventBus.on(EventTypes.USER_CHANGE, async (event_id) => {
 
 hackEventBus.on(EventTypes.PROJECT_CHANGE, async (event_id) => {
   logger.debug(`PrometheusExport -> EVENT is received: ${EventTypes.PROJECT_CHANGE}`);
-  
+
   try {
     const projectCounts = await checkProjectsCounts();
     exportProjectCount(projectCounts);
@@ -95,7 +93,7 @@ hackEventBus.on(EventTypes.PROJECT_CHANGE, async (event_id) => {
 
 hackEventBus.on(EventTypes.PARTICIPANT_CHANGE, async (event_id) => {
   logger.debug(`PrometheusExport -> EVENT is received: ${EventTypes.PARTICIPANT_CHANGE}`);
-  
+
   try {
     const participantCounts = await checkParticipantCounts();
     exportParticipantCount(participantCounts);
@@ -103,8 +101,6 @@ hackEventBus.on(EventTypes.PARTICIPANT_CHANGE, async (event_id) => {
     logger.error('Error during PrometheusExport', err);
   }
 });
-
-
 
 // ** Notification logic ******************************************************
 async function checkUserCounts() {
@@ -126,10 +122,10 @@ async function checkUserCounts() {
       return acc;
     }, {});
 
-    return userCounts; 
+    return userCounts;
   } catch (error) {
     logger.error(error.message);
-    return {}; 
+    return {};
   }
 }
 
@@ -139,7 +135,7 @@ async function checkProjectsCounts() {
       `SELECT Event.name, COUNT(*) as total_projects 
        FROM Project
         JOIN Event ON Project.event_id = Event.id
-        GROUP BY Event.name` 
+        GROUP BY Event.name`
     );
 
     if (result.err) {
@@ -152,10 +148,10 @@ async function checkProjectsCounts() {
       return acc;
     }, {});
 
-    return projectCounts; 
+    return projectCounts;
   } catch (error) {
     logger.error(error.message);
-    return {}; 
+    return {};
   }
 }
 
@@ -168,7 +164,7 @@ async function checkParticipantCounts() {
         MAX(Project.max_team_size) as max_team_size
       FROM Project
       JOIN Event ON Project.event_id = Event.id 
-      GROUP BY Event.name, Project.idea` 
+      GROUP BY Event.name, Project.idea`
     );
 
     if (result.err) {
@@ -186,10 +182,10 @@ async function checkParticipantCounts() {
       return acc;
     }, {});
 
-    return participantCounts; 
+    return participantCounts;
   } catch (error) {
     logger.error(error.message);
-    return {}; 
+    return {};
   }
 }
 

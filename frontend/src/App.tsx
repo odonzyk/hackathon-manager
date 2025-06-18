@@ -100,15 +100,13 @@ const App = () => {
     projects,
     updateProjects,
     updateParticipateList,
-    updateSelectedEvent
+    updateSelectedEvent,
   );
 
   const onSelectEvent = (selectedId: number) => {
     const event = events.find((ev) => ev.id === selectedId);
     setSelectedEvent(event || null);
   };
-
-
 
   return (
     <IonApp>
