@@ -1,5 +1,12 @@
 # 📦 Changelog
 
+## Version 0.3.1
+**Release Date:** 2025-10-19
+
+### ✨ Neue Funktionen
+
+- **Profile Seite** 
+
 ## Version 0.3.0
 **Release Date:** 2025-10-16
 

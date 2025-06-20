@@ -1,0 +1,123 @@
+.profile-header-section {
+  position: relative;
+  text-align: center;
+}
+
+.profile-bg {
+  background:  var(--ion-color-primary)  ;
+  height: 140px;
+  border-bottom: 6px solid #ffffff;
+}
+
+.profile-avatar-container {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 6px solid #fff;
+  background-color: white;
+}
+
+.avatar-edit-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-size: 24px;
+  background: white;
+  border-radius: 50%;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--ion-color-primary); /* Farbe des Icons */
+}
+
+.clickable-icon {
+  cursor: pointer;
+  color: var(--ion-color-primary); /* Farbe des Icons */
+  margin-left: 8px; /* Abstand zum Text */
+  font-size: 24px;
+}
+
+.avatar-edit-icon:hover {
+  color: var(--ion-color-secondary); /* Farbe beim Hover */
+}
+
+.profile-name {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: var(--ion-color-primary);
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.profile-info-card {
+  width: 100%;
+  max-width: 500px;
+  padding: 12px 10px;
+  margin: 80px auto; 
+}
+
+.profile-info-card-content {
+  padding: 0; /* Entfernt das Standard-Padding */
+}
+
+.profile-info-row {
+  margin-top: 20px; /* Abstand zwischen den Zeilen */
+}
+
+.profile-info-item-label {
+  color: var(--ion-color-primary);
+  text-align: left; /* Links ausrichten */
+}
+
+
+.profile-info-item-icon-container {
+  display: flex;
+  align-items: center; /* Vertikale Zentrierung */
+  gap: 8px; /* Abstand zwischen Icon und Text */
+}
+
+.profile-info-item-icon {
+  font-size: 1.5rem;
+  color: var(--ion-color-primary);
+}
+
+.profile-info-item-icon-text {
+  font-size: 1.0rem;
+  color: var(--ion-color-primary);
+}
+
+
+
+.password-button {
+  margin-top: 50px;
+  min-height: 40px;
+  --border-radius: 12px;
+}
+
+.clickable-icon {
+  cursor: pointer;
+  color: var(--ion-color-primary); /* Farbe des Icons */
+  margin-left: 8px; /* Abstand zum Text */
+  font-size: 24px;
+}
+
+.clickable-icon:hover {
+  color: var(--ion-color-secondary); /* Farbe beim Hover */
+}
+
+.clickable-text {
+  cursor: pointer;
+  color: var(--ion-color-primary); /* Farbe des Icons */
+  margin-left: 8px; /* Abstand zum Text */
+  font-size: 14px;
+}
+
+.clickable-text:hover {
+  color: var(--ion-color-secondary); /* Farbe beim Hover */
+}

@@ -91,6 +91,10 @@ const App = () => {
   const updateSelectedEvent = (event: Event) => {
     setSelectedEvent(event); // Speichert das ausgewählte Event
   };
+  const updateProfile = (updatedProfile: Profile) => {
+    console.log('Updating profile:', updatedProfile);
+    setProfile(updatedProfile);
+  }
 
   const publicRoutes = getPublicRoutes();
   const privateRoutes = getPrivateRoutes(
@@ -101,6 +105,7 @@ const App = () => {
     updateProjects,
     updateParticipateList,
     updateSelectedEvent,
+    updateProfile,  
   );
 
   const onSelectEvent = (selectedId: number) => {

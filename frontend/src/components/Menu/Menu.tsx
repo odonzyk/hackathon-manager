@@ -52,6 +52,7 @@ const Menu = () => {
     { link: '/projects', icon: folderOutline, labelKey: 'Projekte' },
     { link: '/teams', icon: peopleOutline, labelKey: 'Teams' },
     { link: '/userlist', icon: personCircleOutline, labelKey: 'Teilnehmer' },
+    { link: '/profil', icon: personCircleOutline, labelKey: 'Profil' },
     { link: '/about', icon: informationOutline, labelKey: 'Über uns' },
   ];
 
