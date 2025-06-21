@@ -19,7 +19,7 @@ import {
 } from '@ionic/react';
 import { useHistory, useLocation } from 'react-router-dom';
 import './ProfilePage.css';
-import { Profile } from '../../types/types';
+import { Profile, Event } from '../../types/types';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import {
   arrowBackOutline,
@@ -38,12 +38,12 @@ import { useToast } from '../../components/ToastProvider';
 
 interface ProfilePageProps {
   profile: Profile | null;
+  event?: Event | null; // Optional, falls das Event nicht immer benötigt wird
   onProfileUpdate: (profile: Profile) => void;
 }
 
-const ProfilePage: React.FC<ProfilePageProps> = ({ profile, onProfileUpdate }) => {
+const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpdate }) => {
   const [viewProfile, setViewProfile] = useState<Profile | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const isAuthenticated = useIsAuthenticated();
   const { showToastMessage, showToastError } = useToast();
 
@@ -71,22 +71,35 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, onProfileUpdate }) =
   };
 
   useEffect(() => {
-    console.log('ProfilePage: useEffect: ', isAuthenticated);
-    console.log('ProfilePage: profile', profile);
-    console.log('ProfilePage: viewProfileArg', viewProfileArg);
-    console.log('ProfilePage: viewProfile', viewProfile);
+    // console.log('ProfilePage: useEffect: ', isAuthenticated);
+    // console.log('ProfilePage: profile', profile);
+    // console.log('ProfilePage: viewProfileArg', viewProfileArg);
+    // console.log('ProfilePage: viewProfile', viewProfile);
 
-    if (viewProfileArg) {
+    if (viewProfileArg && viewProfileArg !== viewProfile) {
       setViewProfile(viewProfileArg);
-    } else if (profile) {
+    } else if (profile && profile !== viewProfile) {
       setViewProfile(profile);
     }
 
-  }, [profile, viewProfile]);
+  }, [profile, viewProfileArg]);
+
+  useEffect(() => {
+
+  }, [viewProfile]);
+
+  useEffect(() => {
+    if (location.pathname !== '/profil') {
+      setViewProfile(null);
+    } else if (!viewProfile && !viewProfileArg) {
+      setViewProfile(profile);
+    }
+  }, [location.pathname]);
 
   const handleSave = (updatedProfile: Profile) => {
     //setProfile(updatedProfile);
     updateProfile(updatedProfile);
+    setViewProfile(updatedProfile);
   };
 
   const updateProfile = async (changedProfile: Profile | null) => {

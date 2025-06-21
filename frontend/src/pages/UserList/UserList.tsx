@@ -24,13 +24,16 @@ import { useToast } from '../../components/ToastProvider';
 import { Event, Profile, Project, RoleTypes } from '../../types/types';
 import { getExistingToken } from '../../utils/authUtils';
 import { personCircleOutline } from 'ionicons/icons';
+import { useHistory } from 'react-router-dom';
 
 interface UserListPageProps {
   profile: Profile | null;
   events: Event[];
+  isUserListUpdated: boolean; 
 }
 
-const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
+const UserListPage: React.FC<UserListPageProps> = ({ profile, events, isUserListUpdated }) => {
+  const history = useHistory(); // Verwende useHistory für die Navigation
   const { showToastError } = useToast();
   const [userlist, setUserlist] = useState<Profile[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -74,6 +77,19 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
       fetchProjectList(token);
     }
   }, [profile]);
+
+  // Überwache Änderungen an `userListUpdated`
+  useEffect(() => {
+    console.log('userListUpdated:', isUserListUpdated);
+    if (isUserListUpdated) {
+      const token = getExistingToken();
+      if (!token) {
+        showToastError('Token nicht gefunden. Bitte anmelden.');
+        return;
+      }
+      fetchUserList(token); // Aktualisiere die Benutzerliste
+    }
+  }, [isUserListUpdated]); // Wird ausgeführt, wenn `userListUpdated` true ist
 
   // Filterfunktion für die Suche
   const handleSearch = (term: string) => {
@@ -122,8 +138,12 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
     return acc;
   }, {});
 
-  console.log('Grouped Users:', groupedUsers);
-  console.log('Filtered Users:', projects);
+  const handleUserClick = (user: Profile) => {
+    history.push({
+      pathname: '/profil',
+      state: { viewProfileArg: user }, 
+    });  
+  };
 
   return (
     <IonPage>
@@ -217,7 +237,10 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
 
                     return (
                       <IonCol size="12" sizeMd="3" key={user.id}>
-                        <IonCard className="user-card">
+                        <IonCard
+                          className="user-card"
+                          onClick={() => handleUserClick(user)} // Benutzer auswählen und navigieren
+                        >
                           <IonCardContent>
                             <IonText className={userClassName}>{user.name}</IonText>
                             <div>

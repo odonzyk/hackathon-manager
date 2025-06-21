@@ -6,6 +6,7 @@ import {
   peopleOutline,
   folderOutline,
   personCircleOutline,
+  idCardOutline,
 } from 'ionicons/icons';
 import './TabBar.css';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
@@ -37,6 +38,10 @@ const TabBar: React.FC = () => {
       <IonTabButton tab="Teilnehmer" href="/userlist">
         <IonIcon icon={personCircleOutline} />
         <IonLabel>Teilnehmer</IonLabel>
+      </IonTabButton>
+      <IonTabButton tab="Profil" href="/profil">
+        <IonIcon icon={idCardOutline} />
+        <IonLabel>Profil</IonLabel>
       </IonTabButton>
     </IonTabBar>
   );

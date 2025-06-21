@@ -25,6 +25,7 @@ import {
   informationOutline,
   calendarOutline,
   personCircleOutline,
+  idCardOutline,
 } from 'ionicons/icons';
 
 import { APP_VERSION } from '../../../config';
@@ -52,7 +53,7 @@ const Menu = () => {
     { link: '/projects', icon: folderOutline, labelKey: 'Projekte' },
     { link: '/teams', icon: peopleOutline, labelKey: 'Teams' },
     { link: '/userlist', icon: personCircleOutline, labelKey: 'Teilnehmer' },
-    { link: '/profil', icon: personCircleOutline, labelKey: 'Profil' },
+    { link: '/profil', icon: idCardOutline, labelKey: 'Profil' },
     { link: '/about', icon: informationOutline, labelKey: 'Über uns' },
   ];
 

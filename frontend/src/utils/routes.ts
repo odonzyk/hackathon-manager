@@ -38,7 +38,6 @@ const handleSelectedEvent = (event: Event, updateSelectedEvent: any) => {
 };
 
 const handleProfileUpdate = (profile: Profile, updateProfile: any) => {
-  console.log('Updating profile:', profile);
   updateProfile(profile);
 };
 
@@ -55,6 +54,7 @@ export const getPrivateRoutes = (
   events: any,
   selectedEvent: any,
   projects: any,
+  isUserListUpdated: boolean,
   updateProjects: any,
   updateParticipateList: any,
   updateSelectedEvent: any,
@@ -90,6 +90,7 @@ export const getPrivateRoutes = (
     component: ProfilePage,
     exact: true,
     profile: profile,
+    event: selectedEvent,
     onProfileUpdate: (updatedProfile: Profile) => {
       handleProfileUpdate(updatedProfile, updateProfile);
     }
@@ -98,6 +99,7 @@ export const getPrivateRoutes = (
     path: '/userlist',
     component: UserListPage,
     exact: true,
+    isUserListUpdated: isUserListUpdated,
     profile: profile,
     events: events,
   },

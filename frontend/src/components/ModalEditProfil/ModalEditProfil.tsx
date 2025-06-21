@@ -16,6 +16,9 @@ import {
   IonSelectOption,
 } from '@ionic/react';
 import { Profile, UserRoleMap } from '../../types/types';
+import { isOrganisator } from '../../utils/dataApiConnector';
+
+
 
 interface ModalEditProfilProps {
   onSave: (updatedProfile: Profile) => void;
@@ -123,21 +126,23 @@ const ModalEditProfil: React.FC<ModalEditProfilProps> = ({ onSave, profile, onDi
             </div>
           </div>
         </IonItem>
-        <IonItem>
-          <IonLabel position="stacked">Rolle</IonLabel>
-          <IonSelect
-            fill="outline"
-            placeholder="Rolle auswählen"
-            value={updatedProfile.role_id} // Aktueller Wert
-            onIonChange={(e) => handleInputChange('role_id', e.detail.value)}
-          >
-            {Object.entries(UserRoleMap).map(([key, value]) => (
-              <IonSelectOption key={key} value={parseInt(key, 10)}>
-                {value.emoji} {value.name}
-              </IonSelectOption>
-            ))}
-          </IonSelect>
-        </IonItem>
+        {isOrganisator(profile) && (
+          <IonItem>
+            <IonLabel position="stacked">Rolle</IonLabel>
+            <IonSelect
+              fill="outline"
+              placeholder="Rolle auswählen"
+              value={updatedProfile.role_id} // Aktueller Wert
+              onIonChange={(e) => handleInputChange('role_id', e.detail.value)}
+            >
+              {Object.entries(UserRoleMap).map(([key, value]) => (
+                <IonSelectOption key={key} value={parseInt(key, 10)}>
+                  {value.emoji} {value.name}
+                </IonSelectOption>
+              ))}
+            </IonSelect>
+          </IonItem>
+        )}
       </IonContent>
       <IonFooter>
         <IonToolbar>
