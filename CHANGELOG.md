@@ -6,12 +6,24 @@
 ### ✨ Neue Funktionen
 
 - **Profile Seite** 
-  - Die Profile Seite mit der Anzeige des eigen Profils & der initiierten Projekten wurde hinzugefügt
-  - Das änder der eigenen Daten ist nun direkt über die Profilseite möglich.
+  - Die Profile Seite mit der Anzeige des eigenen Profils & der initiierten Projekten wurde hinzugefügt.
+  - Das Ändern der eigenen Daten ist nun direkt über die Profilseite möglich.
+  - **Passwort zurücksetzen für Organisatoren**  
+    - Organisatoren können das Passwort eines Benutzers direkt über die Profilseite zurücksetzen.
+    - Das neue Passwort wird zufällig generiert und per E-Mail an den Benutzer gesendet.
 - **Teilnehmer Seite**  
-  - Die Teilnehmer sind Klickbar und es wird das jeweilige Profil geöffnet
+  - Die Teilnehmer sind klickbar und es wird das jeweilige Profil geöffnet.
   - Organisatoren können dort auch die Profildaten direkt bearbeiten.
   - Organisatoren können auch die Rolle eines Profils verändern.
+- **Projekt Seite**  
+  - Organisatoren können Teilnehmer und Initiatoren vom vom Projekte entfernen.
+
+
+### 🐞 Fehlerbehebungen & Verbesserungen
+
+- **Verbesserte Darstellung der Buttons auf der Profilseite**  
+  - Die Buttons "Anrufen" und "Kontakt teilen" wurden optisch angepasst (runde Buttons, weniger prominent).
+  - Hover-Effekte und einheitliches Design für die Buttons hinzugefügt.
 
 ## Version 0.3.0
 **Release Date:** 2025-10-16

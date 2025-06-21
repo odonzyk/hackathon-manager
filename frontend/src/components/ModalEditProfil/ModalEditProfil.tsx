@@ -18,8 +18,6 @@ import {
 import { Profile, UserRoleMap } from '../../types/types';
 import { isOrganisator } from '../../utils/dataApiConnector';
 
-
-
 interface ModalEditProfilProps {
   onSave: (updatedProfile: Profile) => void;
   profile: Profile;
@@ -62,9 +60,7 @@ const ModalEditProfil: React.FC<ModalEditProfilProps> = ({ onSave, profile, onDi
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonButton onClick={dismiss}>
-              Abbrechen
-            </IonButton>
+            <IonButton onClick={dismiss}>Abbrechen</IonButton>
           </IonButtons>
           <IonTitle>
             <center>Profil bearbeiten</center>

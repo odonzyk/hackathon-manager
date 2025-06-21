@@ -93,7 +93,7 @@ export const getPrivateRoutes = (
     event: selectedEvent,
     onProfileUpdate: (updatedProfile: Profile) => {
       handleProfileUpdate(updatedProfile, updateProfile);
-    }
+    },
   },
   {
     path: '/userlist',

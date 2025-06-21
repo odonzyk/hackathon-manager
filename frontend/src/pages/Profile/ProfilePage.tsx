@@ -20,7 +20,6 @@ import {
 import { useHistory, useLocation } from 'react-router-dom';
 import './ProfilePage.css';
 import { Profile, Event } from '../../types/types';
-import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import {
   arrowBackOutline,
   callOutline,
@@ -46,7 +45,6 @@ interface ProfilePageProps {
 
 const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpdate }) => {
   const [viewProfile, setViewProfile] = useState<Profile | null>(null);
-  const isAuthenticated = useIsAuthenticated();
   const { showToastMessage, showToastError } = useToast();
 
   const history = useHistory();
@@ -63,7 +61,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
       navigator
         .share({
           title: `Kontaktdetails von ${viewProfile.name}`,
-          text: `Hier sind die Kontaktdetails:\n\nE-Mail: ${viewProfile.email}\nTelefon: ${viewProfile.telephone}`
+          text: `Hier sind die Kontaktdetails:\n\nE-Mail: ${viewProfile.email}\nTelefon: ${viewProfile.telephone}`,
         })
         .then(() => console.log('Share erfolgreich'))
         .catch((error) => console.error('Share fehlgeschlagen:', error));
@@ -83,12 +81,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
     } else if (profile && profile !== viewProfile) {
       setViewProfile(profile);
     }
-
   }, [profile, viewProfileArg]);
 
-  useEffect(() => {
-
-  }, [viewProfile]);
+  useEffect(() => {}, [viewProfile]);
 
   useEffect(() => {
     if (location.pathname !== '/profil') {
@@ -112,7 +107,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
 
     const token = getExistingToken();
     if (!token) {
-      showToastError("Kein Token gefunden. Bitte melden Sie sich an.");
+      showToastError('Kein Token gefunden. Bitte melden Sie sich an.');
       return;
     }
 
@@ -124,12 +119,12 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
       });
 
       if (response.status === 200) {
-        showToastMessage("Profil erfolgreich aktualisiert.");
+        showToastMessage('Profil erfolgreich aktualisiert.');
       } else {
-        showToastError("Fehler beim Aktualisieren des Profils.");
+        showToastError('Fehler beim Aktualisieren des Profils.');
       }
     } catch (error) {
-      showToastError("Fehler beim Aktualisieren des Profils.");
+      showToastError('Fehler beim Aktualisieren des Profils.');
     }
     onProfileUpdate(changedProfile);
   };
@@ -148,19 +143,23 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
       showToastError('Kein Token gefunden. Bitte melden Sie sich an.');
       return;
     }
-  
+
     try {
-      const response = await axios.post(`/api/user/pwreset`, {
-        id: viewProfile.id,
-        email: viewProfile.email,
-        password: generateRandomPassword(),
-        secret: API_SECRET,
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await axios.post(
+        `/api/user/pwreset`,
+        {
+          id: viewProfile.id,
+          email: viewProfile.email,
+          password: generateRandomPassword(),
+          secret: API_SECRET,
         },
-      });
-  
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
       if (response.status === 201) {
         showToastMessage('Passwort erfolgreich zurückgesetzt.');
       } else {
@@ -180,7 +179,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
       <IonHeader>
         <IonToolbar>
           {viewProfileArg && (
-            <IonButtons slot="start" >
+            <IonButtons slot="start">
               <IonButton onClick={() => history.goBack()} className="round-action-button">
                 <IonIcon icon={arrowBackOutline} slot="icon-only" />
               </IonButton>
@@ -213,12 +212,12 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
                 <div className="profile-bg"></div>
                 <div className="profile-avatar-container">
                   <img src={viewProfile.avatar_url} className="profile-avatar" alt="User Avatar" />
-                  {(isOrganisator(profile)  || (viewProfile.id===profile?.id)) && (
-                  <IonIcon
-                    icon={createOutline}
-                    className="avatar-edit-icon"
-                    id="open-edit-avatar-modal"
-                  />
+                  {(isOrganisator(profile) || viewProfile.id === profile?.id) && (
+                    <IonIcon
+                      icon={createOutline}
+                      className="avatar-edit-icon"
+                      id="open-edit-avatar-modal"
+                    />
                   )}
                 </div>
               </div>
@@ -227,17 +226,15 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
                 <IonCardContent className="profile-info-card-content">
                   <IonGrid>
                     <IonRow>
-                      <IonCol size="12"className='profile-name'>
-                        <IonText >{viewProfile.name}</IonText>
+                      <IonCol size="12" className="profile-name">
+                        <IonText>{viewProfile.name}</IonText>
                       </IonCol>
                     </IonRow>
                     <IonRow>
                       <IonCol size="3" className="profile-info-item-label">
                         E-Mail
                       </IonCol>
-                      <IonCol size="6">
-                        {viewProfile.email}
-                      </IonCol>
+                      <IonCol size="6">{viewProfile.email}</IonCol>
                       <IonCol size="3">
                         <div className="profile-info-item-icon-container">
                           <IonIcon
@@ -245,9 +242,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
                             className="profile-info-item-icon"
                           />
                           <IonText className="profile-info-item-icon-text">
-                            {viewProfile.is_private_email
-                              ? 'Privat'
-                              : 'Sichtbar'}
+                            {viewProfile.is_private_email ? 'Privat' : 'Sichtbar'}
                           </IonText>
                         </div>
                       </IonCol>
@@ -258,9 +253,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
                       <IonCol size="3" className="profile-info-item-label">
                         Telefone
                       </IonCol>
-                      <IonCol size="6">
-                        {viewProfile.telephone}
-                      </IonCol>
+                      <IonCol size="6">{viewProfile.telephone}</IonCol>
                       <IonCol size="3">
                         <div className="profile-info-item-icon-container">
                           <IonIcon
@@ -268,16 +261,14 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
                             className="profile-info-item-icon"
                           />
                           <IonText className="profile-info-item-icon-text">
-                            {viewProfile.is_private_telephone
-                              ? 'Privat'
-                              : 'Sichtbar'}
+                            {viewProfile.is_private_telephone ? 'Privat' : 'Sichtbar'}
                           </IonText>
                         </div>
                       </IonCol>
                     </IonRow>
 
                     {/* Zeile 3: Fahrzeuge */}
-                    <IonRow  className="profile-info-row">
+                    <IonRow className="profile-info-row">
                       <IonCol size="12" className="profile-info-item-label">
                         Meine eingereichten Projekte
                       </IonCol>
@@ -306,11 +297,11 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
                     <IonRow>
                       <IonCol size="1" className="profile-info-item-label"></IonCol>
                       <IonCol size="11">
-                           {participation?.idea || (
-                                  <>
-                                    <IonText className="myproject-text">Kein Projekt ausgewählt.</IonText>
-                                  </>
-                                )}
+                        {participation?.idea || (
+                          <>
+                            <IonText className="myproject-text">Kein Projekt ausgewählt.</IonText>
+                          </>
+                        )}
                       </IonCol>
                     </IonRow>
                   </IonGrid>
@@ -335,12 +326,12 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
                   )}
                 </IonCardContent>
               </IonCard>
-              {(isOrganisator(profile)  || (viewProfile.id===profile?.id)) && (
-              <IonFab vertical="bottom" horizontal="end" slot="fixed">
-                <IonFabButton id={`open-edit-profile-modal-${viewProfile?.id}`}>
-                  <IonIcon icon={createOutline}/>
-                </IonFabButton>
-              </IonFab>
+              {(isOrganisator(profile) || viewProfile.id === profile?.id) && (
+                <IonFab vertical="bottom" horizontal="end" slot="fixed">
+                  <IonFabButton id={`open-edit-profile-modal-${viewProfile?.id}`}>
+                    <IonIcon icon={createOutline} />
+                  </IonFabButton>
+                </IonFab>
               )}
             </>
           ) : null}

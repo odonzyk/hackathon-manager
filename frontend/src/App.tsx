@@ -102,15 +102,14 @@ const App = () => {
     if (!updatedProfile || !updatedProfile.id) {
       showToastError('Ungültiges Profil. Bitte erneut anmelden.');
       return;
-    } 
+    }
     if (updatedProfile.id !== profile?.id) {
       console.log('Updating profile:', updatedProfile);
       setUserListUpdated(true);
     } else {
       setProfile(updatedProfile);
     }
-  }
-  
+  };
 
   const publicRoutes = getPublicRoutes();
   const privateRoutes = getPrivateRoutes(
@@ -122,7 +121,7 @@ const App = () => {
     updateProjects,
     updateParticipateList,
     updateSelectedEvent,
-    updateProfile,  
+    updateProfile,
   );
 
   const onSelectEvent = (selectedId: number) => {

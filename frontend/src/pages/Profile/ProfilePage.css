@@ -4,7 +4,7 @@
 }
 
 .profile-bg {
-  background:  var(--ion-color-primary)  ;
+  background: var(--ion-color-primary);
   height: 140px;
   border-bottom: 6px solid #ffffff;
 }
@@ -59,7 +59,7 @@
   width: 100%;
   max-width: 500px;
   padding: 12px 10px;
-  margin: 80px auto; 
+  margin: 80px auto;
 }
 
 .profile-info-card-content {
@@ -75,7 +75,6 @@
   text-align: left; /* Links ausrichten */
 }
 
-
 .profile-info-item-icon-container {
   display: flex;
   align-items: center; /* Vertikale Zentrierung */
@@ -88,7 +87,7 @@
 }
 
 .profile-info-item-icon-text {
-  font-size: 1.0rem;
+  font-size: 1rem;
   color: var(--ion-color-primary);
 }
 
@@ -130,7 +129,7 @@
 }
 
 .round-action-button {
-  background-color:  var(--ion-text-color-contrast);
+  background-color: var(--ion-text-color-contrast);
   color: var(--ion-color-primary);
   border-radius: 50%; /* Rundes Design */
   width: 40px; /* Breite des Buttons */
@@ -142,5 +141,5 @@
 }
 
 .round-action-button:hover {
-  background-color: var(--ion-card-border); 
+  background-color: var(--ion-card-border);
 }

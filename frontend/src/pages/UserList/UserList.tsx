@@ -29,7 +29,7 @@ import { useHistory } from 'react-router-dom';
 interface UserListPageProps {
   profile: Profile | null;
   events: Event[];
-  isUserListUpdated: boolean; 
+  isUserListUpdated: boolean;
 }
 
 const UserListPage: React.FC<UserListPageProps> = ({ profile, events, isUserListUpdated }) => {
@@ -141,8 +141,8 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events, isUserList
   const handleUserClick = (user: Profile) => {
     history.push({
       pathname: '/profil',
-      state: { viewProfileArg: user }, 
-    });  
+      state: { viewProfileArg: user },
+    });
   };
 
   return (

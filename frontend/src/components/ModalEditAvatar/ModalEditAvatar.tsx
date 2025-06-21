@@ -75,9 +75,7 @@ const ModalEditAvatar: React.FC<ModalEditAvatarProps> = ({ onSave, profile }) =>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonButton onClick={() => dismiss()}>
-              Abbrechen
-            </IonButton>
+            <IonButton onClick={() => dismiss()}>Abbrechen</IonButton>
           </IonButtons>
           <IonTitle>
             <center>Avatar auswahl</center>
