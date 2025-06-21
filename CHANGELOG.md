@@ -6,6 +6,12 @@
 ### ✨ Neue Funktionen
 
 - **Profile Seite** 
+  - Die Profile Seite mit der Anzeige des eigen Profils & der initiierten Projekten wurde hinzugefügt
+  - Das änder der eigenen Daten ist nun direkt über die Profilseite möglich.
+- **Teilnehmer Seite**  
+  - Die Teilnehmer sind Klickbar und es wird das jeweilige Profil geöffnet
+  - Organisatoren können dort auch die Profildaten direkt bearbeiten.
+  - Organisatoren können auch die Rolle eines Profils verändern.
 
 ## Version 0.3.0
 **Release Date:** 2025-10-16

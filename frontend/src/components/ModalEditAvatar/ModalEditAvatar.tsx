@@ -23,15 +23,22 @@ interface ModalEditAvatarProps {
 
 const avatars = [
   '/assets/avatars/avatar_1.png',
-  '/assets/avatars/avatar_2.png',
-  '/assets/avatars/avatar_3.png',
-  '/assets/avatars/avatar_4.png',
-  '/assets/avatars/avatar_5.png',
-  '/assets/avatars/avatar_6.png',
-  '/assets/avatars/avatar_7.png',
-  '/assets/avatars/avatar_8.png',
-  '/assets/avatars/avatar_9.png',
-  '/assets/avatars/avatar_10.png',
+  '/assets/avatars/comic_backend_avatar_1.png',
+  '/assets/avatars/comic_backend_avatar_2.png',
+  '/assets/avatars/comic_backend_avatar_3.png',
+  '/assets/avatars/comic_backend_avatar_4.png',
+  '/assets/avatars/comic_buch_avatar_1.png',
+  '/assets/avatars/comic_buch_avatar_2.png',
+  '/assets/avatars/comic_buch_avatar_3.png',
+  '/assets/avatars/comic_buch_avatar_4.png',
+  '/assets/avatars/comic_frontend_avatar_1.png',
+  '/assets/avatars/comic_frontend_avatar_2.png',
+  '/assets/avatars/comic_frontend_avatar_3.png',
+  '/assets/avatars/comic_frontend_avatar_4.png',
+  '/assets/avatars/comic_mobile_avatar_1.png',
+  '/assets/avatars/comic_mobile_avatar_2.png',
+  '/assets/avatars/comic_mobile_avatar_3.png',
+  '/assets/avatars/comic_mobile_avatar_4.png',
 ];
 
 const ModalEditAvatar: React.FC<ModalEditAvatarProps> = ({ onSave, profile }) => {
