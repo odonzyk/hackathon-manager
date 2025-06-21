@@ -35,6 +35,8 @@ import axios from 'axios';
 import { getExistingToken } from '../../utils/authUtils';
 import ModalEditAvatar from '../../components/ModalEditAvatar/ModalEditAvatar';
 import { useToast } from '../../components/ToastProvider';
+import { generateRandomPassword, isOrganisator } from '../../utils/dataApiConnector';
+import { API_SECRET } from '../../../config';
 
 interface ProfilePageProps {
   profile: Profile | null;
@@ -136,6 +138,39 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
     showToastMessage('Not implemented');
   };
 
+  const handleResetPassword = async () => {
+    if (!viewProfile) {
+      showToastError('Kein Benutzer ausgewählt.');
+      return;
+    }
+    const token = getExistingToken();
+    if (!token) {
+      showToastError('Kein Token gefunden. Bitte melden Sie sich an.');
+      return;
+    }
+  
+    try {
+      const response = await axios.post(`/api/user/pwreset`, {
+        id: viewProfile.id,
+        email: viewProfile.email,
+        password: generateRandomPassword(),
+        secret: API_SECRET,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (response.status === 201) {
+        showToastMessage('Passwort erfolgreich zurückgesetzt.');
+      } else {
+        showToastError('Fehler beim Zurücksetzen des Passworts.');
+      }
+    } catch (error) {
+      showToastError('Fehler beim Zurücksetzen des Passworts.');
+    }
+  };
+
   const participation = profile?.participate?.find(
     (participation) => participation.event_id === event?.id,
   );
@@ -145,8 +180,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
       <IonHeader>
         <IonToolbar>
           {viewProfileArg && (
-            <IonButtons slot="start">
-              <IonButton onClick={() => history.goBack()}>
+            <IonButtons slot="start" >
+              <IonButton onClick={() => history.goBack()} className="round-action-button">
                 <IonIcon icon={arrowBackOutline} slot="icon-only" />
               </IonButton>
             </IonButtons>
@@ -156,14 +191,14 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
             <IonIcon icon={personCircleOutline} />
             Profil
           </IonTitle>
-          <IonButtons slot="end">
+          <IonButtons slot="end" className="profile-action-buttons">
             {/* Call-Button */}
-            <IonButton href={'tel:' + viewProfile?.telephone}>
+            <IonButton href={'tel:' + viewProfile?.telephone} className="round-action-button">
               <IonIcon icon={callOutline} slot="icon-only" />
             </IonButton>
 
             {/* Share-Button */}
-            <IonButton onClick={shareProfile}>
+            <IonButton onClick={shareProfile} className="round-action-button">
               <IonIcon icon={shareSocialOutline} slot="icon-only" />
             </IonButton>
           </IonButtons>
@@ -178,11 +213,13 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
                 <div className="profile-bg"></div>
                 <div className="profile-avatar-container">
                   <img src={viewProfile.avatar_url} className="profile-avatar" alt="User Avatar" />
+                  {(isOrganisator(profile)  || (viewProfile.id===profile?.id)) && (
                   <IonIcon
                     icon={createOutline}
                     className="avatar-edit-icon"
                     id="open-edit-avatar-modal"
                   />
+                  )}
                 </div>
               </div>
 
@@ -282,17 +319,29 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
                     expand="block"
                     className="password-button"
                     onClick={handleEditPassword}
+                    disabled={viewProfile?.id !== profile?.id} // Nur für den eigenen Benutzer aktiv
                   >
                     Passwort ändern
                   </IonButton>
+
+                  {isOrganisator(profile) && (
+                    <IonButton
+                      expand="block"
+                      className="password-reset-button"
+                      onClick={handleResetPassword}
+                    >
+                      Passwort zurücksetzen
+                    </IonButton>
+                  )}
                 </IonCardContent>
               </IonCard>
-
+              {(isOrganisator(profile)  || (viewProfile.id===profile?.id)) && (
               <IonFab vertical="bottom" horizontal="end" slot="fixed">
                 <IonFabButton id={`open-edit-profile-modal-${viewProfile?.id}`}>
                   <IonIcon icon={createOutline}/>
                 </IonFabButton>
               </IonFab>
+              )}
             </>
           ) : null}
         </>

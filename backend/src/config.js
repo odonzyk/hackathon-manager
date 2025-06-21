@@ -52,6 +52,7 @@ module.exports = {
   smtpRejectUnauthorized: check(process.env.SMTP_UNAUTOHORIZED, false),
   rateLimitWindowMs: check(process.env.RATE_LIMIT_WINDOW_MS, 15 * 60 * 1000),
   rateLimitMax: check(process.env.RATE_LIMIT_MAX, 100),
+  apiSecret: check(process.env.API_SECRET, 'your-drs-secret'),
   check,
   logEnvironmentVariables
 };
