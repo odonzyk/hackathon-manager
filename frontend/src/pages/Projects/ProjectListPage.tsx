@@ -72,7 +72,6 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ profile, projects }) 
                 fill="outline"
                 placeholder="Suche nach Name, Beschreibung oder Ansprechpartner"
                 onIonInput={(e) => setSearch(e.detail.value!)}
-                className="project-filter-input"
               />
             </IonCol>
             <IonCol size="12" sizeMd="4">
@@ -81,7 +80,6 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ profile, projects }) 
                 fill="outline"
                 placeholder="Filter nach Komponenten"
                 onIonInput={(e) => setComponentFilter(e.detail.value!)}
-                className="project-filter-input"
               />
             </IonCol>
             <IonCol size="12" sizeMd="4">
@@ -90,7 +88,6 @@ const ProjectListPage: React.FC<ProjectListPageProps> = ({ profile, projects }) 
                 fill="outline"
                 placeholder="Filter nach Skills"
                 onIonInput={(e) => setSkillFilter(e.detail.value!)}
-                className="project-filter-input"
               />
             </IonCol>
           </IonRow>

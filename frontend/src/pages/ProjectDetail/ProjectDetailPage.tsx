@@ -20,6 +20,7 @@ import {
   deleteInitiator,
   deleteParticipant,
   isOrganisator,
+  postInitiator,
   postParticipant,
   ResultType,
 } from '../../utils/dataApiConnector';
@@ -48,10 +49,12 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
 
   const project = projects.find((p) => p.id === parseInt(id));
 
-  const handleJoinProject = async (project_id: number, user_id: number) => {
+  const handleAddParticipant = async (project_id: number, user_id: number) => {
     setLoading(true);
     const token = getExistingToken();
     const result = await postParticipant(project_id, user_id, token);
+
+    console.log(`Adding participant: project_id=${project_id}, user_id=${user_id}`);
 
     if (result.resultType !== ResultType.SUCCESS || result.data === null) {
       showToastError(result.resultMsg ?? 'Fehler beim Speichern des Projekts');
@@ -62,7 +65,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
     setLoading(false);
   };
 
-  const handleRejectProject = async (project_id: number, user_id: number) => {
+  const handleRemoveParticipant = async (project_id: number, user_id: number) => {
     setLoading(true);
     const token = getExistingToken();
     const result = await deleteParticipant(project_id, user_id, token);
@@ -113,23 +116,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
     });
   };
 
-  const handleRemoveParticipant = async (user_id: number, project_id: number) => {
-    setLoading(true);
-    const token = getExistingToken();
-
-    console.log(`Removing participant: user_id=${user_id}, project_id=${project_id}`);
-    const result = await deleteParticipant(project_id, user_id, token);
-
-    if (result.resultType !== ResultType.SUCCESS || result.data === null) {
-      showToastError(result.resultMsg ?? 'Fehler beim Entfernen des Teilnehmers');
-    } else {
-      showToastMessage('Teilnehmer erfolgreich entfernt!');
-    }
-    setLoading(false);
-    onParticipantChange();
-  };
-
-  const handleRemoveInitiator = async (user_id: number, project_id: number) => {
+  const handleRemoveInitiator = async (project_id: number, user_id: number) => {
     if (!isOrganisator(profile)) {
       showToastError('Nur Organisatoren können Initiatoren entfernen.');
       return;
@@ -148,8 +135,24 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
     } else {
       showToastMessage('Initiator erfolgreich entfernt!');
     }
-    setLoading(false);
     onParticipantChange();
+    setLoading(false);
+  };
+
+  const handleAddInitiator = async (project_id: number, user_id: number) => {
+    setLoading(true);
+    const token = getExistingToken();
+    const result = await postInitiator(project_id, user_id, token);
+
+    console.log(`Adding initiator: project_id=${project_id}, user_id=${user_id}`);
+
+    if (result.resultType !== ResultType.SUCCESS || result.data === null) {
+      showToastError(result.resultMsg ?? 'Fehler beim Speichern des Projekts');
+    } else {
+      showToastMessage('Initiator erfolgreich hinzugefügt!');
+    }
+    onParticipantChange();
+    setLoading(false);
   };
 
   if (!project) {
@@ -164,16 +167,14 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
             <IonIcon icon={folderOutline} style={{ marginRight: '8px' }} />
             Projekt Details
           </IonTitle>
-          {isOrganisator(profile) && (
-            <IonButtons slot="end">
-              <IonButton onClick={handleCopyEmailsToClipboard} title="E-Mail-Adressen kopieren">
-                <IonIcon icon={clipboardOutline} />
-              </IonButton>
-            </IonButtons>
-          )}
           <IonButtons slot="end">
+            {isOrganisator(profile) && (
+              <IonButton onClick={handleCopyEmailsToClipboard} title="E-Mail-Adressen kopieren">
+                <IonIcon icon={clipboardOutline} slot="icon-only" />
+              </IonButton>
+            )}
             <IonButton onClick={handleOpenTeamsChannel} title="MS Teams Kanal öffnen">
-              <IonIcon icon={linkOutline} />
+              <IonIcon icon={linkOutline} slot="icon-only" />
             </IonButton>
           </IonButtons>
         </IonToolbar>
@@ -196,11 +197,14 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
               <ProjectParticipantsCard
                 project={project}
                 profile={profile}
-                onJoinClick={() => handleJoinProject(project.id, profile?.id!)}
-                onRecjectClick={() => handleRejectProject(project.id, profile?.id!)}
+                onJoinClick={() => handleAddParticipant(project.id, profile?.id!)}
+                onRecjectClick={() => handleRemoveParticipant(project.id, profile?.id!)}
                 isLoading={loading}
                 onRemoveParticipant={handleRemoveParticipant}
                 onRemoveInitiator={handleRemoveInitiator}
+                onAddParticipant={handleAddParticipant}
+                onAddInitiator={handleAddInitiator}
+                showToastError={showToastError}
               />
             </IonCol>
           </IonRow>

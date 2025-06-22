@@ -1,15 +1,3 @@
-.search-input {
-  margin: 16px;
-  padding: 8px;
-}
-
-.event-select {
-  font-size: 1.2rem;
-  width: auto;
-  margin: 16px;
-  padding-left: 8px;
-}
-
 .alphabet-navigation {
   margin: 16px 0;
 }
@@ -69,7 +57,7 @@
 .tooltip {
   visibility: hidden;
   width: 120px;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: var(--ion-color-primary);
   color: #fff;
   text-align: center;
   border-radius: 4px;
@@ -86,4 +74,44 @@
 .tooltip-container:hover .tooltip {
   visibility: visible;
   opacity: 1;
+}
+
+.legend-section {
+  margin-top: 20px;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.legend-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.legend-badge {
+  margin-right: 10px;
+}
+
+.legend-description {
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.legend-role {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.guest-role {
+  color: var(--ion-text-color-light);
+}
+
+.manager-role {
+  color: var(--ion-color-secondary);
+}
+
+.user-role {
+  color: var(--ion-color-primary);
 }

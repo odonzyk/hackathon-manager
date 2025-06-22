@@ -45,7 +45,7 @@ const ProjectListCard: React.FC<ProjectListCardProps> = ({ project, profile, onP
         <IonCardTitle>{project.idea}</IonCardTitle>
       </IonCardHeader>
       <IonCardContent>
-        <IonText className="project-list-detail project-list-short">{project.description}</IonText>
+        <IonText className="project-list-short">{project.description}</IonText>
 
         <IonList>
           <IonItem>

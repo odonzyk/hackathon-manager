@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 24px;
 }
 
 .appTitle-logo {
@@ -42,12 +41,7 @@
   margin-top: 8px;
 }
 
-.login-card:hover {
-  transform: none;
-  box-shadow: none;
-}
 .login-card {
   width: 100%; /* Nimmt die gesamte Breite des Containers ein */
   max-width: 400px; /* Optional: Begrenzung der maximalen Breite */
-  margin: 0 auto;
 }

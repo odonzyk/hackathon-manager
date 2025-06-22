@@ -106,4 +106,35 @@ async function sendServerRestartNotification(adminEmail) {
   }
 }
 
-module.exports = { sendActivationEmail, sendServerRestartNotification };
+async function sendNewPasswordEmail(user, newPassword) {
+  const websiteLink = config.hostPort ? `${config.hostUrl}:${config.hostPort}` : config.hostUrl;
+
+  try {
+    await sendEmail(
+      user.email,
+      'Ihr neues Passwort',
+      `Hallo ${user.name},\n\nIhr Passwort wurde zurückgesetzt. Ihr neues Passwort lautet:\n\n${newPassword}\n\nBitte ändern Sie Ihr Passwort nach der Anmeldung.\n\nHier geht es zur Webseite:\n${websiteLink}\n\nFalls Sie diese E-Mail nicht angefordert haben, kontaktieren Sie bitte den Support.`,
+      `<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <h2 style="color: #4CAF50;">Ihr neues Passwort</h2>
+            <p>Hallo ${user.name},</p>
+            <p>Ihr Passwort wurde zurückgesetzt. Ihr neues Passwort lautet:</p>
+            <p style="font-size: 18px; font-weight: bold; color: #333;">${newPassword}</p>
+            <p>Bitte ändern Sie Ihr Passwort nach der Anmeldung.</p>
+            <p style="text-align: center; margin: 20px 0;">
+                <a href="${websiteLink}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: 16px;">Zur Webseite</a>
+            </p>
+            <p>Falls der Button nicht funktioniert, können Sie auch diesen Link verwenden:</p>
+            <p style="word-wrap: break-word;">
+                <a href="${websiteLink}" style="color: #4CAF50;">${websiteLink}</a>
+            </p>
+            <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
+            <p style="font-size: 12px; color: #777;">Falls Sie diese E-Mail nicht angefordert haben, kontaktieren Sie bitte den Support.</p>
+            <p style="font-size: 12px; color: #777;">Mit freundlichen Grüßen,<br>Das Hackathon Manager Team</p>
+        </div>`
+    );
+  } catch (error) {
+    throw new Error(`Failed to send new password email: ${error.message}`);
+  }
+}
+
+module.exports = { sendActivationEmail, sendServerRestartNotification, sendNewPasswordEmail };

@@ -7,7 +7,7 @@ const logger = require('../logger');
 const { checkPermissions, authenticateAndAuthorize, authenticateToken } = require('../middlewares/authMiddleware');
 const router = express.Router();
 const { ErrorMsg, RoleTypes, EventTypes } = require('../constants');
-const { sendActivationEmail } = require('../utils/emailUtils');
+const { sendActivationEmail, sendNewPasswordEmail } = require('../utils/emailUtils');
 const hackingEventBus = require('../middlewares/hackathonEventBus');
 
 const createUser = (dbRow) => {
@@ -392,7 +392,7 @@ router.post('/pwreset', authenticateAndAuthorize(RoleTypes.ADMIN), async (req, r
   let { id, email, password, secret } = req.body;
   logger.debug(`API: POST /api/user -> Password Reset for User ID: ${id}`);
 
-  if (secret !== '***REMOVED***') {
+  if (secret !== config.apiSecret) {
     return res.status(403).send(ErrorMsg.AUTH.NO_PERMISSION);
   }
 
@@ -417,6 +417,13 @@ router.post('/pwreset', authenticateAndAuthorize(RoleTypes.ADMIN), async (req, r
   if (result.err || result.changes === 0) {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }
+
+  try {
+    await sendNewPasswordEmail(user, password);
+  } catch (err) {
+    logger.error(`Error sending activation email for user ${newUser.email}: ${err.message}`);
+  }
+
   res.status(201).json(user);
 });
 

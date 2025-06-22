@@ -19,49 +19,27 @@ import {
   IonIcon,
 } from '@ionic/react';
 import './UserList.css';
-import { getAllUsers, getProjects, ResultType } from '../../utils/dataApiConnector';
 import { useToast } from '../../components/ToastProvider';
 import { Event, Profile, Project, RoleTypes } from '../../types/types';
 import { getExistingToken } from '../../utils/authUtils';
 import { personCircleOutline } from 'ionicons/icons';
+import { useHistory } from 'react-router-dom';
+import { fetchProjectList, fetchUserList } from '../../utils/dataFetchUtils';
 
 interface UserListPageProps {
   profile: Profile | null;
   events: Event[];
+  isUserListUpdated: boolean;
 }
 
-const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
+const UserListPage: React.FC<UserListPageProps> = ({ profile, events, isUserListUpdated }) => {
+  const history = useHistory(); // Verwende useHistory für die Navigation
   const { showToastError } = useToast();
   const [userlist, setUserlist] = useState<Profile[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<Profile[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
-
-  // Funktion zum Abrufen der Benutzerliste
-  const fetchUserList = async (token: string | null) => {
-    const result = await getAllUsers(profile, token);
-    if (result.resultType !== ResultType.SUCCESS || result.data === null) {
-      showToastError(result.resultMsg ?? 'Error');
-      return;
-    }
-    setUserlist(result.data);
-    setFilteredUsers(result.data);
-  };
-
-  const fetchProjectList = async (token: string | null) => {
-    const aggregatedProjects: Project[] = [];
-
-    for (const event of events) {
-      const result = await getProjects(event.id, profile, token);
-      if (result.resultType !== ResultType.SUCCESS || result.data === null) {
-        showToastError(result.resultMsg ?? 'Error');
-        continue;
-      }
-      aggregatedProjects.push(...result.data);
-    }
-    setProjects(aggregatedProjects);
-  };
 
   useEffect(() => {
     if (profile) {
@@ -70,10 +48,28 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
         showToastError('Token nicht gefunden. Bitte anmelden.');
         return;
       }
-      fetchUserList(token);
-      fetchProjectList(token);
+      fetchUserList(profile, token, setUserlist, showToastError);
+      fetchProjectList(token, profile, events, setProjects, showToastError);
     }
   }, [profile]);
+
+  useEffect(() => {
+    setFilteredUsers(userlist);
+  }, [userlist]);
+
+  // Überwache Änderungen an `userListUpdated`
+  useEffect(() => {
+    console.log('userListUpdated:', isUserListUpdated);
+    if (isUserListUpdated) {
+      const token = getExistingToken();
+      if (!token) {
+        showToastError('Token nicht gefunden. Bitte anmelden.');
+        return;
+      }
+      fetchUserList(profile, token, setUserlist, showToastError);
+      setFilteredUsers(userlist);
+    }
+  }, [isUserListUpdated]); // Wird ausgeführt, wenn `userListUpdated` true ist
 
   // Filterfunktion für die Suche
   const handleSearch = (term: string) => {
@@ -122,8 +118,12 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
     return acc;
   }, {});
 
-  console.log('Grouped Users:', groupedUsers);
-  console.log('Filtered Users:', projects);
+  const handleUserClick = (user: Profile) => {
+    history.push({
+      pathname: '/profil',
+      state: { viewProfileArg: user },
+    });
+  };
 
   return (
     <IonPage>
@@ -146,7 +146,6 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
                 fill="outline"
                 placeholder="Benutzer suchen..."
                 onIonInput={(e) => handleSearch(e.detail.value!)}
-                className="search-input"
               />
             </IonCol>
             <IonCol size="12" sizeMd="4">
@@ -217,16 +216,19 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
 
                     return (
                       <IonCol size="12" sizeMd="3" key={user.id}>
-                        <IonCard className="user-card">
+                        <IonCard
+                          className="user-card"
+                          onClick={() => handleUserClick(user)} // Benutzer auswählen und navigieren
+                        >
                           <IonCardContent>
                             <IonText className={userClassName}>{user.name}</IonText>
                             <div>
                               <div className="tooltip-container">
-                                <IonBadge color="secondary">{initiatorCount}</IonBadge>
+                                <IonBadge color="primary">{initiatorCount}</IonBadge>
                                 <div className="tooltip">Initiator</div>
                               </div>
                               <div className="tooltip-container">
-                                <IonBadge color="primary">{participantCount}</IonBadge>
+                                <IonBadge color="quaternary">{participantCount}</IonBadge>
                                 <div className="tooltip">Teilnehmer</div>
                               </div>
                             </div>
@@ -239,6 +241,50 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events }) => {
               </IonGrid>
             </div>
           ))}
+
+        {/* Legende */}
+        <IonGrid className="legend-section">
+          <IonRow>
+            <IonCol size="12">
+              <IonText className="legend-title">Legende</IonText>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size="12" sizeMd="4">
+              <IonBadge color="primary" className="legend-badge">
+                Initiator
+              </IonBadge>
+              <br />
+              <IonText className="legend-description">
+                Nutzer, die Projekte initiiert haben.
+              </IonText>
+            </IonCol>
+            <IonCol size="12" sizeMd="4">
+              <IonBadge color="quaternary" className="legend-badge">
+                Teilnehmer
+              </IonBadge>
+              <br />
+              <IonText className="legend-description">Nutzer, die an Projekten teilnehmen.</IonText>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size="12" sizeMd="4">
+              <IonText className="legend-role manager-role">Manager</IonText>
+              <br />
+              <IonText className="legend-description">Nutzer mit erweiterten Rechten.</IonText>
+            </IonCol>
+            <IonCol size="12" sizeMd="4">
+              <IonText className="legend-role user-role">Benutzer</IonText>
+              <br />
+              <IonText className="legend-description">Standard-Nutzer.</IonText>
+            </IonCol>
+            <IonCol size="12" sizeMd="4">
+              <IonText className="legend-role guest-role">Gast</IonText>
+              <br />
+              <IonText className="legend-description">Nutzer mit eingeschränkten Rechten.</IonText>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
     </IonPage>
   );
