@@ -10,6 +10,7 @@
 - **Profile Seite** 
   - Die Profile Seite mit der Anzeige des eigenen Profils & der initiierten Projekten wurde hinzugefügt.
   - Das Ändern der eigenen Daten ist nun direkt über die Profilseite möglich.
+  - Avatar Bilder hinzugefügt
   - **Passwort zurücksetzen für Organisatoren**  
     - Organisatoren können das Passwort eines Benutzers direkt über die Profilseite zurücksetzen.
     - Das neue Passwort wird zufällig generiert und per E-Mail an den Benutzer gesendet.

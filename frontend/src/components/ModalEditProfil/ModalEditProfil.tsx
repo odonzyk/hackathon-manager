@@ -14,23 +14,31 @@ import {
   IonButtons,
   IonSelect,
   IonSelectOption,
+  IonIcon,
 } from '@ionic/react';
 import { Profile, UserRoleMap } from '../../types/types';
 import { isOrganisator } from '../../utils/dataApiConnector';
+import { closeOutline, checkmarkOutline } from 'ionicons/icons';
 
 interface ModalEditProfilProps {
   onSave: (updatedProfile: Profile) => void;
-  profile: Profile;
+  viewProfile: Profile;
+  profile: Profile | null;
   onDidDismiss: () => void;
 }
 
-const ModalEditProfil: React.FC<ModalEditProfilProps> = ({ onSave, profile, onDidDismiss }) => {
+const ModalEditProfil: React.FC<ModalEditProfilProps> = ({
+  onSave,
+  viewProfile,
+  profile,
+  onDidDismiss,
+}) => {
   const modal = useRef<HTMLIonModalElement>(null);
-  const [updatedProfile, setUpdatedProfile] = useState<Profile>(profile);
+  const [updatedProfile, setUpdatedProfile] = useState<Profile>(viewProfile);
 
   useEffect(() => {
-    setUpdatedProfile(profile);
-  }, [profile]);
+    setUpdatedProfile(viewProfile);
+  }, [viewProfile]);
 
   const handleSave = () => {
     onSave(updatedProfile);
@@ -39,7 +47,7 @@ const ModalEditProfil: React.FC<ModalEditProfilProps> = ({ onSave, profile, onDi
 
   const dismiss = () => {
     modal.current?.dismiss();
-    setUpdatedProfile(profile);
+    setUpdatedProfile(viewProfile);
   };
 
   const handleInputChange = (field: keyof Profile, value: any) => {
@@ -49,25 +57,29 @@ const ModalEditProfil: React.FC<ModalEditProfilProps> = ({ onSave, profile, onDi
     }));
   };
 
+  console.log('ModalEditProfil', updatedProfile.id);
+
   return (
     <IonModal
-      id={`edit-profile-modal-${profile.id}`}
+      id={`edit-profile-modal-${viewProfile.id}`}
       ref={modal}
-      trigger={`open-edit-profile-modal-${profile.id}`}
+      trigger={`open-edit-profile-modal-${viewProfile.id}`}
       className="edit-profile-modal"
       onDidDismiss={onDidDismiss}
     >
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonButton onClick={dismiss}>Abbrechen</IonButton>
+            <IonButton onClick={dismiss}>
+              <IonIcon icon={closeOutline} />
+            </IonButton>
           </IonButtons>
           <IonTitle>
             <center>Profil bearbeiten</center>
           </IonTitle>
           <IonButtons slot="end">
             <IonButton strong={true} onClick={handleSave}>
-              Speichern
+              <IonIcon icon={checkmarkOutline} />
             </IonButton>
           </IonButtons>
         </IonToolbar>

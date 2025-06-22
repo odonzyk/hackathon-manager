@@ -341,7 +341,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
           <>
             <ModalEditProfil
               onSave={handleSave}
-              profile={viewProfile}
+              viewProfile={viewProfile}
+              profile={profile}
               onDidDismiss={() => console.log('Modal closed')}
             />
             <ModalEditAvatar onSave={handleSave} profile={viewProfile} />
