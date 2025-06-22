@@ -32,15 +32,15 @@ const TabBar: React.FC = () => {
         <IonLabel>Projekte</IonLabel>
       </IonTabButton>
       <IonTabButton tab="teams" href="/teams">
-        <IonIcon icon={peopleOutline} />
+        <IonIcon icon={idCardOutline} />
         <IonLabel>Teams</IonLabel>
       </IonTabButton>
       <IonTabButton tab="Teilnehmer" href="/userlist">
-        <IonIcon icon={personCircleOutline} />
+        <IonIcon icon={peopleOutline} />
         <IonLabel>Teilnehmer</IonLabel>
       </IonTabButton>
       <IonTabButton tab="Profil" href="/profil">
-        <IonIcon icon={idCardOutline} />
+        <IonIcon icon={personCircleOutline} />
         <IonLabel>Profil</IonLabel>
       </IonTabButton>
     </IonTabBar>

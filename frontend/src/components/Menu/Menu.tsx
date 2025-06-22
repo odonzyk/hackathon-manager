@@ -51,9 +51,9 @@ const Menu = () => {
     { link: '/dashboard', icon: homeOutline, labelKey: 'Dashboard' },
     { link: '/events', icon: calendarOutline, labelKey: 'Events' },
     { link: '/projects', icon: folderOutline, labelKey: 'Projekte' },
-    { link: '/teams', icon: peopleOutline, labelKey: 'Teams' },
-    { link: '/userlist', icon: personCircleOutline, labelKey: 'Teilnehmer' },
-    { link: '/profil', icon: idCardOutline, labelKey: 'Profil' },
+    { link: '/teams', icon: idCardOutline, labelKey: 'Teams' },
+    { link: '/userlist', icon: peopleOutline, labelKey: 'Teilnehmer' },
+    { link: '/profil', icon: personCircleOutline, labelKey: 'Profil' },
     { link: '/about', icon: informationOutline, labelKey: 'Über uns' },
   ];
 

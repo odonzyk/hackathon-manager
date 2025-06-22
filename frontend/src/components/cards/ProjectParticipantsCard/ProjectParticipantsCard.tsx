@@ -3,6 +3,7 @@ import './ProjectParticipantsCard.css';
 import { Profile, Project } from '../../../types/types';
 import {
   IonButton,
+  IonButtons,
   IonCard,
   IonCardContent,
   IonCardHeader,
@@ -31,7 +32,6 @@ interface ProjectParticipantsCardProps {
   onAddParticipant: (project_id: number, user_id: number) => void;
   onAddInitiator: (project_id: number, user_id: number) => void;
   showToastError: (message: string) => void;
-
 }
 
 const ProjectParticipantsCard: React.FC<ProjectParticipantsCardProps> = ({
@@ -59,33 +59,34 @@ const ProjectParticipantsCard: React.FC<ProjectParticipantsCardProps> = ({
           <IonList>
             {project.initiators.map((initiator) => (
               <IonItem key={`initiator-${initiator.id}`}>
-                <IonIcon icon={personOutline} slot="start" style={{ color: '#007bff' }} />
+                <IonIcon icon={personOutline} slot="start" color="primary" />
                 <IonLabel>{initiator.name}</IonLabel>
                 {isOrganiser && (
-                  <IonButton
-                    slot="end"
-                    color="danger"
-                    onClick={() => onRemoveInitiator(project.id, initiator.user_id)}
-                    className="round-button"
-                  >
-                    <IonIcon icon={trashOutline} />
-                  </IonButton>
+                  <IonButtons slot="end">
+                    <IonButton
+                      onClick={() => onRemoveInitiator(project.id, initiator.user_id)}
+                      className="round-button round-danger"
+                    >
+                      <IonIcon icon={trashOutline} slot="icon-only" />
+                    </IonButton>
+                  </IonButtons>
                 )}
               </IonItem>
             ))}
             {project.participants.map((participant) => (
               <IonItem key={`participant-${participant.id}`}>
-                <IonIcon icon={peopleCircleOutline} slot="start" style={{ color: '#17a2b8' }} />
+                <IonIcon icon={peopleCircleOutline} slot="start" color="quaternary" />
                 <IonLabel>{participant.name}</IonLabel>
                 {isOrganiser && (
-                  <IonButton
-                    slot="end"
-                    color="danger"
-                    onClick={() => onRemoveParticipant(project.id, participant.user_id)}
-                    className="round-button"
-                  >
-                    <IonIcon icon={trashOutline} />
-                  </IonButton>
+                  <IonButtons slot="end">
+                    <IonButton
+                      slot="end"
+                      onClick={() => onRemoveParticipant(project.id, participant.user_id)}
+                      className="round-button round-danger"
+                    >
+                      <IonIcon icon={trashOutline} slot="icon-only" />
+                    </IonButton>
+                  </IonButtons>
                 )}
               </IonItem>
             ))}
@@ -108,13 +109,13 @@ const ProjectParticipantsCard: React.FC<ProjectParticipantsCardProps> = ({
             />
           </div>
 
-      {isOrganiser && (
-        <IonFab vertical="bottom" horizontal="end" slot="fixed" className="fab-inside-card">
-          <IonFabButton color="primary" onClick={() => setShowModal(true)}>
-            <IonIcon icon={personAddOutline} />
-          </IonFabButton>
-        </IonFab>
-      )}
+          {isOrganiser && (
+            <IonFab vertical="bottom" horizontal="end" slot="fixed" className="fab-inside-card">
+              <IonFabButton color="primary" onClick={() => setShowModal(true)}>
+                <IonIcon icon={personAddOutline} />
+              </IonFabButton>
+            </IonFab>
+          )}
         </IonCardContent>
       </IonCard>
 

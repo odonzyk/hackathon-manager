@@ -21,7 +21,7 @@ const TeamCard: React.FC<TeamCardProps> = ({ project }) => {
   const teamName = project ? project.team_name : 'Noch kein Teamname';
 
   return (
-    <IonCard className="hackathon-card team-card">
+    <IonCard className="hackathon-card team-card no-hover">
       <IonCardHeader>
         <IonCardTitle>{teamName}</IonCardTitle>
       </IonCardHeader>
@@ -29,13 +29,13 @@ const TeamCard: React.FC<TeamCardProps> = ({ project }) => {
         <IonList>
           {project.initiators.map((initiator) => (
             <IonItem key={`initiator-${initiator.id}`}>
-              <IonIcon icon={personOutline} slot="start" style={{ color: '#007bff' }} />
+              <IonIcon icon={personOutline} slot="start" color="primary" />
               <IonLabel>{initiator.name}</IonLabel>
             </IonItem>
           ))}
           {project.participants?.map((participant) => (
             <IonItem key={`participant-${participant.id}`}>
-              <IonIcon icon={peopleCircleOutline} slot="start" style={{ color: '#17a2b8' }} />
+              <IonIcon icon={peopleCircleOutline} slot="start" color="quaternary" />
               <IonLabel>{participant.name}</IonLabel>
             </IonItem>
           ))}

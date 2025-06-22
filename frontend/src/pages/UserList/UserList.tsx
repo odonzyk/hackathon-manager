@@ -41,8 +41,6 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events, isUserList
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
-
-
   useEffect(() => {
     if (profile) {
       const token = getExistingToken();
@@ -51,15 +49,13 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events, isUserList
         return;
       }
       fetchUserList(profile, token, setUserlist, showToastError);
-      fetchProjectList(
-        token,
-        profile,
-        events,
-        setProjects,
-        showToastError);
-      setFilteredUsers(userlist);
+      fetchProjectList(token, profile, events, setProjects, showToastError);
     }
   }, [profile]);
+
+  useEffect(() => {
+    setFilteredUsers(userlist);
+  }, [userlist]);
 
   // Überwache Änderungen an `userListUpdated`
   useEffect(() => {
@@ -150,7 +146,6 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events, isUserList
                 fill="outline"
                 placeholder="Benutzer suchen..."
                 onIonInput={(e) => handleSearch(e.detail.value!)}
-                className="search-input"
               />
             </IonCol>
             <IonCol size="12" sizeMd="4">
@@ -229,11 +224,11 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events, isUserList
                             <IonText className={userClassName}>{user.name}</IonText>
                             <div>
                               <div className="tooltip-container">
-                                <IonBadge color="secondary">{initiatorCount}</IonBadge>
+                                <IonBadge color="primary">{initiatorCount}</IonBadge>
                                 <div className="tooltip">Initiator</div>
                               </div>
                               <div className="tooltip-container">
-                                <IonBadge color="primary">{participantCount}</IonBadge>
+                                <IonBadge color="quaternary">{participantCount}</IonBadge>
                                 <div className="tooltip">Teilnehmer</div>
                               </div>
                             </div>
@@ -246,6 +241,50 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events, isUserList
               </IonGrid>
             </div>
           ))}
+
+        {/* Legende */}
+        <IonGrid className="legend-section">
+          <IonRow>
+            <IonCol size="12">
+              <IonText className="legend-title">Legende</IonText>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size="12" sizeMd="4">
+              <IonBadge color="primary" className="legend-badge">
+                Initiator
+              </IonBadge>
+              <br />
+              <IonText className="legend-description">
+                Nutzer, die Projekte initiiert haben.
+              </IonText>
+            </IonCol>
+            <IonCol size="12" sizeMd="4">
+              <IonBadge color="quaternary" className="legend-badge">
+                Teilnehmer
+              </IonBadge>
+              <br />
+              <IonText className="legend-description">Nutzer, die an Projekten teilnehmen.</IonText>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size="12" sizeMd="4">
+              <IonText className="legend-role manager-role">Manager</IonText>
+              <br />
+              <IonText className="legend-description">Nutzer mit erweiterten Rechten.</IonText>
+            </IonCol>
+            <IonCol size="12" sizeMd="4">
+              <IonText className="legend-role user-role">Benutzer</IonText>
+              <br />
+              <IonText className="legend-description">Standard-Nutzer.</IonText>
+            </IonCol>
+            <IonCol size="12" sizeMd="4">
+              <IonText className="legend-role guest-role">Gast</IonText>
+              <br />
+              <IonText className="legend-description">Nutzer mit eingeschränkten Rechten.</IonText>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
     </IonPage>
   );

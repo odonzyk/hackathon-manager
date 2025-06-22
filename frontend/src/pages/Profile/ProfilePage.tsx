@@ -180,7 +180,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
         <IonToolbar>
           {viewProfileArg && (
             <IonButtons slot="start">
-              <IonButton onClick={() => history.goBack()} className="round-action-button">
+              <IonButton onClick={() => history.goBack()}>
                 <IonIcon icon={arrowBackOutline} slot="icon-only" />
               </IonButton>
             </IonButtons>
@@ -190,14 +190,14 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
             <IonIcon icon={personCircleOutline} />
             Profil
           </IonTitle>
-          <IonButtons slot="end" className="profile-action-buttons">
+          <IonButtons slot="end">
             {/* Call-Button */}
-            <IonButton href={'tel:' + viewProfile?.telephone} className="round-action-button">
+            <IonButton href={'tel:' + viewProfile?.telephone}>
               <IonIcon icon={callOutline} slot="icon-only" />
             </IonButton>
 
             {/* Share-Button */}
-            <IonButton onClick={shareProfile} className="round-action-button">
+            <IonButton onClick={shareProfile}>
               <IonIcon icon={shareSocialOutline} slot="icon-only" />
             </IonButton>
           </IonButtons>

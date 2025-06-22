@@ -167,16 +167,14 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
             <IonIcon icon={folderOutline} style={{ marginRight: '8px' }} />
             Projekt Details
           </IonTitle>
-          {isOrganisator(profile) && (
-            <IonButtons slot="end">
-              <IonButton onClick={handleCopyEmailsToClipboard} title="E-Mail-Adressen kopieren">
-                <IonIcon icon={clipboardOutline} />
-              </IonButton>
-            </IonButtons>
-          )}
           <IonButtons slot="end">
+            {isOrganisator(profile) && (
+              <IonButton onClick={handleCopyEmailsToClipboard} title="E-Mail-Adressen kopieren">
+                <IonIcon icon={clipboardOutline} slot="icon-only" />
+              </IonButton>
+            )}
             <IonButton onClick={handleOpenTeamsChannel} title="MS Teams Kanal öffnen">
-              <IonIcon icon={linkOutline} />
+              <IonIcon icon={linkOutline} slot="icon-only" />
             </IonButton>
           </IonButtons>
         </IonToolbar>
@@ -205,7 +203,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
                 onRemoveParticipant={handleRemoveParticipant}
                 onRemoveInitiator={handleRemoveInitiator}
                 onAddParticipant={handleAddParticipant}
-                onAddInitiator={handleAddInitiator} 
+                onAddInitiator={handleAddInitiator}
                 showToastError={showToastError}
               />
             </IonCol>

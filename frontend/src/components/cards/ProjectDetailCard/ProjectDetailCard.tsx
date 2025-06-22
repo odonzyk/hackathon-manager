@@ -36,7 +36,7 @@ const ProjectDetailCard: React.FC<ProjectDetailCardProps> = ({ project, profile,
   const isParticipant = project.participants?.some((p) => p.user_id === profile?.id);
 
   return (
-    <IonCard className="hackathon-card project-detail-card">
+    <IonCard className="hackathon-card no-hover">
       <div className="project-badge-container">
         {isInitiator && <div className="project-badge initiator-badge">Initiator</div>}
         {!isInitiator && isParticipant && (
@@ -44,9 +44,7 @@ const ProjectDetailCard: React.FC<ProjectDetailCardProps> = ({ project, profile,
         )}
       </div>
       <IonCardHeader>
-        <IonCardTitle style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
-          {project.idea}
-        </IonCardTitle>
+        <IonCardTitle>{project.idea}</IonCardTitle>
       </IonCardHeader>
 
       <IonCardContent>

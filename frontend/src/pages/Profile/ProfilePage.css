@@ -36,17 +36,6 @@
   color: var(--ion-color-primary); /* Farbe des Icons */
 }
 
-.clickable-icon {
-  cursor: pointer;
-  color: var(--ion-color-primary); /* Farbe des Icons */
-  margin-left: 8px; /* Abstand zum Text */
-  font-size: 24px;
-}
-
-.avatar-edit-icon:hover {
-  color: var(--ion-color-secondary); /* Farbe beim Hover */
-}
-
 .profile-name {
   font-weight: bold;
   font-size: 1.5rem;
@@ -91,11 +80,6 @@
   color: var(--ion-color-primary);
 }
 
-.profile-action-buttons {
-  display: flex;
-  gap: 8px; /* Abstand zwischen den Buttons */
-}
-
 .password-button {
   margin-top: 50px;
   min-height: 40px;
@@ -104,42 +88,4 @@
 .password-reset-button {
   margin-top: 8px;
   --border-radius: 12px;
-}
-
-.clickable-icon {
-  cursor: pointer;
-  color: var(--ion-color-primary); /* Farbe des Icons */
-  margin-left: 8px; /* Abstand zum Text */
-  font-size: 24px;
-}
-
-.clickable-icon:hover {
-  color: var(--ion-color-secondary); /* Farbe beim Hover */
-}
-
-.clickable-text {
-  cursor: pointer;
-  color: var(--ion-color-primary); /* Farbe des Icons */
-  margin-left: 8px; /* Abstand zum Text */
-  font-size: 14px;
-}
-
-.clickable-text:hover {
-  color: var(--ion-color-secondary); /* Farbe beim Hover */
-}
-
-.round-action-button {
-  background-color: var(--ion-text-color-contrast);
-  color: var(--ion-color-primary);
-  border-radius: 50%; /* Rundes Design */
-  width: 40px; /* Breite des Buttons */
-  height: 40px; /* Höhe des Buttons */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Leichter Schatten */
-}
-
-.round-action-button:hover {
-  background-color: var(--ion-card-border);
 }
