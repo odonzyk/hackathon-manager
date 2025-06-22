@@ -4,7 +4,9 @@
 **Release Date:** 2025-10-19
 
 ### ✨ Neue Funktionen
-
+- **Daten Update**  
+  - Neue Projekte wurde hinzugefügt
+  - Initiatoren wurden angepasst
 - **Profile Seite** 
   - Die Profile Seite mit der Anzeige des eigenen Profils & der initiierten Projekten wurde hinzugefügt.
   - Das Ändern der eigenen Daten ist nun direkt über die Profilseite möglich.
@@ -15,8 +17,10 @@
   - Die Teilnehmer sind klickbar und es wird das jeweilige Profil geöffnet.
   - Organisatoren können dort auch die Profildaten direkt bearbeiten.
   - Organisatoren können auch die Rolle eines Profils verändern.
-- **Projekt Seite**  
-  - Organisatoren können Teilnehmer und Initiatoren vom vom Projekte entfernen.
+- **Projekt Detail Seite**  
+  - Organisatoren können Teilnehmer und Initiatoren vom Projekte entfernen.
+  - Organisatoren können Nutzer als Teilnehmer o. Initiator zum Projekt hinzufügen.
+  - Ein neues Teilnehmer Auswahl Modal unterstützt bei der Sucher nach Teilnehmern.
 
 
 ### 🐞 Fehlerbehebungen & Verbesserungen

@@ -19,12 +19,12 @@ import {
   IonIcon,
 } from '@ionic/react';
 import './UserList.css';
-import { getAllUsers, getProjects, ResultType } from '../../utils/dataApiConnector';
 import { useToast } from '../../components/ToastProvider';
 import { Event, Profile, Project, RoleTypes } from '../../types/types';
 import { getExistingToken } from '../../utils/authUtils';
 import { personCircleOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
+import { fetchProjectList, fetchUserList } from '../../utils/dataFetchUtils';
 
 interface UserListPageProps {
   profile: Profile | null;
@@ -41,30 +41,7 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events, isUserList
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
-  // Funktion zum Abrufen der Benutzerliste
-  const fetchUserList = async (token: string | null) => {
-    const result = await getAllUsers(profile, token);
-    if (result.resultType !== ResultType.SUCCESS || result.data === null) {
-      showToastError(result.resultMsg ?? 'Error');
-      return;
-    }
-    setUserlist(result.data);
-    setFilteredUsers(result.data);
-  };
 
-  const fetchProjectList = async (token: string | null) => {
-    const aggregatedProjects: Project[] = [];
-
-    for (const event of events) {
-      const result = await getProjects(event.id, profile, token);
-      if (result.resultType !== ResultType.SUCCESS || result.data === null) {
-        showToastError(result.resultMsg ?? 'Error');
-        continue;
-      }
-      aggregatedProjects.push(...result.data);
-    }
-    setProjects(aggregatedProjects);
-  };
 
   useEffect(() => {
     if (profile) {
@@ -73,8 +50,14 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events, isUserList
         showToastError('Token nicht gefunden. Bitte anmelden.');
         return;
       }
-      fetchUserList(token);
-      fetchProjectList(token);
+      fetchUserList(profile, token, setUserlist, showToastError);
+      fetchProjectList(
+        token,
+        profile,
+        events,
+        setProjects,
+        showToastError);
+      setFilteredUsers(userlist);
     }
   }, [profile]);
 
@@ -87,7 +70,8 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events, isUserList
         showToastError('Token nicht gefunden. Bitte anmelden.');
         return;
       }
-      fetchUserList(token); // Aktualisiere die Benutzerliste
+      fetchUserList(profile, token, setUserlist, showToastError);
+      setFilteredUsers(userlist);
     }
   }, [isUserListUpdated]); // Wird ausgeführt, wenn `userListUpdated` true ist
 
