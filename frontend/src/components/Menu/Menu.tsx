@@ -52,7 +52,7 @@ const Menu = () => {
     { link: '/events', icon: calendarOutline, labelKey: 'Events' },
     { link: '/projects', icon: folderOutline, labelKey: 'Projekte' },
     { link: '/teams', icon: idCardOutline, labelKey: 'Teams' },
-    { link: '/userlist', icon: peopleOutline, labelKey: 'Teilnehmer' },
+    { link: '/userlist', icon: peopleOutline, labelKey: 'Teilnehmende' },
     { link: '/profil', icon: personCircleOutline, labelKey: 'Profil' },
     { link: '/about', icon: informationOutline, labelKey: 'Über uns' },
   ];

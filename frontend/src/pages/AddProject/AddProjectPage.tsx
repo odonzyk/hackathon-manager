@@ -15,18 +15,22 @@ import {
   IonText,
   IonList,
   IonIcon,
+  IonSelect,
+  IonSelectOption,
 } from '@ionic/react';
-import { Event, Profile, Project } from '../../types/types';
+import { ActivityStatusMap, Event, Profile, Project } from '../../types/types';
 import {
   bulbOutline,
+  chatbubblesOutline,
   constructOutline,
   documentTextOutline,
   flagOutline,
   peopleCircleOutline,
   peopleOutline,
+  playCircleOutline,
 } from 'ionicons/icons';
 import { getExistingToken } from '../../utils/authUtils';
-import { postProject, putProject, ResultType } from '../../utils/dataApiConnector';
+import { isOrganisator, postProject, putProject, ResultType } from '../../utils/dataApiConnector';
 import { useToast } from '../../components/ToastProvider';
 import { useHistory, useLocation } from 'react-router-dom';
 
@@ -228,7 +232,7 @@ const AddProjectPage: React.FC<AddProjectPageProps> = ({ profile, event, onProje
               </IonItem>
 
               <IonItem>
-                <IonIcon icon={bulbOutline} slot="start" style={{ color: '#6f42c1' }} />
+                <IonIcon icon={chatbubblesOutline} slot="start" style={{ color: '#6f42c1' }} />
                 <IonLabel>
                   <h2>MS Teams Channel ID</h2>
                   <IonInput
@@ -241,6 +245,27 @@ const AddProjectPage: React.FC<AddProjectPageProps> = ({ profile, event, onProje
                   />
                 </IonLabel>
               </IonItem>
+
+              {isOrganisator(profile) && (
+                <IonItem>
+                  <IonIcon icon={playCircleOutline} slot="start" style={{ color: '#6f42c1' }} />
+                  <IonLabel>
+                    <h2>Status</h2>
+                  </IonLabel>
+                  <IonSelect
+                    value={newProject.status_id}
+                    placeholder="Status auswählen"
+                    onIonChange={(e) => handleInputChange('status_id', e.detail.value!)}
+                  >
+                    {Object.entries(ActivityStatusMap).map(([statusId, { name, icon }]) => (
+                      <IonSelectOption key={statusId} value={Number(statusId)}>
+                        <IonIcon icon={icon} slot="start" style={{ marginRight: '8px' }} />
+                        {name}
+                      </IonSelectOption>
+                    ))}
+                  </IonSelect>
+                </IonItem>
+              )}
             </IonList>
           </IonCardContent>
         </IonCard>

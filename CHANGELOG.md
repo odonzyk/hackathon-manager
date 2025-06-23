@@ -1,5 +1,20 @@
 # 📦 Changelog
 
+## Version 0.3.2
+**Release Date:** 2025-10-??
+
+### ✨ Neue Funktionen
+- ** **  
+  - 
+
+### 🐞 Fehlerbehebungen & Verbesserungen
+
+- **Kleine Verbesserungen**  
+  - Die Teamliste zeigt nur Teams die noch im Pitch oder Aktiv sind.
+  - Das Dashboard berücksichtigt nun abgebrochende Projekte
+  - Das Dashboard unterscheided registrierte Nutze und aktiv am Projekt beteiligte Teilnehmer
+
+
 ## Version 0.3.1
 **Release Date:** 2025-10-22
 

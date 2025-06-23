@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonCardContent, IonCard, IonCardHeader, IonCardTitle } from '@ionic/react';
+import { IonCardContent, IonCard, IonCardHeader, IonCardTitle, IonText } from '@ionic/react';
 import { Event, Project } from '../../../types/types';
 
 interface TeamOverviewCardProps {
@@ -8,6 +8,19 @@ interface TeamOverviewCardProps {
 }
 
 const TeamOverviewCard: React.FC<TeamOverviewCardProps> = ({ projects, event }) => {
+  // Filtere Projekte des aktuellen Events
+  const filteredProjects = projects.filter((project) => project.event_id === event?.id);
+
+  // Berechne die Anzahl der registrierten Benutzer:innen
+  const totalParticipants = filteredProjects.reduce(
+    (sum, project) =>
+      sum + (project.participants?.length || 0) + (project.initiators?.length || 0),
+    0,
+  );
+
+  // Berechne die Anzahl der Teams und deren angemeldete Teilnehmenden
+  const totalTeams = filteredProjects.length;
+
   return (
     <IonCard
       className="hackathon-card"
@@ -17,17 +30,18 @@ const TeamOverviewCard: React.FC<TeamOverviewCardProps> = ({ projects, event }) 
       }}
     >
       <IonCardHeader>
-        <IonCardTitle>👥 Teilnehmer</IonCardTitle>
+        <IonCardTitle>👥 Teilnehmende</IonCardTitle>
       </IonCardHeader>
       <IonCardContent>
-        {projects
-          .filter((project) => project.event_id === event?.id) // Filtere Projekte des aktuellen Events
-          .reduce(
-            (sum, project) =>
-              sum + (project.participants?.length || 0) + (project.initiators?.length || 0),
+        <IonText>{totalParticipants} Benutzer:innen registriert<br /></IonText>
+        <IonText>
+          {totalTeams} Teams mit{' '}
+          {filteredProjects.reduce(
+            (sum, project) => sum + (project.participants?.length || 0),
             0,
           )}{' '}
-        angemeldet
+          angemeldeten Teilnehmenden
+        </IonText>
       </IonCardContent>
     </IonCard>
   );

@@ -7,6 +7,10 @@ interface ProjectOverviewCardProps {
 }
 
 const ProjectOverviewCard: React.FC<ProjectOverviewCardProps> = ({ projects }) => {
+  // Filtere Projekte basierend auf ihrem Status
+  const activeOrPitchProjects = projects.filter((project) => project.status_id === 1 || project.status_id === 2).length;
+  const cancelledProjects = projects.filter((project) => project.status_id === 4).length;
+
   return (
     <IonCard
       className="hackathon-card"
@@ -18,7 +22,10 @@ const ProjectOverviewCard: React.FC<ProjectOverviewCardProps> = ({ projects }) =
       <IonCardHeader>
         <IonCardTitle>📁 Projekte</IonCardTitle>
       </IonCardHeader>
-      <IonCardContent>{projects.length} eingereicht</IonCardContent>
+      <IonCardContent>
+        {activeOrPitchProjects} Projekte aktiv<br />
+        {cancelledProjects} Projekte abgebrochen
+      </IonCardContent>
     </IonCard>
   );
 };
