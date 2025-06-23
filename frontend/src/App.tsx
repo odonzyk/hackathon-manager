@@ -39,6 +39,7 @@ const App = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [userListUpdated, setUserListUpdated] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -82,6 +83,12 @@ const App = () => {
     }
   }, [selectedEvent]);
 
+  useEffect(() => {
+    if (userListUpdated) {
+      setUserListUpdated(false); // Zurücksetzen, nachdem die Änderung verarbeitet wurde
+    }
+  }, [userListUpdated]);
+
   const updateProjects = (eventId: number, token: string) => {
     fetchProjects(eventId, profile, token, setProjects, showToastError);
   };
@@ -91,6 +98,18 @@ const App = () => {
   const updateSelectedEvent = (event: Event) => {
     setSelectedEvent(event); // Speichert das ausgewählte Event
   };
+  const updateProfile = (updatedProfile: Profile) => {
+    if (!updatedProfile || !updatedProfile.id) {
+      showToastError('Ungültiges Profil. Bitte erneut anmelden.');
+      return;
+    }
+    if (updatedProfile.id !== profile?.id) {
+      console.log('Updating profile:', updatedProfile);
+      setUserListUpdated(true);
+    } else {
+      setProfile(updatedProfile);
+    }
+  };
 
   const publicRoutes = getPublicRoutes();
   const privateRoutes = getPrivateRoutes(
@@ -98,9 +117,11 @@ const App = () => {
     events,
     selectedEvent,
     projects,
+    userListUpdated,
     updateProjects,
     updateParticipateList,
     updateSelectedEvent,
+    updateProfile,
   );
 
   const onSelectEvent = (selectedId: number) => {

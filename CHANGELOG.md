@@ -1,5 +1,37 @@
 # 📦 Changelog
 
+## Version 0.3.1
+**Release Date:** 2025-10-22
+
+### ✨ Neue Funktionen
+- **Daten Update**  
+  - Neue Projekte wurde hinzugefügt
+  - Initiatoren wurden angepasst
+- **Profile Seite** 
+  - Die Profile Seite mit der Anzeige des eigenen Profils & der initiierten Projekten wurde hinzugefügt.
+  - Das Ändern der eigenen Daten ist nun direkt über die Profilseite möglich.
+  - Avatar Bilder hinzugefügt
+  - **Passwort zurücksetzen für Organisatoren**  
+    - Organisatoren können das Passwort eines Benutzers direkt über die Profilseite zurücksetzen.
+    - Das neue Passwort wird zufällig generiert und per E-Mail an den Benutzer gesendet.
+- **Teilnehmer Seite**  
+  - Die Teilnehmer sind klickbar und es wird das jeweilige Profil geöffnet.
+  - Organisatoren können dort auch die Profildaten direkt bearbeiten.
+  - Organisatoren können auch die Rolle eines Profils verändern.
+  - Legende mit Erläuterung des Farbschema hinzugefügt
+- **Projekt Detail Seite**  
+  - Organisatoren können Teilnehmer und Initiatoren vom Projekte entfernen.
+  - Organisatoren können Nutzer als Teilnehmer o. Initiator zum Projekt hinzufügen.
+  - Ein neues Teilnehmer Auswahl Modal unterstützt bei der Suche nach Teilnehmern.
+
+
+### 🐞 Fehlerbehebungen & Verbesserungen
+
+- **Verbesserte Darstellung der Buttons auf der Profilseite**  
+  - Die Buttons "Anrufen" und "Kontakt teilen" auf der Profil Seite wurden optisch angepasst (runde Buttons, weniger prominent).
+  - Die Buttons "Mail Adressen Export" und "MS Teams öffnen" auf der Projekt Detail Seite wurden optisch angepasst (runde Buttons, weniger prominent).
+  - Hover-Effekte und einheitliches Design für die Buttons hinzugefügt.
+
 ## Version 0.3.0
 **Release Date:** 2025-10-16
 

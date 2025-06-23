@@ -150,7 +150,7 @@ const LoginPage = () => {
             </div>
           </div>
 
-          <IonCard className="hackathon-card login-card">
+          <IonCard className="hackathon-card login-card no-hover">
             <IonCardHeader>
               <IonCardTitle>Login</IonCardTitle>
             </IonCardHeader>
