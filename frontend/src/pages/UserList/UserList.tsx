@@ -131,7 +131,7 @@ const UserListPage: React.FC<UserListPageProps> = ({ profile, events, isUserList
         <IonToolbar>
           <IonTitle>
             <IonIcon icon={personCircleOutline} />
-            Teilnehmer Liste
+            Übersicht aller Teilnehmenden
           </IonTitle>
         </IonToolbar>
       </IonHeader>

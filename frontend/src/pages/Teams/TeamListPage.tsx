@@ -20,6 +20,9 @@ interface TeamListPageProps {
 }
 
 const TeamListPage: React.FC<TeamListPageProps> = ({ projects }) => {
+  // Filtere Projekte mit Status < Ended
+  const filteredProjects = projects.filter((project) => project.status_id < 3);
+
   return (
     <IonPage>
       <IonHeader>
@@ -34,7 +37,7 @@ const TeamListPage: React.FC<TeamListPageProps> = ({ projects }) => {
       <IonContent>
         <IonGrid className="hackathon-grid">
           <IonRow>
-            {projects.map((project) => (
+            {filteredProjects.map((project) => (
               <IonCol size="12" sizeMd="6" key={project.id}>
                 <TeamCard project={project} />
               </IonCol>
