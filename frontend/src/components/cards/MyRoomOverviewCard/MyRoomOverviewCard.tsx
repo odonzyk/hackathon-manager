@@ -7,7 +7,7 @@ import './MyRoomOverviewCard.css';
 interface MyRoomOverviewCardProps {
   profile: Profile | null;
   event: Event | null;
-  projects: Project[]
+  projects: Project[];
 }
 
 const MyRoomOverviewCard: React.FC<MyRoomOverviewCardProps> = ({ profile, event, projects }) => {
@@ -17,7 +17,7 @@ const MyRoomOverviewCard: React.FC<MyRoomOverviewCardProps> = ({ profile, event,
     (participation) => participation.event_id === event?.id,
   );
 
-  const projectDetails = projects.find(project => project.id === participation?.project_id);
+  const projectDetails = projects.find((project) => project.id === participation?.project_id);
 
   const handleCardClick = () => {
     if (participation) {

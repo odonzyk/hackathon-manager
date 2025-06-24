@@ -53,6 +53,7 @@ const emptyProject: Project = {
   skills: '',
   max_team_size: 20,
   teams_channel_id: '',
+  location: '',
   initiators: [],
   participants: [],
 };

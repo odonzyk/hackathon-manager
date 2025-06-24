@@ -9,12 +9,13 @@ interface TeamOverviewCardProps {
 
 const TeamOverviewCard: React.FC<TeamOverviewCardProps> = ({ projects, event }) => {
   // Filtere Projekte des aktuellen Events
-  const filteredProjects = projects.filter((project) => project.event_id === event?.id && project.status_id <= 2);
-  
+  const filteredProjects = projects.filter(
+    (project) => project.event_id === event?.id && project.status_id <= 2,
+  );
+
   // Berechne die Anzahl der registrierten Benutzer:innen
   const totalParticipants = filteredProjects.reduce(
-    (sum, project) =>
-      sum + (project.participants?.length || 0) + (project.initiators?.length || 0),
+    (sum, project) => sum + (project.participants?.length || 0) + (project.initiators?.length || 0),
     0,
   );
 
@@ -32,10 +33,9 @@ const TeamOverviewCard: React.FC<TeamOverviewCardProps> = ({ projects, event }) 
       <IonCardHeader>
         <IonCardTitle>👥 Teilnehmende</IonCardTitle>
       </IonCardHeader>
-      <IonCardContent>      
+      <IonCardContent>
         <IonText>
-          {totalParticipants}{' '}
-          Teilnehmende in {totalTeams} Teams
+          {totalParticipants} Teilnehmende in {totalTeams} Teams
         </IonText>
       </IonCardContent>
     </IonCard>

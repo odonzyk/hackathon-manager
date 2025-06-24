@@ -84,7 +84,7 @@ export type Project = {
   skills: string;
   max_team_size: number;
   teams_channel_id: string;
-  location: string
+  location: string;
   initiators: Initiator[];
   participants: Participant[];
 };
