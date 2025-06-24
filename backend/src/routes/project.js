@@ -21,6 +21,7 @@ const createProject = (dbRow) => {
     skills: dbRow?.skills ?? '',
     max_team_size: dbRow?.max_team_size ?? 20,
     teams_channel_id: dbRow?.teams_channel_id ?? '',
+    location: dbRow?.location ?? '',
     initiators: null,
     participants: null
   };
@@ -115,7 +116,7 @@ router.get('/listByUser/:id', authenticateAndAuthorize(RoleTypes.USER), async (r
 
 // *** POST /api/project *********************************************************
 router.post('/', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
-  let { event_id, status_id, idea, description, team_name, team_avatar_url, initiators, goal, components, skills, max_team_size, teams_channel_id } = req.body;
+  let { event_id, status_id, idea, description, team_name, team_avatar_url, initiators, goal, components, skills, max_team_size, teams_channel_id, location } = req.body;
   logger.debug(`API: POST /api/project - ${idea}`);
   if (!event_id || !idea || !description || !initiators[0]?.id) {
     return res.status(400).send(ErrorMsg.VALIDATION.MISSING_FIELDS);
@@ -127,8 +128,8 @@ router.post('/', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
 
   max_team_size = max_team_size || 20;
   result = await db_run(
-    'INSERT INTO Project (event_id, status_id, idea, description, team_name, team_avatar_url, goal, components, skills, max_team_size, teams_channel_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-    [event_id, status_id, idea, description, team_name, team_avatar_url, goal, components, skills, max_team_size, teams_channel_id]
+    'INSERT INTO Project (event_id, status_id, idea, description, team_name, team_avatar_url, goal, components, skills, max_team_size, teams_channel_id, location) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    [event_id, status_id, idea, description, team_name, team_avatar_url, goal, components, skills, max_team_size, teams_channel_id, location]
   );
   const project_id = result.lastID;
   if (result.err || result.changes === 0) {
@@ -161,6 +162,7 @@ router.post('/', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
     skills,
     max_team_size,
     teams_channel_id,
+    location,
     initiators: initiatorslist || [],
     participants: participantslist || []
   });
@@ -169,7 +171,7 @@ router.post('/', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
 // *** PUT /api/project *********************************************************
 router.put('/:id', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res) => {
   const { id } = req.params;
-  let { event_id, status_id, idea, description, team_name, team_avatar_url, goal, components, skills, max_team_size, teams_channel_id } = req.body;
+  let { event_id, status_id, idea, description, team_name, team_avatar_url, goal, components, skills, max_team_size, teams_channel_id, location } = req.body;
   logger.debug(`API: PUT  /api/project/${id} - ${idea}`);
 
   if (!event_id || !idea || !description) {
@@ -204,10 +206,11 @@ router.put('/:id', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res)
   project.skills = skills ?? project.skills;
   project.max_team_size = max_team_size ?? project.max_team_size;
   project.teams_channel_id = teams_channel_id ?? project.teams_channel_id;
+  project.location = location ?? project.location;
 
   // Update Project
   result = await db_run(
-    'UPDATE Project SET event_id=?, status_id=?, idea=?, description=?, team_name=?, team_avatar_url=?, goal=?, components=?, skills=?, max_team_size=?, teams_channel_id=? WHERE id = ?',
+    'UPDATE Project SET event_id=?, status_id=?, idea=?, description=?, team_name=?, team_avatar_url=?, goal=?, components=?, skills=?, max_team_size=?, teams_channel_id=?, location=? WHERE id = ?',
     [
       project.event_id,
       project.status_id,
@@ -220,6 +223,7 @@ router.put('/:id', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res)
       project.skills,
       project.max_team_size,
       project.teams_channel_id,
+      project.location,
       id
     ]
   );

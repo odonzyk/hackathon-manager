@@ -18,6 +18,7 @@ import MyProjectOverviewCard from '../../components/cards/MyProjectOverviewCard/
 import CountdownCard from '../../components/cards/CountdownCard/CountdownCard';
 import { isDemo } from '../../utils/dataApiConnector';
 import { bookOutline } from 'ionicons/icons';
+import MyRoomOverviewCard from '../../components/cards/MyRoomOverviewCard/MyRoomOverviewCard';
 
 interface DashboardPageProps {
   profile: Profile | null;
@@ -64,12 +65,7 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ profile, event, projects 
               <MyProjectOverviewCard profile={profile} event={event} />
             </IonCol>
             <IonCol size="12" sizeMd="6">
-              <IonCard className="hackathon-card no-hover">
-                <IonCardHeader>
-                  <IonCardTitle>Raum</IonCardTitle>
-                </IonCardHeader>
-                <IonCardContent>Noch nicht bekannt</IonCardContent>
-              </IonCard>
+              <MyRoomOverviewCard profile={profile} event={event} projects={projects} />
             </IonCol>
           </IonRow>
         </IonGrid>

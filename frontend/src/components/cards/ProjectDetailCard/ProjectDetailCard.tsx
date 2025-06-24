@@ -17,6 +17,7 @@ import {
   callOutline,
   constructOutline,
   flagOutline,
+  locationOutline,
   pencilOutline,
   peopleCircleOutline,
   peopleOutline,
@@ -75,22 +76,29 @@ const ProjectDetailCard: React.FC<ProjectDetailCardProps> = ({ project, profile,
           <IonItem>
             <IonIcon icon={flagOutline} slot="start" style={{ color: '#ffc107' }} />
             <IonLabel>
-              <h2>Ziel</h2>
+              <h2>Ziel des Projekts</h2>
               <IonText>{project.goal}</IonText>
             </IonLabel>
           </IonItem>
           <IonItem>
             <IonIcon icon={constructOutline} slot="start" style={{ color: '#17a2b8' }} />
             <IonLabel>
-              <h2>Komponenten</h2>
+              <h2>Benötigte Komponenten, Hardware, Materialien</h2>
               <IonText>{project.components}</IonText>
             </IonLabel>
           </IonItem>
           <IonItem>
             <IonIcon icon={bulbOutline} slot="start" style={{ color: '#6f42c1' }} />
             <IonLabel>
-              <h2>Skills</h2>
+              <h2>Benötigte Fähigkeiten, Fachwissen, Know How, etc.</h2>
               <IonText>{project.skills}</IonText>
+            </IonLabel>
+          </IonItem>
+          <IonItem>
+            <IonIcon icon={locationOutline} slot="start" style={{ color: '#ff9800' }} />
+            <IonLabel>
+              <h2>Ort / Raum</h2>
+              <IonText>{project.location}</IonText>
             </IonLabel>
           </IonItem>
           <IonItem>

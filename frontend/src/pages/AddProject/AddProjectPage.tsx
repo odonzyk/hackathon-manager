@@ -25,6 +25,7 @@ import {
   constructOutline,
   documentTextOutline,
   flagOutline,
+  locationOutline,
   peopleCircleOutline,
   peopleOutline,
   playCircleOutline,
@@ -200,7 +201,7 @@ const AddProjectPage: React.FC<AddProjectPageProps> = ({ profile, event, onProje
               <IonItem>
                 <IonIcon icon={bulbOutline} slot="start" style={{ color: '#6f42c1' }} />
                 <IonLabel>
-                  <h2>Benötigte Fähigkeiten, Know How, etc.</h2>
+                  <h2>Benötigte Fähigkeiten, Fachwissen, Know How, etc.</h2>
                   <IonTextarea
                     value={newProject.skills}
                     fill="outline"
@@ -208,6 +209,19 @@ const AddProjectPage: React.FC<AddProjectPageProps> = ({ profile, event, onProje
                     counter={true}
                     maxlength={1000}
                     onIonChange={(e) => handleInputChange('skills', e.detail.value!)}
+                  />
+                </IonLabel>
+              </IonItem>
+              <IonItem>
+                <IonIcon icon={locationOutline} slot="start" style={{ color: '#ff9800' }} />
+                <IonLabel>
+                  <h2>Raum / Ort</h2>
+                  <IonInput
+                    value={newProject.location}
+                    fill="outline"
+                    counter={true}
+                    maxlength={255}
+                    onIonChange={(e) => handleInputChange('location', e.detail.value!)}
                   />
                 </IonLabel>
               </IonItem>
