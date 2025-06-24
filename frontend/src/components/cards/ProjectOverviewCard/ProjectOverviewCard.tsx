@@ -8,7 +8,9 @@ interface ProjectOverviewCardProps {
 
 const ProjectOverviewCard: React.FC<ProjectOverviewCardProps> = ({ projects }) => {
   // Filtere Projekte basierend auf ihrem Status
-  const activeOrPitchProjects = projects.filter((project) => project.status_id === 1 || project.status_id === 2).length;
+  const activeOrPitchProjects = projects.filter(
+    (project) => project.status_id === 1 || project.status_id === 2,
+  ).length;
   const cancelledProjects = projects.filter((project) => project.status_id === 4).length;
 
   return (
@@ -23,7 +25,8 @@ const ProjectOverviewCard: React.FC<ProjectOverviewCardProps> = ({ projects }) =
         <IonCardTitle>📁 Projekte</IonCardTitle>
       </IonCardHeader>
       <IonCardContent>
-        {activeOrPitchProjects} Projekte aktiv<br />
+        {activeOrPitchProjects} Projekte aktiv
+        <br />
         {cancelledProjects} Projekte abgebrochen
       </IonCardContent>
     </IonCard>

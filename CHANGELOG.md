@@ -4,8 +4,11 @@
 **Release Date:** 2025-10-??
 
 ### ✨ Neue Funktionen
-- ** **  
-  - 
+- **Project**  
+  - Neues Feld für Ort / Raum hinzugefügt
+  - Projekt Detail zeigt den Raum an
+  - Projekt Edit ermöglicht das bearbeiten des Raumes
+  - Das Dashboard zeigt den Raum an
 
 ### 🐞 Fehlerbehebungen & Verbesserungen
 

@@ -39,6 +39,9 @@ Table Project {
     goal text
     components text
     skills text
+    max_team_size INTEGER,
+    teams_channel_id TEXT,
+    location text
     status_id integer [ref: > ProjectStatus.id, not null]
 }
 
