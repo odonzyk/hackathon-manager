@@ -64,8 +64,8 @@ router.get('/list/:event_id', authenticateAndAuthorize(RoleTypes.USER), async (r
 
   // Füge die Initiatoren zu jedem Projekt hinzu
   for (const project of projects) {
-    project.initiators = await getInitiators(project.id, req.user.role_id);
-    project.participants = await getParticipants(project.id, req.user.role_id);
+    project.initiators = await getInitiators(project.id, req.user.role);
+    project.participants = await getParticipants(project.id, req.user.role);
   }
 
   res.json(projects);
@@ -84,8 +84,8 @@ router.get('/list', authenticateAndAuthorize(RoleTypes.USER), async (req, res) =
 
   // Füge die Initiatoren zu jedem Projekt hinzu
   for (const project of projects) {
-    project.initiators = await getInitiators(project.id, req.user.role_id);
-    project.participants = await getParticipants(project.id, req.user.role_id);
+    project.initiators = await getInitiators(project.id, req.user.role);
+    project.participants = await getParticipants(project.id, req.user.role);
   }
 
   res.json(projects);
@@ -108,7 +108,7 @@ router.get('/listByUser/:id', authenticateAndAuthorize(RoleTypes.USER), async (r
 
   // Füge die Initiatoren zu jedem Projekt hinzu
   for (const project of projects) {
-    project.initiators = await getInitiators(project.id);
+    project.initiators = await getInitiators(project.id, req.user.role);
   }
 
   res.json(projects);
@@ -145,8 +145,8 @@ router.post('/', authenticateAndAuthorize(RoleTypes.USER), async (req, res) => {
     }
   }
 
-  const initiatorslist = await getInitiators(project_id, req.user.role_id);
-  const participantslist = await getParticipants(project_id, req.user.role_id);
+  const initiatorslist = await getInitiators(project_id, req.user.role);
+  const participantslist = await getParticipants(project_id, req.user.role);
 
   notifyProjectChange();
   res.status(201).json({
@@ -246,8 +246,8 @@ router.get('/:id', authenticateAndAuthorize(RoleTypes.USER), async (req, res) =>
   const project = createProject(result.row);
 
   // Füge die Initiatoren zu dem Projekt hinzu
-  project.initiators = await getInitiators(project.id, req.user.role_id);
-  project.participants = await getParticipants(project.id, req.user.role_id);
+  project.initiators = await getInitiators(project.id, req.user.role);
+  project.participants = await getParticipants(project.id, req.user.role);
 
   res.json(project);
 });

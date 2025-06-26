@@ -84,7 +84,10 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
 
     let emails = project.initiators.map((initiator) => initiator.email).join(',');
     if (emails && project.participants.length > 0) {
-      emails += ',' + project.participants.map((participant) => participant.email).join(',');
+      emails += ',';
+    }
+    if (project.participants.length > 0) {
+      emails += project.participants.map((participant) => participant.email).join(',');
     }
     navigator.clipboard
       .writeText(emails)

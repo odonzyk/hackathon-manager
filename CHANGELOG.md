@@ -1,7 +1,15 @@
 # 📦 Changelog
 
-## Version 0.3.2
+## Version 0.3.3
 **Release Date:** 2025-10-??
+
+### 🐞 Fehlerbehebungen & Verbesserungen
+
+- **Kleine Verbesserungen**  
+  - Anzeige des Countdown bei laufenden Hackathon
+  - Kopieren der Projektteilnehmer Mailadressen enthält nun bei Organisatoren alle Adresse
+  - CSV Export der Projektliste ink. Teilnehmer
+
 
 ### ✨ Neue Funktionen
 - **Project**  
