@@ -86,7 +86,7 @@ router.put('/:id', authenticateAndAuthorize(RoleTypes.MANAGER), async (req, res)
   event.end_time = end_time ?? event.end_time;
 
   // Update Event
-  result = await db_run('Update Event SET name=?, start_time=?, end_time=? where id = ?', [event.name, event.start_time, event.end_time]);
+  result = await db_run('Update Event SET name=?, start_time=?, end_time=? where id = ?', [event.name, event.start_time, event.end_time, id]);
   if (result.err) {
     return res.status(500).send(ErrorMsg.SERVER.ERROR);
   }
