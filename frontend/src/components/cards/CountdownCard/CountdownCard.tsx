@@ -18,7 +18,6 @@ const CountdownCard: React.FC<CountdownCardProps> = ({ event }) => {
   console.log('Start Time, End Time:', event?.start_time, event?.end_time);
 
   if (!event || !event.start_time || !event.end_time) {
-    console.warn('Event data is not available or incomplete:', event);
     return null; // Return null if event data is not available
   }
   let eventState = EventState.ended;
@@ -48,16 +47,16 @@ const CountdownCard: React.FC<CountdownCardProps> = ({ event }) => {
           <IonCardHeader>
             <IonCardTitle>Hackathon Countdown</IonCardTitle>
           </IonCardHeader>
-          <IonCardContent>{formatCountdown(event.start_time - currentTime)}</IonCardContent>
+          <IonCardContent>startet in {formatCountdown(event.start_time - currentTime)}</IonCardContent>
         </IonCard>
       )}
 
       {eventState === EventState.ongoing && (
         <IonCard className="hackathon-card no-hover">
           <IonCardHeader>
-            <IonCardTitle>Hackathon läuft, bis zur Demo noch</IonCardTitle>
+            <IonCardTitle>Hackathon läuft</IonCardTitle>
           </IonCardHeader>
-          <IonCardContent>{formatCountdown(event.end_time - currentTime)}</IonCardContent>
+          <IonCardContent>bis zur Demo noch {formatCountdown(event.end_time - currentTime)}</IonCardContent>
         </IonCard>
       )}
     </>
