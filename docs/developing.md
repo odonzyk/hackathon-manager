@@ -38,7 +38,7 @@ Zuerst muss eine Konfigurationsdatei für die Entwicklungsumgebung erstellt werd
 
 ```sh
 cd backend
-cp env.example env.dev
+cp ./volumes/env.example ./volumes/config/env.dev
 ```
 Falls nötig, kannst du die Werte in der Konfigurationsdatei anpassen, um deine spezifischen Anforderungen zu erfüllen.
 

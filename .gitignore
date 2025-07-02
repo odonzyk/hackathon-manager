@@ -10,22 +10,19 @@
 .DS_Store
 
 # Frontend
-/frontend/.env*
+/backend/volumes/config/*
 /frontend/dist
 /frontend/dev-dist
 /frontend/node_modules
-!/frontend/.env.example
+!/frontend/volumes/.env.example
 
 # Backend   
-/backend/.env*
+/backend/volumes/config/*
+/backend/volumes/database/*
 /backend/logs/*
-/backend/hackathon.*
 /backend/coverage/
 /backend/node_modules
-!/backend/.env.example
-!/backend/.env.prod
-!/backend/.env.stage
-!/backend/hackathon.prod.db
+!/backend/volumes/.env.example
 
 # Codeing Environment
 /.vscode/*

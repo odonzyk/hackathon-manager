@@ -35,7 +35,6 @@ import { getExistingToken } from '../../utils/authUtils';
 import ModalEditAvatar from '../../components/ModalEditAvatar/ModalEditAvatar';
 import { useToast } from '../../components/ToastProvider';
 import { generateRandomPassword, isOrganisator } from '../../utils/dataApiConnector';
-import { API_SECRET } from '../../../config';
 
 interface ProfilePageProps {
   profile: Profile | null;
@@ -151,7 +150,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, event, onProfileUpda
           id: viewProfile.id,
           email: viewProfile.email,
           password: generateRandomPassword(),
-          secret: API_SECRET,
+          secret: CONFIG.apiSecret,
         },
         {
           headers: {
