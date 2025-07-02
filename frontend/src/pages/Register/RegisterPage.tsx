@@ -154,7 +154,7 @@ const RegisterPage = () => {
       setIsButtonDisabled(false);
     }
   };
-  console.log(CONFIG.version)
+  console.log(CONFIG.version);
 
   return (
     <IonPage>

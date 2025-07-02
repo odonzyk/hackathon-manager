@@ -47,7 +47,9 @@ const CountdownCard: React.FC<CountdownCardProps> = ({ event }) => {
           <IonCardHeader>
             <IonCardTitle>Hackathon Countdown</IonCardTitle>
           </IonCardHeader>
-          <IonCardContent>startet in {formatCountdown(event.start_time - currentTime)}</IonCardContent>
+          <IonCardContent>
+            startet in {formatCountdown(event.start_time - currentTime)}
+          </IonCardContent>
         </IonCard>
       )}
 
@@ -56,7 +58,9 @@ const CountdownCard: React.FC<CountdownCardProps> = ({ event }) => {
           <IonCardHeader>
             <IonCardTitle>Hackathon läuft</IonCardTitle>
           </IonCardHeader>
-          <IonCardContent>bis zur Demo noch {formatCountdown(event.end_time - currentTime)}</IonCardContent>
+          <IonCardContent>
+            bis zur Demo noch {formatCountdown(event.end_time - currentTime)}
+          </IonCardContent>
         </IonCard>
       )}
     </>

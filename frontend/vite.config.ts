@@ -30,8 +30,8 @@ export default defineConfig(({ mode }) => {
     logLevel: check(process.env.LOG_LEVEL, "info"),
     apiUrl: check(process.env.VITE_API_URL, "http://localhost"),
     hostUrl: check(process.env.VITE_HOST_URL, "http://localhost"),
-    hostPort: check(process.env.VITE_HOST_PORT, "8080"),
-    apiPort: check(process.env.VITE_API_PORT, "3005"),
+    hostPort: Number(check(process.env.VITE_HOST_PORT, 8080)),
+    apiPort: Number(check(process.env.VITE_API_PORT, 3005)),
     apiSecret: check(process.env.API_SECRET, "your-api-secret"),
     supportEmail: check(process.env.SUPPORT_EMAIL, "you@yourdomain.de"),
   
