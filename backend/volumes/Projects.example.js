@@ -22,6 +22,7 @@ const defaultProjects = [
     goal: 'Entwicklung einer innovativen Lösung zur Optimierung von Arbeitsabläufen.',
     components: 'Meetingraum, Whiteboard, Beamer',
     skills: 'Offen für alle, besonders IT, UX/UI Design, Projektmanagement'
-  }];
+  }
+];
 
 module.exports = { defaultProjects };

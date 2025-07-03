@@ -2,9 +2,9 @@ const logger = require('../../logger');
 const bcrypt = require('bcrypt');
 const { db_get, db_run } = require('./dbUtils');
 const { time2ts } = require('../utils');
-const { defaultProjects } = require('../../../volumes/database/data/Projects');
-const { defaultUsers } = require('../../../volumes/database/data/User');
-const { defaultTeams } = require('../../../volumes/database/data/Teams');
+const { defaultProjects } = require('../../../volumes/data/Projects');
+const { defaultUsers } = require('../../../volumes/data/User');
+const { defaultTeams } = require('../../../volumes/data/Teams');
 const config = require('../../config'); // Importiere die Konfiguration
 const { RoleTypes } = require('../../constants');
 

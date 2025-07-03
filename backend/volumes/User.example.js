@@ -65,6 +65,6 @@ const defaultUsers = [
     avatar_url: '/assets/avatars/avatar_6.png',
     env: 'dev'
   }
-  ];
+];
 
 module.exports = { defaultUsers };
