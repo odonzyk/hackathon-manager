@@ -10,7 +10,7 @@ import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import { cleanUpStorage, getExistingToken } from '../../utils/authUtils';
 import { getProfile, ResultType } from '../../utils/dataApiConnector';
 import { STORAGE_PROFILE, STORAGE_TOKEN, User } from '../../types/types';
-import { APP_VERSION, SUPPORT_EMAIL } from '../../../config';
+
 import { useToast } from '../../components/ToastProvider';
 import './LoginPage.css';
 import {
@@ -146,7 +146,7 @@ const LoginPage = () => {
             <IonImg src="/assets/icons/icon.png" className="appTitle-logo" />
             <div className="appTitle-title">
               <h1>Hackathon Manager</h1>
-              <IonText color="primary">v {APP_VERSION}</IonText>
+              <IonText color="primary">v {CONFIG.version}</IonText>
             </div>
           </div>
 
@@ -183,7 +183,7 @@ const LoginPage = () => {
               <div className="login-links">
                 <IonText color="primary">
                   <a
-                    href={`mailto:${SUPPORT_EMAIL}?subject=Hackathon Manager - Passwort vergessen&body=Bitte helfen Sie mir, mein Passwort zurückzusetzen.`}
+                    href={`mailto:${CONFIG.supportEmail}?subject=Hackathon Manager - Passwort vergessen&body=Bitte helfen Sie mir, mein Passwort zurückzusetzen.`}
                   >
                     Passwort vergessen
                   </a>

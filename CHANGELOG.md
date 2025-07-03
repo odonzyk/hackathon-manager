@@ -1,7 +1,19 @@
 # 📦 Changelog
 
-## Version 0.3.3
+## Version 0.4.0
 **Release Date:** 2025-10-??
+
+### 🐞 Fehlerbehebungen & Verbesserungen
+
+- **Kleine Verbesserungen**  
+  - Config Anpassung für bessere Docker integration
+  - Frontend ebenfalls vollständig auf .env Datei umgestellt
+  - Projekt von Credentials bereinigt
+  - Vorbereitung von OpenSource
+
+
+## Version 0.3.3
+**Release Date:** 2025-10-24
 
 ### 🐞 Fehlerbehebungen & Verbesserungen
 

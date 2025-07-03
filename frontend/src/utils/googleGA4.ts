@@ -1,6 +1,6 @@
 import ReactGA from 'react-ga4';
 
-const GA4_ID = '***REMOVED***';
+const GA4_ID = 'G-1E26BWQ9J1';
 
 const getPageTitle = (pathname: string): string => {
   const pageTitles: { [key: string]: string } = {

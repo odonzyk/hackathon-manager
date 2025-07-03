@@ -81,7 +81,7 @@ app
 function sendTestmail() {
   //TODO REMOVE THIS LINE IN PRODUCTION
   const newUser = {
-    email: '***REMOVED***',
+    email: 'jens@familie-zech.de',
     name: 'Emil Mustermann',
     activation_code: Math.random().toString(36).substring(2, 15)
   };

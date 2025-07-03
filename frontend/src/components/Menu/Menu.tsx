@@ -28,7 +28,6 @@ import {
   idCardOutline,
 } from 'ionicons/icons';
 
-import { APP_VERSION } from '../../../config';
 import { cleanUpStorage } from '../../utils/authUtils';
 
 import './Menu.css';
@@ -63,7 +62,7 @@ const Menu = () => {
         <IonToolbar>
           <IonTitle className="menu-title">Menü</IonTitle>
           <IonText slot="end" className="menu-version">
-            v{APP_VERSION}
+            v{CONFIG.version}
           </IonText>
         </IonToolbar>
       </IonHeader>

@@ -17,7 +17,7 @@ describe('Environment Config', () => {
     process.env.NODE_ENV = 'production';
     const config = require('../src/config'); // Modul neu laden
     expect(dotenv.config).toHaveBeenCalledWith({
-      path: path.resolve(__dirname, '../.env.prod')
+      path: path.resolve(__dirname, '../volumes/config/.env.prod')
     });
   });
 
@@ -25,7 +25,7 @@ describe('Environment Config', () => {
     process.env.NODE_ENV = 'dev';
     const config = require('../src/config'); // Modul neu laden
     expect(dotenv.config).toHaveBeenCalledWith({
-      path: path.resolve(__dirname, '../.env.dev')
+      path: path.resolve(__dirname, '../volumes/config/.env.dev')
     });
   });
 
@@ -33,7 +33,7 @@ describe('Environment Config', () => {
     delete process.env.NODE_ENV; // NODE_ENV entfernen
     const config = require('../src/config'); // Modul neu laden
     expect(dotenv.config).toHaveBeenCalledWith({
-      path: path.resolve(__dirname, '../.env.stage')
+      path: path.resolve(__dirname, '../volumes/config/.env.stage')
     });
   });
 });

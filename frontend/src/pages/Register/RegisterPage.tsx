@@ -16,7 +16,6 @@ import {
 import axios from 'axios';
 import './RegisterPage.css';
 import { Profile } from '../../types/types';
-import { APP_VERSION } from '../../../config';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import { getExistingToken } from '../../utils/authUtils';
 import { useToast } from '../../components/ToastProvider';
@@ -155,6 +154,7 @@ const RegisterPage = () => {
       setIsButtonDisabled(false);
     }
   };
+  console.log(CONFIG.version);
 
   return (
     <IonPage>
@@ -164,7 +164,7 @@ const RegisterPage = () => {
             <IonImg src="/assets/icons/icon.png" className="appTitle-logo" />
             <div className="appTitle-title">
               <h1>Hackathon Manager</h1>
-              <IonText color="primary">v {APP_VERSION}</IonText>
+              <IonText color="primary">v {CONFIG.version}</IonText>
             </div>
           </div>
         </div>

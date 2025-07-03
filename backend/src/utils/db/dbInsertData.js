@@ -2,13 +2,41 @@ const logger = require('../../logger');
 const bcrypt = require('bcrypt');
 const { db_get, db_run } = require('./dbUtils');
 const { time2ts } = require('../utils');
-const { defaultProjects } = require('./data/Projects');
-const { defaultUsers } = require('./data/User');
-const { defaultTeams } = require('./data/Teams');
 const config = require('../../config'); // Importiere die Konfiguration
 const { RoleTypes } = require('../../constants');
+const fs = require('fs');
+const path = require('path');
 
 const DEFAULT_PASSWORD = 'welcome!';
+
+let defaultProjects = [];
+let defaultUsers = [];
+let defaultTeams = [];
+
+// Prüfe, ob die Datei für Projekte existiert
+const projectsPath = path.resolve(__dirname, '../../../volumes/data/Projects.js');
+if (fs.existsSync(projectsPath)) {
+  defaultProjects = require(projectsPath).defaultProjects;
+} else {
+  console.warn(`Datei für Projekte nicht gefunden: ${projectsPath}`);
+}
+
+// Prüfe, ob die Datei für Benutzer existiert
+const usersPath = path.resolve(__dirname, '../../../volumes/data/User.js');
+if (fs.existsSync(usersPath)) {
+  defaultUsers = require(usersPath).defaultUsers;
+} else {
+  console.warn(`Datei für Benutzer nicht gefunden: ${usersPath}`);
+}
+
+// Prüfe, ob die Datei für Teams existiert
+const teamsPath = path.resolve(__dirname, '../../../volumes/data/Teams.js');
+if (fs.existsSync(teamsPath)) {
+  defaultTeams = require(teamsPath).defaultTeams;
+} else {
+  console.warn(`Datei für Teams nicht gefunden: ${teamsPath}`);
+}
+
 
 async function insertUserAdmin() {
   let count = 0;
