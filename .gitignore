@@ -10,7 +10,7 @@
 .DS_Store
 
 # Frontend
-/backend/volumes/config/*
+/frontend/volumes/config/*
 /frontend/dist
 /frontend/dev-dist
 /frontend/node_modules
