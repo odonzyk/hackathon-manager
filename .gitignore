@@ -19,10 +19,12 @@
 # Backend   
 /backend/volumes/config/*
 /backend/volumes/database/*
+/backend/volumes/data/*
 /backend/logs/*
 /backend/coverage/
 /backend/node_modules
 !/backend/volumes/.env.example
+!/backend/volumes/*.example.js
 
 # Codeing Environment
 /.vscode/*
