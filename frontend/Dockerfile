@@ -1,8 +1,10 @@
-# NGINX mit einer benutzerdefinierten Konfiguration
-FROM nginx:latest
+# ./frontend/Dockerfile
+FROM node:20 AS build
 
-# Kopiere die benutzerdefinierte Konfiguration
-# COPY ../nginx/default.conf /etc/nginx/conf.d/
+WORKDIR /app
+COPY . .
+RUN npm install
+RUN npm run build
 
-# Kopiere die Inhalte in das NGINX-HTML-Verzeichnis
-COPY dist /usr/share/nginx/html
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
