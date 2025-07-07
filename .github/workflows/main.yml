@@ -3,7 +3,7 @@ name: Build & Push Docker Images to GHCR
 on:
   push:
     branches:
-      - main
+      - '**'
   workflow_dispatch:
 
 jobs:
@@ -12,9 +12,13 @@ jobs:
 
     permissions:
       contents: read
-      packages: write  # WICHTIG für GHCR Push
+      packages: write  
 
     steps:
+      - name: Sanitize branch name
+        id: vars
+        run: echo "branch=$(echo '${{ github.ref_name }}' | tr '/' '-')" >> "$GITHUB_OUTPUT"
+        
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -31,7 +35,7 @@ jobs:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/hackathon-frontend:latest
+          tag:  ghcr.io/${{ github.repository_owner }}/hackathon-frontend:${{ steps.vars.outputs.branch }}
 
       - name: Build and Push Backend Image
         uses: docker/build-push-action@v5
@@ -39,4 +43,4 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/hackathon-backend:latest
+          tags:  ghcr.io/${{ github.repository_owner }}/hackathon-backend:${{ steps.vars.outputs.branch }}
