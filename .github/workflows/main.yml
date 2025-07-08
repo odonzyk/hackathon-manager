@@ -80,4 +80,8 @@ jobs:
             git pull origin main
 
             if [ "$DEPLOY_ENV" = "production" ]; then
-              se
+              sed -i 's/hackathon-stg.drsbln.de/hackathon.drsbln.de/g' "$DOCKER_COMPOSE_FILE"
+              sed -i 's/hackathon-stg.drsbln.de/hackathon.drsbln.de/g' /DOCKER/containers/hackathon-manager/frontend/nginx/default.conf
+            fi
+
+            docker compose up -d --build
