@@ -19,6 +19,9 @@ jobs:
       contents: read
       packages: write  
 
+    outputs:
+      image_tag: ${{ steps.export.outputs.branch }}
+
     steps:
       - name: Sanitize branch name
         id: vars
@@ -50,11 +53,16 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/hackathon-backend:${{ steps.vars.outputs.branch }}
 
+      - name: Export branch as output
+        id: export
+        run: echo "branch=${{ steps.vars.outputs.branch }}" >> "$GITHUB_OUTPUT"
+
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
     env:
       DEPLOY_ENV: ${{ github.event.inputs.environment || 'staging' }}
+      IMAGE_TAG: ${{ needs.build-and-push.outputs.image_tag }}
 
     steps:
       - name: Deploy to Server via SSH
@@ -68,6 +76,7 @@ jobs:
             export DOCKER_COMPOSE_FILE="$PROJECT_PATH/docker-compose.yaml"
 
             echo "Deploying to environment: $DEPLOY_ENV"
+            echo "Using image tag: $IMAGE_TAG"
 
             mkdir -p "$PROJECT_PATH"
             cd "$PROJECT_PATH"
@@ -79,9 +88,17 @@ jobs:
             git config --global --add safe.directory "$PROJECT_PATH"
             git pull origin main
 
+            # Auto-set correct image tags in docker-compose.yaml
+            echo "Setting correct image tags in docker-compose.yaml"
+            sed -i "s|ghcr.io/.*/hackathon-frontend:.*|ghcr.io/${GITHUB_REPOSITORY_OWNER}/hackathon-frontend:${IMAGE_TAG}|" "$DOCKER_COMPOSE_FILE"
+            sed -i "s|ghcr.io/.*/hackathon-backend:.*|ghcr.io/${GITHUB_REPOSITORY_OWNER}/hackathon-backend:${IMAGE_TAG}|" "$DOCKER_COMPOSE_FILE"
+
+            # Adjust for production environment if needed
             if [ "$DEPLOY_ENV" = "production" ]; then
               sed -i 's/hackathon-stg.drsbln.de/hackathon.drsbln.de/g' "$DOCKER_COMPOSE_FILE"
               sed -i 's/hackathon-stg.drsbln.de/hackathon.drsbln.de/g' /DOCKER/containers/hackathon-manager/frontend/nginx/default.conf
             fi
 
+            # Pull and start containers with correct images
+            docker compose pull
             docker compose up -d --build
