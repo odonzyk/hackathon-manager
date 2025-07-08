@@ -53,6 +53,8 @@ jobs:
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
+    env:
+      DEPLOY_ENV: ${{ github.event.inputs.environment || 'staging' }}
 
     steps:
       - name: Deploy to Server via SSH
@@ -65,17 +67,15 @@ jobs:
             export PROJECT_PATH="/opt/data/docker/containers/hackathon-manager"
             export DOCKER_COMPOSE_FILE="$PROJECT_PATH/docker-compose.yaml"
 
-            # Determine deployment environment
-            DEPLOY_ENV="${{ github.event.inputs.environment }}"
-            if [ -z "$DEPLOY_ENV" ]; then
-              DEPLOY_ENV="staging"
-            fi
             echo "Deploying to environment: $DEPLOY_ENV"
 
             mkdir -p "$PROJECT_PATH"
             cd "$PROJECT_PATH"
 
             docker compose down --remove-orphans --timeout 30
+
+            # Fix Git permissions (safe for CI/CD)
+            sudo chown -R $USER:$USER "$PROJECT_PATH"
             git config --global --add safe.directory "$PROJECT_PATH"
             git pull origin main
 
