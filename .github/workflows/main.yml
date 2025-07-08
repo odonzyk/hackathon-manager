@@ -1,10 +1,15 @@
-name: Build & Push Docker Images to GHCR
+name: Build, Push & Deploy Hackathon Manager
 
 on:
   push:
     branches:
       - '**'
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment Environment (staging/production)'
+        required: true
+        default: 'staging'
 
 jobs:
   build-and-push:
@@ -43,6 +48,29 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          #build-args: |
-          #  NODE_ENV=staging
           tags: ghcr.io/${{ github.repository_owner }}/hackathon-backend:${{ steps.vars.outputs.branch }}
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Server via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            export PROJECT_PATH="/opt/data/docker/containers/hackathon-manager"
+            export DOCKER_COMPOSE_FILE="$PROJECT_PATH/docker-compose.yaml"
+
+            mkdir -p "$PROJECT_PATH"
+            cd "$PROJECT_PATH"
+            docker compose down --remove-orphans --timeout 30
+            git pull origin main
+            if [ "${{ github.event.inputs.environment }}" = "production" ]; then
+              sed -i 's/hackathon-stg.drsbln.de/hackathon.drsbln.de/g' "$DOCKER_COMPOSE_FILE"
+              sed -i 's/hackathon-stg.drsbln.de/hackathon.drsbln.de/g' /DOCKER/containers/hackathon-manager/frontend/nginx/default.conf
+            fi
+            docker compose up -d --build
