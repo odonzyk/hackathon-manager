@@ -60,7 +60,7 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key: ${{ secrets.LOCAL_ANSIBLE_SSH_PRIVATE_KEY }}
           script: |
             export PROJECT_PATH="/opt/data/docker/containers/hackathon-manager"
             export DOCKER_COMPOSE_FILE="$PROJECT_PATH/docker-compose.yaml"
