@@ -46,9 +46,9 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./backend
-          file: ./backend/Dockerfile
-          push: true
-          tags: ghcr.io/${{ github.repository_owner }}/hackathon-backend:${{ steps.vars.outputs.branch }}
+        file: ./backend/Dockerfile
+        push: true
+        tags: ghcr.io/${{ github.repository_owner }}/hackathon-backend:${{ steps.vars.outputs.branch }}
 
   deploy:
     needs: build-and-push
@@ -65,12 +65,19 @@ jobs:
             export PROJECT_PATH="/opt/data/docker/containers/hackathon-manager"
             export DOCKER_COMPOSE_FILE="$PROJECT_PATH/docker-compose.yaml"
 
+            # Determine deployment environment
+            DEPLOY_ENV="${{ github.event.inputs.environment }}"
+            if [ -z "$DEPLOY_ENV" ]; then
+              DEPLOY_ENV="staging"
+            fi
+            echo "Deploying to environment: $DEPLOY_ENV"
+
             mkdir -p "$PROJECT_PATH"
             cd "$PROJECT_PATH"
+
             docker compose down --remove-orphans --timeout 30
+            git config --global --add safe.directory "$PROJECT_PATH"
             git pull origin main
-            if [ "${{ github.event.inputs.environment }}" = "production" ]; then
-              sed -i 's/hackathon-stg.drsbln.de/hackathon.drsbln.de/g' "$DOCKER_COMPOSE_FILE"
-              sed -i 's/hackathon-stg.drsbln.de/hackathon.drsbln.de/g' /DOCKER/containers/hackathon-manager/frontend/nginx/default.conf
-            fi
-            docker compose up -d --build
+
+            if [ "$DEPLOY_ENV" = "production" ]; then
+              se
