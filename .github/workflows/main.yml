@@ -20,7 +20,7 @@ jobs:
       packages: write  
 
     outputs:
-      image_tag: ${{ steps.export.outputs.branch }}
+      image_tag: ${{ steps.export.outputs.image_tag }}
 
     steps:
       - name: Sanitize branch name
@@ -55,7 +55,7 @@ jobs:
 
       - name: Export branch as output
         id: export
-        run: echo "branch=${{ steps.vars.outputs.branch }}" >> "$GITHUB_OUTPUT"
+        run: echo "image_tag=${{ steps.vars.outputs.branch }}" >> "$GITHUB_OUTPUT"
 
   deploy:
     needs: build-and-push
@@ -86,7 +86,7 @@ jobs:
             # Fix Git permissions (safe for CI/CD)
             sudo chown -R $USER:$USER "$PROJECT_PATH"
             git config --global --add safe.directory "$PROJECT_PATH"
-            git pull origin main
+            git pull --rebase=false origin main || echo "Git pull failed; please check manually!"
 
             # Auto-set correct image tags in docker-compose.yaml
             echo "Setting correct image tags in docker-compose.yaml"
