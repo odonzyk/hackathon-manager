@@ -3,7 +3,11 @@ version: '3.7'
 services:
   hackathon-api:
     container_name: hackathon-backend
-    image: ghcr.io/OWNER/hackathon-backend:latest  # Platzhalter, wird per Pipeline ersetzt
+    image: ghcr.io/odonzyk/hackathon-backend:develop
+    volumes:
+      - ./backend/volumes:/usr/src/app/volumes/config
+
+    working_dir: /usr/src/app
     networks:
       - web
       - internal
@@ -15,29 +19,33 @@ services:
       - 'traefik.enable=true'
       - 'traefik.http.routers.hackathonapi.priority=20'
       - 'traefik.http.routers.hackathonapi.tls=true'
-      - 'traefik.http.routers.hackathonapi.rule=Host(`hackathon-stg.drsbln.de`) && Path(`/api`)'
+      - 'traefik.http.routers.hackathonapi.rule=Host(`hackathon.drsbln.de`) && Path(`/api`)'
       - 'traefik.http.routers.hackathonapi.entrypoints=websecure'
       - 'traefik.http.routers.hackathonapi.service=hackathonapi-service'
       - 'traefik.http.routers.hackathonhealth.priority=20'
       - 'traefik.http.routers.hackathonhealth.tls=true'
-      - 'traefik.http.routers.hackathonhealth.rule=Host(`hackathon-stg.drsbln.de`) && Path(`/api/health`)'
+      - 'traefik.http.routers.hackathonhealth.rule=Host(`hackathon.drsbln.de`) && Path(`/api/health`)'
       - 'traefik.http.routers.hackathonhealth.entrypoints=websecure'
       - 'traefik.http.routers.hackathonhealth.service=hackathonapi-service'
       - 'traefik.http.routers.hackathonmetrics.priority=20'
       - 'traefik.http.routers.hackathonmetrics.tls=true'
-      - 'traefik.http.routers.hackathonmetrics.rule=Host(`hackathon-stg.drsbln.de`) && Path(`/metrics`)'
+      - 'traefik.http.routers.hackathonmetrics.rule=Host(`hackathon.drsbln.de`) && Path(`/metrics`)'
       - 'traefik.http.routers.hackathonmetrics.entrypoints=websecure'
       - 'traefik.http.routers.hackathonmetrics.service=hackathonapi-service'
       - 'traefik.http.routers.hackathondocs.priority=20'
       - 'traefik.http.routers.hackathondocs.tls=true'
-      - 'traefik.http.routers.hackathondocs.rule=Host(`hackathon-stg.drsbln.de`) && Path(`/api-docs`)'
+      - 'traefik.http.routers.hackathondocs.rule=Host(`hackathon.drsbln.de`) && Path(`/api-docs`)'
       - 'traefik.http.routers.hackathondocs.entrypoints=websecure'
       - 'traefik.http.routers.hackathondocs.service=hackathonapi-service'
       - 'traefik.http.services.hackathonapi-service.loadbalancer.server.port=3005'
 
   hackathon-frontend:
     container_name: hackathon-frontend
-    image: ghcr.io/OWNER/hackathon-frontend:latest  # Platzhalter, wird per Pipeline ersetzt
+    image: ghcr.io/odonzyk/hackathon-frontend:develop
+    volumes:
+#      - ./frontend/dist:/usr/share/nginx/html
+      - ./frontend/nginx/default.conf:/etc/nginx/conf.d/default.conf
+#      - ./frontend/nginx/nginx.conf:/etc/nginx/nginx.conf
     networks:
       - web
     depends_on:
@@ -45,7 +53,7 @@ services:
     labels:
       - 'traefik.http.routers.hackathon.priority=1'
       - 'traefik.enable=true'
-      - 'traefik.http.routers.hackathon.rule=Host(`hackathon-stg.drsbln.de`) && PathPrefix(`/`)'
+      - 'traefik.http.routers.hackathon.rule=Host(`hackathon.drsbln.de`) && PathPrefix(`/`)'
       - 'traefik.http.routers.hackathon.entrypoints=websecure'
       - 'traefik.http.services.hackathon.loadbalancer.server.port=80'
       - 'traefik.http.routers.hackathon.tls=true'
