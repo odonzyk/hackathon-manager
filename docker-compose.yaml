@@ -3,21 +3,19 @@ version: '3.7'
 services:
   hackathon-api:
     container_name: hackathon-backend
-    image: ghcr.io/OWNER/hackathon-backend:latest  # Platzhalter, wird beim Deployment ersetzt
-    working_dir: /usr/src/app
-    volumes:
-      - ./backend:/usr/src/app
+    image: ghcr.io/OWNER/hackathon-backend:latest  # Platzhalter, wird per Pipeline ersetzt
+    networks:
+      - web
+      - internal
     ports:
       - "3005:3005"
     depends_on:
       - mysql
-    command: /bin/sh -c "npm install && npm run start"
-
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.hackathonapi.priority=20'
       - 'traefik.http.routers.hackathonapi.tls=true'
-      - 'traefik.http.routers.hackathonapi.rule=Host(`hackathon-stg.drsbln.de`) &&  Path(`/api`)'
+      - 'traefik.http.routers.hackathonapi.rule=Host(`hackathon-stg.drsbln.de`) && Path(`/api`)'
       - 'traefik.http.routers.hackathonapi.entrypoints=websecure'
       - 'traefik.http.routers.hackathonapi.service=hackathonapi-service'
       - 'traefik.http.routers.hackathonhealth.priority=20'
@@ -37,17 +35,13 @@ services:
       - 'traefik.http.routers.hackathondocs.service=hackathonapi-service'
       - 'traefik.http.services.hackathonapi-service.loadbalancer.server.port=3005'
 
-    networks:
-      - web
-      - internal
-
   hackathon-frontend:
     container_name: hackathon-frontend
-    image: ghcr.io/OWNER/hackathon-frontend:latest  # Platzhalter, wird beim Deployment ersetzt
-    volumes:
-      - ./frontend/dist:/usr/share/nginx/html
-      - ./frontend/nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./frontend/nginx/nginx.conf:/etc/nginx/nginx.conf
+    image: ghcr.io/OWNER/hackathon-frontend:latest  # Platzhalter, wird per Pipeline ersetzt
+    networks:
+      - web
+    depends_on:
+      - hackathon-api
     labels:
       - 'traefik.http.routers.hackathon.priority=1'
       - 'traefik.enable=true'
@@ -57,10 +51,6 @@ services:
       - 'traefik.http.routers.hackathon.tls=true'
       - 'traefik.http.routers.hackathon.tls.domains[0].main=drsbln.de'
       - 'traefik.http.routers.hackathon.tls.domains[0].sans=*.drsbln.de'
-    depends_on:
-      - hackathon-api
-    networks:
-      - web
 
   mysql:
     image: mysql:8.0
