@@ -53,6 +53,8 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
+          build-args: |
+            NODE_ENV=production
           tags: ghcr.io/${{ github.repository_owner }}/hackathon-backend:${{ steps.vars.outputs.branch }}
 
       - name: Export branch as output
