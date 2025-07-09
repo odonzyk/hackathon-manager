@@ -421,7 +421,7 @@ router.post('/pwreset', authenticateAndAuthorize(RoleTypes.ADMIN), async (req, r
   try {
     await sendNewPasswordEmail(user, password);
   } catch (err) {
-    logger.error(`Error sending activation email for user ${newUser.email}: ${err.message}`);
+    logger.error(`Error sending activation email for user ${user.email}: ${err.message}`);
   }
 
   res.status(201).json(user);

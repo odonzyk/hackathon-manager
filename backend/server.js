@@ -26,7 +26,7 @@ const participateRoutes = require('./src/routes/participant');
 const initiatorRoutes = require('./src/routes/initiator');
 const adminRoutes = require('./src/routes/admin');
 const { dbInitialisation } = require('./src/utils/db/db');
-const { sendActivationEmail, sendServerRestartNotification } = require('./src/utils/emailUtils');
+const { sendServerRestartNotification } = require('./src/utils/emailUtils');
 
 // CORS-Options for Frontend
 const corsOptions = {

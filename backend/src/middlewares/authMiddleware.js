@@ -9,15 +9,15 @@ const rolesHierarchy = [RoleTypes.ADMIN, RoleTypes.MANAGER, RoleTypes.USER, Role
 function authenticateToken(req, res, next) {
   let token = req.header('Authorization');
   if (typeof token !== 'string' || !token.startsWith('Bearer ')) {
-    logger.debug('Invalid Token');
-    return res.status(403).send('Invalid Token');
+    logger.debug(ErrorMsg.AUTH.INVALID_TOKEN);
+    return res.status(403).send(ErrorMsg.AUTH.INVALID_TOKEN);
   }
   token = token.slice(7);
 
   jwt.verify(token, config.jwtSecret, (err, user) => {
     if (err) {
-      logger.debug('Invalid Token');
-      return res.status(403).send('Invalid Token');
+      logger.debug(ErrorMsg.AUTH.INVALID_TOKEN);
+      return res.status(403).send(ErrorMsg.AUTH.INVALID_TOKEN);
     }
     req.user = user;
     next();
@@ -28,14 +28,14 @@ function authenticateAndAuthorize(requiredRole) {
   return (req, res, next) => {
     let token = req.header('Authorization');
     if (typeof token !== 'string' || !token.startsWith('Bearer ')) {
-      logger.debug('Invalid Token');
+      logger.debug(ErrorMsg.AUTH.INVALID_TOKEN);
       return res.status(403).send(ErrorMsg.AUTH.INVALID_TOKEN);
     }
     token = token.slice(7);
 
     jwt.verify(token, config.jwtSecret, (err, user) => {
       if (err) {
-        logger.debug('Invalid Token');
+        logger.debug(ErrorMsg.AUTH.INVALID_TOKEN);
         return res.status(403).send(ErrorMsg.AUTH.INVALID_TOKEN);
       }
 
