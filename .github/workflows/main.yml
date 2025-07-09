@@ -82,6 +82,9 @@ jobs:
 
             mkdir -p "$PROJECT_PATH"
 
+            # Automatically trust GitHub SSH host key
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+
             # Check and clone repo if missing
             if [ ! -d "$PROJECT_PATH/.git" ]; then
               git clone git@github.com:${GITHUB_REPOSITORY}.git "$PROJECT_PATH"
