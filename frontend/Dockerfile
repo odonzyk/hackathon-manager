@@ -5,8 +5,9 @@ WORKDIR /app
 COPY ./package*.json ./
 RUN npm install
 
-COPY . .
+RUN ls -la /app && ls -la /app/src || true
 RUN npm run build
+RUN ls -la /app/dist || true
 
 # --- Production Stage ---
 FROM nginx:alpine
