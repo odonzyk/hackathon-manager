@@ -63,6 +63,7 @@ jobs:
     env:
       DEPLOY_ENV: ${{ github.event.inputs.environment || 'staging' }}
       IMAGE_TAG: ${{ needs.build-and-push.outputs.image_tag }}
+      GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
 
     steps:
       - name: Deploy to Server via SSH
@@ -71,34 +72,10 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.LOCAL_ANSIBLE_SSH_PRIVATE_KEY }}
+          envs: DEPLOY_ENV,IMAGE_TAG,GITHUB_REPOSITORY_OWNER
           script: |
             export PROJECT_PATH="/opt/data/docker/containers/hackathon-manager"
             export DOCKER_COMPOSE_FILE="$PROJECT_PATH/docker-compose.yaml"
 
             echo "Deploying to environment: $DEPLOY_ENV"
             echo "Using image tag: $IMAGE_TAG"
-
-            mkdir -p "$PROJECT_PATH"
-            cd "$PROJECT_PATH"
-
-            docker compose down --remove-orphans --timeout 30
-
-            # Fix Git permissions (safe for CI/CD)
-            sudo chown -R $USER:$USER "$PROJECT_PATH"
-            git config --global --add safe.directory "$PROJECT_PATH"
-            git pull --rebase=false origin main || echo "Git pull failed; please check manually!"
-
-            # Auto-set correct image tags in docker-compose.yaml
-            echo "Setting correct image tags in docker-compose.yaml"
-            sed -i "s|ghcr.io/.*/hackathon-frontend:.*|ghcr.io/${GITHUB_REPOSITORY_OWNER}/hackathon-frontend:${IMAGE_TAG}|" "$DOCKER_COMPOSE_FILE"
-            sed -i "s|ghcr.io/.*/hackathon-backend:.*|ghcr.io/${GITHUB_REPOSITORY_OWNER}/hackathon-backend:${IMAGE_TAG}|" "$DOCKER_COMPOSE_FILE"
-
-            # Adjust for production environment if needed
-            if [ "$DEPLOY_ENV" = "production" ]; then
-              sed -i 's/hackathon-stg.drsbln.de/hackathon.drsbln.de/g' "$DOCKER_COMPOSE_FILE"
-              sed -i 's/hackathon-stg.drsbln.de/hackathon.drsbln.de/g' /DOCKER/containers/hackathon-manager/frontend/nginx/default.conf
-            fi
-
-            # Pull and start containers with correct images
-            docker compose pull
-            docker compose up -d --build
