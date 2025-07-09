@@ -64,6 +64,7 @@ jobs:
       DEPLOY_ENV: ${{ github.event.inputs.environment || 'staging' }}
       IMAGE_TAG: ${{ needs.build-and-push.outputs.image_tag }}
       GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
+      GITHUB_REPOSITORY: odonzyk/hackathon-manager
 
     steps:
       - name: Deploy to Server via SSH
@@ -72,7 +73,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.LOCAL_ANSIBLE_SSH_PRIVATE_KEY }}
-          envs: DEPLOY_ENV,IMAGE_TAG,GITHUB_REPOSITORY_OWNER
+          envs: DEPLOY_ENV,IMAGE_TAG,GITHUB_REPOSITORY_OWNER,GITHUB_REPOSITORY
           script: |
             export PROJECT_PATH="/opt/data/docker/containers/hackathon-manager"
             export DOCKER_COMPOSE_FILE="$PROJECT_PATH/docker-compose.yaml"
