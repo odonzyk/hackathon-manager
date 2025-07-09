@@ -81,16 +81,19 @@ jobs:
             echo "Using image tag: $IMAGE_TAG"
 
             mkdir -p "$PROJECT_PATH"
+
+            # Check and clone repo if missing
+            if [ ! -d "$PROJECT_PATH/.git" ]; then
+              git clone git@github.com:${GITHUB_REPOSITORY}.git "$PROJECT_PATH"
+            fi
+
             cd "$PROJECT_PATH"
 
-            docker compose down --remove-orphans --timeout 30
-
-            sudo chown -R $USER:$USER "$PROJECT_PATH"
             git config --global --add safe.directory "$PROJECT_PATH"
             git config --global user.email "ci@example.com"
             git config --global user.name "CI Deployer"
 
-            git pull --rebase=false origin main || echo "Git pull failed; please check manually!"
+            git pull origin main || echo "Git pull failed; please check manually!"
 
             echo "Setting correct image tags in docker-compose.yaml"
             sed -i "s|ghcr.io/.*/hackathon-frontend:.*|ghcr.io/${GITHUB_REPOSITORY_OWNER}/hackathon-frontend:${IMAGE_TAG}|" "$DOCKER_COMPOSE_FILE"
@@ -98,7 +101,7 @@ jobs:
 
             if [ "$DEPLOY_ENV" = "production" ]; then
               sed -i 's/hackathon-stg\.drsbln\.de/hackathon.drsbln.de/g' "$DOCKER_COMPOSE_FILE"
-              sed -i 's/hackathon-stg\.drsbln\.de/hackathon.drsbln.de/g' "$PROJECT_PATH/frontend/nginx/default.conf"
+              sed -i 's/hackathon-stg\.drsbln\.de/hackathon.drsbln\.de/g' "$PROJECT_PATH/frontend/nginx/default.conf"
             fi
 
             docker compose pull
