@@ -6,7 +6,7 @@ services:
     image: ghcr.io/odonzyk/hackathon-backend:develop
     volumes:
       - ./backend/volumes:/usr/src/app/volumes/config
-
+      - ./backend/volumes:/usr/src/app/volumes/data/
     working_dir: /usr/src/app
     networks:
       - web
