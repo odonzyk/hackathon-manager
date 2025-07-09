@@ -40,7 +40,7 @@ jobs:
       - name: Build and Push Frontend Image
         uses: docker/build-push-action@v5
         with:
-          context: ./
+          context: ./frontend
           file: ./frontend/Dockerfile
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/hackathon-frontend:${{ steps.vars.outputs.branch }}
