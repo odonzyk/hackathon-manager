@@ -1,7 +1,17 @@
 # 📦 Changelog
 
 ## Version 0.4.0
-**Release Date:** 2025-10-??
+**Release Date:** 2025-10-09
+### ✨ Neue Funktionen
+- **Going Public**  
+  - Das Project ist ab jetzt OpenSource
+  
+- **GitHub Project**  
+  - Es ist auf einem öffentlichen Github Account für alle zugänglich
+  - Die BuildPipelines sind auf GitHub umgezogen und als Actions implementiert
+  - Es werden im Githup Reposetory Hub fertiger Docker Container bereitgestellt
+- **Firmen eigene Installationen möglich**  
+  - Eigene Versionen lassen sich über ein separates private Projekt ausrollen und mit lokaler Config ergänzen
 
 ### 🐞 Fehlerbehebungen & Verbesserungen
 
@@ -22,6 +32,8 @@
   - Kopieren der Projektteilnehmer Mailadressen enthält nun bei Organisatoren alle Adresse
   - CSV Export der Projektliste ink. Teilnehmer
 
+## Version 0.3.2
+**Release Date:** 2025-10-23
 
 ### ✨ Neue Funktionen
 - **Project**  

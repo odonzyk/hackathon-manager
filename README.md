@@ -48,6 +48,21 @@ Es befindet sich im Verzeichnis `/backend`.
 - **Dotenv** für die Verwaltung von Umgebungsvariablen
 - **Docker** & **Docker Compose** für containerisierte Bereitstellungen
 
+## Howto: Wie starte ich mein Projekt
+Erstelle ein neues unabhängiges Projekt / Verzeichnis!
+Lege dort folgende Verzeichisse an:
+
+./backend/volumes/config
+./backend/volumes/data
+./backend/volumes/database
+./frontend/volumes/config
+
+kopiere die backend/env.example und die frontend/env.example  aus diesem Projekt ins neue Project
+cp this/backend/env.example new/backend/config/env.stage
+cp this/backend/env.example new/backend/config/env.prod
+cp this/frontend/env.example new/frontend/config/env.stage
+cp this/frontend/env.example new/frontend/config/env.prod
+
 ## Entwicklung
 
 Möchtest du als Entwickler beitragen? Schau dir die [Entwicklerdokumentation](docs/developing.md) an, um loszulegen!
@@ -57,7 +72,7 @@ Möchtest du als Entwickler beitragen? Schau dir die [Entwicklerdokumentation](d
 Du kannst uns fragen, wenn es irgendwelche Fragen gibt!
 
 - J.Zech
-- O.Donzyk (Initialentwurf)
+- O.Donzyk
 
 ## Build- und Test-Badges
 

@@ -2,15 +2,20 @@ const sqlite3 = require('sqlite3').verbose();
 const config = require('../../config');
 const logger = require('../../logger');
 
-logger.debug(`Open DB ${config.dbPath}`);
+let db = null;
 
-const db = new sqlite3.Database(config.dbPath, (err) => {
-  if (err) {
-    logger.error("Can't initialize the database: " + err.message);
-  } else {
-    logger.info('Initialized Database');
-  }
-});
+// *** DB Initialization ************************************************************
+async function initConnection() {
+  logger.info(`... connecting to: ${config.dbPath}`);
+  db = new sqlite3.Database(config.dbPath, (err) => {
+    if (err) {
+      logger.error("... Can't initialize the database: " + err.message);
+      throw new Error(`Database connection failed: ${err.message}`);
+    } else {
+      logger.info('... connection to the database established successfully.');
+    }
+  });
+}
 
 // promisified Db functions for minizing callbacks
 // Even though callbacks are currently support for backwards compatibility!
@@ -131,6 +136,7 @@ async function columnExists(tableName, columnName) {
 
 module.exports = {
   db,
+  initConnection,
   db_run,
   db_get,
   db_all,
