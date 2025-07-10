@@ -21,14 +21,26 @@ jobs:
 
     outputs:
       image_tag: ${{ steps.export.outputs.image_tag }}
+      repo_owner: ${{ steps.export.outputs.repo_owner }}
 
     steps:
-      - name: Sanitize branch name
+      - name: Sanitize repository owner and branch name
         id: vars
-        run: echo "branch=$(echo '${{ github.ref_name }}' | tr '/' '-' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+        run: |
+          repo_owner=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')
+          branch=$(echo '${{ github.ref_name }}' | tr '/' '-' | tr '[:upper:]' '[:lower:]')
+          echo "repo_owner=$repo_owner" >> "$GITHUB_OUTPUT"
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
 
-      - name: Checkout repository
+      - name: Checkout pipeline repository (for workflows only)
         uses: actions/checkout@v4
+
+      - name: Checkout hackathon-manager repository (actual app code)
+        uses: actions/checkout@v4
+        with:
+          repository: odonzyk/hackathon-manager
+          path: hackathon-manager
+          fetch-depth: 0
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
@@ -36,30 +48,32 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: Build and Push Frontend Image
         uses: docker/build-push-action@v5
         with:
-          context: ./frontend
-          file: ./frontend/Dockerfile
+          context: ./hackathon-manager/frontend
+          file: ./hackathon-manager/frontend/Dockerfile
           push: true
           build-args: |
             NODE_ENV=production
-          tags: ghcr.io/${{ github.repository_owner }}/hackathon-frontend:${{ steps.vars.outputs.branch }}
+          tags: ghcr.io/${{ steps.vars.outputs.repo_owner }}/hackathon-frontend:${{ steps.vars.outputs.branch }}
 
       - name: Build and Push Backend Image
         uses: docker/build-push-action@v5
         with:
-          context: ./backend
-          file: ./backend/Dockerfile
+          context: ./hackathon-manager/backend
+          file: ./hackathon-manager/backend/Dockerfile
           push: true
           build-args: |
             NODE_ENV=production
-          tags: ghcr.io/${{ github.repository_owner }}/hackathon-backend:${{ steps.vars.outputs.branch }}
+          tags: ghcr.io/${{ steps.vars.outputs.repo_owner }}/hackathon-backend:${{ steps.vars.outputs.branch }}
 
-      - name: Export branch as output
+      - name: Export image tag and repo owner as output
         id: export
-        run: echo "image_tag=${{ steps.vars.outputs.branch }}" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "image_tag=${{ steps.vars.outputs.branch }}" >> "$GITHUB_OUTPUT"
+          echo "repo_owner=${{ steps.vars.outputs.repo_owner }}" >> "$GITHUB_OUTPUT"
 
   deploy:
     needs: build-and-push
@@ -67,17 +81,27 @@ jobs:
     env:
       DEPLOY_ENV: ${{ github.event.inputs.environment || 'staging' }}
       IMAGE_TAG: ${{ needs.build-and-push.outputs.image_tag }}
-      GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
-      GITHUB_REPOSITORY: odonzyk/hackathon-manager
+      REPO_OWNER: ${{ needs.build-and-push.outputs.repo_owner }}
+      APP_REPO: thaliabuechergmbh/hackathon-manager
+      TOKEN: ${{ secrets.TOKEN }}
 
     steps:
+      - name: Check if SSH key is present
+        run: |
+          if [ -z "${{ secrets.LOCAL_ANSIBLE_SSH_PRIVATE_KEY }}" ]; then
+            echo "❌ SSH key is missing in GitHub Secrets!"
+            exit 1
+          else
+            echo "✅ SSH key is present in GitHub Secrets."
+          fi
+
       - name: Deploy to Server via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.LOCAL_ANSIBLE_SSH_PRIVATE_KEY }}
-          envs: DEPLOY_ENV,IMAGE_TAG,GITHUB_REPOSITORY_OWNER,GITHUB_REPOSITORY
+          envs: DEPLOY_ENV,IMAGE_TAG,REPO_OWNER,APP_REPO,TOKEN
           script: |
             export PROJECT_PATH="/opt/data/docker/containers/hackathon-manager"
             export DOCKER_COMPOSE_FILE="$PROJECT_PATH/docker-compose.yaml"
@@ -86,31 +110,33 @@ jobs:
             echo "Using image tag: $IMAGE_TAG"
 
             mkdir -p "$PROJECT_PATH"
-
-            # Automatically trust GitHub SSH host key
             ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-            # Check and clone repo if missing
-            if [ ! -d "$PROJECT_PATH/.git" ]; then
-              git clone git@github.com:${GITHUB_REPOSITORY}.git "$PROJECT_PATH"
+            if [ -d "$PROJECT_PATH/.git" ]; then
+              echo "📂 Repository exists, pulling latest changes via SSH..."
+              cd "$PROJECT_PATH"
+              git config --global --add safe.directory "$PROJECT_PATH"
+              git pull --no-rebase || echo "Git pull failed; please check manually!"
+            else
+              echo "📥 Cloning repository ${APP_REPO} via SSH..."
+              git clone git@github.com:${APP_REPO}.git "$PROJECT_PATH"
+              cd "$PROJECT_PATH"
+              git config --global --add safe.directory "$PROJECT_PATH"
             fi
 
-            cd "$PROJECT_PATH"
-
-            git config --global --add safe.directory "$PROJECT_PATH"
             git config --global user.email "ci@example.com"
             git config --global user.name "CI Deployer"
 
-            git pull origin main || echo "Git pull failed; please check manually!"
-
-            echo "Setting correct image tags in docker-compose.yaml"
-            sed -i "s|ghcr.io/.*/hackathon-frontend:.*|ghcr.io/${GITHUB_REPOSITORY_OWNER}/hackathon-frontend:${IMAGE_TAG}|" "$DOCKER_COMPOSE_FILE"
-            sed -i "s|ghcr.io/.*/hackathon-backend:.*|ghcr.io/${GITHUB_REPOSITORY_OWNER}/hackathon-backend:${IMAGE_TAG}|" "$DOCKER_COMPOSE_FILE"
+            echo "🔧 Setting correct image tags in docker-compose.yaml"
+            sed -i "s|ghcr.io/.*/hackathon-frontend:.*|ghcr.io/${REPO_OWNER}/hackathon-frontend:${IMAGE_TAG}|" "$DOCKER_COMPOSE_FILE"
+            sed -i "s|ghcr.io/.*/hackathon-backend:.*|ghcr.io/${REPO_OWNER}/hackathon-backend:${IMAGE_TAG}|" "$DOCKER_COMPOSE_FILE"
 
             if [ "$DEPLOY_ENV" = "production" ]; then
               sed -i 's/hackathon-stg\.drsbln\.de/hackathon.drsbln.de/g' "$DOCKER_COMPOSE_FILE"
               sed -i 's/hackathon-stg\.drsbln\.de/hackathon.drsbln\.de/g' "$PROJECT_PATH/frontend/nginx/default.conf"
             fi
+
+            echo "$TOKEN" | docker login ghcr.io -u thaliabuechergmbh --password-stdin
 
             docker compose pull
             docker compose up -d --build
