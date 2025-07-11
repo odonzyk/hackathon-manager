@@ -1,10 +1,23 @@
-name: Build & Push Docker Images to GHCR
+name: Build, Push & Deploy Hackathon Manager
 
 on:
   push:
     branches:
       - '**'
+    paths:
+      - 'frontend/**'
+      - 'backend/**'
+
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment Environment (staging/production)'
+        required: true
+        default: 'staging'
+      branch:
+        description: 'Branch to deploy (default: main)'
+        required: true
+        default: 'develop'
 
 jobs:
   build-and-push:
@@ -13,6 +26,9 @@ jobs:
     permissions:
       contents: read
       packages: write  
+
+    outputs:
+      image_tag: ${{ steps.export.outputs.branch }}
 
     steps:
       - name: Sanitize branch name
@@ -43,6 +59,8 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          #build-args: |
-          #  NODE_ENV=staging
           tags: ghcr.io/${{ github.repository_owner }}/hackathon-backend:${{ steps.vars.outputs.branch }}
+
+      - name: Export branch as output
+        id: export
+        run: echo "branch=${{ steps.vars.outputs.branch }}" >> "$GITHUB_OUTPUT"
