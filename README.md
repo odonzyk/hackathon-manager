@@ -10,9 +10,12 @@ Er bietet Funktionen zur Verwaltung von Projekten, Teams und Teilnehmern sowie z
 - [Implementierung](#implementierung)
   - [Frontend](#frontend)
   - [Backend](#backend)
-- [Entwicklung](#entwicklung)
+- [Howto: Wie starte ich mein Projekt](#howto-wie-starte-ich-mein-projekt)
 - [Autoren](#autoren)
 - [Build- und Test-Badges](#build-und-test-badges)
+- [Lizenz](#lizenz)
+- [Code of Conduct](#code-of-conduct)
+- [Beitragshinweise](#beitragshinweise)
 
 ## Motivation
 
@@ -20,7 +23,7 @@ Der Hackathon Manager dient der Organisation und Durchführung eines Hackathons.
 
 ### Funktionen
 - **Projektmanagement**: Erstelle und verwalte Projekte
-- **Teamverwaltung**: Organisiere Teilnehmer in Teams für die einzelnene Projekte
+- **Teamverwaltung**: Organisiere Teilnehmer in Teams für die einzelnen Projekte
 - **Responsive Design**: Optimiert für Desktop, Tablet und mobile Geräte.
 
 ## Implementierung
@@ -49,23 +52,21 @@ Es befindet sich im Verzeichnis `/backend`.
 - **Docker** & **Docker Compose** für containerisierte Bereitstellungen
 
 ## Howto: Wie starte ich mein Projekt
-Erstelle ein neues unabhängiges Projekt / Verzeichnis!
-Lege dort folgende Verzeichisse an:
+Erstelle ein neues unabhängiges Projekt / Verzeichnis!  
+Lege dort folgende Verzeichnisse an:
 
-./backend/volumes/config
-./backend/volumes/data
-./backend/volumes/database
-./frontend/volumes/config
+- `./backend/volumes/config`
+- `./backend/volumes/data`
+- `./backend/volumes/database`
+- `./frontend/volumes/config`
 
-kopiere die backend/env.example und die frontend/env.example  aus diesem Projekt ins neue Project
+Kopiere die `backend/env.example` und die `frontend/env.example` aus diesem Projekt ins neue Projekt:  
+```bash
 cp this/backend/env.example new/backend/config/env.stage
 cp this/backend/env.example new/backend/config/env.prod
 cp this/frontend/env.example new/frontend/config/env.stage
 cp this/frontend/env.example new/frontend/config/env.prod
-
-## Entwicklung
-
-Möchtest du als Entwickler beitragen? Schau dir die [Entwicklerdokumentation](docs/developing.md) an, um loszulegen!
+```
 
 ## Autoren
 
@@ -73,6 +74,18 @@ Du kannst uns fragen, wenn es irgendwelche Fragen gibt!
 
 - J.Zech
 - O.Donzyk
+
+## Lizenz
+Dieses Projekt steht unter der MIT-Lizenz. Weitere Informationen findest du in der Datei LICENSE.md.
+
+## Code of Conduct
+Wir erwarten von allen Mitwirkenden, dass sie sich an unseren [Code of Conduct](CODE_OF_CONDUCT.md) halten, um eine respektvolle und freundliche Community zu fördern.
+
+## Beitragshinweise
+Wenn du zum Projekt beitragen möchtest, lies bitte die [Beitragshinweise](CONTRIBUTING.md). 
+Dort findest du alle Informationen, wie du Änderungen vorschlagen und Pull Requests einreichen kannst. 
+
+Für eine ausführlichere anleitung zur Einrichtung der Entwicklungsumgebung shau dir die [Entwicklerdokumentation](docs/developing.md) an!
 
 ## Build- und Test-Badges
 
