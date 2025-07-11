@@ -61,8 +61,10 @@ jobs:
     needs: build-and-push
     runs-on: ubuntu-latest
     env:
-      DEPLOY_ENV: ${{ github.event.inputs.environment || 'staging' }}
+      DEPLOY_ENV: ${{ github.event.inputs.environment }}
       IMAGE_TAG: ${{ needs.build-and-push.outputs.image_tag }}
+      GITHUB_REPOSITORY: ${{ github.repository }}
+      GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
 
     steps:
       - name: Deploy to Server via SSH
@@ -71,15 +73,14 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.LOCAL_ANSIBLE_SSH_PRIVATE_KEY }}
+          envs: DEPLOY_ENV,IMAGE_TAG,GITHUB_REPOSITORY,GITHUB_REPOSITORY_OWNER
           script: |
             export PROJECT_PATH="/opt/data/docker/containers/hackathon-manager"
             export DOCKER_COMPOSE_FILE="$PROJECT_PATH/docker-compose.yaml"
             echo "Deploying to environment: $DEPLOY_ENV"
             echo "Using image tag: $IMAGE_TAG"
-
             mkdir -p "$PROJECT_PATH"
             ssh-keyscan github.com >> ~/.ssh/known_hosts
-
             sudo chown -R $USER:$USER "$PROJECT_PATH"
 
             if [ ! -d "$PROJECT_PATH/.git" ] || [ ! -f "$DOCKER_COMPOSE_FILE" ]; then
