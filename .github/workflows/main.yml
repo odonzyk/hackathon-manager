@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - '**'
+    paths:
+      - 'frontend/**'
+      - 'backend/**'
+
   workflow_dispatch:
     inputs:
       environment:
@@ -58,7 +62,7 @@ jobs:
         run: echo "branch=${{ steps.vars.outputs.branch }}" >> "$GITHUB_OUTPUT"
 
   deploy:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' && github.ref_name == 'main'
     needs: build-and-push
     runs-on: ubuntu-latest
     env:
