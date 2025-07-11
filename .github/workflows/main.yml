@@ -120,7 +120,7 @@ jobs:
               sed -i 's/hackathon-stg\.drsbln\.de/hackathon.drsbln\.de/g' "$PROJECT_PATH/frontend/nginx/default.conf"
             fi
 
-            mkdir -p "$PROJECT_PATH"./backend/volumes/database
+            mkdir -p "$PROJECT_PATH"/backend/volumes/database
 
             docker compose pull
             docker compose up -d --build
