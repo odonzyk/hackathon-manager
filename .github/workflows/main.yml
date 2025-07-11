@@ -14,6 +14,10 @@ on:
         description: 'Deployment Environment (staging/production)'
         required: true
         default: 'staging'
+      branch:
+        description: 'Branch to deploy (default: main)'
+        required: true
+        default: 'main'
 
 jobs:
   build-and-push:
@@ -62,7 +66,7 @@ jobs:
         run: echo "branch=${{ steps.vars.outputs.branch }}" >> "$GITHUB_OUTPUT"
 
   deploy:
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    if: github.event.inputs.branch == 'main'
     needs: build-and-push
     runs-on: ubuntu-latest
     env:
@@ -70,19 +74,25 @@ jobs:
       IMAGE_TAG: ${{ needs.build-and-push.outputs.image_tag }}
       GITHUB_REPOSITORY: ${{ github.repository }}
       GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
+      DEPLOY_BRANCH: ${{ github.event.inputs.branch }}
 
     steps:
+      - name: Checkout repository on selected branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.DEPLOY_BRANCH }}
+
       - name: Deploy to Server via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.LOCAL_ANSIBLE_SSH_PRIVATE_KEY }}
-          envs: DEPLOY_ENV,IMAGE_TAG,GITHUB_REPOSITORY,GITHUB_REPOSITORY_OWNER
+          envs: DEPLOY_ENV,IMAGE_TAG,GITHUB_REPOSITORY,GITHUB_REPOSITORY_OWNER,DEPLOY_BRANCH
           script: |
             export PROJECT_PATH="/opt/data/docker/containers/hackathon-manager"
             export DOCKER_COMPOSE_FILE="$PROJECT_PATH/docker-compose.yaml"
-            echo "Deploying to environment: $DEPLOY_ENV"
+            echo "Deploying to environment: $DEPLOY_ENV on branch: $DEPLOY_BRANCH"
             echo "Using image tag: $IMAGE_TAG"
             mkdir -p "$PROJECT_PATH"
             ssh-keyscan github.com >> ~/.ssh/known_hosts
@@ -98,7 +108,8 @@ jobs:
             git config --global --add safe.directory "$PROJECT_PATH"
             git config --global user.email "ci@example.com"
             git config --global user.name "CI Deployer"
-            git pull origin main || echo "Git pull failed; please check manually!"
+            git checkout "$DEPLOY_BRANCH"
+            git pull origin "$DEPLOY_BRANCH" || echo "Git pull failed; please check manually!"
 
             echo "Setting correct image tags in docker-compose.yaml"
             sed -i "s|ghcr.io/.*/hackathon-frontend:.*|ghcr.io/${GITHUB_REPOSITORY_OWNER}/hackathon-frontend:${IMAGE_TAG}|" "$DOCKER_COMPOSE_FILE"
