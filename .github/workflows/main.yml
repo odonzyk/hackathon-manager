@@ -62,7 +62,7 @@ jobs:
         run: echo "branch=${{ steps.vars.outputs.branch }}" >> "$GITHUB_OUTPUT"
 
   deploy:
-    if: github.event_name == 'workflow_dispatch' && github.ref_name == 'main'
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
     needs: build-and-push
     runs-on: ubuntu-latest
     env:
