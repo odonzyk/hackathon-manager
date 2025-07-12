@@ -15,10 +15,9 @@ jobs:
   build-frontend-image:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Source Code Repository (hackathon-manager)
+      - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          repository: jenszech/hackathon-manager
           path: hackathon-manager
 
       - name: Login to GitHub Container Registry
@@ -37,10 +36,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-frontend-image
     steps:
-      - name: Checkout Source Code Repository (hackathon-manager)
+      - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          repository: jenszech/hackathon-manager
           path: hackathon-manager
 
       - name: Login to GitHub Container Registry
