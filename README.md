@@ -19,11 +19,27 @@ Er bietet Funktionen zur Verwaltung von Projekten, Teams und Teilnehmern sowie z
 
 ## Motivation
 
-Der Hackathon Manager dient der Organisation und Durchführung eines Hackathons.
+Hackathons sind eine großartige Möglichkeit, kreative Ideen zu entwickeln und innovative Projekte umzusetzen. Doch die Organisation eines Hackathons bringt zahlreiche Herausforderungen mit sich:
+
+- **Effiziente Projektverwaltung**: Teilnehmer müssen ihre Projekte einreichen können, ohne dass es zu Chaos oder Missverständnissen kommt. Oft fehlt eine zentrale Plattform, um alle Projekte übersichtlich zu sammeln und zu verwalten.  
+- **Transparenz bei der Projektübersicht**: Organisatoren und Teilnehmer benötigen eine klare Übersicht darüber, welche Projekte verfügbar sind und wer Teil des Teams ist.  
+- **Fairness bei der Teamverteilung**: Es muss sichergestellt werden, dass sich nicht zu viele Teilnehmer für ein Projekt anmelden und jeder nur einem Projekt zugeordnet wird. Ohne klare Regeln kann dies schnell unübersichtlich werden.  
+- **Teilnehmerstatistiken**: Organisatoren müssen jederzeit wissen, wie viele Teilnehmer aktiv sind, wie sie auf Projekte verteilt sind und ob die Kapazitäten ausreichend sind. Fehlende Übersicht erschwert meist die Planung und Anpassung.  
+- **Nachhaltigkeit der Ergebnisse**: Nach dem Hackathon sollen die Projekte für weiterhin sichtbar bleiben. So können sie als Beispiel und Basis für künftige Hackathons dienen oder direkt als Anregung für die Produktroadmap genutzt werden.
+
+Der Hackathon Manager wurde entwickelt, um diese Herausforderungen zu bewältigen. Er bietet eine zentrale Plattform, die sowohl Organisatoren als auch Teilnehmer unterstützt und den gesamten Prozess – von der Anmeldung bis zur Nachbereitung – vereinfacht und effizienter gestaltet.
 
 ### Funktionen
-- **Projektmanagement**: Erstelle und verwalte Projekte
-- **Teamverwaltung**: Organisiere Teilnehmer in Teams für die einzelnen Projekte
+- **Eventmanagement**: Plane und verwalte Hackathon-Events mit allen relevanten Details.
+- **Projektmanagement**: 
+  - Erstelle und verwalte Projekte.
+  - Pitchen eigener Ideen, um neue Projekte zu starten.
+  - Verwalte den Status des Projekts (z. B. Pitching, läuft, abgebrochen, abgeschlossen).
+- **Teamverwaltung**: 
+  - Anzeige der Ansprechpartner und Ideengeber für jedes Projekt.
+  - Verwaltung der Teilnehmer in Teams, einschließlich Zuordnung und Kapazitätsmanagement.
+- **Eigenes Profil**: Teilnehmer können ihre Kontaktdaten und persönlichen Informationen hinterlegen.
+- **Verlinkung zu MSTeams**: Integration von Microsoft Teams, um die Kommunikation innerhalb der Teams zu erleichtern.
 - **Responsive Design**: Optimiert für Desktop, Tablet und mobile Geräte.
 
 ## Implementierung
@@ -52,21 +68,36 @@ Es befindet sich im Verzeichnis `/backend`.
 - **Docker** & **Docker Compose** für containerisierte Bereitstellungen
 
 ## Howto: Wie starte ich mein Projekt
-Erstelle ein neues unabhängiges Projekt / Verzeichnis!  
-Lege dort folgende Verzeichnisse an:
 
-- `./backend/volumes/config`
-- `./backend/volumes/data`
-- `./backend/volumes/database`
-- `./frontend/volumes/config`
+### Lokal
+Für die lokale Entwicklung:
+1. **Backend starten**  
+   ```bash
+   cd backend
+   npm run start-dev
+   ```
+2. **Frontend starten**  
+   ```bash
+   cd frontend
+   npm run start-dev
+   ```
 
-Kopiere die `backend/env.example` und die `frontend/env.example` aus diesem Projekt ins neue Projekt:  
-```bash
-cp this/backend/env.example new/backend/config/env.stage
-cp this/backend/env.example new/backend/config/env.prod
-cp this/frontend/env.example new/frontend/config/env.stage
-cp this/frontend/env.example new/frontend/config/env.prod
-```
+Weitere Details zur lokalen Einrichtung findest du in der [Entwicklerdokumentation](docs/developing.md).
+Eine ausführliche Dokumentation der Konfiguration und Start Optionen ist im Rahmen des  [Hackathon Stack](https://github.com/jenszech/hackathon-stack) abrufbar.
+
+### Per Docker
+Für den Betrieb und die Konfiguration des Projekts:
+- Siehe das Repository [hackathon-stack](https://github.com/jenszech/hackathon-stack) für eine vollständige Docker-basierte Projektkonfiguration.
+- Starte die Umgebung mit:
+   ```bash
+   docker compose up --build
+   ```
+- Stoppe die Umgebung mit:
+   ```bash
+   docker compose down
+   ```
+
+> **Hinweis:** Stelle sicher, dass die Ports `80`, `3005` und `8081` auf deinem System frei sind.
 
 ## Autoren
 
@@ -89,4 +120,6 @@ Für eine ausführlichere anleitung zur Einrichtung der Entwicklungsumgebung sha
 
 ## Build- und Test-Badges
 
-[![Build Status](https://gitlab-ext.drsbln.de/hackathon/hackathon-manager/badges/main/pipeline.svg)](https://gitlab-ext.drsbln.de/hackathon/hackathon-manager/-/commits/main)
+[![Build Status](https://github.com/jenszech/hackathon-manager/actions/workflows/build.yml/badge.svg)](https://github.com/jenszech/hackathon-manager/actions/workflows/build.yml)  
+[![Release Version](https://img.shields.io/github/v/release/jenszech/hackathon-manager)](https://github.com/jenszech/hackathon-manager/releases)  
+[![License](https://img.shields.io/github/license/jenszech/hackathon-manager)](https://github.com/jenszech/hackathon-manager/blob/main/LICENSE.md)

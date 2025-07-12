@@ -15,15 +15,11 @@ services:
       - NODE_ENV=develop
     volumes:
       - ./backend/volumes/config:/usr/src/app/volumes/config
+      - ./backend/volumes/data:/usr/src/app/volumes/data
       - ./backend/volumes/database:/usr/src/app/volumes/database
     working_dir: /usr/src/app
-    networks:
-      - web
-      - internal
     ports:
       - "3005:3005"
-    depends_on:
-      - mysql
 
   hackathon-frontend:
     environment:
@@ -33,32 +29,7 @@ services:
     ports:
     - "80:80"
     volumes:
-      - ./frontend/nginx/default.conf:/etc/nginx/conf.d/default.conf
-    networks:
-      - web
-      - internal
+      - ./frontend/volumes/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - hackathon-api
-
-  mysql:
-    image: mysql:8.0
-    container_name: hackathon-db
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: hackathon
-      MYSQL_USER: hackathonuser
-      MYSQL_PASSWORD: secretpassword
-      MYSQL_ROOT_PASSWORD: rootpassword
-    volumes:
-      - mysql-data:/var/lib/mysql
-    networks:
-      - internal
-
-volumes:
-  mysql-data:
-
-networks:
-  web:
-    external: true
-  internal:
-    driver: bridge
+      
