@@ -25,6 +25,7 @@
 /backend/node_modules
 !/backend/volumes/.env.example
 !/backend/volumes/*.example.js
+!/backend/volumes/database/info.txt
 
 # Codeing Environment
 /.vscode/*
