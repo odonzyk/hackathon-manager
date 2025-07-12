@@ -137,5 +137,11 @@ docker compose down
 
 ---
 
+## 👷 Autor & Lizenz
+
+Maintainer:  
+ [odonzyk](https://github.com/odonzyk)\
+ [jzech](https://github.com/jenszech)
+
 📄 Lizenz: MIT\
 © Hackathon Team, 2025
