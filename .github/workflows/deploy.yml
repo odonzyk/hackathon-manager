@@ -21,7 +21,7 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key: ${{ secrets.LOCAL_ANSIBLE_SSH_PRIVATE_KEY }}
           script: |
             REF_NAME="${{ env.ref_name }}"
             PROJECT_PATH="/opt/data/docker/containers/hackathon-manager"
