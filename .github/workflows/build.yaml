@@ -12,41 +12,46 @@ on:
   workflow_dispatch:  
 
 jobs:
-  build-frontend-image:
+  build-images:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        service: [frontend, backend]
+
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           path: hackathon-manager
 
-      - name: Login to GitHub Container Registry
+      - name: Log in to GitHub Container Registry (GHCR)
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Build and push frontend image
+      - name: Set image name and path
+        id: vars
         run: |
-          cd hackathon-manager/frontend
-          npm install
-          npm run build
-          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/hackathon-frontend:${{ github.ref_name }}
-          docker build -t $IMAGE_NAME -f Dockerfile .
-          docker push $IMAGE_NAME
+          IMAGE_TAG=${{ github.ref_name }}
+          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/hackathon-${{ matrix.service }}
+          echo "image_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
+          echo "image_name=$IMAGE_NAME" >> $GITHUB_OUTPUT
 
-  build-backend-image:
-    runs-on: ubuntu-latest
-    needs: build-frontend-image
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          path: hackathon-manager
-
-      - name: Login to GitHub Container Registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-      - name: Build and push backend image
+      - name: Prepare build context
         run: |
-          cd hackathon-manager/backend
-          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/hackathon-backend:${{ github.ref_name }}
-          docker build -t $IMAGE_NAME -f Dockerfile .
-          docker push $IMAGE_NAME
+          cd hackathon-manager/${{ matrix.service }}
+          if [ "${{ matrix.service }}" == "frontend" ]; then
+            npm install
+            npm run build
+          fi
+
+      - name: Build and push image with tag
+        run: |
+          cd hackathon-manager/${{ matrix.service }}
+          docker build \
+            --cache-from=type=gha \
+            --cache-to=type=gha,mode=max \
+            -t ${{ steps.vars.outputs.image_name }}:${{ steps.vars.outputs.image_tag }} \
+            -t ${{ steps.vars.outputs.image_name }}:latest \
+            -f Dockerfile .
+          docker push ${{ steps.vars.outputs.image_name }}:${{ steps.vars.outputs.image_tag }}
+          docker push ${{ steps.vars.outputs.image_name }}:latest
