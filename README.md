@@ -10,7 +10,7 @@ Er bietet Funktionen zur Verwaltung von Projekten, Teams und Teilnehmern sowie z
 - [Implementierung](#implementierung)
   - [Frontend](#frontend)
   - [Backend](#backend)
-- [Schnellstart mit Docker-Compose auf dem eigenen lokalen Rechner](#Schnellstart mit Docker-Compose auf dem eigenen lokalen Rechner)
+- [Schnellstart mit Docker-Compose auf dem eigenen lokalen Rechner](#Schnellstart)
 - [Entwicklung](#entwicklung)
 - [Autoren](#autoren)
 - [Build- und Test-Badges](#build-und-test-badges)
@@ -51,7 +51,7 @@ Es befindet sich im Verzeichnis `/backend`.
 
 ## Schnellstart mit Docker-Compose auf dem eigenen lokalen Rechner
 
-[![Readme Docker-Compose lokaler start](https://github.com/odonzyk/hackathon-manager/blob/develop/localhost/README.md)
+[![Readme Docker-Compose lokaler start]](https://github.com/odonzyk/hackathon-manager/blob/develop/localhost/README.md)
 
 ## Entwicklung
 
