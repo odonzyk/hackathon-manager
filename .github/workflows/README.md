@@ -88,8 +88,9 @@ hackathon-manager/
 
 ## 👷 Autor & Lizenz
 
-Maintainer: [odonzyk](https://github.com/odonzyk)\
-            [jzech](https://github.com/jenszech)\
+Maintainer: 
+[odonzyk](https://github.com/odonzyk)\
+[jzech](https://github.com/jenszech)
 
 
 Lizenz: MIT
