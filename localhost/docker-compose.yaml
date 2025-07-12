@@ -14,14 +14,14 @@ services:
     environment:
       - NODE_ENV=develop
     volumes:
-      - ./backend/volumes:/usr/src/app/volumes/config
-      - ./backend/volumes/data:/usr/src/app/volumes/data/
+      - ./backend/volumes/config:/usr/src/app/volumes/config
+      - ./backend/volumes/database:/usr/src/app/volumes/database
     working_dir: /usr/src/app
     networks:
       - web
       - internal
     ports:
-      - "3000:3000"
+      - "3005:3005"
     depends_on:
       - mysql
 
