@@ -9,6 +9,8 @@ on:
       - 'frontend/**'
       - 'backend/**'
 
+  workflow_dispatch:  # Manuelles Auslösen ermöglichen
+
 jobs:
   build-frontend-image:
     runs-on: ubuntu-latest
