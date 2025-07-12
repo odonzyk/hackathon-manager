@@ -59,6 +59,5 @@ volumes:
 
 networks:
   web:
-    external: true
   internal:
     driver: bridge
