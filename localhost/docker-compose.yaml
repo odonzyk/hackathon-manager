@@ -17,9 +17,6 @@ services:
       - ./backend/volumes/config:/usr/src/app/volumes/config
       - ./backend/volumes/database:/usr/src/app/volumes/database
     working_dir: /usr/src/app
-    networks:
-      - web
-      - internal
     ports:
       - "3005:3005"
     depends_on:
@@ -34,9 +31,6 @@ services:
     - "80:80"
     volumes:
       - ./frontend/nginx/default.conf:/etc/nginx/conf.d/default.conf
-    networks:
-      - web
-      - internal
     depends_on:
       - hackathon-api
 
@@ -53,11 +47,6 @@ services:
       - mysql-data:/var/lib/mysql
     networks:
       - internal
-
+      
 volumes:
   mysql-data:
-
-networks:
-  web:
-  internal:
-    driver: bridge
