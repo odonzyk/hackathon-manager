@@ -6,14 +6,29 @@ Diese Umgebung dient der lokalen Entwicklung und dem Testen des Hackathon-Manage
 
 ```
 .
-├── backend/
-│   └── volumes/
-│       ├── config/           # Konfigurationsdateien (z. B. .env)
-│       └── database/         # SQLite-Datenbank
-├── frontend/
-│   └── nginx/
-│       └── default.conf      # NGINX-Routing-Konfiguration
-└── docker-compose.yaml
+├── backend
+│   └── volumes
+│       ├── config
+│       │   ├── .env.dev
+│       │   ├── .env.prod
+│       │   └── .env.stage
+│       ├── data
+│       │   ├── Projects.js
+│       │   ├── Teams.js
+│       │   └── User.js
+│       └── database
+│           ├── hackathon.dev.db
+│           ├── hackathon.prod.db
+│           └── hackathon.stg.db
+├── docker-compose.yaml
+└── frontend
+    ├── config
+    │   ├── .env.dev
+    │   ├── .env.prod
+    │   └── .env.stage
+    └── nginx
+        └── default.conf
+
 ```
 
 ## 🧱 Docker-Container
