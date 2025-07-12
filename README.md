@@ -51,7 +51,7 @@ Es befindet sich im Verzeichnis `/backend`.
 
 ## Schnellstart
 
-Möchtest Du einen lokalen Schnellstart testen, dann schau Dir die [Readme Docker-Compose lokaler start](https://github.com/odonzyk/hackathon-manager/blob/develop/localhost/README.md) an
+Möchtest Du einen lokalen Schnellstart testen? Dann schau Dir die [Readme Docker-Compose lokaler start](https://github.com/odonzyk/hackathon-manager/blob/develop/localhost/README.md) an
 
 ## Entwicklung
 
