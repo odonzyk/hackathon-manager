@@ -1,0 +1,47 @@
+name: Manual Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref_name:
+        description: 'Git-Ref (z. B. main oder develop)'
+        required: true
+        default: 'develop'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set image reference
+        id: vars
+        run: echo "ref_name=${{ github.event.inputs.ref_name }}" >> $GITHUB_ENV
+
+      - name: Deploy to Server via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.LOCAL_ANSIBLE_SSH_PRIVATE_KEY }}
+          script: |
+            REF_NAME="${{ env.ref_name }}"
+            PROJECT_PATH="/opt/data/docker/containers/hackathon-manager"
+            DOCKER_COMPOSE_FILE="$PROJECT_PATH/docker-compose.yaml"
+            echo "Deploying ref: $REF_NAME to $PROJECT_PATH"
+            mkdir -p $PROJECT_PATH
+            cd $PROJECT_PATH
+
+            echo "Stopping existing Docker stack"
+            docker compose down --remove-orphans --timeout 30
+
+            echo "Pulling latest Docker images"
+            docker pull ghcr.io/${{ github.repository_owner }}/hackathon-frontend:$REF_NAME
+            docker pull ghcr.io/${{ github.repository_owner }}/hackathon-backend:$REF_NAME
+
+            echo "Updating docker-compose config if production"
+            if [ "$REF_NAME" = "main" ]; then
+              sed -i 's/hackathon-stg.drsbln.de/hackathon.drsbln.de/g' $DOCKER_COMPOSE_FILE
+              sed -i 's/hackathon-stg.drsbln.de/hackathon.drsbln.de/g' /DOCKER/containers/hackathon-manager/frontend/nginx/default.conf
+            fi
+
+            echo "Restarting Docker stack"
+            docker compose up -d --build
